@@ -1,0 +1,114 @@
+.section {
+  padding-top: 128px;
+  padding-bottom: 128px;
+  background: white;
+  overflow: hidden;
+}
+
+.headerContainer {
+  max-width: 1800px;
+  margin: 0 auto;
+  padding-left: 48px;
+  padding-right: 48px;
+  margin-bottom: 64px;
+}
+
+.title {
+  font-family: 'Anton', sans-serif;
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: #999;
+  margin-bottom: 0px;
+  font-weight: 400;
+}
+
+.mainText {
+  font-family: 'Anton', sans-serif;
+  font-size: 140px;
+  text-transform: uppercase;
+  line-height: 1;
+  font-weight: 400;
+  color: black;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.scrollContainer {
+  overflow-x: auto;
+  overflow-y: hidden;
+  cursor: grab;
+  padding-left: 48px;
+  padding-right: 48px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollContainer:active {
+  cursor: grabbing;
+}
+
+.carouselTrack {
+  display: flex;
+  gap: 32px;
+  width: fit-content;
+}
+
+.projectCard {
+  flex-shrink: 0;
+  width: 850px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.videoContainer {
+  position: relative;
+  width: 850px;
+  height: 550px;
+  background: black;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.3s ease;
+}
+
+.video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.videoContainer:hover .thumbnail {
+  opacity: 0;
+}
+
+.videoContainer:hover .video {
+  opacity: 1;
+}
+
+.projectTitle {
+  font-family: 'Losta Masta', sans-serif;
+  font-size: 32px;
+  text-transform: uppercase;
+  color: black;
+  font-weight: 900;
+}
+
+.projectCard {
+  user-select: none;
+}

@@ -1,0 +1,719 @@
+.page {
+    min-height: 100vh;
+    background: black;
+}
+
+
+/* Hero Section - Black */
+
+.hero {
+    padding: 120px 48px 120px 48px;
+    background: black;
+}
+
+.heroContainer {
+    max-width: 1800px;
+    margin: 0 auto;
+}
+
+.heroTitle {
+    font-family: 'Anton', sans-serif;
+    font-size: 120px;
+    font-weight: 400;
+    text-transform: uppercase;
+    line-height: 0.9;
+    color: white;
+    margin-bottom: 32px;
+}
+
+.heroSubtitle {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 18px;
+    line-height: 1.8;
+    color: #aaa;
+    max-width: 700px;
+    margin-bottom: 48px;
+}
+
+.heroButton {
+    display: inline-block;
+    background: white;
+    color: black;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 20px 60px;
+    border-radius: 999px;
+    font-size: 16px;
+    letter-spacing: 0.15em;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.heroButton:hover {
+    background: #ddd;
+}
+
+
+/* Mini Titles */
+
+.miniTitle,
+.showcaseMiniTitle {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #666;
+    margin-bottom: 16px;
+}
+
+
+/* Video Showcase Section - White */
+
+.showcaseLink {
+    text-decoration: none;
+    cursor: pointer;
+    display: block;
+}
+
+.showcase {
+    padding: 120px 48px;
+    background: white;
+    border-radius: 80px 80px 0 0;
+    margin-top: -80px;
+}
+
+.showcaseContainer {
+    max-width: 1800px;
+    margin: 0 auto;
+}
+
+.showcaseBox {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 40px;
+    overflow: hidden;
+    background: black;
+}
+
+.showcaseVideo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    pointer-events: none;
+}
+
+.showcaseOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.showcaseContent {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 64px;
+}
+
+.showcaseTopRow {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.showcaseClient {
+    font-family: 'Anton', sans-serif;
+    font-weight: 400;
+    color: white;
+    opacity: 0.8;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+}
+
+.showcaseViewButton {
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    padding: 12px 40px;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.showcaseViewButton:hover {
+    background: rgba(255, 255, 255, 0.6);
+}
+
+.showcaseViewButtonText {
+    font-family: 'IBM Plex Mono', monospace;
+    color: black;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.showcaseCenterTitle {
+    position: absolute;
+    top: -80px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.showcaseTitleText {
+    font-family: 'Anton', sans-serif;
+    font-size: 200px;
+    color: white;
+    text-transform: uppercase;
+    line-height: 0.9;
+    text-align: center;
+}
+
+.showcaseBottomRow {
+    position: absolute;
+    bottom: 200px;
+    left: 64px;
+}
+
+.showcaseSubtitle {
+    font-family: 'Anton', sans-serif;
+    font-size: 50px;
+    color: white;
+    text-transform: uppercase;
+    line-height: 1;
+}
+
+
+/* Container */
+
+.container {
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 0 48px;
+}
+
+
+/* Section Titles */
+
+.sectionTitle {
+    font-family: 'Anton', sans-serif;
+    font-size: 80px;
+    font-weight: 400;
+    text-transform: uppercase;
+    line-height: 0.9;
+    margin-bottom: 24px;
+}
+
+.sectionSubtitle {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 64px;
+}
+
+
+/* Services Section - Black */
+
+.services {
+    padding: 120px 48px;
+    background: black;
+}
+
+.services .miniTitle {
+    color: #666;
+}
+
+.services .sectionTitle {
+    color: white;
+}
+
+.servicesGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+}
+
+.serviceCard {
+    padding: 48px 32px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+}
+
+.serviceTitle {
+    font-family: 'Anton', sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    text-transform: uppercase;
+    color: white;
+    margin-bottom: 16px;
+}
+
+.serviceDescription {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #aaa;
+}
+
+
+/* Pricing Section - White */
+
+.pricing {
+    padding: 120px 48px;
+    background: white;
+    border-radius: 80px 80px 0 0;
+    margin-top: -80px;
+}
+
+.pricing .miniTitle {
+    color: #666;
+}
+
+.pricing .sectionTitle {
+    color: black;
+}
+
+.pricing .sectionSubtitle {
+    color: #666;
+}
+
+.pricingList {
+    max-width: 800px;
+    margin-bottom: 32px;
+}
+
+.priceRow {
+    display: flex;
+    align-items: center;
+    padding: 24px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.priceRow:last-child {
+    border-bottom: none;
+}
+
+.priceHighlight {
+    background: rgba(0, 0, 0, 0.05);
+    padding: 24px 32px;
+    border-radius: 8px;
+    border-bottom: none;
+    margin: 8px 0;
+}
+
+.priceLabel {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 16px;
+    font-weight: 500;
+    color: black;
+    white-space: nowrap;
+}
+
+.priceDots {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, #ddd 0%, #ddd 50%, transparent 50%, transparent 100%);
+    background-size: 8px 1px;
+    margin: 0 16px;
+}
+
+.priceValue {
+    font-family: 'Anton', sans-serif;
+    font-size: 24px;
+    color: black;
+    white-space: nowrap;
+}
+
+
+/* Packages Section - Black */
+
+.packages {
+    padding: 120px 48px;
+    background: black;
+}
+
+.packages .miniTitle {
+    color: #666;
+}
+
+.packages .sectionTitle {
+    color: white;
+}
+
+.packages .sectionSubtitle {
+    color: #aaa;
+}
+
+.packagesGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    margin-bottom: 32px;
+}
+
+.packageCard {
+    padding: 48px 32px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    position: relative;
+}
+
+.packagePopular {
+    border: 2px solid white;
+}
+
+.popularBadge {
+    position: absolute;
+    top: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    color: black;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 8px 24px;
+    border-radius: 999px;
+    letter-spacing: 0.1em;
+}
+
+.packageTitle {
+    font-family: 'Anton', sans-serif;
+    font-size: 28px;
+    font-weight: 400;
+    text-transform: uppercase;
+    color: white;
+    margin-bottom: 32px;
+}
+
+.packageFeatures {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 32px 0;
+}
+
+.packageFeatures li {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    line-height: 2;
+    color: white;
+    padding-left: 24px;
+    position: relative;
+}
+
+.packageFeatures li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: white;
+}
+
+.packageAddons {
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.packageAddons h4 {
+    font-family: 'Anton', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    text-transform: uppercase;
+    color: white;
+    margin-bottom: 12px;
+}
+
+.packageAddons p {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    color: #aaa;
+}
+
+.disclaimer {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: #666;
+    font-style: italic;
+}
+
+
+/* Studio Hours Section - White */
+
+.hours {
+    padding: 120px 48px;
+    background: white;
+    border-radius: 80px 80px 0 0;
+    margin-top: -80px;
+}
+
+.hours .miniTitle {
+    color: #666;
+}
+
+.hours .sectionTitle {
+    color: black;
+}
+
+.hoursContent {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    margin-bottom: 32px;
+}
+
+.hoursBlock {
+    margin: 0;
+}
+
+.hoursLabel {
+    font-family: 'Anton', sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    text-transform: uppercase;
+    color: black;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.feeTag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: bold;
+    background: black;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 999px;
+    letter-spacing: 0.1em;
+}
+
+.hoursText {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    line-height: 2;
+    color: #555;
+    margin: 8px 0;
+}
+
+.note {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: #666;
+    font-style: italic;
+}
+
+
+/* Testimonials Section - Black */
+
+.testimonials {
+    padding: 120px 48px;
+    background: black;
+}
+
+.testimonials .miniTitle {
+    color: #666;
+}
+
+.testimonials .sectionTitle {
+    color: white;
+}
+
+.testimonialsGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+}
+
+.testimonialCard {
+    padding: 48px 32px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+}
+
+.testimonialText {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    line-height: 1.8;
+    color: white;
+    margin-bottom: 24px;
+}
+
+.testimonialAuthor {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: #aaa;
+    font-style: italic;
+}
+
+
+/* Booking CTA Section - White */
+
+.bookingCTA {
+    padding: 120px 48px;
+    background: white;
+    border-radius: 80px 80px 0 0;
+    margin-top: -80px;
+}
+
+.bookingCTA .miniTitle {
+    color: #666;
+}
+
+.ctaTitle {
+    font-family: 'Anton', sans-serif;
+    font-size: 80px;
+    font-weight: 400;
+    text-transform: uppercase;
+    line-height: 0.9;
+    color: black;
+    margin-bottom: 48px;
+}
+
+.ctaButton {
+    display: inline-block;
+    background: black;
+    color: white;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 20px 60px;
+    border-radius: 999px;
+    font-size: 16px;
+    letter-spacing: 0.15em;
+    text-decoration: none;
+    transition: background 0.3s ease;
+    margin-bottom: 24px;
+}
+
+.ctaButton:hover {
+    background: #333;
+}
+
+.ctaNote {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: #666;
+    font-style: italic;
+}
+
+
+/* Location & Info Section - Black */
+
+.locationInfo {
+    padding: 120px 48px 160px;
+    background: black;
+}
+
+.locationInfo .miniTitle {
+    color: #666;
+}
+
+.locationInfo .sectionTitle {
+    color: white;
+}
+
+.locationText {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 16px;
+    line-height: 1.8;
+    color: #aaa;
+    max-width: 900px;
+    margin-bottom: 48px;
+}
+
+.divider {
+    width: 200px;
+    height: 2px;
+    background: #333;
+    margin: 80px 0;
+}
+
+.infoText {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    line-height: 1.8;
+    color: #aaa;
+    max-width: 1200px;
+    margin-bottom: 24px;
+}
+
+
+/* Responsive */
+
+@media (max-width: 1024px) {
+    .heroTitle {
+        font-size: 60px;
+    }
+    .showcaseTitleText {
+        font-size: 120px;
+    }
+    .showcaseSubtitle {
+        font-size: 40px;
+    }
+    .sectionTitle,
+    .ctaTitle {
+        font-size: 50px;
+    }
+    .servicesGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .packagesGrid,
+    .testimonialsGrid {
+        grid-template-columns: 1fr;
+    }
+    .hoursContent {
+        grid-template-columns: 1fr;
+        gap: 48px;
+    }
+}
+
+@media (max-width: 768px) {
+    .heroTitle {
+        font-size: 40px;
+    }
+    .showcaseTitleText {
+        font-size: 80px;
+    }
+    .showcaseSubtitle {
+        font-size: 24px;
+    }
+    .showcaseContent {
+        padding: 32px;
+    }
+    .showcaseBottomRow {
+        bottom: 100px;
+        left: 32px;
+    }
+    .sectionTitle,
+    .ctaTitle {
+        font-size: 36px;
+    }
+    .servicesGrid {
+        grid-template-columns: 1fr;
+    }
+    .priceLabel {
+        font-size: 14px;
+    }
+    .priceValue {
+        font-size: 18px;
+    }
+}

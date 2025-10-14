@@ -1,0 +1,139 @@
+.projectLink {
+  text-decoration: none;
+  cursor: pointer;
+  display: block;
+}
+
+.videoSection {
+  width: 100%;
+  background: white;
+  padding: 48px;
+}
+
+.videoContainer {
+  max-width: 1800px;
+  margin: 0 auto;
+}
+
+.videoBox {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 40px;
+  overflow: hidden;
+  background: black;
+}
+
+.videoElement {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  pointer-events: none;
+}
+
+.videoOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.videoContent {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 64px;
+}
+
+.topRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.clientName {
+  font-family: 'Anton', sans-serif;
+  font-weight: 400;
+  color: white;
+  opacity: 0.8;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+.viewButton {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  padding: 12px 40px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.viewButton:hover {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.viewButtonText {
+  font-family: 'IBM Plex Mono', monospace;
+  color: black;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.centerTitle {
+  position: absolute;
+  top: -80px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.titleText {
+  font-family: 'Anton', sans-serif;
+  font-size: 200px;
+  color: white;
+  text-transform: uppercase;
+  line-height: 0.9;
+  text-align: center;
+}
+
+.bottomRow {
+  position: absolute;
+  bottom: 200px;
+  left: 64px;
+}
+
+.subtitle {
+  font-family: 'Anton', sans-serif;
+  font-size: 50px;
+  color: white;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+@media (max-width: 1024px) {
+  .titleText {
+    font-size: 120px;
+  }
+
+  .subtitle {
+    font-size: 40px;
+  }
+}

@@ -1,0 +1,93 @@
+.section {
+  position: relative;
+  height: auto;
+  min-height: auto;
+  overflow: hidden;
+  padding: 0 0 80px 0;
+  background: #2a2a2a;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.container {
+  max-width: 1800px;
+  width: 100%;
+  margin: 0 auto;
+  padding-left: 48px;
+  padding-right: 48px;
+}
+
+.largeText {
+  font-family: 'Anton', sans-serif;
+  font-size: 40px;
+  text-transform: uppercase;
+  line-height: 1.2;
+  margin-bottom: 12px;
+  font-weight: 400;
+  max-width: 1200px;
+  color: #e8e8e8;
+}
+
+.mediumText {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 20px;
+  line-height: 1.7;
+  margin-bottom: 12px;
+  font-weight: 400;
+  max-width: 1000px;
+  color: #e8e8e8;
+}
+
+.smallText {
+  font-family: 'Anton', sans-serif;
+  font-size: 80px;
+  text-transform: uppercase;
+  line-height: 1;
+  margin-bottom: 0;
+  font-weight: 400;
+  color: #e8e8e8;
+}
+
+/* GSAP line animation styles */
+.lineWrapper {
+  overflow: hidden;
+  display: block;
+}
+
+.line {
+  display: block;
+}
+
+@media (max-width: 1024px) {
+  .largeText {
+    font-size: 20px;
+  }
+
+  .mediumText {
+    font-size: 18px;
+  }
+
+  .smallText {
+    font-size: 50px;
+  }
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 80px 32px;
+  }
+
+  .largeText {
+    font-size: 18px;
+  }
+
+  .mediumText {
+    font-size: 16px;
+  }
+
+  .smallText {
+    font-size: 36px;
+  }
+}

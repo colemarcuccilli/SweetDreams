@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CLAUDE.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<p>Of course. This is an excellent use case for an AI code assistant. Here is a complete and highly-detailed development plan for the Sweet Dreams website, structured as a set of specifications for an AI like Claude to execute.</p>
+<p>This plan breaks the project into logical phases, defines the data structures, outlines the components, and specifies the logic for all key functionality.</p>
+<hr>
+<h3 id="project-plan-sweet-dreams-website-development"><strong>Project Plan: Sweet Dreams Website Development</strong></h3>
+<p><strong>TO:</strong> AI Code Assistant (Claude)
+<strong>FROM:</strong> Project Lead (Cole)
+<strong>PROJECT:</strong> Sweet Dreams Website (Music &amp; Media)
+<strong>DATE:</strong> September 28, 2025</p>
+<h4 id="phase-0-project-overview--setup"><strong>Phase 0: Project Overview &amp; Setup</strong></h4>
+<p><strong>1. Primary Goal:</strong>
+Develop a modern, performant, and scalable website for Sweet Dreams, encompassing two distinct business arms: &quot;Sweet Dreams Music&quot; and &quot;Sweet Dreams Media&quot;. The site will handle service showcases, portfolio displays, studio booking with online payments, and lead generation.</p>
+<p><strong>2. Core Technology Stack:</strong></p>
+<ul>
+<li><strong>Framework:</strong> Next.js 14+ (App Router)</li>
+<li><strong>Language:</strong> TypeScript</li>
+<li><strong>Styling:</strong> Tailwind CSS</li>
+<li><strong>UI/Icons:</strong> Shadcn/UI for pre-built components (optional but recommended), Lucide React for icons.</li>
+<li><strong>Primary Font:</strong> IBM Plex Mono (to be configured in <code>tailwind.config.js</code> and loaded in the root layout).</li>
+<li><strong>Database &amp; Auth:</strong> Supabase</li>
+<li><strong>Video Hosting:</strong> Cloudflare Stream</li>
+<li><strong>Payments:</strong> Stripe</li>
+<li><strong>Deployment:</strong> Vercel</li>
+</ul>
+<p><strong>3. Division of Labor (Crucial):</strong></p>
+<ul>
+<li><strong>AI (Claude) Tasks:</strong> All terminal-based actions. This includes project initialization, installing dependencies, writing all code for components, pages, API routes, and styling.</li>
+<li><strong>Human (Cole) Tasks:</strong> All platform-level configurations. This includes creating Supabase/Stripe/Vercel projects, setting up DNS, obtaining API keys, managing environment variables on Vercel, and uploading videos to Cloudflare Stream. A full list is in the Appendix.</li>
+</ul>
+<hr>
+<h4 id="phase-1-backend-setup-supabase-database-schema"><strong>Phase 1: Backend Setup (Supabase Database Schema)</strong></h4>
+<p><em>AI, you will not execute this directly, but you will write all frontend and API code assuming this database schema exists. Acknowledge this structure.</em></p>
+<p><strong>Table: <code>bookings</code></strong></p>
+<ul>
+<li><code>id</code> (uuid, primary key)</li>
+<li><code>user_id</code> (uuid, foreign key to <code>auth.users</code>)</li>
+<li><code>start_time</code> (timestamp with time zone)</li>
+<li><code>end_time</code> (timestamp with time zone)</li>
+<li><code>service_package</code> (text, e.g., &quot;Basic Package&quot;, &quot;Standard Package&quot;, &quot;Hourly&quot;)</li>
+<li><code>deposit_amount</code> (integer, in cents)</li>
+<li><code>final_amount</code> (integer, in cents, nullable)</li>
+<li><code>status</code> (text, e.g., &quot;pending_deposit&quot;, &quot;confirmed&quot;, &quot;completed&quot;, &quot;cancelled&quot;)</li>
+<li><code>stripe_payment_intent_id</code> (text)</li>
+<li><code>stripe_customer_id</code> (text)</li>
+<li><code>created_at</code> (timestamp with time zone)</li>
+</ul>
+<p><strong>Table: <code>media_portfolio</code></strong></p>
+<ul>
+<li><code>id</code> (uuid, primary key)</li>
+<li><code>title</code> (text)</li>
+<li><code>client_name</code> (text)</li>
+<li><code>category</code> (text, e.g., &quot;commercial&quot;, &quot;music_video&quot;, &quot;event&quot;)</li>
+<li><code>cloudflare_video_uid</code> (text) - <strong>The unique ID of the video on Cloudflare Stream.</strong></li>
+<li><code>thumbnail_url</code> (text, URL to an image in Supabase Storage)</li>
+<li><code>description</code> (text)</li>
+<li><code>is_featured</code> (boolean)</li>
+<li><code>is_coming_soon</code> (boolean)</li>
+<li><code>display_order</code> (integer)</li>
+</ul>
+<p><strong>Table: <code>leads</code></strong></p>
+<ul>
+<li><code>id</code> (uuid, primary key)</li>
+<li><code>name</code> (text)</li>
+<li><code>email</code> (text)</li>
+<li><code>phone</code> (text, nullable)</li>
+<li><code>message</code> (text)</li>
+<li><code>source</code> (text, e.g., &quot;Sweet Dreams Media Form&quot;)</li>
+<li><code>created_at</code> (timestamp with time zone)</li>
+</ul>
+<hr>
+<h4 id="phase-2-global-frontend-foundation"><strong>Phase 2: Global Frontend Foundation</strong></h4>
+<ol>
+<li><strong>Initialize Project:</strong>
+<ul>
+<li>Run <code>npx create-next-app@latest sweet-dreams-website --ts --tailwind --eslint --app</code></li>
+</ul>
+</li>
+<li><strong>Install Dependencies:</strong>
+<ul>
+<li><code>npm install @supabase/supabase-js stripe @radix-ui/react-icons lucide-react</code></li>
+<li><code>npm install -D @types/stripe</code></li>
+</ul>
+</li>
+<li><strong>Setup Tailwind CSS:</strong>
+<ul>
+<li>Configure <code>tailwind.config.js</code> to include the primary font: <code>fontFamily: { mono: ['&quot;IBM Plex Mono&quot;', 'monospace'] }</code>.</li>
+</ul>
+</li>
+<li><strong>Create Root Layout (<code>/app/layout.tsx</code>):</strong>
+<ul>
+<li>Load the IBM Plex Mono font from Google Fonts.</li>
+<li>Implement a global structure containing a <code>&lt;Header /&gt;</code>, <code>{children}</code>, and a <code>&lt;Footer /&gt;</code>.</li>
+</ul>
+</li>
+<li><strong>Create Shared Components:</strong>
+<ul>
+<li><strong><code>Header.tsx</code>:</strong> A responsive navbar. It should have a logo and navigation links. The links should change depending on whether the user is on the <code>/music</code> or <code>/media</code> section of the site, creating a distinct feel for each brand.</li>
+<li><strong><code>Footer.tsx</code>:</strong> A footer with two sections. One for &quot;Sweet Dreams Music&quot; and one for &quot;Sweet Dreams Media&quot;, each containing their respective contact info, social links, and a copyright notice.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h4 id="phase-3-building-%22sweet-dreams-music%22-music"><strong>Phase 3: Building &quot;Sweet Dreams Music&quot; (<code>/music</code>)</strong></h4>
+<p><strong>1. Main Page (<code>/app/music/page.tsx</code>):</strong></p>
+<ul>
+<li>This page will be composed of the following section-based components. Use the content provided in the prompt for all text.</li>
+</ul>
+<p><strong>2. Components for the Music Page:</strong></p>
+<ul>
+<li><strong><code>HeroSection.tsx</code>:</strong>
+<ul>
+<li>Headline: &quot;Develop Your Brand, Your Way&quot;</li>
+<li>Sub-headline and introductory text.</li>
+<li>A prominent &quot;Book a Session&quot; call-to-action (CTA) button that scrolls down to the booking section.</li>
+</ul>
+</li>
+<li><strong><code>ServicesGrid.tsx</code>:</strong>
+<ul>
+<li>Display the core services: &quot;Original beats,&quot; &quot;Videography,&quot; &quot;Recording,&quot; &quot;Mixing &amp; Mastering.&quot; Use a clean grid layout with icons for each service.</li>
+</ul>
+</li>
+<li><strong><code>PackagesSection.tsx</code>:</strong>
+<ul>
+<li>Create a three-column layout for the &quot;Basic,&quot; &quot;Standard (Most Popular),&quot; and &quot;Premium&quot; packages.</li>
+<li>Clearly list the features and &quot;Discounted Add-ons&quot; for each.</li>
+</ul>
+</li>
+<li><strong><code>PricingSection.tsx</code>:</strong>
+<ul>
+<li>Display the &quot;Hourly Rates&quot; and the &quot;Sweet Spot Package.&quot;</li>
+<li>Clearly list the &quot;Additional Fees&quot; for after-hours and same-day bookings.</li>
+</ul>
+</li>
+<li><strong><code>BookingSystem.tsx</code> (Complex Component):</strong>
+<ul>
+<li><strong>UI:</strong>
+<ul>
+<li>Display a calendar interface (you can use a library like <code>react-day-picker</code>).</li>
+<li>Show available time slots based on the provided &quot;Studio Hours.&quot;</li>
+<li>When a user selects a date and time, display the calculated deposit price.</li>
+<li>A &quot;Confirm and Pay Deposit&quot; button.</li>
+</ul>
+</li>
+<li><strong>Logic:</strong>
+<ul>
+<li>On button click, call a server-side API route (<code>/api/music/create-booking</code>).</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong><code>TestimonialsCarousel.tsx</code>:</strong>
+<ul>
+<li>Create a sliding carousel to display the three provided testimonials. Include the author's name.</li>
+</ul>
+</li>
+<li><strong><code>LocationAndHours.tsx</code>:</strong>
+<ul>
+<li>Display the studio hours, including the &quot;After Hours&quot; pricing note.</li>
+<li>Embed a Google Map pointing to <code>3943 Parnell Ave, Fort Wayne, IN 46805</code>.</li>
+<li>Include the final &quot;Important Information&quot; and contact details.</li>
+</ul>
+</li>
+</ul>
+<p><strong>3. API Route for Booking (<code>/app/api/music/create-booking/route.ts</code>):</strong></p>
+<ul>
+<li>Accepts <code>startTime</code>, <code>endTime</code>, <code>package</code> from the client.</li>
+<li><strong>Server-side logic:</strong>
+<ol>
+<li>Validate the selected time slot against existing bookings in the Supabase <code>bookings</code> table to prevent double-booking.</li>
+<li>Calculate the deposit amount.</li>
+<li>Create a new <code>Customer</code> in Stripe (or retrieve an existing one).</li>
+<li>Create a Stripe Checkout Session with the deposit amount. The session should include metadata like <code>booking_package</code> and <code>user_id</code>.</li>
+<li>Save a new entry in the Supabase <code>bookings</code> table with <code>status: 'pending_deposit'</code>.</li>
+<li>Return the Stripe Checkout <code>url</code> to the client. The client will then redirect the user to this URL to complete payment.</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h4 id="phase-4-building-%22sweet-dreams-media%22-media"><strong>Phase 4: Building &quot;Sweet Dreams Media&quot; (<code>/media</code>)</strong></h4>
+<p><strong>1. Main Page (<code>/app/media/page.tsx</code>):</strong></p>
+<ul>
+<li>This page has a different aesthetic—more corporate, clean, and cinematic.</li>
+</ul>
+<p><strong>2. Components for the Media Page:</strong></p>
+<ul>
+<li><strong><code>MediaHero.tsx</code>:</strong>
+<ul>
+<li>Headline: &quot;Your Vision, Amplified.&quot; with the sub-headline.</li>
+<li>Primary CTA: &quot;Discuss Your Vision&quot; (scrolls to the contact form).</li>
+</ul>
+</li>
+<li><strong><code>PortfolioGrid.tsx</code>:</strong>
+<ul>
+<li><strong>Crucial Component:</strong> This will fetch data from the <code>media_portfolio</code> table in Supabase.</li>
+<li>Display portfolio items in a responsive grid.</li>
+<li>Each item should show the thumbnail. On hover/click, it should open a modal or navigate to a dedicated page to play the video.</li>
+<li>The video player must use the Cloudflare Stream player element, embedding the video using its <code>cloudflare_video_uid</code>.</li>
+<li>Items marked as <code>is_coming_soon</code> should be greyed out with a &quot;Coming Soon&quot; overlay.</li>
+</ul>
+</li>
+<li><strong><code>MediaServices.tsx</code>:</strong>
+<ul>
+<li>A simple, icon-based section for &quot;Brand Films,&quot; &quot;Commercials,&quot; &quot;Event Coverage,&quot; &quot;Corporate Content.&quot;</li>
+</ul>
+</li>
+<li><strong><code>ClientShowcase.tsx</code>:</strong>
+<ul>
+<li>Display the logos or names of clients: &quot;Fort Wayne Vintage,&quot; &quot;Ride Worx,&quot; etc.</li>
+</ul>
+</li>
+<li><strong><code>StatsBar.tsx</code>:</strong>
+<ul>
+<li>Showcase the key metrics: &quot;400k+ Total Accumulated Views,&quot; &quot;130+ Projects Completed,&quot; &quot;24hr Response Time.&quot;</li>
+</ul>
+</li>
+<li><strong><code>LeadForm.tsx</code>:</strong>
+<ul>
+<li>A simple form with fields for Name, Email, Phone, and Message.</li>
+<li>On submit, it will call an API route (<code>/api/media/submit-lead</code>).</li>
+</ul>
+</li>
+</ul>
+<p><strong>3. API Route for Lead Submission (<code>/app/api/media/submit-lead/route.ts</code>):</strong></p>
+<ul>
+<li>Accepts <code>name</code>, <code>email</code>, <code>phone</code>, <code>message</code>.</li>
+<li>Validate the input.</li>
+<li>Insert a new record into the Supabase <code>leads</code> table.</li>
+<li>Return a success message to the client.</li>
+</ul>
+<hr>
+<h4 id="phase-5-building-the-admin-panel-admin"><strong>Phase 5: Building the Admin Panel (<code>/admin</code>)</strong></h4>
+<p><strong>1. Setup &amp; Security:</strong></p>
+<ul>
+<li>Create a route group for <code>/admin</code>.</li>
+<li>Implement authentication using Supabase Auth. Only logged-in users with a specific role (e.g., 'admin') should be able to access these pages.</li>
+<li>Create a simple login page at <code>/login</code>.</li>
+</ul>
+<p><strong>2. Admin Dashboard (<code>/app/admin/dashboard/page.tsx</code>):</strong></p>
+<ul>
+<li>Display a list of all bookings from the Supabase <code>bookings</code> table.</li>
+<li>Show key details: Client name, date, time, package, status.</li>
+<li>For bookings with a status of <code>confirmed</code>, there must be a &quot;Charge Final Amount&quot; button.</li>
+</ul>
+<p><strong>3. &quot;Charge Final Amount&quot; UI/UX:</strong></p>
+<ul>
+<li>Clicking the button opens a modal.</li>
+<li>The modal displays the booking details.</li>
+<li>There is an input field to enter the <strong>final, fluctuating amount</strong> (e.g., for extra hours).</li>
+<li>A &quot;Confirm Charge&quot; button in the modal triggers the final payment API route.</li>
+</ul>
+<p><strong>4. API Route for Final Charge (<code>/app/api/admin/charge-final/route.ts</code>):</strong></p>
+<ul>
+<li>Accepts <code>booking_id</code> and <code>final_amount_in_cents</code>.</li>
+<li><strong>Server-side logic:</strong>
+<ol>
+<li>Retrieve the <code>booking</code> from Supabase using <code>booking_id</code>.</li>
+<li>Get the <code>stripe_customer_id</code> and the saved payment method ID from Stripe (this requires a modification during the initial booking to save the payment method for future use).</li>
+<li>Use the Stripe Node.js SDK to create a new <code>PaymentIntent</code> for the <code>final_amount_in_cents</code>, charging the saved payment method of the <code>stripe_customer_id</code>.</li>
+<li>Confirm the PaymentIntent.</li>
+<li>On successful payment, update the booking in Supabase: set <code>status</code> to 'completed' and save the <code>final_amount</code>.</li>
+<li>Return a success message.</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h3 id="appendix-human-managed-tasks-for-cole"><strong>Appendix: Human-Managed Tasks (For Cole)</strong></h3>
+<p><em>AI, do not attempt these tasks. This is a checklist for the human project lead.</em></p>
+<ol>
+<li><strong>Vercel:</strong>
+<ul>
+<li>Create a new project and link it to the GitHub repository.</li>
+<li>Configure the domain <code>sweetdreamsmusic.com</code>.</li>
+</ul>
+</li>
+<li><strong>Supabase:</strong>
+<ul>
+<li>Create a new project.</li>
+<li>Use the SQL editor to create the <code>bookings</code>, <code>media_portfolio</code>, and <code>leads</code> tables as defined in Phase 1.</li>
+<li>Enable Row Level Security (RLS) on all tables.</li>
+<li>Set up authentication.</li>
+<li>Create a storage bucket for portfolio thumbnails.</li>
+<li>Obtain the <code>Project URL</code> and <code>anon key</code> for the environment variables.</li>
+</ul>
+</li>
+<li><strong>Stripe:</strong>
+<ul>
+<li>Create a Stripe account.</li>
+<li>Obtain the <code>Publishable Key</code> and <code>Secret Key</code>.</li>
+<li>Configure a webhook endpoint in the Stripe dashboard to listen for <code>checkout.session.completed</code> events, pointing to a new API route you will need to build (<code>/api/webhooks/stripe</code>). This route will update the booking <code>status</code> to 'confirmed' upon successful deposit payment.</li>
+</ul>
+</li>
+<li><strong>Cloudflare:</strong>
+<ul>
+<li>Sign up for Cloudflare Stream.</li>
+<li>Upload all 4K video files for the Sweet Dreams Media portfolio.</li>
+<li>For each video, copy its unique <code>UID</code> and store it in the Supabase <code>media_portfolio</code> table.</li>
+</ul>
+</li>
+<li><strong>Environment Variables (<code>.env.local</code> &amp; Vercel):</strong>
+<ul>
+<li><code>NEXT_PUBLIC_SUPABASE_URL</code></li>
+<li><code>NEXT_PUBLIC_SUPABASE_ANON_KEY</code></li>
+<li><code>STRIPE_PUBLISHABLE_KEY</code></li>
+<li><code>STRIPE_SECRET_KEY</code></li>
+<li><code>STRIPE_WEBHOOK_SECRET</code></li>
+<li><code>SERVICE_ROLE_KEY</code> (Supabase secret key for server-side actions)</li>
+</ul>
+</li>
+</ol>
+<hr>
+<p>This plan provides a comprehensive roadmap. Begin with Phase 2, Step 1. Proceed sequentially. Acknowledge each completed step.</p>
+
+</body>
+</html>

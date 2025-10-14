@@ -1,0 +1,187 @@
+.section {
+  background: black;
+  padding: 40px 48px 60px 48px;
+}
+
+.container {
+  max-width: 1800px;
+  margin: 0 auto;
+}
+
+.miniTitle {
+  font-family: 'Anton', sans-serif;
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: #666;
+  margin-bottom: 0px;
+  font-weight: 400;
+}
+
+.title {
+  font-family: 'Anton', sans-serif;
+  font-size: 140px;
+  text-transform: uppercase;
+  line-height: 1;
+  font-weight: 400;
+  color: white;
+  margin-top: 0px;
+  margin-bottom: 48px;
+}
+
+.intro {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 20px;
+  line-height: 1.8;
+  color: #aaa;
+  margin: 0 0 64px 0;
+  max-width: 1200px;
+}
+
+.giveGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  margin-bottom: 64px;
+}
+
+.giveCard {
+  padding: 48px 32px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.giveNumber {
+  font-family: 'Anton', sans-serif;
+  font-size: 72px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: white;
+  margin: 0 0 16px 0;
+  line-height: 1;
+}
+
+.giveLabel {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #888;
+  margin: 0;
+}
+
+.description {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 20px;
+  line-height: 1.8;
+  color: #aaa;
+  margin: 0 0 64px 0;
+  max-width: 1200px;
+}
+
+.tagline {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 18px;
+  line-height: 1.8;
+  color: #888;
+  margin: 0 0 48px 0;
+  max-width: 1000px;
+}
+
+.button {
+  display: inline-block;
+  background: white;
+  color: black;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 20px 60px;
+  border-radius: 999px;
+  font-size: 16px;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: 2px solid white;
+  margin-bottom: 60px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: black;
+  color: white;
+  border-color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(255, 255, 255, 0.2);
+}
+
+/* Scroll Section */
+.scrollWrapper {
+  position: relative;
+  background: white;
+  padding: 80px 48px;
+  overflow: hidden;
+}
+
+.scrollOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: black;
+  transform: translateX(-100%);
+  will-change: transform;
+  z-index: 1;
+}
+
+.scrollContent {
+  position: relative;
+  max-width: 1800px;
+  margin: 0 auto;
+  z-index: 10;
+}
+
+.scrollText {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 20px;
+  line-height: 1.8;
+  margin-bottom: 32px;
+  font-weight: 400;
+  color: black;
+  mix-blend-mode: difference;
+  max-width: 1200px;
+}
+
+.scrollText:last-of-type {
+  margin-bottom: 0;
+}
+
+@media (max-width: 1024px) {
+  .title {
+    font-size: 60px;
+  }
+
+  .giveGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .giveNumber {
+    font-size: 56px;
+  }
+
+  .scrollText {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 768px) {
+  .scrollWrapper {
+    padding: 60px 32px;
+  }
+
+  .scrollText {
+    font-size: 16px;
+  }
+}

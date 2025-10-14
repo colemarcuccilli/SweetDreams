@@ -1,0 +1,74 @@
+.section {
+  padding-top: 20px;
+  padding-bottom: 64px;
+  background: black;
+}
+
+.container {
+  max-width: 1800px;
+  margin: 0 auto;
+  padding-left: 48px;
+  padding-right: 48px;
+}
+
+.title {
+  font-family: 'Anton', sans-serif;
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: #666;
+  margin-bottom: 0px;
+  font-weight: 400;
+}
+
+.mainText {
+  font-family: 'Anton', sans-serif;
+  font-size: 100px;
+  text-transform: uppercase;
+  line-height: 1.1;
+  margin-top: 0px;
+  margin-bottom: 0;
+  font-weight: 400;
+  color: white;
+}
+
+.subText {
+  font-family: 'Anton', sans-serif;
+  font-size: 50px;
+  text-transform: uppercase;
+  line-height: 1.2;
+  margin-bottom: 64px;
+  font-weight: 400;
+  color: #aaa;
+}
+
+.button {
+  display: inline-block;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  color: white;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 12px 40px;
+  border-radius: 999px;
+  font-size: 14px;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  transition: background 0.3s ease;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.button:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+@media (max-width: 1024px) {
+  .mainText {
+    font-size: 80px;
+  }
+
+  .subText {
+    font-size: 40px;
+  }
+}

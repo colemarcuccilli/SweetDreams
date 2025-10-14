@@ -1,0 +1,109 @@
+.section {
+  position: relative;
+  height: auto;
+  min-height: auto;
+  overflow: hidden;
+  padding: 132px 0;
+  margin-bottom: 24px;
+}
+
+.baseLayer,
+.invertedLayer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  box-sizing: border-box;
+  padding: 132px 0;
+}
+
+.baseLayer {
+  background: black;
+  z-index: 1;
+}
+
+.baseLayer .mainText {
+  color: white;
+}
+
+.baseLayer .button {
+  color: white;
+  border-color: white;
+}
+
+.baseLayer .button:hover {
+  background: white;
+  color: black;
+}
+
+.invertedLayer {
+  background: white;
+  z-index: 2;
+  clip-path: inset(0 100% 0 0);
+}
+
+.invertedLayer .mainText {
+  color: black;
+}
+
+.invertedLayer .button {
+  color: black;
+  border-color: black;
+}
+
+.invertedLayer .button:hover {
+  background: black;
+  color: white;
+}
+
+.container {
+  max-width: 1800px;
+  width: 100%;
+  margin: 0 auto;
+  padding-left: 48px;
+  padding-right: 48px;
+  text-align: center;
+}
+
+.mainText {
+  font-family: 'Anton', sans-serif;
+  font-size: 60px;
+  text-transform: uppercase;
+  line-height: 1.2;
+  margin-bottom: 12px;
+  font-weight: 400;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.button {
+  display: inline-block;
+  background: transparent;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 12px 40px;
+  border-radius: 999px;
+  font-size: 14px;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: 2px solid;
+}
+
+@media (max-width: 1024px) {
+  .mainText {
+    font-size: 32px;
+  }
+}
+
+@media (max-width: 768px) {
+  .mainText {
+    font-size: 24px;
+  }
+}
