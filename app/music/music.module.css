@@ -565,6 +565,33 @@
 }
 
 
+/* Booking Section - White */
+
+.bookingSection {
+    padding: 120px 48px;
+    background: white;
+    border-radius: 80px 80px 0 0;
+    margin-top: -80px;
+}
+
+.bookingSection .miniTitle {
+    color: #666;
+}
+
+.bookingSection .sectionTitle {
+    color: black;
+}
+
+.bookingSection .sectionSubtitle {
+    color: #666;
+}
+
+.bookingSection .note {
+    margin-top: 48px;
+    text-align: center;
+    color: #666;
+}
+
 /* Booking CTA Section - White */
 
 .bookingCTA {

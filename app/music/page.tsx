@@ -1,24 +1,13 @@
 import Link from "next/link";
 import styles from "./music.module.css";
+import MusicHeroAnimated from "@/components/music/MusicHeroAnimated";
+import BookingCalendar from "@/components/music/BookingCalendar";
 
 export default function MusicPage() {
   return (
     <div className={styles.page}>
-      {/* Hero Section - Black */}
-      <section className={styles.hero}>
-        <div className={styles.heroContainer}>
-          <h1 className={styles.heroTitle}>
-            DEVELOP YOUR<br />
-            BRAND, YOUR WAY
-          </h1>
-          <p className={styles.heroSubtitle}>
-            From beats to mixing, recording to video, we help you shape your music and brand. Let's make it happen together.
-          </p>
-          <Link href="#booking" className={styles.heroButton}>
-            BOOK A SESSION
-          </Link>
-        </div>
-      </section>
+      {/* Animated Hero Section */}
+      <MusicHeroAnimated />
 
       {/* Video Showcase - White with curved top */}
       <Link href="/work/sweet-dreams-studio" className={styles.showcaseLink}>
@@ -244,15 +233,18 @@ export default function MusicPage() {
         </div>
       </section>
 
-      {/* Booking CTA - White */}
-      <section className={styles.bookingCTA} id="booking">
+      {/* Booking Section - White */}
+      <section className={styles.bookingSection} id="booking">
         <div className={styles.container}>
           <p className={styles.miniTitle}>GET STARTED</p>
-          <h2 className={styles.ctaTitle}>BOOK YOUR FIRST SESSION 20% OFF!</h2>
-          <Link href="/booking" className={styles.ctaButton}>
-            BOOK SESSION
-          </Link>
-          <p className={styles.ctaNote}>Note: Let your producer know it's your first time when you arrive.</p>
+          <h2 className={styles.sectionTitle}>BOOK YOUR SESSION</h2>
+          <p className={styles.sectionSubtitle}>Select your date, time, and session duration to get started</p>
+
+          <BookingCalendar />
+
+          <p className={styles.note}>
+            <strong>First time booking?</strong> Mention it when you arrive for 20% off your first session!
+          </p>
         </div>
       </section>
 

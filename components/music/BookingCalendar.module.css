@@ -1,0 +1,327 @@
+.bookingContainer {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+.bookingGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.calendarSection,
+.detailsSection {
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  border-radius: 8px;
+}
+
+.sectionTitle {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  color: #000;
+  letter-spacing: 0.05em;
+}
+
+/* Calendar Styling */
+.calendar {
+  width: 100%;
+}
+
+.calendar :global(.rdp) {
+  --rdp-cell-size: 50px;
+  --rdp-accent-color: #000;
+  --rdp-background-color: rgba(0, 0, 0, 0.05);
+  font-family: 'IBM Plex Mono', monospace;
+  color: #000;
+}
+
+.calendar :global(.rdp-button:hover:not([disabled]):not(.rdp-day_selected)) {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.calendar :global(.rdp-day_selected) {
+  background-color: #000;
+  color: #fff;
+  font-weight: 600;
+}
+
+.calendar :global(.rdp-day_disabled) {
+  opacity: 0.3;
+}
+
+.calendar :global(.rdp-caption_label) {
+  font-family: 'Anton', sans-serif;
+  text-transform: uppercase;
+  font-size: 1.1rem;
+  letter-spacing: 0.05em;
+  color: #000;
+}
+
+.calendar :global(.rdp-head_cell) {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* Form Groups */
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+.label {
+  display: block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(0, 0, 0, 0.7);
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+/* Duration Selection */
+.durationGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 0.5rem;
+}
+
+.durationButton {
+  padding: 0.75rem 1rem;
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  color: #000;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.durationButton:hover {
+  background: rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.3);
+}
+
+.durationButton.active {
+  background: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+.durationButton:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.durationNote {
+  margin-top: 0.75rem;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem;
+  color: rgba(0, 0, 0, 0.6);
+  line-height: 1.5;
+  font-style: italic;
+}
+
+/* Time Selection */
+.timeGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 0.5rem;
+}
+
+.timeButton {
+  padding: 0.75rem 1rem;
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  color: #000;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.timeButton:hover {
+  background: rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.3);
+}
+
+.timeButton.active {
+  background: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+.timeButton.afterHours {
+  border-color: rgba(255, 150, 0, 0.6);
+  background: rgba(255, 150, 0, 0.05);
+}
+
+.badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #ffc800;
+  color: #000;
+  font-size: 0.65rem;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-weight: 700;
+}
+
+/* Input Fields */
+.input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  color: #000;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.input:focus {
+  outline: none;
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.4);
+}
+
+.input::placeholder {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+/* Pricing Summary */
+.pricingSummary {
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  padding: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+}
+
+.summaryTitle {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  color: #000;
+  letter-spacing: 0.05em;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.9rem;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.summaryDivider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.15);
+  margin: 1rem 0;
+}
+
+.depositLabel,
+.totalLabel {
+  font-weight: 600;
+  color: #000;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+}
+
+.depositAmount {
+  font-weight: 700;
+  color: #000;
+  font-size: 1.1rem;
+}
+
+.totalAmount {
+  font-weight: 700;
+  color: #000;
+  font-size: 1.3rem;
+}
+
+.remainderNote {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  font-size: 0.8rem;
+  color: rgba(0, 0, 0, 0.6);
+  font-family: 'IBM Plex Mono', monospace;
+  line-height: 1.5;
+}
+
+/* Submit Button */
+.submitButton {
+  width: 100%;
+  padding: 1.25rem 2rem;
+  background: #000;
+  color: #fff;
+  border: none;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+  border-radius: 4px;
+}
+
+.submitButton:hover:not(:disabled) {
+  background: #222;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.submitButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .bookingGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .bookingContainer {
+    padding: 2rem 1rem;
+  }
+
+  .calendarSection,
+  .detailsSection {
+    padding: 1.5rem;
+  }
+
+  .timeGrid {
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  }
+
+  .timeButton {
+    font-size: 0.75rem;
+    padding: 0.6rem 0.5rem;
+  }
+}
