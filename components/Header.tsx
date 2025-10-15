@@ -1,18 +1,31 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import styles from "./Header.module.css";
 
+const STUDIO_PHOTOS = [
+  'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/general/studio/_DSC0502.jpg',
+  'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/general/studio/_DSC0506.jpg',
+  'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/general/studio/_DSC0519.jpg',
+  'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/general/studio/_DSC0538.jpg',
+  'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/general/studio/_DSC0545.jpg',
+  'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/general/studio/_DSC0564.jpg',
+  'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/general/studio/_DSC0587.jpg',
+  'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/general/studio/_DSC0601.jpg',
+  'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/general/studio/_DSC0607.jpg',
+  'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/general/studio/_DSC0617.jpg',
+];
+
 export default function Header() {
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
 
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.play().catch(error => {
-        console.log("Autoplay prevented:", error);
-      });
-    }
+    const interval = setInterval(() => {
+      setCurrentPhotoIndex((prevIndex) => (prevIndex + 1) % STUDIO_PHOTOS.length);
+    }, 5000); // Change photo every 5 seconds
+
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -60,30 +73,25 @@ export default function Header() {
         </div>
       </nav>
 
-      {/* Video Header Section with Cloudflare Stream */}
+      {/* Header Section with Studio Photos */}
       <section className={styles.videoSection}>
         <div className={styles.videoContainer}>
-          {/* Video Box - Rounded Rectangle */}
+          {/* Header Box - Rounded Rectangle */}
           <div className={styles.videoBox}>
 
-            {/* Cloudflare Stream Video Background */}
-            <video
-              ref={videoRef}
-              autoPlay
-              muted
-              loop
-              playsInline
-              className={styles.videoElement}
-            >
-              <source
-                src="https://customer-w6h9o08eg118alny.cloudflarestream.com/e80443ae9084ffea8f28180125ed3e15/manifest/video.m3u8"
-                type="application/x-mpegURL"
-              />
-              <source
-                src="https://customer-w6h9o08eg118alny.cloudflarestream.com/e80443ae9084ffea8f28180125ed3e15/manifest/video.mpd"
-                type="application/dash+xml"
-              />
-            </video>
+            {/* Studio Photos Background Carousel */}
+            <div className={styles.photoCarousel}>
+              {STUDIO_PHOTOS.map((photo, index) => (
+                <img
+                  key={photo}
+                  src={photo}
+                  alt={`Sweet Dreams Studio ${index + 1}`}
+                  className={`${styles.carouselPhoto} ${
+                    index === currentPhotoIndex ? styles.activePhoto : ''
+                  }`}
+                />
+              ))}
+            </div>
 
             {/* Dark overlay for text readability */}
             <div className={styles.videoOverlay}></div>

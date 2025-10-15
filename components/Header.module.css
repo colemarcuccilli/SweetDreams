@@ -97,15 +97,29 @@
   background: black;
 }
 
-.videoElement {
+/* Photo Carousel Styles */
+.photoCarousel {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 120%;
-  height: 120%;
-  transform: translate(-50%, -50%);
-  border: none;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.carouselPhoto {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
   pointer-events: none;
+}
+
+.carouselPhoto.activePhoto {
+  opacity: 1;
 }
 
 .videoOverlay {
@@ -137,7 +151,7 @@
   font-weight: 400;
   color: white;
   opacity: 0.8;
-  font-size: 12px;
+  font-size: 18px;
   text-transform: uppercase;
   letter-spacing: 0.2em;
 }
@@ -145,7 +159,7 @@
 .viewButton {
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(10px);
-  padding: 12px 40px;
+  padding: 18px 60px;
   border-radius: 999px;
   border: none;
   cursor: pointer;
@@ -159,7 +173,7 @@
 .viewButtonText {
   font-family: 'IBM Plex Mono', monospace;
   color: black;
-  font-size: 14px;
+  font-size: 20px;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -179,7 +193,7 @@
 
 .titleText {
   font-family: 'Anton', sans-serif;
-  font-size: 200px;
+  font-size: 280px;
   color: white;
   text-transform: uppercase;
   line-height: 0.9;
@@ -194,7 +208,7 @@
 
 .subtitle {
   font-family: 'Anton', sans-serif;
-  font-size: 50px;
+  font-size: 70px;
   color: white;
   text-transform: uppercase;
   line-height: 1;
@@ -210,10 +224,18 @@
   }
 
   .titleText {
-    font-size: 120px;
+    font-size: 160px;
   }
 
   .subtitle {
-    font-size: 40px;
+    font-size: 50px;
+  }
+
+  .viewButtonText {
+    font-size: 16px;
+  }
+
+  .viewButton {
+    padding: 14px 48px;
   }
 }
