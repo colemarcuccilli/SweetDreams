@@ -1,10 +1,24 @@
 import { Resend } from 'resend';
 
-if (!process.env.RESEND_API_KEY) {
-  throw new Error('RESEND_API_KEY is not set in environment variables');
+// Lazy initialization to avoid build-time errors
+let resendInstance: Resend | null = null;
+
+function getResend(): Resend {
+  if (!resendInstance) {
+    if (!process.env.RESEND_API_KEY) {
+      throw new Error('RESEND_API_KEY is not set in environment variables');
+    }
+    resendInstance = new Resend(process.env.RESEND_API_KEY);
+  }
+  return resendInstance;
 }
 
-export const resend = new Resend(process.env.RESEND_API_KEY);
+// Export a proxy object that initializes Resend only when methods are called
+export const resend = {
+  get emails() {
+    return getResend().emails;
+  }
+};
 
 // Email addresses
 export const ADMIN_EMAIL = 'jayvalleo@sweetdreamsmusic.com';
