@@ -100,7 +100,7 @@ export default function SolutionsPage() {
             <div
               key={solution.id}
               id={solution.id}
-              ref={(el) => (solutionRefs.current[index] = el)}
+              ref={(el) => { solutionRefs.current[index] = el; }}
               className={styles.solutionCard}
             >
               <div className={styles.solutionText}>
