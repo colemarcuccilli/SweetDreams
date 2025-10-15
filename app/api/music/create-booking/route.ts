@@ -59,24 +59,24 @@ export async function POST(request: NextRequest) {
       }
     ];
 
-    // Add same-day fee if applicable
+    // Add same-day fee if applicable (per hour)
     if (fees.sameDayFee) {
       const sameDayFeeProduct = BOOKING_PRODUCTS.same_day_fee;
       if (sameDayFeeProduct.priceId && sameDayFeeProduct.priceId !== 'price_XXX') {
         lineItems.push({
           price: sameDayFeeProduct.priceId,
-          quantity: 1,
+          quantity: duration, // $10 per hour
         });
       }
     }
 
-    // Add after-hours fee if applicable
+    // Add after-hours fee if applicable (per hour)
     if (fees.afterHoursFee) {
       const afterHoursFeeProduct = BOOKING_PRODUCTS.after_hours_fee;
       if (afterHoursFeeProduct.priceId && afterHoursFeeProduct.priceId !== 'price_XXX') {
         lineItems.push({
           price: afterHoursFeeProduct.priceId,
-          quantity: 1,
+          quantity: duration, // $10 per hour
         });
       }
     }

@@ -167,6 +167,27 @@ export function isSameDay(bookingDate: Date): boolean {
   return bookingDate.getTime() === today.getTime();
 }
 
+// Helper function to check if booking is within 2-hour minimum advance notice
+export function isTooSoonToBook(bookingDate: Date, startHour: number, startMinute: number = 0): boolean {
+  const bookingDateTime = new Date(bookingDate);
+  bookingDateTime.setHours(startHour, startMinute, 0, 0);
+
+  const now = new Date();
+  const twoHoursFromNow = new Date(now.getTime() + (2 * 60 * 60 * 1000));
+
+  return bookingDateTime < twoHoursFromNow;
+}
+
+// Helper function to calculate total same-day fee (per hour)
+export function calculateSameDayFee(duration: number): number {
+  return BOOKING_PRODUCTS.same_day_fee.amount * duration;
+}
+
+// Helper function to calculate total after-hours fee (per hour)
+export function calculateAfterHoursFee(duration: number): number {
+  return BOOKING_PRODUCTS.after_hours_fee.amount * duration;
+}
+
 // Helper function to validate if a booking time + duration is valid
 export function isValidBookingTime(startHour: number, duration: number): boolean {
   // Can't start sessions after 11 PM (but 11 PM itself is allowed)

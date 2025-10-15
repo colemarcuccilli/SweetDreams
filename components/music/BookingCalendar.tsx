@@ -10,6 +10,9 @@ import {
   isAfterHours,
   isSameDay,
   isValidBookingTime,
+  isTooSoonToBook,
+  calculateSameDayFee,
+  calculateAfterHoursFee,
   BOOKING_PRODUCTS,
   STUDIO_HOURS
 } from '@/lib/booking-config';
@@ -21,22 +24,34 @@ interface BookingCalendarProps {
 export interface BookingData {
   date: Date;
   startTime: number; // hour (0-23)
+  startMinute: number; // minute (0 or 30)
   duration: number; // hours
   depositAmount: number;
   totalAmount: number;
+  guestCount: number;
   fees: {
     sameDayFee: boolean;
     afterHoursFee: boolean;
   };
 }
 
-const TIME_SLOTS = Array.from({ length: 15 }, (_, i) => i + 9); // 9 AM to 11 PM (9-23)
+// Generate time slots with half-hour intervals from 9 AM to 11 PM
+const TIME_SLOTS: Array<{ hour: number; minute: number; label: string }> = [];
+for (let hour = 9; hour <= 23; hour++) {
+  TIME_SLOTS.push({ hour, minute: 0, label: format(new Date().setHours(hour, 0), 'h:mm a') });
+  if (hour < 23) { // Don't add 11:30 PM as last slot
+    TIME_SLOTS.push({ hour, minute: 30, label: format(new Date().setHours(hour, 30), 'h:mm a') });
+  }
+}
+
 const SESSION_DURATIONS = [1, 2, 3, 4, 5, 6]; // hours
 
 export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProps) {
   const [selectedDate, setSelectedDate] = useState<Date>();
   const [selectedTime, setSelectedTime] = useState<number>();
+  const [selectedMinute, setSelectedMinute] = useState<number>(0);
   const [duration, setDuration] = useState<number>(2);
+  const [guestCount, setGuestCount] = useState<number>(1);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [artistName, setArtistName] = useState('');
@@ -44,13 +59,14 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
   const [customerPhone, setCustomerPhone] = useState('');
 
   // Adjust duration if it becomes invalid when time changes
-  const handleTimeSelect = (time: number) => {
-    setSelectedTime(time);
+  const handleTimeSelect = (hour: number, minute: number) => {
+    setSelectedTime(hour);
+    setSelectedMinute(minute);
 
     // If current duration is invalid for this time, find the longest valid duration
-    if (!isValidBookingTime(time, duration)) {
+    if (!isValidBookingTime(hour, duration)) {
       for (let hrs = 5; hrs >= 1; hrs--) {
-        if (isValidBookingTime(time, hrs)) {
+        if (isValidBookingTime(hour, hrs)) {
           setDuration(hrs);
           break;
         }
@@ -61,7 +77,7 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
   // Calculate pricing
   const calculatePricing = () => {
     if (!selectedDate || selectedTime === undefined) {
-      return { deposit: 0, total: 0, fees: { sameDayFee: false, afterHoursFee: false } };
+      return { deposit: 0, total: 0, fees: { sameDayFee: false, afterHoursFee: false }, feeAmounts: { sameDayFee: 0, afterHoursFee: 0 } };
     }
 
     const { deposit: depositProduct } = getSessionProducts(duration);
@@ -78,15 +94,22 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
       afterHoursFee: isAfterHours(selectedTime)
     };
 
-    // Add fees to total
+    const feeAmounts = {
+      sameDayFee: 0,
+      afterHoursFee: 0
+    };
+
+    // Add fees to total (multiplied by hours)
     if (fees.sameDayFee) {
-      totalAmount += BOOKING_PRODUCTS.same_day_fee.amount;
+      feeAmounts.sameDayFee = calculateSameDayFee(duration);
+      totalAmount += feeAmounts.sameDayFee;
     }
     if (fees.afterHoursFee) {
-      totalAmount += BOOKING_PRODUCTS.after_hours_fee.amount;
+      feeAmounts.afterHoursFee = calculateAfterHoursFee(duration);
+      totalAmount += feeAmounts.afterHoursFee;
     }
 
-    return { deposit: depositAmount, total: totalAmount, fees };
+    return { deposit: depositAmount, total: totalAmount, fees, feeAmounts };
   };
 
   const pricing = calculatePricing();
@@ -109,12 +132,20 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
       return;
     }
 
+    // Check 2-hour minimum advance booking
+    if (isTooSoonToBook(selectedDate, selectedTime, selectedMinute)) {
+      alert('Bookings must be made at least 2 hours in advance. Please select a later time.');
+      return;
+    }
+
     const bookingData: BookingData = {
       date: selectedDate,
       startTime: selectedTime,
+      startMinute: selectedMinute,
       duration,
       depositAmount: pricing.deposit,
       totalAmount: pricing.total,
+      guestCount,
       fees: pricing.fees
     };
 
@@ -201,17 +232,22 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
             <div className={styles.formGroup}>
               <label className={styles.label}>Select Time</label>
               <div className={styles.timeGrid}>
-                {TIME_SLOTS.map((hour) => {
-                  const isAfterHoursSlot = isAfterHours(hour);
+                {TIME_SLOTS.map((slot) => {
+                  const isAfterHoursSlot = isAfterHours(slot.hour);
+                  const isTooSoon = selectedDate && isTooSoonToBook(selectedDate, slot.hour, slot.minute);
+                  const isSelected = selectedTime === slot.hour && selectedMinute === slot.minute;
+
                   return (
                     <button
-                      key={hour}
-                      className={`${styles.timeButton} ${selectedTime === hour ? styles.active : ''} ${
+                      key={`${slot.hour}-${slot.minute}`}
+                      className={`${styles.timeButton} ${isSelected ? styles.active : ''} ${
                         isAfterHoursSlot ? styles.afterHours : ''
                       }`}
-                      onClick={() => handleTimeSelect(hour)}
+                      onClick={() => handleTimeSelect(slot.hour, slot.minute)}
+                      disabled={isTooSoon}
+                      title={isTooSoon ? 'Must book at least 2 hours in advance' : ''}
                     >
-                      {format(new Date().setHours(hour, 0), 'h:mm a')}
+                      {slot.label}
                       {isAfterHoursSlot && <span className={styles.badge}>+$10/hr</span>}
                     </button>
                   );
@@ -282,6 +318,21 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
                 />
               </div>
 
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Number of Guests *</label>
+                <input
+                  type="number"
+                  className={styles.input}
+                  value={guestCount}
+                  onChange={(e) => setGuestCount(Math.max(1, Math.min(3, parseInt(e.target.value) || 1)))}
+                  min="1"
+                  max="3"
+                  placeholder="1"
+                  required
+                />
+                <p className={styles.helpText}>Including yourself (max 4 people total)</p>
+              </div>
+
               {/* Pricing Summary */}
               <div className={styles.pricingSummary}>
                 <h4 className={styles.summaryTitle}>Booking Summary</h4>
@@ -291,14 +342,14 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
                 </div>
                 {pricing.fees.sameDayFee && (
                   <div className={styles.summaryRow}>
-                    <span>Same Day Fee</span>
-                    <span>+$10.00</span>
+                    <span>Same Day Fee ({duration} hrs × $10)</span>
+                    <span>+${(pricing.feeAmounts.sameDayFee / 100).toFixed(2)}</span>
                   </div>
                 )}
                 {pricing.fees.afterHoursFee && (
                   <div className={styles.summaryRow}>
-                    <span>After Hours Fee</span>
-                    <span>+$10.00</span>
+                    <span>After Hours Fee ({duration} hrs × $10)</span>
+                    <span>+${(pricing.feeAmounts.afterHoursFee / 100).toFixed(2)}</span>
                   </div>
                 )}
                 <div className={styles.summaryDivider} />
