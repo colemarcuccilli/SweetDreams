@@ -6,6 +6,7 @@ import { resend, ADMIN_EMAIL, FROM_EMAIL } from '@/lib/emails/resend';
 import { AdminBookingNotification } from '@/lib/emails/admin-booking-notification';
 import { CustomerBookingConfirmation } from '@/lib/emails/customer-booking-confirmation';
 import { format } from 'date-fns';
+import * as React from 'react';
 
 // Initialize Stripe
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -203,7 +204,7 @@ export async function POST(request: NextRequest) {
           totalAmount,
           sameDayFee: fees.sameDayFee,
           afterHoursFee: fees.afterHoursFee,
-        }),
+        }) as React.ReactElement,
       });
     } catch (emailError) {
       console.error('Failed to send admin notification email:', emailError);
@@ -227,7 +228,7 @@ export async function POST(request: NextRequest) {
           totalAmount,
           sameDayFee: fees.sameDayFee,
           afterHoursFee: fees.afterHoursFee,
-        }),
+        }) as React.ReactElement,
       });
     } catch (emailError) {
       console.error('Failed to send customer confirmation email:', emailError);
