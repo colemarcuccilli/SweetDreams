@@ -4,6 +4,7 @@
   background: white;
   padding-top: 0;
   padding-bottom: 0;
+  margin-bottom: 8px;
 }
 
 .navContainer {
@@ -59,7 +60,7 @@
 }
 
 .logoImage {
-  height: 120px;
+  height: 100px;
   width: auto;
   object-fit: contain;
 }
@@ -90,7 +91,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 4px 16px;
+  padding: 2px 16px;
   transition: color 0.3s ease;
   line-height: 1;
 }
@@ -100,10 +101,10 @@
 }
 
 .authDivider {
-  width: 100%;
+  width: 60%;
   height: 1px;
   background: black;
-  margin: 2px 0;
+  margin: 1px 0;
 }
 
 /* Video Header Styles */
