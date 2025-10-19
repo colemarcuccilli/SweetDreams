@@ -54,6 +54,16 @@ const PROJECTS = [
     category: 'Commercial',
     year: '2025',
     services: 'Cinematography, Editing, Color Grading'
+  },
+  {
+    id: 6,
+    title: 'DEAR LOVER - MUSIC VIDEO',
+    slug: 'dear-lover-music-video',
+    thumbnail: 'https://customer-w6h9o08eg118alny.cloudflarestream.com/beeb2ee6a9a30c655e79bdc1f4fb6d20/thumbnails/thumbnail.jpg?time=3s&height=600',
+    client: 'Lyaz',
+    category: 'Music Video',
+    year: '2025',
+    services: 'Scripting, Cinematography, Editing'
   }
 ];
 

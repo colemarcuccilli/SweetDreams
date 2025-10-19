@@ -3,12 +3,12 @@
   height: auto;
   min-height: auto;
   overflow: hidden;
-  padding: 0 0 80px 0;
+  padding: 128px 0;
   background: #2a2a2a;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .container {
@@ -17,6 +17,7 @@
   margin: 0 auto;
   padding-left: 48px;
   padding-right: 48px;
+  text-align: center;
 }
 
 .largeText {
@@ -28,6 +29,8 @@
   font-weight: 400;
   max-width: 1200px;
   color: #e8e8e8;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .mediumText {
@@ -38,6 +41,8 @@
   font-weight: 400;
   max-width: 1000px;
   color: #e8e8e8;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .smallText {
@@ -52,12 +57,16 @@
 
 /* GSAP line animation styles */
 .lineWrapper {
-  overflow: hidden;
+  overflow: visible;
   display: block;
 }
 
 .line {
   display: block;
+}
+
+.line span {
+  margin-right: 0.35em;
 }
 
 @media (max-width: 1024px) {

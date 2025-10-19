@@ -13,6 +13,7 @@ if (typeof window !== 'undefined') {
 export default function ContentStrategyAnimated() {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const rotatingWordRef = useRef<HTMLSpanElement>(null);
+  const ratioCardsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (typeof window === 'undefined' || !titleRef.current || !rotatingWordRef.current) return;
@@ -24,78 +25,41 @@ export default function ContentStrategyAnimated() {
       const wordElement = rotatingWordRef.current;
       if (!wordElement) return;
 
-      // Get the current word text
       const currentWord = words[currentIndex];
+      wordElement.textContent = currentWord;
 
-      // Split the word into individual characters
-      const chars = currentWord.split('');
-      wordElement.innerHTML = '';
+      // Wait 2 seconds, then transition to next word
+      setTimeout(() => {
+        const nextIndex = (currentIndex + 1) % words.length;
+        const nextWord = words[nextIndex];
 
-      const charSpans: HTMLSpanElement[] = [];
-      chars.forEach((char) => {
-        const span = document.createElement('span');
-        span.textContent = char;
-        span.style.display = 'inline-block';
-        wordElement.appendChild(span);
-        charSpans.push(span);
-      });
+        const tl = gsap.timeline();
 
-      // Create timeline for the animation
-      const tl = gsap.timeline({
-        delay: 2, // Wait 2 seconds before starting animation
-      });
+        // Slide current word out to the left
+        tl.to(wordElement, {
+          x: -window.innerWidth,
+          opacity: 0,
+          duration: 0.35,
+          ease: 'power2.in',
+        });
 
-      // Animate characters flying out
-      tl.to(charSpans, {
-        x: () => gsap.utils.random(-400, 400),
-        y: () => gsap.utils.random(-400, 400),
-        rotation: () => gsap.utils.random(-720, 720),
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.03,
-        ease: 'power2.in',
-        onComplete: () => {
-          // Move to next word
-          currentIndex = (currentIndex + 1) % words.length;
+        // Change text and position for slide in from far right
+        tl.call(() => {
+          wordElement.textContent = nextWord;
+          currentIndex = nextIndex;
+          gsap.set(wordElement, { x: window.innerWidth, opacity: 1 });
+        });
 
-          // Animate in the new word
-          const newWord = words[currentIndex];
-          const newChars = newWord.split('');
-          wordElement.innerHTML = '';
-
-          const newCharSpans: HTMLSpanElement[] = [];
-          newChars.forEach((char) => {
-            const span = document.createElement('span');
-            span.textContent = char;
-            span.style.display = 'inline-block';
-            wordElement.appendChild(span);
-            newCharSpans.push(span);
-          });
-
-          // Set initial state for new characters (from random positions)
-          gsap.set(newCharSpans, {
-            x: () => gsap.utils.random(-400, 400),
-            y: () => gsap.utils.random(-400, 400),
-            rotation: () => gsap.utils.random(-720, 720),
-            opacity: 0,
-          });
-
-          // Animate new characters in
-          gsap.to(newCharSpans, {
-            x: 0,
-            y: 0,
-            rotation: 0,
-            opacity: 1,
-            duration: 0.8,
-            stagger: 0.03,
-            ease: 'power2.out',
-            onComplete: () => {
-              // Wait and then animate again
-              setTimeout(animateWord, 2000);
-            }
-          });
-        }
-      });
+        // Slide new word in from the right edge - quicker motion
+        tl.to(wordElement, {
+          x: 0,
+          duration: 0.35,
+          ease: 'power2.out',
+          onComplete: () => {
+            setTimeout(animateWord, 2000);
+          }
+        });
+      }, 2000);
     };
 
     // Start the animation when scrolled into view
@@ -108,6 +72,24 @@ export default function ContentStrategyAnimated() {
       }
     });
 
+    // Animate ratio cards sliding in
+    if (ratioCardsRef.current) {
+      const ratioCards = ratioCardsRef.current.querySelectorAll('.ratio-card');
+
+      gsap.from(ratioCards, {
+        scrollTrigger: {
+          trigger: ratioCardsRef.current,
+          start: 'top 80%',
+          toggleActions: 'play none none none',
+        },
+        x: -100,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.2,
+        ease: 'power2.out',
+      });
+    }
+
   }, []);
 
   return (
@@ -115,25 +97,34 @@ export default function ContentStrategyAnimated() {
       <div className={styles.container}>
         <p className={styles.miniTitle}>OUR APPROACH</p>
         <h2 className={styles.title} ref={titleRef}>
-          CONTENT THAT KEEPS THEM <span ref={rotatingWordRef} style={{ display: 'inline-block' }}>WATCHING</span>
+          CONTENT THAT KEEPS THEM <span ref={rotatingWordRef} className={styles.rotatingWord}>WATCHING</span>
         </h2>
 
         <p className={styles.intro}>
           WE DON'T JUST CREATE ONE VIDEO AND CALL IT A DAY. WE BUILD TRUST THROUGH ENTERTAINMENT. IN 2025, YOUR AUDIENCE CONSUMES CONTENT CONSTANTLY—THEY'RE NOT READING NEWSPAPER ADS ANYMORE.
         </p>
 
-        <div className={styles.giveGrid}>
-          <div className={styles.giveCard}>
-            <h3 className={styles.giveNumber}>GIVE</h3>
-            <p className={styles.giveLabel}>Entertainment First</p>
+        <div className={styles.giveContent}>
+          <div className={styles.giveGrid} ref={ratioCardsRef}>
+            <div className={`${styles.giveCard} ratio-card`}>
+              <h3 className={styles.giveCardTitle}>GIVE</h3>
+              <p className={styles.giveCardText}>ENTERTAINMENT FIRST</p>
+            </div>
+            <div className={`${styles.giveCard} ratio-card`}>
+              <h3 className={styles.giveCardTitle}>GIVE</h3>
+              <p className={styles.giveCardText}>VALUE THROUGH VOLUME</p>
+            </div>
+            <div className={`${styles.giveCard} ratio-card`}>
+              <h3 className={styles.giveCardTitle}>GIVE</h3>
+              <p className={styles.giveCardText}>TRUST THROUGH CONSISTENCY</p>
+            </div>
           </div>
-          <div className={styles.giveCard}>
-            <h3 className={styles.giveNumber}>GIVE</h3>
-            <p className={styles.giveLabel}>Value Through Volume</p>
-          </div>
-          <div className={styles.giveCard}>
-            <h3 className={styles.giveNumber}>GIVE</h3>
-            <p className={styles.giveLabel}>Trust Through Consistency</p>
+
+          <div className={styles.ratioExplanation}>
+            <h4 className={styles.ratioTitle}>THE GIVE-TO-ASK RATIO</h4>
+            <p className={styles.ratioText}>
+              FOR EVERY PIECE OF CONTENT ASKING FOR SOMETHING (BUY, SUBSCRIBE, BOOK), YOU SHOULD DELIVER AT LEAST 6 PIECES OF PURE VALUE. WE RECOMMEND A 10:1 RATIO. THE HIGHER YOUR RATIO, THE STRONGER YOUR BRAND TRAJECTORY.
+            </p>
           </div>
         </div>
       </div>

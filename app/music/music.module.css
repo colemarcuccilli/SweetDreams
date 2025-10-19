@@ -65,7 +65,8 @@
     text-transform: uppercase;
     letter-spacing: 0.2em;
     color: #666;
-    margin-bottom: 16px;
+    margin-bottom: 5px;
+    padding-left: 5px;
 }
 
 
@@ -218,6 +219,7 @@
     font-weight: 400;
     text-transform: uppercase;
     line-height: 0.9;
+    margin-top: 3px;
     margin-bottom: 24px;
 }
 
@@ -294,16 +296,38 @@
     color: #666;
 }
 
+.pricingContent {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+}
+
 .pricingList {
     max-width: 800px;
-    margin-bottom: 32px;
+}
+
+.pricingImage {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    position: relative;
+    top: -120px;
+}
+
+.studioImage {
+    width: 85%;
+    height: auto;
+    border-radius: 24px;
+    object-fit: cover;
 }
 
 .priceRow {
     display: flex;
     align-items: center;
     padding: 24px 0;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #333;
 }
 
 .priceRow:last-child {
@@ -311,7 +335,7 @@
 }
 
 .priceHighlight {
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(255, 255, 255, 0.05);
     padding: 24px 32px;
     border-radius: 8px;
     border-bottom: none;
@@ -322,14 +346,14 @@
     font-family: 'IBM Plex Mono', monospace;
     font-size: 16px;
     font-weight: 500;
-    color: black;
+    color: white;
     white-space: nowrap;
 }
 
 .priceDots {
     flex: 1;
     height: 1px;
-    background: linear-gradient(to right, #ddd 0%, #ddd 50%, transparent 50%, transparent 100%);
+    background: linear-gradient(to right, #444 0%, #444 50%, transparent 50%, transparent 100%);
     background-size: 8px 1px;
     margin: 0 16px;
 }
@@ -337,8 +361,15 @@
 .priceValue {
     font-family: 'Anton', sans-serif;
     font-size: 24px;
-    color: black;
+    color: white;
     white-space: nowrap;
+}
+
+
+/* Packages Animated Container */
+
+.packagesAnimatedContainer {
+    margin-top: 5vh;
 }
 
 
@@ -370,7 +401,7 @@
 
 .packageCard {
     padding: 48px 32px;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.8);
     border-radius: 16px;
     position: relative;
 }
@@ -393,6 +424,7 @@
     padding: 8px 24px;
     border-radius: 999px;
     letter-spacing: 0.1em;
+    border: 2px solid black;
 }
 
 .packageTitle {
@@ -481,6 +513,12 @@
 
 .hoursBlock {
     margin: 0;
+}
+
+.hoursBlockHighlight {
+    border: 2px solid black;
+    border-radius: 24px;
+    padding: 32px;
 }
 
 .hoursLabel {
@@ -658,12 +696,30 @@
     color: white;
 }
 
+.locationInfoGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+}
+
+.locationColumn {
+    text-align: left;
+}
+
+.infoColumn {
+    text-align: right;
+}
+
+.infoColumn .sectionTitle {
+    text-align: right;
+}
+
 .locationText {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 16px;
     line-height: 1.8;
     color: #aaa;
-    max-width: 900px;
     margin-bottom: 48px;
 }
 
@@ -679,7 +735,6 @@
     font-size: 14px;
     line-height: 1.8;
     color: #aaa;
-    max-width: 1200px;
     margin-bottom: 24px;
 }
 
@@ -710,6 +765,20 @@
     .hoursContent {
         grid-template-columns: 1fr;
         gap: 48px;
+    }
+    .pricingContent {
+        grid-template-columns: 1fr;
+        gap: 48px;
+    }
+    .locationInfoGrid {
+        grid-template-columns: 1fr;
+        gap: 48px;
+    }
+    .infoColumn {
+        text-align: left;
+    }
+    .infoColumn .sectionTitle {
+        text-align: left;
     }
 }
 

@@ -26,14 +26,14 @@ export default function HomePage() {
       {/* Content Strategy Section with Animated Text */}
       <ContentStrategyAnimated />
 
-      {/* Transition Section 2 with Scroll Effect */}
-      <TransitionSection2 />
-
       {/* Recent Work Carousel */}
       <RecentWork />
 
       {/* Solutions Section */}
       <SolutionsAnimated />
+
+      {/* Transition Section 2 with Scroll Effect */}
+      <TransitionSection2 />
 
       {/* Friends Section with GSAP Animation */}
       <FriendsAnimated />

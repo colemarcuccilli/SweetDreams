@@ -1,171 +1,1322 @@
-.container {
+.page {
+  background: white;
+  min-height: 100vh;
+}
+
+/* 1. PRODUCTION HERO - Combined Hero & Showcase */
+.productionHero {
+  height: 85vh;
+  background: white;
+  padding: 40px 60px 10px 60px;
+  display: flex;
+  align-items: stretch;
+}
+
+.productionHeroInner {
+  width: 100%;
+  background: black;
+  border-radius: 48px;
+  padding: 80px 80px;
+  display: flex;
+  align-items: center;
+}
+
+.productionHeroContainer {
   max-width: 1800px;
   margin: 0 auto;
-  padding: 80px 80px 120px 80px;
-}
-
-.videoHeader {
   width: 100%;
-  height: 60vh;
-  min-height: 500px;
-  border-radius: 24px;
-  overflow: hidden;
-  background: #f0f0f0;
-  margin-bottom: 80px;
-  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 100px;
+  align-items: center;
 }
 
-.headerVideo {
+/* Left Side - Number & Title */
+.productionHeroLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.productionTitleGroup {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+.productionNumber {
+  font-family: 'Anton', sans-serif;
+  font-size: 140px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.08);
+  line-height: 0.8;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.productionTitleWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.productionMiniTitle {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+  text-align: left;
+}
+
+.productionHeroTitle {
+  font-family: 'Anton', sans-serif;
+  font-size: 90px;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 0.9;
+  color: white;
+  margin: 0;
+  letter-spacing: -0.02em;
+  text-align: left;
+}
+
+.productionHeroDescription {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 18px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0 0 32px 0;
+  max-width: 400px;
+}
+
+.productionButton {
+  display: inline-block;
+  background: white;
+  color: black;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 24px 60px;
+  border-radius: 999px;
+  font-size: 14px;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  border: 2px solid white;
+}
+
+.productionButton::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  background: black;
+  border-radius: 50%;
+  transition: width 0.6s ease, height 0.6s ease;
+  z-index: -1;
+}
+
+.productionButton:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
+  color: white;
+}
+
+.productionButton:hover::before {
+  width: 400px;
+  height: 400px;
+}
+
+/* Right Side - Video Showcase with White Border */
+.productionShowcaseLink {
+  text-decoration: none;
+  cursor: pointer;
+  display: block;
+}
+
+.productionShowcaseWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.productionShowcaseFrame {
+  position: absolute;
+  top: -24px;
+  left: -24px;
+  right: -24px;
+  bottom: -24px;
+  border: 16px solid white;
+  border-radius: 48px;
+  z-index: 0;
+  transition: all 0.4s ease;
+}
+
+.productionShowcaseWrapper:hover .productionShowcaseFrame {
+  top: -28px;
+  left: -28px;
+  right: -28px;
+  bottom: -28px;
+  border-width: 18px;
+}
+
+.productionShowcase {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 32px;
+  overflow: hidden;
+  background: black;
+  transition: transform 0.4s ease;
+  z-index: 1;
+}
+
+.productionShowcaseWrapper:hover .productionShowcase {
+  transform: translateY(-4px);
+}
+
+.productionShowcaseVideo {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   border: none;
+  pointer-events: none;
+  object-fit: cover;
 }
 
-.header {
-  margin-bottom: 100px;
-  text-align: left;
-}
-
-.title {
-  font-family: 'Anton', sans-serif;
-  font-size: 140px;
-  text-transform: uppercase;
-  line-height: 1;
-  font-weight: 400;
-  color: black;
-  margin-bottom: 24px;
-}
-
-.subtitle {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 20px;
-  line-height: 1.8;
-  color: #666;
-  max-width: 800px;
-}
-
-.solutionsWrapper {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  margin-bottom: 120px;
-}
-
-.solutionsGrid {
-  display: flex;
-  flex-direction: column;
-  gap: 0px;
-  order: 1;
-}
-
-.stickyVideoContainer {
-  position: relative;
-  order: 2;
-  height: 100%;
-  padding-top: 20vh;
-  padding-bottom: 0vh;
-}
-
-.stickyVideoWrapper {
-  position: sticky;
-  top: 50vh;
-  transform: translateY(-50%);
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: 24px;
-  overflow: hidden;
-  background: #f0f0f0;
-}
-
-.videoFrame {
+.productionShowcaseOverlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  opacity: 0;
-  transition: opacity 0.6s ease-in-out;
-  pointer-events: none;
+  background: rgba(0, 0, 0, 0.35);
 }
 
-.videoFrameActive {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.solutionCard {
-  border-top: 4px solid black;
-  padding-top: 48px;
-  padding-bottom: 48px;
-  min-height: 400px;
-}
-
-.solutionCard:last-child {
-  padding-bottom: 20vh;
-}
-
-.solutionText {
-  max-width: 600px;
-}
-
-.mobileVideoWrapper {
-  display: none;
-}
-
-.solutionTitle {
-  font-family: 'Anton', sans-serif;
-  font-size: 60px;
-  text-transform: uppercase;
-  line-height: 1.1;
-  font-weight: 400;
-  color: black;
-  margin-bottom: 24px;
-}
-
-.solutionDescription {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 18px;
-  line-height: 1.8;
-  color: #333;
-  margin-bottom: 32px;
-}
-
-.servicesList {
+.productionShowcaseContent {
+  position: relative;
+  height: 100%;
   display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 48px;
 }
 
-.serviceTag {
+.showcaseTopRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.showcaseClient {
+  font-family: 'Anton', sans-serif;
+  font-weight: 400;
+  color: white;
+  opacity: 0.9;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+.showcaseViewButton {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  padding: 10px 32px;
+  border-radius: 999px;
+  transition: background 0.3s ease;
+}
+
+.showcaseViewButton:hover {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.showcaseViewButton span {
+  font-family: 'IBM Plex Mono', monospace;
+  color: black;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.showcaseCenterTitle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  text-align: center;
+}
+
+.showcaseTitleText {
+  font-family: 'Anton', sans-serif;
+  font-size: 120px;
+  color: white;
+  text-transform: uppercase;
+  line-height: 0.85;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.showcaseBottomRow {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.showcaseSubtitle {
+  font-family: 'Anton', sans-serif;
+  font-size: 32px;
+  color: white;
+  text-transform: uppercase;
+  line-height: 1;
+  opacity: 0.9;
+}
+
+/* 02. CREATIVE & DESIGN - Platform Strategy */
+.designSection {
+  background: white;
+  padding: 120px 60px;
+}
+
+.designContainer {
+  max-width: 1800px;
+  margin: 0 auto;
+}
+
+/* Header Grid - Two Columns */
+.designHeaderGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  margin-bottom: 80px;
+  align-items: center;
+}
+
+.designHeaderLeft {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.designHeaderRight {
+  display: flex;
+  justify-content: flex-start;
+}
+
+/* Header with Number */
+.designHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+.designNumber {
+  font-family: 'Anton', sans-serif;
+  font-size: 140px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.08);
+  line-height: 0.8;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.designTitleWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.designMiniTitle {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  color: #999;
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+  text-align: left;
+}
+
+.designTitle {
+  font-family: 'Anton', sans-serif;
+  font-size: 90px;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 0.85;
+  color: black;
+  margin: 0;
+  text-align: left;
+}
+
+.designLargeText {
+  font-family: 'Anton', sans-serif;
+  font-size: 48px;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 1.2;
+  color: black;
+  margin: 0;
+  text-align: left;
+}
+
+/* Content */
+.designContent {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
+
+/* Strategy Cards Grid */
+.designGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+}
+
+.designCard {
+  padding: 48px;
+  background: rgba(0, 0, 0, 0.02);
+  border: 2px solid rgba(0, 0, 0, 0.08);
+  border-radius: 24px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.designCard:hover {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.15);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.designCardIcon {
+  color: black;
+  opacity: 0.6;
+}
+
+.designCardIcon svg {
+  display: block;
+}
+
+.designCardTitle {
+  font-family: 'Anton', sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: black;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.designCardDescription {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 14px;
-  padding: 12px 24px;
-  background: black;
-  color: white;
-  border-radius: 999px;
-  text-transform: uppercase;
+  line-height: 1.7;
+  color: #555;
+  margin: 0;
+}
+
+/* Bottom Statement */
+.designStatement {
+  text-align: center;
+  padding: 60px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+.designStatement p {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #666;
+  margin: 0;
   font-weight: 600;
+  text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
-.cta {
+/* Solution Button */
+.solutionButton {
+  display: inline-block;
+  background: black;
+  color: white;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 24px 60px;
+  border-radius: 999px;
+  font-size: 14px;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  border: 2px solid black;
+}
+
+.solutionButton::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  background: white;
+  border-radius: 50%;
+  transition: width 0.6s ease, height 0.6s ease;
+  z-index: -1;
+}
+
+.solutionButton:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  color: black;
+}
+
+.solutionButton:hover::before {
+  width: 400px;
+  height: 400px;
+}
+
+/* POST-PRODUCTION - Triple Video Grid */
+.postSection {
+  background: black;
+  padding: 120px 60px 80px 60px;
+}
+
+.postContainer {
+  max-width: 1800px;
+  margin: 0 auto 80px auto;
+}
+
+.postCta {
   text-align: center;
-  padding: 80px 0;
-  border-top: 4px solid black;
+  margin-top: 60px;
+}
+
+.postCta .solutionButton {
+  background: white;
+  color: black;
+  border-color: white;
+}
+
+.postCta .solutionButton::before {
+  background: black;
+}
+
+.postCta .solutionButton:hover {
+  color: white;
+}
+
+.postHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.postNumber {
+  font-family: 'Anton', sans-serif;
+  font-size: 140px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.08);
+  line-height: 0.8;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.postTitleWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.postMiniTitle {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+  text-align: left;
+}
+
+.postTitle {
+  font-family: 'Anton', sans-serif;
+  font-size: 90px;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 0.85;
+  color: white;
+  margin: 0;
+  text-align: left;
+}
+
+.postSubtitle {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 18px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  text-align: left;
+}
+
+.postGrid {
+  max-width: 1800px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.postVideoItem {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: 24px;
+  overflow: hidden;
+  background: #000;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.postVideoItem:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-8px);
+  box-shadow: 0 25px 50px rgba(255, 255, 255, 0.2);
+}
+
+.postVideoIframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  transition: transform 0.4s ease;
+}
+
+.postVideoItem:hover .postVideoIframe {
+  transform: scale(1.05);
+}
+
+.postLabel {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  font-family: 'Anton', sans-serif;
+  font-size: 26px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: white;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(10px);
+  padding: 14px 28px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.postVideoItem:hover .postLabel {
+  background: rgba(255, 255, 255, 0.95);
+  color: black;
+  border-color: white;
+}
+
+/* 03. SOCIAL STRATEGY - Three Column Layout */
+.socialSection {
+  background: linear-gradient(180deg, #ffffff 0%, #f5f5f5 100%);
+  padding: 120px 60px;
+  position: relative;
+}
+
+.socialContent {
+  max-width: 1800px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Three Column Grid */
+.socialGrid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr;
+  gap: 60px;
+  min-height: 600px;
+}
+
+/* Left Column - Bottom Aligned */
+.socialLeftColumn {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+
+/* Middle Column - Contains Lines */
+.socialMiddleColumn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Right Column - Top Aligned */
+.socialRightColumn {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+
+.socialHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+.socialNumber {
+  font-family: 'Anton', sans-serif;
+  font-size: 140px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.08);
+  line-height: 0.8;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.socialTitleWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.socialMiniTitle {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  color: #999;
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+  text-align: left;
+}
+
+.socialMainTitle {
+  font-family: 'Anton', sans-serif;
+  font-size: 90px;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 0.85;
+  color: black;
+  margin: 0;
+  text-align: left;
+}
+
+/* Services Lines - Centered with Stair-Step */
+.socialLines {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  align-items: center;
+}
+
+.socialLine {
+  font-family: 'Anton', sans-serif;
+  font-size: 80px;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 1.1;
+  color: black;
+  margin: 0;
+  letter-spacing: -0.02em;
+  position: relative;
+  display: block;
+  width: fit-content;
+  white-space: nowrap;
+}
+
+/* Stair-step from the right end of each phrase */
+.socialLine:nth-child(1) {
+  margin-right: 360px;
+}
+
+.socialLine:nth-child(2) {
+  margin-right: 240px;
+}
+
+.socialLine:nth-child(3) {
+  margin-right: 120px;
+}
+
+.socialLine:nth-child(4) {
+  margin-right: 0;
+}
+
+.socialLine::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 4px;
+  background: black;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.socialLine:hover::after {
+  width: 100%;
+}
+
+/* Bottom Left - Tagline & Button */
+.socialBottomLeft {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
+  width: 100%;
+}
+
+.socialTagline {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 22px;
+  line-height: 1.6;
+  color: #555;
+  margin: 0;
+  font-weight: 500;
+  max-width: 400px;
+}
+
+.socialCta {
+  margin: 0;
+  width: 100%;
+}
+
+.socialCta .solutionButton {
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+/* LAUNCH & GROWTH - Diagonal Cards */
+.launchSection {
+  background: black;
+  padding: 120px 60px 100px 60px;
+}
+
+.launchContainer {
+  max-width: 1800px;
+  margin: 0 auto 80px auto;
+}
+
+.launchCta {
+  text-align: center;
+  margin-top: 80px;
+}
+
+.launchCta .solutionButton {
+  background: white;
+  color: black;
+  border-color: white;
+}
+
+.launchCta .solutionButton::before {
+  background: black;
+}
+
+.launchCta .solutionButton:hover {
+  color: white;
+}
+
+.launchHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.launchNumber {
+  font-family: 'Anton', sans-serif;
+  font-size: 140px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.08);
+  line-height: 0.8;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.launchTitleWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.launchMiniTitle {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+  text-align: left;
+}
+
+.launchTitle {
+  font-family: 'Anton', sans-serif;
+  font-size: 90px;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 0.85;
+  color: white;
+  margin: 0;
+  text-align: left;
+}
+
+.launchGrid {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+.launchCard {
+  padding: 60px 40px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  perspective: 1000px;
+}
+
+.launchCard::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+  border-radius: 24px;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: -1;
+}
+
+.launchCard:hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-15px) rotate(0deg) !important;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+}
+
+.launchCard:hover::before {
+  opacity: 1;
+}
+
+.launchCard h3 {
+  font-family: 'Anton', sans-serif;
+  font-size: 32px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: white;
+  margin: 0 0 16px 0;
+  line-height: 1.2;
+}
+
+.launchCard p {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 15px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+}
+
+/* SWEET DREAMS STUDIO - White Section */
+.studioSectionWhite {
+  background: white;
+  padding: 120px 60px 80px 60px;
+}
+
+/* SWEET DREAMS STUDIO - Black Section */
+.studioSectionBlack {
+  background: black;
+  padding: 80px 60px 120px 60px;
+}
+
+.studioContainer {
+  max-width: 1800px;
+  margin: 0 auto;
+}
+
+/* Header with Number */
+.studioHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+  margin-bottom: 80px;
+}
+
+.studioNumber {
+  font-family: 'Anton', sans-serif;
+  font-size: 140px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.08);
+  line-height: 0.8;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.studioTitleWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.studioMiniTitle {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  color: #999;
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+  text-align: left;
+}
+
+.studioTitle {
+  font-family: 'Anton', sans-serif;
+  font-size: 90px;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 0.85;
+  color: black;
+  margin: 0;
+  text-align: left;
+}
+
+/* Bento Grid - Asymmetric Layout */
+.studioBentoGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, auto);
+  gap: 24px;
+}
+
+/* Service Cards */
+.studioServiceCard {
+  background: rgba(0, 0, 0, 0.02);
+  border: 2px solid rgba(0, 0, 0, 0.08);
+  border-radius: 24px;
+  padding: 40px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.studioServiceCard:hover {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.studioServiceCard h3 {
+  font-family: 'Anton', sans-serif;
+  font-size: 26px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: black;
+  margin: 0 0 16px 0;
+  letter-spacing: 0.05em;
+}
+
+.studioServiceCard p {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #555;
+  margin: 0;
+}
+
+/* Large Cards - Span 2 Rows */
+.studioCardLarge {
+  grid-row: span 2;
+  padding: 60px 40px;
+}
+
+.studioCardLarge h3 {
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+.studioCardLarge p {
+  font-size: 15px;
+}
+
+/* Grid Layout */
+/* Row 1 */
+.studioBentoGrid > :nth-child(1) { /* Recording - Large */
+  grid-column: 1;
+  grid-row: 1 / 3;
+}
+
+.studioBentoGrid > :nth-child(2) { /* Beat Production */
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.studioBentoGrid > :nth-child(3) { /* Mixing & Mastering */
+  grid-column: 3;
+  grid-row: 1;
+}
+
+/* Row 2 */
+.studioBentoGrid > :nth-child(4) { /* Video Production - Large */
+  grid-column: 2 / 4;
+  grid-row: 2;
+}
+
+/* Row 3 - Buttons */
+.studioBentoGrid > :nth-child(5) { /* Book a Session */
+  grid-column: 1 / 3;
+  grid-row: 3;
+}
+
+.studioBentoGrid > :nth-child(6) { /* Learn More */
+  grid-column: 3;
+  grid-row: 3;
+}
+
+/* Service Buttons */
+.studioServiceButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: black;
+  color: white;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 32px 48px;
+  border-radius: 999px;
+  font-size: 14px;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  border: 2px solid black;
+  white-space: nowrap;
+}
+
+.studioServiceButton::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  background: white;
+  border-radius: 50%;
+  transition: width 0.6s ease, height 0.6s ease;
+  z-index: -1;
+}
+
+.studioServiceButton:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  color: black;
+}
+
+.studioServiceButton:hover::before {
+  width: 600px;
+  height: 600px;
+}
+
+/* Showcase with White Border Frame */
+.studioShowcaseLink {
+  text-decoration: none;
+  cursor: pointer;
+  display: block;
+}
+
+.studioShowcaseWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.studioShowcaseFrame {
+  position: absolute;
+  top: -24px;
+  left: -24px;
+  right: -24px;
+  bottom: -24px;
+  border: 16px solid white;
+  border-radius: 48px;
+  z-index: 0;
+  transition: all 0.4s ease;
+}
+
+.studioShowcaseWrapper:hover .studioShowcaseFrame {
+  top: -28px;
+  left: -28px;
+  right: -28px;
+  bottom: -28px;
+  border-width: 18px;
+}
+
+.studioShowcase {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 32px;
+  overflow: hidden;
+  background: black;
+  transition: transform 0.4s ease;
+  z-index: 1;
+}
+
+.studioShowcaseWrapper:hover .studioShowcase {
+  transform: translateY(-4px);
+}
+
+.studioShowcaseVideo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  pointer-events: none;
+  object-fit: cover;
+}
+
+.studioShowcaseOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.studioShowcaseContent {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 48px;
+}
+
+.studioShowcaseTopRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.studioShowcaseClient {
+  font-family: 'Anton', sans-serif;
+  font-weight: 400;
+  color: white;
+  opacity: 0.9;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+.studioShowcaseViewButton {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  padding: 10px 32px;
+  border-radius: 999px;
+  transition: background 0.3s ease;
+}
+
+.studioShowcaseViewButton:hover {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.studioShowcaseViewButton span {
+  font-family: 'IBM Plex Mono', monospace;
+  color: black;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.studioShowcaseCenterTitle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  text-align: center;
+}
+
+.studioShowcaseTitleText {
+  font-family: 'Anton', sans-serif;
+  font-size: 120px;
+  color: white;
+  text-transform: uppercase;
+  line-height: 0.85;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.studioShowcaseBottomRow {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.studioShowcaseSubtitle {
+  font-family: 'Anton', sans-serif;
+  font-size: 32px;
+  color: white;
+  text-transform: uppercase;
+  line-height: 1;
+  opacity: 0.9;
+}
+
+/* CTA */
+.cta {
+  padding: 180px 60px;
+  text-align: center;
+  background: linear-gradient(180deg, #ffffff 0%, #f0f0f0 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.cta::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(0,0,0,0.03) 0%, transparent 70%);
+  z-index: 0;
 }
 
 .ctaTitle {
   font-family: 'Anton', sans-serif;
-  font-size: 80px;
-  text-transform: uppercase;
-  line-height: 1.1;
+  font-size: 140px;
   font-weight: 400;
+  text-transform: uppercase;
+  line-height: 1;
   color: black;
-  margin-bottom: 48px;
+  margin: 0 0 60px 0;
+  position: relative;
+  z-index: 1;
+  letter-spacing: -0.01em;
 }
 
 .ctaButton {
@@ -175,125 +1326,441 @@
   font-family: 'IBM Plex Mono', monospace;
   font-weight: bold;
   text-transform: uppercase;
-  padding: 20px 60px;
+  padding: 32px 100px;
   border-radius: 999px;
   font-size: 18px;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.2em;
   text-decoration: none;
-  transition: background 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  border: 2px solid black;
+}
+
+.ctaButton::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  background: white;
+  border-radius: 50%;
+  transition: width 0.6s ease, height 0.6s ease;
+  z-index: -1;
 }
 
 .ctaButton:hover {
-  background: #333;
+  transform: scale(1.08);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
 }
 
-@media (max-width: 1024px) {
-  .container {
-    padding: 60px 40px 80px 40px;
+.ctaButton:hover::before {
+  width: 400px;
+  height: 400px;
+}
+
+.ctaButton:hover {
+  color: black;
+}
+
+/* Responsive */
+@media (max-width: 1400px) {
+  .productionNumber {
+    font-size: 110px;
   }
 
-  .title {
-    font-size: 80px;
+  .productionHeroTitle {
+    font-size: 70px;
   }
 
-  .solutionsWrapper {
-    display: block;
-    position: relative;
+  .productionShowcaseFrame {
+    top: -20px;
+    left: -20px;
+    right: -20px;
+    bottom: -20px;
+    border-width: 12px;
   }
 
-  .stickyVideoContainer {
-    display: none;
+  .showcaseTitleText {
+    font-size: 100px;
   }
 
-  .solutionsGrid {
-    gap: 0;
-    position: relative;
+  .designNumber {
+    font-size: 110px;
   }
 
-  .solutionCard {
-    position: relative;
-    padding-bottom: 0px;
-    min-height: auto;
+  .designTitle {
+    font-size: 70px;
   }
 
-  .solutionCard:last-child {
-    padding-bottom: 0px;
+  .designLargeText {
+    font-size: 38px;
   }
 
-  .solutionText {
-    max-width: 100%;
-    position: relative;
-    z-index: 2;
-    background: white;
-    padding: 48px 32px;
-    border-radius: 16px;
-    margin-bottom: 24px;
+  .socialNumber {
+    font-size: 110px;
   }
 
-  .mobileVideoWrapper {
-    display: block;
-    position: sticky;
-    top: 20vh;
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    border-radius: 16px;
-    overflow: hidden;
-    background: #f0f0f0;
-    z-index: 1;
+  .socialMainTitle {
+    font-size: 70px;
   }
 
-  .solutionTitle {
-    font-size: 40px;
+  .socialLine {
+    font-size: 70px;
+  }
+
+  .studioTitle {
+    font-size: 100px;
   }
 
   .ctaTitle {
+    font-size: 100px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .productionHero {
+    height: 85vh;
+    padding: 30px 40px 10px 40px;
+  }
+
+  .productionHeroInner {
+    padding: 60px;
+  }
+
+  .productionHeroContainer {
+    grid-template-columns: 1fr;
+    gap: 60px;
+  }
+
+  .productionNumber {
+    font-size: 80px;
+  }
+
+  .productionTitleGroup {
+    align-items: flex-start;
+  }
+
+  .productionMiniTitle {
+    text-align: right;
+  }
+
+  .productionHeroTitle {
+    font-size: 60px;
+  }
+
+  .productionShowcaseFrame {
+    top: -16px;
+    left: -16px;
+    right: -16px;
+    bottom: -16px;
+    border-width: 10px;
+    border-radius: 40px;
+  }
+
+  .showcaseTitleText {
+    font-size: 80px;
+  }
+
+  .showcaseSubtitle {
+    font-size: 24px;
+  }
+
+  .designSection {
+    padding: 80px 40px;
+  }
+
+  .designHeader {
+    gap: 30px;
+    margin-bottom: 60px;
+  }
+
+  .designNumber {
+    font-size: 80px;
+  }
+
+  .designTitle {
+    font-size: 60px;
+  }
+
+  .designLargeText {
+    font-size: 32px;
+  }
+
+  .designGrid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .designCard {
+    padding: 40px;
+  }
+
+  .postSection {
+    padding: 80px 40px;
+  }
+
+  .postGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .socialSection {
+    padding: 80px 40px;
+  }
+
+  .socialGrid {
+    grid-template-columns: 1fr;
+    gap: 60px;
+    min-height: auto;
+  }
+
+  .socialLeftColumn {
+    align-items: flex-start;
+  }
+
+  .socialRightColumn {
+    align-items: flex-start;
+  }
+
+  .socialHeader {
+    gap: 30px;
+  }
+
+  .socialNumber {
+    font-size: 80px;
+  }
+
+  .socialMainTitle {
+    font-size: 60px;
+  }
+
+  .socialLine {
     font-size: 50px;
+  }
+
+  .launchSection {
+    padding: 80px 40px;
+  }
+
+  .launchGrid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .studioTitle {
+    font-size: 70px;
+  }
+
+  .studioServices {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .cta {
+    padding: 100px 40px;
+  }
+
+  .ctaTitle {
+    font-size: 70px;
   }
 }
 
 @media (max-width: 768px) {
-  .container {
-    padding: 40px 24px 60px 24px;
+  .productionHero {
+    padding: 20px 20px 10px 20px;
+    height: auto;
+    min-height: 85vh;
   }
 
-  .title {
-    font-size: 50px;
+  .productionHeroInner {
+    padding: 60px 40px;
+    border-radius: 32px;
   }
 
-  .subtitle {
-    font-size: 16px;
-  }
-
-  .solutionsWrapper {
+  .productionHeroContainer {
     gap: 40px;
   }
 
-  .stickyVideoWrapper {
-    border-radius: 16px;
+  .productionNumber {
+    font-size: 60px;
   }
 
-  .solutionsGrid {
-    gap: 80px;
+  .productionHeroTitle {
+    font-size: 40px;
   }
 
-  .solutionCard {
-    min-height: 300px;
+  .productionHeroDescription {
+    font-size: 14px;
   }
 
-  .solutionTitle {
+  .productionShowcase {
+    border-radius: 24px;
+  }
+
+  .productionShowcaseContent {
+    padding: 32px;
+  }
+
+  .showcaseTitleText {
+    font-size: 50px;
+  }
+
+  .showcaseSubtitle {
+    font-size: 20px;
+  }
+
+  .showcaseViewButton {
+    padding: 8px 24px;
+  }
+
+  .showcaseViewButton span {
+    font-size: 10px;
+  }
+
+  .designSection {
+    padding: 60px 20px;
+  }
+
+  .designHeader {
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+
+  .designNumber {
+    font-size: 60px;
+  }
+
+  .designTitle {
+    font-size: 40px;
+  }
+
+  .designLargeText {
+    font-size: 24px;
+  }
+
+  .designContent {
+    gap: 40px;
+  }
+
+  .designCard {
+    padding: 32px;
+  }
+
+  .designCardTitle {
+    font-size: 18px;
+  }
+
+  .designCardDescription {
+    font-size: 13px;
+  }
+
+  .designStatement {
+    padding: 40px 0;
+  }
+
+  .designStatement p {
+    font-size: 14px;
+  }
+
+  .postSection {
+    padding: 60px 20px;
+  }
+
+  .postTitle {
+    font-size: 40px;
+  }
+
+  .postSubtitle {
+    font-size: 16px;
+  }
+
+  .socialSection {
+    padding: 60px 20px;
+  }
+
+  .socialGrid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    min-height: auto;
+  }
+
+  .socialLeftColumn {
+    align-items: flex-start;
+  }
+
+  .socialRightColumn {
+    align-items: flex-start;
+  }
+
+  .socialHeader {
+    gap: 20px;
+  }
+
+  .socialNumber {
+    font-size: 60px;
+  }
+
+  .socialMainTitle {
+    font-size: 40px;
+  }
+
+  .socialLine {
     font-size: 32px;
   }
 
-  .solutionDescription {
+  .socialTagline {
     font-size: 16px;
+  }
+
+  .launchSection {
+    padding: 60px 20px;
+  }
+
+  .launchTitle {
+    font-size: 40px;
+  }
+
+  .launchCard h3 {
+    font-size: 24px;
+  }
+
+  .launchCard p {
+    font-size: 14px;
+  }
+
+  .studioTitle {
+    font-size: 48px;
+  }
+
+  .studioServices {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+
+  .studioServiceItem h3 {
+    font-size: 18px;
+  }
+
+  .studioServiceItem p {
+    font-size: 13px;
+  }
+
+  .studioButton,
+  .ctaButton {
+    padding: 20px 60px;
+    font-size: 14px;
+  }
+
+  .cta {
+    padding: 80px 20px;
   }
 
   .ctaTitle {
-    font-size: 36px;
-  }
-
-  .ctaButton {
-    padding: 16px 40px;
-    font-size: 16px;
+    font-size: 48px;
   }
 }

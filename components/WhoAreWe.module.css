@@ -19,6 +19,7 @@
   color: #666;
   margin-bottom: 0px;
   font-weight: 400;
+  text-align: center;
 }
 
 .mainText {
@@ -30,6 +31,11 @@
   margin-bottom: 0;
   font-weight: 400;
   color: white;
+  text-align: center;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+  display: block;
 }
 
 .subText {

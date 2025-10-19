@@ -3,6 +3,26 @@
   background: black;
 }
 
+/* Custom Cursor */
+.customCursor {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.2s ease;
+}
+
+.cursorLogo {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.3));
+}
+
+.portfolioCard {
+  cursor: none;
+}
+
 /* Hero Section - White */
 .hero {
   padding: 20px 48px 120px 48px;
@@ -12,6 +32,14 @@
 .heroContainer {
   max-width: 1800px;
   margin: 0 auto;
+}
+
+.heroContainerFull {
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .miniTitle {
@@ -33,6 +61,7 @@
   color: black;
   margin-top: 0px;
   margin-bottom: 32px;
+  white-space: nowrap;
 }
 
 .heroSubtitle {
@@ -42,6 +71,7 @@
   color: #555;
   max-width: 700px;
   margin-bottom: 48px;
+  text-align: center;
 }
 
 .heroButton {
@@ -67,9 +97,7 @@
 .why {
   padding: 120px 48px;
   background: black;
-  position: sticky;
-  top: 0;
-  z-index: 1;
+  position: relative;
 }
 
 .why .miniTitle {
@@ -91,6 +119,7 @@
   padding: 48px 40px;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 16px;
+  border: 2px dashed rgba(255, 255, 255, 0.3);
 }
 
 .whyTitle {
@@ -124,6 +153,7 @@
   font-weight: 400;
   text-transform: uppercase;
   line-height: 0.9;
+  margin-top: 5px;
   margin-bottom: 24px;
 }
 
@@ -161,6 +191,7 @@
   padding: 64px 48px;
   background: rgba(0, 0, 0, 0.03);
   border-radius: 16px;
+  border: 2px dashed rgba(0, 0, 0, 0.2);
 }
 
 .serviceTitle {
@@ -223,7 +254,6 @@
   text-align: center;
   overflow: hidden;
   position: relative;
-  z-index: 4;
 }
 
 .valueTitle {
@@ -457,18 +487,29 @@
   transition: color 0.3s ease;
 }
 
-/* CTA Section - White */
+/* CTA Section - Grey */
 .cta {
   padding: 120px 48px;
-  background: white;
-  border-radius: 80px 80px 0 0;
-  margin-top: -80px;
+  background: #1a1a1a;
   position: relative;
   z-index: 4;
 }
 
+.cta .container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  max-width: 1800px;
+}
+
+.ctaContent {
+  display: flex;
+  flex-direction: column;
+}
+
 .cta .miniTitle {
-  color: #666;
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .ctaTitle {
@@ -477,7 +518,8 @@
   font-weight: 400;
   text-transform: uppercase;
   line-height: 0.9;
-  color: black;
+  color: white;
+  margin-top: 5px;
   margin-bottom: 24px;
 }
 
@@ -485,14 +527,13 @@
   font-family: 'IBM Plex Mono', monospace;
   font-size: 18px;
   line-height: 1.6;
-  color: #666;
-  margin-bottom: 64px;
-  max-width: 600px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 0;
 }
 
 /* Form */
 .form {
-  max-width: 800px;
+  width: 100%;
 }
 
 .formRow {
@@ -508,22 +549,23 @@
   padding: 20px 24px;
   font-family: 'IBM Plex Mono', monospace;
   font-size: 16px;
-  color: black;
-  background: rgba(0, 0, 0, 0.05);
-  border: 2px solid transparent;
+  color: white;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
-  transition: border 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .input:focus,
 .textarea:focus {
   outline: none;
-  border: 2px solid black;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .input::placeholder,
 .textarea::placeholder {
-  color: #999;
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .textarea {
@@ -533,8 +575,8 @@
 }
 
 .submitButton {
-  background: black;
-  color: white;
+  background: white;
+  color: black;
   font-family: 'IBM Plex Mono', monospace;
   font-weight: bold;
   text-transform: uppercase;
@@ -548,7 +590,7 @@
 }
 
 .submitButton:hover {
-  background: #333;
+  background: rgba(255, 255, 255, 0.9);
 }
 
 /* Info Section - Black */
@@ -602,6 +644,11 @@
   .formRow {
     grid-template-columns: 1fr;
   }
+
+  .cta .container {
+    grid-template-columns: 1fr;
+    gap: 60px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -637,5 +684,17 @@
   .listClient {
     text-align: left;
     font-size: 12px;
+  }
+
+  .cta .container {
+    gap: 40px;
+  }
+
+  .cta {
+    padding: 80px 24px;
+  }
+
+  .ctaSubtitle {
+    margin-bottom: 0;
   }
 }

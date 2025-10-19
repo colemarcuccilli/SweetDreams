@@ -149,9 +149,8 @@ export default function FriendsAnimated() {
     <section className={styles.section}>
       <div className={styles.container} ref={containerRef}>
         <div className={styles.textSection}>
-          <h2 className={styles.title}>OUR FRIENDS</h2>
-          <h3 className={styles.mainText}>TRUSTED</h3>
-          <h3 className={styles.mainText}>BY</h3>
+          <h3 className={styles.mainText}>OUR FRIENDS</h3>
+          <h2 className={styles.title}>TRUSTED BY</h2>
         </div>
 
         <div className={styles.logosGrid}>

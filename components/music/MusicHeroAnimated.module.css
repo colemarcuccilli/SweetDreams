@@ -1,10 +1,47 @@
 .heroContainer {
   position: relative;
   width: 100%;
-  height: 100vh;
-  min-height: 600px;
+  background: white;
+  padding: 0 48px 48px 48px;
   overflow: visible;
+}
+
+.heroBox {
+  position: relative;
+  width: 100%;
+  max-width: 1800px;
+  margin: 0 auto;
+  aspect-ratio: 16 / 9;
+  max-height: 85vh;
+  min-height: 600px;
+  border-radius: 40px;
+  overflow: hidden;
   background: #000;
+}
+
+/* Photo Carousel Background */
+.photoCarousel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.carouselPhoto {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
+}
+
+.carouselPhoto.activePhoto {
+  opacity: 1;
 }
 
 /* Gradient background */
@@ -14,8 +51,8 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
-  z-index: 0;
+  background: linear-gradient(135deg, rgba(10, 10, 10, 0.7) 0%, rgba(26, 26, 26, 0.7) 50%, rgba(10, 10, 10, 0.7) 100%);
+  z-index: 1;
 }
 
 
@@ -23,7 +60,7 @@
 .mainContent {
   position: relative;
   z-index: 10;
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -47,13 +84,26 @@
   position: relative;
   width: 100%;
   height: clamp(100px, 14vh, 180px);
-  margin: 10px 0;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: visible;
   z-index: 100;
   cursor: pointer;
+}
+
+.slicedContainer :global(.text-row:nth-child(1)) {
+  margin-top: -80px;
+  margin-bottom: 40px;
+}
+
+.slicedContainer :global(.text-row:nth-child(2)) {
+  margin: 10px 0;
+}
+
+.slicedContainer :global(.text-row:nth-child(3)) {
+  margin-top: 40px;
+  margin-bottom: -80px;
 }
 
 .textContent {
@@ -186,6 +236,11 @@
 /* Responsive adjustments */
 @media (max-width: 1024px) {
   .heroContainer {
+    padding: 0 32px 32px 32px;
+  }
+
+  .heroBox {
+    max-height: 70vh;
     min-height: 500px;
   }
 
@@ -197,6 +252,16 @@
 
   .slicedContainer :global(.text-row) {
     height: clamp(80px, 12vh, 120px);
+  }
+
+  .slicedContainer :global(.text-row:nth-child(1)) {
+    margin-top: -40px;
+    margin-bottom: 20px;
+  }
+
+  .slicedContainer :global(.text-row:nth-child(3)) {
+    margin-top: 20px;
+    margin-bottom: -40px;
   }
 
   .textContent {
@@ -226,7 +291,13 @@
 
 @media (max-width: 768px) {
   .heroContainer {
+    padding: 0 24px 24px 24px;
+  }
+
+  .heroBox {
+    max-height: 60vh;
     min-height: 400px;
+    border-radius: 24px;
   }
 
   .mainContent {
@@ -235,6 +306,16 @@
 
   .textContent {
     font-size: clamp(30px, 10vw, 50px);
+  }
+
+  .slicedContainer :global(.text-row:nth-child(1)) {
+    margin-top: -20px;
+    margin-bottom: 10px;
+  }
+
+  .slicedContainer :global(.text-row:nth-child(3)) {
+    margin-top: 10px;
+    margin-bottom: -20px;
   }
 
   .rightContent {

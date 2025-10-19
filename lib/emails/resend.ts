@@ -22,5 +22,4 @@ export const resend = {
 
 // Email addresses
 export const ADMIN_EMAIL = 'jayvalleo@sweetdreamsmusic.com';
-// Using Resend's test email for development - change to bookings@sweetdreamsprod.com when going live
-export const FROM_EMAIL = 'Sweet Dreams Music <onboarding@resend.dev>';
+export const FROM_EMAIL = 'Sweet Dreams Music <noreply@sweetdreamsprod.com>';

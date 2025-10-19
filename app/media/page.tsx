@@ -1,10 +1,149 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styles from "./media.module.css";
+import WhyAnimated from "@/components/media/WhyAnimated";
+import ServicesAnimated from "@/components/media/ServicesAnimated";
+import MediaHeroAnimated from "@/components/media/MediaHeroAnimated";
+import PortfolioHorizontalScroll from "@/components/media/PortfolioHorizontalScroll";
 
 export default function MediaPage() {
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  const [cursorLogo, setCursorLogo] = useState<string | null>(null);
+
+  const portfolioItems = [
+    {
+      href: "/work/knoxville-carnival-coverage",
+      image: "https://customer-w6h9o08eg118alny.cloudflarestream.com/d554360a479b1380f96df7a4ef8f03a3/thumbnails/thumbnail.jpg?time=1s&height=600",
+      title: "KISSEL ENTERTAINMENT COMMERCIAL & MORE",
+      client: "Kissel Entertainment",
+      category: "Commercial · Event Coverage",
+      logo: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/KisselLogo.png",
+    },
+    {
+      href: "/work/indianapolis-childrens-museum-ferris-wheel",
+      image: "https://videodelivery.net/7a243650c649bdcf4369622acd47abf6/thumbnails/thumbnail.jpg?time=1s&height=600",
+      title: "INDIANAPOLIS CHILDREN'S MUSEUM FERRIS WHEEL",
+      client: "Indianapolis Children's Museum",
+      category: "Brand Film · Event",
+      logo: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/IndyChildrensMuseumLogo.png",
+    },
+    {
+      href: "/work/brookfield-zoo-ferris-wheel",
+      image: "https://videodelivery.net/b3b94bd1543e2452571b90aab0a38e9b/thumbnails/thumbnail.jpg?time=1s&height=600",
+      title: "BROOKFIELD ZOO FERRIS WHEEL",
+      client: "RideWorx & Brookfield Zoo",
+      category: "Brand Film · Event",
+      logo: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/BrookfieldZooLogo.png",
+    },
+    {
+      href: "/work/fort-wayne-hyperlapse-showcase",
+      image: "https://customer-w6h9o08eg118alny.cloudflarestream.com/a507a5b8a369b70b7332c0567cbbcc4c/thumbnails/thumbnail.jpg?time=5s&height=600",
+      title: "FORT WAYNE HYPERLAPSE CITY SHOWCASE",
+      client: "Sweet Dreams Media",
+      category: "Hyperlapse · Showcase",
+      logo: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/VisitFortWayneLogo.png",
+    },
+    {
+      href: "/work/heaven-in-fort-wayne",
+      image: "https://customer-w6h9o08eg118alny.cloudflarestream.com/d8c34ebf7e9bb7a150feaa29cd60a9a6/thumbnails/thumbnail.jpg?time=3s&height=600",
+      title: "HEAVEN IN FORT WAYNE",
+      client: "Sweet Dreams Media",
+      category: "Showcase · Travel",
+      logo: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/VisitFortWayneLogo.png",
+    },
+    {
+      href: "/work/wake-up-blind-music-video",
+      image: "https://videodelivery.net/9db7601df93c3b1634ac41ad715aa9c6/thumbnails/thumbnail.jpg?time=1s&height=600",
+      title: "WAKE UP BLIND MUSIC VIDEO",
+      client: "Jay Val Leo",
+      category: "Music Video",
+      logo: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SWEETDREAMSLOGO_1.jpg",
+    },
+    {
+      href: "/work/aegis-dental-trusted-dentistry",
+      image: "https://videodelivery.net/089a5f4bac2141b90d9583820ee2b6cb/thumbnails/thumbnail.jpg?time=1s&height=600",
+      title: "AEGIS DENTAL - TRUSTED DENTISTRY",
+      client: "Aegis Dental Group",
+      category: "Commercial · Brand Film",
+      logo: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/TrustedDentalLogo.png",
+    },
+    {
+      href: "/work/sweet-dreams-recording-studio",
+      image: "https://customer-w6h9o08eg118alny.cloudflarestream.com/d912b8bd58831e95431db3c24791e44b/thumbnails/thumbnail.jpg?time=1s&height=600",
+      title: "SWEET DREAMS RECORDING STUDIO SHOWCASE",
+      client: "Sweet Dreams Media",
+      category: "Brand Film · Showcase",
+      logo: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SWEETDREAMSLOGO_1.jpg",
+    },
+    {
+      href: "/work/vegas-dream-travel-content",
+      image: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/VegasDream/VegasDreamCover.png",
+      title: "VEGAS DREAM - TRAVEL CONTENT",
+      client: "Sweet Dreams Media",
+      category: "Travel · Content Creation",
+      logo: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SWEETDREAMSLOGO_1.jpg",
+    },
+    {
+      href: "/work/cumberland-falls-ky-nature-showcase",
+      image: "https://customer-w6h9o08eg118alny.cloudflarestream.com/62314c34c826a3b298815ee506ad875f/thumbnails/thumbnail.jpg?time=3s&height=600",
+      title: "CUMBERLAND FALLS, KY NATURE SHOWCASE",
+      client: "Personal Project",
+      category: "Nature · Showcase",
+      logo: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SWEETDREAMSLOGO_1.jpg",
+    },
+    {
+      href: "/work/snobiz-snowcone-truck-commercial",
+      image: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/SnoBizSnoCone/_DSC4925.jpg",
+      title: "SNOB'IZ SNOWCONE TRUCK COMMERCIAL",
+      client: "SnoB'iz",
+      category: "Commercial",
+      logo: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/logo-snobiz-footer-ret.png",
+    },
+    {
+      href: "/work/sliced-by-sonny-commercial",
+      image: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/JSonnyBarberShop/DSC07101.jpg",
+      title: "SLICED BY SONNY COMMERCIAL",
+      client: "Sliced By Sonny",
+      category: "Commercial",
+      logo: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/slicedBySonny.png",
+    },
+    {
+      href: "/work/vintage-fest-fort-wayne",
+      image: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/VintageFestFortWayne/DJI_20250817131856_0026_D.jpg",
+      title: "VINTAGE FEST FORT WAYNE",
+      client: "Vintage Fest",
+      category: "Event Coverage",
+      logo: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SummitCityVintageLogo.png",
+    },
+    {
+      href: "/work/fort-wayne-carnival-recap",
+      image: "https://videodelivery.net/1a0f730d316664839064b8a88543d63a/thumbnails/thumbnail.jpg?time=1s&height=600",
+      title: "FORT WAYNE CARNIVAL RECAP",
+      client: "Kissel Entertainment",
+      category: "Event Coverage · Recap",
+      logo: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/KisselLogo.png",
+    },
+    {
+      href: "/work/nissan-warsaw-dealership",
+      image: "",
+      title: "NISSAN WARSAW DEALERSHIP",
+      client: "Nissan Prime Dealer",
+      category: "Commercial · Automotive",
+      logo: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/NissanLogo.png",
+      comingSoon: true,
+    },
+    {
+      href: "/work/dear-lover-music-video",
+      image: "https://customer-w6h9o08eg118alny.cloudflarestream.com/beeb2ee6a9a30c655e79bdc1f4fb6d20/thumbnails/thumbnail.jpg?time=3s&height=600",
+      title: "DEAR LOVER - MUSIC VIDEO",
+      client: "Lyaz",
+      category: "Music Video",
+      logo: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/LyazLogo.png",
+    },
+  ];
+
   useEffect(() => {
     const handleScroll = () => {
       const title = document.getElementById('scrolling-title');
@@ -19,117 +158,40 @@ export default function MediaPage() {
       }
     };
 
+    const handleMouseMove = (e: MouseEvent) => {
+      setCursorPos({ x: e.clientX, y: e.clientY });
+    };
+
     window.addEventListener('scroll', handleScroll);
+    window.addEventListener('mousemove', handleMouseMove);
     handleScroll();
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
   }, []);
 
   return (
     <div className={styles.page}>
-      {/* Hero Section - White */}
-      <section className={styles.hero}>
-        <div className={styles.heroContainer}>
-          <p className={styles.miniTitle}>SWEET DREAMS MEDIA</p>
-          <h1 className={styles.heroTitle}>
-            YOUR VISION,<br />
-            AMPLIFIED
-          </h1>
-          <p className={styles.heroSubtitle}>
-            Professional video production and content creation that brings your brand to life.
-          </p>
-          <Link href="#contact" className={styles.heroButton}>
-            DISCUSS YOUR VISION
-          </Link>
+      {/* Custom Cursor with Logo */}
+      {cursorLogo && (
+        <div
+          className={styles.customCursor}
+          style={{
+            left: `${cursorPos.x}px`,
+            top: `${cursorPos.y}px`,
+          }}
+        >
+          <img src={cursorLogo} alt="Client Logo" className={styles.cursorLogo} />
         </div>
-      </section>
+      )}
+
+      {/* Hero Section - White */}
+      <MediaHeroAnimated />
 
       {/* Why Choose Us - Black */}
-      <section className={styles.why}>
-        <div className={styles.container}>
-          <p className={styles.miniTitle}>WHY SWEET DREAMS</p>
-          <h2 className={styles.sectionTitle}>WHAT SETS US APART</h2>
-
-          <div className={styles.whyGrid}>
-            <div className={styles.whyCard}>
-              <h3 className={styles.whyTitle}>FAST TURNAROUND</h3>
-              <p className={styles.whyDescription}>
-                We respond to all inquiries within 24 hours and deliver projects on time, every time. No endless waiting.
-              </p>
-            </div>
-            <div className={styles.whyCard}>
-              <h3 className={styles.whyTitle}>FULL-SERVICE PRODUCTION</h3>
-              <p className={styles.whyDescription}>
-                From concept to final edit, we handle everything. Music, videography, editing, color grading—all in-house.
-              </p>
-            </div>
-            <div className={styles.whyCard}>
-              <h3 className={styles.whyTitle}>CLIENT-FOCUSED APPROACH</h3>
-              <p className={styles.whyDescription}>
-                Your vision matters. We work closely with you at every step to ensure the final product exceeds expectations.
-              </p>
-            </div>
-            <div className={styles.whyCard}>
-              <h3 className={styles.whyTitle}>PROFESSIONAL QUALITY</h3>
-              <p className={styles.whyDescription}>
-                Cinema-grade cameras, professional audio, expert color grading. We don't compromise on quality.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Services - White */}
-      <section className={styles.services}>
-        <div className={styles.container}>
-          <p className={styles.miniTitle}>SERVICES</p>
-          <h2 className={styles.sectionTitle}>OUR SOLUTIONS</h2>
-
-          <div className={styles.servicesGrid}>
-            <div className={styles.serviceCard}>
-              <h3 className={styles.serviceTitle}>BRAND FILMS</h3>
-              <p className={styles.serviceDescription}>
-                Cinematic storytelling that captures your brand's essence and connects with your audience.
-              </p>
-            </div>
-            <div className={styles.serviceCard}>
-              <h3 className={styles.serviceTitle}>COMMERCIALS</h3>
-              <p className={styles.serviceDescription}>
-                High-impact commercials designed to convert viewers into customers.
-              </p>
-            </div>
-            <div className={styles.serviceCard}>
-              <h3 className={styles.serviceTitle}>EVENT COVERAGE</h3>
-              <p className={styles.serviceDescription}>
-                Professional event documentation that preserves your most important moments.
-              </p>
-            </div>
-            <div className={styles.serviceCard}>
-              <h3 className={styles.serviceTitle}>CORPORATE CONTENT</h3>
-              <p className={styles.serviceDescription}>
-                From training videos to internal communications, we help your business communicate effectively.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Client Showcase - Black */}
-      <section className={styles.clients}>
-        <div className={styles.container}>
-          <p className={styles.miniTitle}>TRUSTED BY</p>
-          <h2 className={styles.sectionTitle}>OUR CLIENTS</h2>
-
-          <div className={styles.clientsGrid}>
-            <div className={styles.clientCard}>Fort Wayne Vintage</div>
-            <div className={styles.clientCard}>Ride Worx</div>
-            <div className={styles.clientCard}>Children's Museum</div>
-            <div className={styles.clientCard}>Brookfield Zoo</div>
-            <div className={styles.clientCard}>Aegis Dental</div>
-            <div className={styles.clientCard}>Kissel Entertainment</div>
-          </div>
-        </div>
-      </section>
+      <WhyAnimated />
 
       {/* Value Proposition - White */}
       <section className={styles.value} id="value-section">
@@ -143,222 +205,29 @@ export default function MediaPage() {
         </div>
       </section>
 
-      {/* Complete Portfolio - Black */}
-      <section className={styles.projectList}>
-        <div className={styles.container}>
-          <p className={styles.miniTitle}>ALL WORK</p>
-          <h2 className={styles.sectionTitle}>COMPLETE PORTFOLIO</h2>
+      {/* Complete Portfolio - Horizontal Scroll */}
+      <PortfolioHorizontalScroll
+        items={portfolioItems}
+        onMouseEnter={(logo) => setCursorLogo(logo)}
+        onMouseLeave={() => setCursorLogo(null)}
+      />
 
-          <div className={styles.portfolioGrid}>
-            {/* Published Projects */}
-            <Link href="/work/knoxville-carnival-coverage" className={styles.portfolioCard}>
-              <div className={styles.portfolioImage}>
-                <img
-                  src="https://customer-w6h9o08eg118alny.cloudflarestream.com/d554360a479b1380f96df7a4ef8f03a3/thumbnails/thumbnail.jpg?time=1s&height=600"
-                  alt="Knoxville Carnival"
-                />
-              </div>
-              <div className={styles.portfolioInfo}>
-                <h3 className={styles.portfolioTitle}>KISSEL ENTERTAINMENT COMMERCIAL & MORE</h3>
-                <p className={styles.portfolioClient}>Kissel Entertainment</p>
-              </div>
-            </Link>
+      {/* Services - White */}
+      <ServicesAnimated />
 
-            <Link href="/work/indianapolis-childrens-museum-ferris-wheel" className={styles.portfolioCard}>
-              <div className={styles.portfolioImage}>
-                <img
-                  src="https://videodelivery.net/7a243650c649bdcf4369622acd47abf6/thumbnails/thumbnail.jpg?time=1s&height=600"
-                  alt="Indianapolis Children's Museum"
-                />
-              </div>
-              <div className={styles.portfolioInfo}>
-                <h3 className={styles.portfolioTitle}>INDIANAPOLIS CHILDREN'S MUSEUM FERRIS WHEEL</h3>
-                <p className={styles.portfolioClient}>Indianapolis Children's Museum</p>
-              </div>
-            </Link>
-
-            <Link href="/work/brookfield-zoo-ferris-wheel" className={styles.portfolioCard}>
-              <div className={styles.portfolioImage}>
-                <img
-                  src="https://videodelivery.net/b3b94bd1543e2452571b90aab0a38e9b/thumbnails/thumbnail.jpg?time=1s&height=600"
-                  alt="Brookfield Zoo Ferris Wheel"
-                />
-              </div>
-              <div className={styles.portfolioInfo}>
-                <h3 className={styles.portfolioTitle}>BROOKFIELD ZOO FERRIS WHEEL</h3>
-                <p className={styles.portfolioClient}>RideWorx & Brookfield Zoo</p>
-              </div>
-            </Link>
-
-            <Link href="/work/fort-wayne-hyperlapse-showcase" className={styles.portfolioCard}>
-              <div className={styles.portfolioImage}>
-                <img
-                  src="https://customer-w6h9o08eg118alny.cloudflarestream.com/a507a5b8a369b70b7332c0567cbbcc4c/thumbnails/thumbnail.jpg?time=5s&height=600"
-                  alt="Fort Wayne Hyperlapse"
-                />
-              </div>
-              <div className={styles.portfolioInfo}>
-                <h3 className={styles.portfolioTitle}>FORT WAYNE HYPERLAPSE CITY SHOWCASE</h3>
-                <p className={styles.portfolioClient}>Sweet Dreams Media</p>
-              </div>
-            </Link>
-
-            <Link href="/work/wake-up-blind-music-video" className={styles.portfolioCard}>
-              <div className={styles.portfolioImage}>
-                <img
-                  src="https://videodelivery.net/9db7601df93c3b1634ac41ad715aa9c6/thumbnails/thumbnail.jpg?time=1s&height=600"
-                  alt="Wake Up Blind Music Video"
-                />
-              </div>
-              <div className={styles.portfolioInfo}>
-                <h3 className={styles.portfolioTitle}>WAKE UP BLIND MUSIC VIDEO</h3>
-                <p className={styles.portfolioClient}>Jay Val Leo</p>
-              </div>
-            </Link>
-
-            <Link href="/work/aegis-dental-trusted-dentistry" className={styles.portfolioCard}>
-              <div className={styles.portfolioImage}>
-                <img
-                  src="https://videodelivery.net/089a5f4bac2141b90d9583820ee2b6cb/thumbnails/thumbnail.jpg?time=1s&height=600"
-                  alt="Aegis Dental"
-                />
-              </div>
-              <div className={styles.portfolioInfo}>
-                <h3 className={styles.portfolioTitle}>AEGIS DENTAL - TRUSTED DENTISTRY</h3>
-                <p className={styles.portfolioClient}>Aegis Dental Group</p>
-              </div>
-            </Link>
-
-            <Link href="/work/sweet-dreams-recording-studio" className={styles.portfolioCard}>
-              <div className={styles.portfolioImage}>
-                <img
-                  src="https://customer-w6h9o08eg118alny.cloudflarestream.com/d912b8bd58831e95431db3c24791e44b/thumbnails/thumbnail.jpg?time=1s&height=600"
-                  alt="Sweet Dreams Recording Studio"
-                />
-              </div>
-              <div className={styles.portfolioInfo}>
-                <h3 className={styles.portfolioTitle}>SWEET DREAMS RECORDING STUDIO SHOWCASE</h3>
-                <p className={styles.portfolioClient}>Sweet Dreams Media</p>
-              </div>
-            </Link>
-
-            <Link href="/work/vegas-dream-travel-content" className={styles.portfolioCard}>
-              <div className={styles.portfolioImage}>
-                <img
-                  src="https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/VegasDream/VegasDreamCover.png"
-                  alt="Vegas Dream"
-                />
-              </div>
-              <div className={styles.portfolioInfo}>
-                <h3 className={styles.portfolioTitle}>VEGAS DREAM - TRAVEL CONTENT</h3>
-                <p className={styles.portfolioClient}>Sweet Dreams Media</p>
-              </div>
-            </Link>
-
-            <Link href="/work/cumberland-falls-ky-nature-showcase" className={styles.portfolioCard}>
-              <div className={styles.portfolioImage}>
-                <img
-                  src="https://customer-w6h9o08eg118alny.cloudflarestream.com/62314c34c826a3b298815ee506ad875f/thumbnails/thumbnail.jpg?time=3s&height=600"
-                  alt="Cumberland Falls"
-                />
-              </div>
-              <div className={styles.portfolioInfo}>
-                <h3 className={styles.portfolioTitle}>CUMBERLAND FALLS, KY NATURE SHOWCASE</h3>
-                <p className={styles.portfolioClient}>Personal Project</p>
-              </div>
-            </Link>
-
-            <Link href="/work/snobiz-snowcone-truck-commercial" className={styles.portfolioCard}>
-              <div className={styles.portfolioImage}>
-                <img
-                  src="https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/SnoBizSnoCone/_DSC4925.jpg"
-                  alt="SnoB'iz SnowCone Truck"
-                />
-              </div>
-              <div className={styles.portfolioInfo}>
-                <h3 className={styles.portfolioTitle}>SNOB'IZ SNOWCONE TRUCK COMMERCIAL</h3>
-                <p className={styles.portfolioClient}>SnoB'iz</p>
-              </div>
-            </Link>
-
-            <Link href="/work/sliced-by-sonny-commercial" className={styles.portfolioCard}>
-              <div className={styles.portfolioImage}>
-                <img
-                  src="https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/JSonnyBarberShop/DSC07101.jpg"
-                  alt="Sliced By Sonny"
-                />
-              </div>
-              <div className={styles.portfolioInfo}>
-                <h3 className={styles.portfolioTitle}>SLICED BY SONNY COMMERCIAL</h3>
-                <p className={styles.portfolioClient}>Sliced By Sonny</p>
-              </div>
-            </Link>
-
-            <Link href="/work/vintage-fest-fort-wayne" className={styles.portfolioCard}>
-              <div className={styles.portfolioImage}>
-                <img
-                  src="https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/VintageFestFortWayne/DJI_20250817131856_0026_D.jpg"
-                  alt="Vintage Fest Fort Wayne"
-                />
-              </div>
-              <div className={styles.portfolioInfo}>
-                <h3 className={styles.portfolioTitle}>VINTAGE FEST FORT WAYNE</h3>
-                <p className={styles.portfolioClient}>Vintage Fest</p>
-              </div>
-            </Link>
-
-            <Link href="/work/fort-wayne-carnival-recap" className={styles.portfolioCard}>
-              <div className={styles.portfolioImage}>
-                <img
-                  src="https://videodelivery.net/1a0f730d316664839064b8a88543d63a/thumbnails/thumbnail.jpg?time=1s&height=600"
-                  alt="Fort Wayne Carnival"
-                />
-              </div>
-              <div className={styles.portfolioInfo}>
-                <h3 className={styles.portfolioTitle}>FORT WAYNE CARNIVAL RECAP</h3>
-                <p className={styles.portfolioClient}>Kissel Entertainment</p>
-              </div>
-            </Link>
-
-            {/* Coming Soon Projects */}
-            <Link href="/work/nissan-warsaw-dealership" className={styles.portfolioCard + ' ' + styles.comingSoonCard}>
-              <div className={styles.portfolioImage}>
-                <div className={styles.comingSoon}>
-                  <div className={styles.comingSoonText}>COMING SOON</div>
-                </div>
-              </div>
-              <div className={styles.portfolioInfo}>
-                <h3 className={styles.portfolioTitle}>NISSAN WARSAW DEALERSHIP</h3>
-                <p className={styles.portfolioClient}>Nissan Prime Dealer</p>
-              </div>
-            </Link>
-
-            <Link href="/work/dear-lover-music-video" className={styles.portfolioCard + ' ' + styles.comingSoonCard}>
-              <div className={styles.portfolioImage}>
-                <div className={styles.comingSoon}>
-                  <div className={styles.comingSoonText}>COMING SOON</div>
-                </div>
-              </div>
-              <div className={styles.portfolioInfo}>
-                <h3 className={styles.portfolioTitle}>DEAR LOVER - MUSIC VIDEO</h3>
-                <p className={styles.portfolioClient}>Lyaz</p>
-              </div>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section - White */}
+      {/* CTA Section - Grey */}
       <section className={styles.cta} id="contact">
         <div className={styles.container}>
-          <p className={styles.miniTitle}>GET IN TOUCH</p>
-          <h2 className={styles.ctaTitle}>
-            READY TO CREATE<br />
-            SOMETHING AMAZING?
-          </h2>
-          <p className={styles.ctaSubtitle}>
-            Let's discuss your project and bring your vision to life
-          </p>
+          <div className={styles.ctaContent}>
+            <p className={styles.miniTitle}>GET IN TOUCH</p>
+            <h2 className={styles.ctaTitle}>
+              READY TO CREATE<br />
+              SOMETHING AMAZING?
+            </h2>
+            <p className={styles.ctaSubtitle}>
+              Let's discuss your project and bring your vision to life
+            </p>
+          </div>
 
           <form className={styles.form}>
             <div className={styles.formRow}>

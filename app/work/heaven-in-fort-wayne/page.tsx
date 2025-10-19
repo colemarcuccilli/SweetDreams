@@ -1,17 +1,20 @@
 import Link from "next/link";
 import styles from "./project.module.css";
+import VideoPlayer from "./VideoPlayer";
 
-export default function DearLoverPage() {
+export default function HeavenInFortWaynePage() {
   const project = {
-    title: 'DEAR LOVER - MUSIC VIDEO',
-    client_name: 'Lyaz',
-    description: 'Cinematic music video bringing artistic vision to life through compelling visuals.',
-    category: 'Music Video',
+    title: 'HEAVEN IN FORT WAYNE',
+    client_name: 'Sweet Dreams Media',
+    client_logo_url: 'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SWEETDREAMSLOGO_1.jpg',
+    cloudflare_stream_id: 'd8c34ebf7e9bb7a150feaa29cd60a9a6',
+    description: 'Aerial cinematography capturing the beauty of Fort Wayne from above.',
+    category: 'Aerial Cinematography',
     location: 'Fort Wayne, IN',
     year: 2025,
-    services: ['Scripting', 'Cinematography', 'Editing'],
-    full_description: 'Collaborated with artist Lyaz to create a visually stunning music video for "Dear Lover." This project combined creative scripting with dynamic cinematography to tell a compelling visual story that perfectly complements the music and artist\'s vision.',
-    cloudflare_video_id: 'beeb2ee6a9a30c655e79bdc1f4fb6d20'
+    services: ['Drone Cinematography', 'Editing', 'Color Grading'],
+    full_description: 'An aerial showcase of Fort Wayne that captures the city\'s serene beauty from a heavenly perspective. This project demonstrates our expertise in drone cinematography and our passion for showcasing Fort Wayne\'s unique character.',
+    additional_images: []
   };
 
   return (
@@ -23,20 +26,20 @@ export default function DearLoverPage() {
           <p className={styles.description}>{project.description}</p>
         </div>
         <div className={styles.clientInfo}>
+          {project.client_logo_url && (
+            <img
+              src={project.client_logo_url}
+              alt={project.client_name}
+              className={styles.clientLogo}
+            />
+          )}
           <span className={styles.clientName}>{project.client_name}</span>
         </div>
       </header>
 
-      {/* Video Player */}
+      {/* Main Video */}
       <section className={styles.videoSection}>
-        <div className={styles.videoWrapper}>
-          <iframe
-            src={`https://customer-w6h9o08eg118alny.cloudflarestream.com/${project.cloudflare_video_id}/iframe`}
-            className={styles.video}
-            allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
-            allowFullScreen={true}
-          />
-        </div>
+        <VideoPlayer videoId={project.cloudflare_stream_id} className={styles.videoWrapper} playTextSize="large" />
       </section>
 
       {/* Project Metadata */}

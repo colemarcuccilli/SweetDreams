@@ -27,6 +27,12 @@
   color: white;
   margin-top: 0px;
   margin-bottom: 48px;
+  text-align: center;
+}
+
+.rotatingWord {
+  font-size: 160px;
+  display: inline-block;
 }
 
 .intro {
@@ -34,41 +40,76 @@
   font-size: 20px;
   line-height: 1.8;
   color: #aaa;
-  margin: 0 0 64px 0;
+  margin: 0 auto 64px auto;
   max-width: 1200px;
+  text-align: center;
+}
+
+.giveContent {
+  margin-top: 64px;
 }
 
 .giveGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 32px;
+  gap: 2px;
   margin-bottom: 64px;
 }
 
 .giveCard {
-  padding: 48px 32px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  text-align: center;
+  padding: 0;
+  margin: 0;
 }
 
-.giveNumber {
+.giveCardTitle {
   font-family: 'Anton', sans-serif;
-  font-size: 72px;
+  font-size: 96px;
   font-weight: 400;
   text-transform: uppercase;
   color: white;
-  margin: 0 0 16px 0;
+  margin: 0 0 8px 0;
+  line-height: 0.9;
+  text-align: center;
+}
+
+.giveCardText {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  line-height: 1.3;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #888;
+  margin: 0;
+  text-align: center;
+}
+
+.ratioExplanation {
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 48px 32px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ratioTitle {
+  font-family: 'Anton', sans-serif;
+  font-size: 48px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: white;
+  margin: 0 0 24px 0;
   line-height: 1;
 }
 
-.giveLabel {
+.ratioText {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 14px;
+  font-size: 16px;
+  line-height: 1.8;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: #888;
+  letter-spacing: 0.05em;
+  color: #aaa;
   margin: 0;
 }
 
@@ -165,10 +206,23 @@
 
   .giveGrid {
     grid-template-columns: 1fr;
+    gap: 2px;
   }
 
-  .giveNumber {
-    font-size: 56px;
+  .giveCardTitle {
+    font-size: 72px;
+  }
+
+  .giveCardText {
+    font-size: 13px;
+  }
+
+  .ratioTitle {
+    font-size: 36px;
+  }
+
+  .ratioText {
+    font-size: 14px;
   }
 
   .scrollText {
@@ -177,6 +231,26 @@
 }
 
 @media (max-width: 768px) {
+  .giveCardTitle {
+    font-size: 56px;
+  }
+
+  .giveCardText {
+    font-size: 12px;
+  }
+
+  .ratioTitle {
+    font-size: 28px;
+  }
+
+  .ratioText {
+    font-size: 12px;
+  }
+
+  .ratioExplanation {
+    padding: 32px 24px;
+  }
+
   .scrollWrapper {
     padding: 60px 32px;
   }

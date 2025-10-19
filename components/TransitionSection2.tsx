@@ -10,97 +10,49 @@ if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-// Custom line splitting function
-function splitTextIntoLines(element: HTMLElement): HTMLElement[] {
-  const text = element.textContent || '';
-  const words = text.split(' ');
-
-  // Clear the element
-  element.innerHTML = '';
-
-  // Create a temporary container to measure line breaks
-  const tempSpans: HTMLSpanElement[] = [];
-
-  words.forEach((word) => {
-    const span = document.createElement('span');
-    span.textContent = word;
-    span.style.display = 'inline-block';
-    span.style.marginRight = '0.25em'; // Add space using margin
-    element.appendChild(span);
-    tempSpans.push(span);
-  });
-
-  // Now detect line breaks based on Y position
-  const lines: HTMLElement[] = [];
-  let currentLine: HTMLElement | null = null;
-  let currentY = -1;
-
-  tempSpans.forEach((span) => {
-    const rect = span.getBoundingClientRect();
-
-    if (rect.top !== currentY) {
-      // New line detected
-      currentY = rect.top;
-      currentLine = document.createElement('div');
-      currentLine.className = styles.line;
-      lines.push(currentLine);
-    }
-
-    if (currentLine) {
-      const wordSpan = document.createElement('span');
-      wordSpan.textContent = span.textContent;
-      wordSpan.style.display = 'inline-block';
-      wordSpan.style.marginRight = '0.25em';
-      currentLine.appendChild(wordSpan);
-    }
-  });
-
-  // Clear and rebuild with line divs
-  element.innerHTML = '';
-  lines.forEach(line => {
-    const wrapper = document.createElement('div');
-    wrapper.className = styles.lineWrapper;
-    wrapper.appendChild(line);
-    element.appendChild(wrapper);
-  });
-
-  return lines;
-}
-
 export default function TransitionSection2() {
   const sectionRef = useRef<HTMLElement>(null);
-  const largeTextRef = useRef<HTMLParagraphElement>(null);
-  const mediumTextRef = useRef<HTMLParagraphElement>(null);
-  const smallTextRef = useRef<HTMLParagraphElement>(null);
+  const line1Ref = useRef<HTMLParagraphElement>(null);
+  const line2Ref = useRef<HTMLParagraphElement>(null);
+  const line3Ref = useRef<HTMLParagraphElement>(null);
+  const line4Ref = useRef<HTMLParagraphElement>(null);
+  const line5Ref = useRef<HTMLParagraphElement>(null);
+  const line6Ref = useRef<HTMLParagraphElement>(null);
+  const line7Ref = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
     const ctx = gsap.context(() => {
-      const elements = [largeTextRef.current, mediumTextRef.current, smallTextRef.current];
+      const elements = [
+        { ref: line1Ref.current, delay: 0 },
+        { ref: line2Ref.current, delay: 0.15 },
+        { ref: line3Ref.current, delay: 0.3 },
+        { ref: line4Ref.current, delay: 0.45 },
+        { ref: line5Ref.current, delay: 0.6 },
+        { ref: line6Ref.current, delay: 0.75 },
+        { ref: line7Ref.current, delay: 0.9 }
+      ];
 
-      elements.forEach((element) => {
-        if (!element) return;
-
-        // Split text into lines
-        const lines = splitTextIntoLines(element);
+      elements.forEach(({ ref, delay }) => {
+        if (!ref) return;
 
         // Set initial state
-        gsap.set(lines, {
-          yPercent: 100,
+        gsap.set(ref, {
+          y: 50,
           opacity: 0
         });
 
         // Create ScrollTrigger animation
-        gsap.to(lines, {
-          yPercent: 0,
+        gsap.to(ref, {
+          y: 0,
           opacity: 1,
           duration: 1,
-          stagger: 0.1,
+          delay: delay,
           ease: 'power3.out',
           scrollTrigger: {
-            trigger: element,
-            start: 'top 80%',
+            trigger: sectionRef.current,
+            start: 'top 70%',
             toggleActions: 'play none none reverse',
           }
         });
@@ -111,15 +63,27 @@ export default function TransitionSection2() {
   }, []);
 
   return (
-    <section className={styles.section} id="transition-section-2" ref={sectionRef}>
+    <section className={styles.section} ref={sectionRef}>
       <div className={styles.container}>
-        <p className={styles.largeText} ref={largeTextRef}>
-          OUR RETAINER PACKAGES DELIVER HIGH-VOLUME, ENGAGING CONTENT THAT KEEPS YOUR BRAND IN FRONT OF YOUR CUSTOMERS. MORE CONTENT MEANS MORE TOUCHPOINTS. MORE TOUCHPOINTS MEANS MORE TRUST. MORE TRUST MEANS MORE SALES.
+        <p className={styles.largeText} ref={line1Ref}>
+          OUR RETAINER PACKAGES DELIVER HIGH-VOLUME, ENGAGING CONTENT THAT KEEPS YOUR BRAND IN FRONT OF YOUR CUSTOMERS.
         </p>
-        <p className={styles.mediumText} ref={mediumTextRef}>
-          WE GREW UP IN THIS. RAISED ON SOCIAL MEDIA, TRAINED IN TRENDS. WE KNOW WHAT WORKS IN 2025 BECAUSE WE LIVE IT EVERY DAY.
+        <p className={styles.largeText} ref={line2Ref}>
+          MORE CONTENT MEANS MORE TOUCHPOINTS.
         </p>
-        <p className={styles.smallText} ref={smallTextRef}>
+        <p className={styles.largeText} ref={line3Ref}>
+          MORE TOUCHPOINTS MEANS MORE TRUST.
+        </p>
+        <p className={styles.largeText} ref={line4Ref}>
+          MORE TRUST MEANS MORE SALES.
+        </p>
+        <p className={styles.mediumText} ref={line5Ref}>
+          WE GREW UP IN THIS. RAISED ON SOCIAL MEDIA, TRAINED IN TRENDS.
+        </p>
+        <p className={styles.mediumText} ref={line6Ref}>
+          WE KNOW WHAT WORKS IN 2025 BECAUSE WE LIVE IT EVERY DAY.
+        </p>
+        <p className={styles.smallText} ref={line7Ref}>
           LET'S BUILD YOUR CONTENT STRATEGY
         </p>
       </div>

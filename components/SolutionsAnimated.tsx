@@ -98,7 +98,7 @@ export default function SolutionsAnimated() {
                 {/* Back - Logo */}
                 <div className={styles.flipCardBack}>
                   <img
-                    src="https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SWEETDREAMSNAVLOGO.png"
+                    src="https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SWEETDREAMSLOGO_1.jpg"
                     alt="Sweet Dreams Logo"
                     className={styles.logoImage}
                   />

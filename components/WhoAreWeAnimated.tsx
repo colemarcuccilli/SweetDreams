@@ -23,6 +23,7 @@ function splitTextIntoCharacters(element: HTMLElement): HTMLElement[] {
     const wordWrapper = document.createElement('span');
     wordWrapper.style.display = 'inline-block';
     wordWrapper.style.whiteSpace = 'nowrap';
+    wordWrapper.style.marginRight = '0.25em'; // Add small margin for word spacing
 
     // Split word into characters
     for (let i = 0; i < word.length; i++) {
@@ -35,15 +36,7 @@ function splitTextIntoCharacters(element: HTMLElement): HTMLElement[] {
     }
 
     element.appendChild(wordWrapper);
-
-    // Add space after word (except last word)
-    if (wordIndex < words.length - 1) {
-      const space = document.createElement('span');
-      space.innerHTML = '&nbsp;';
-      space.style.display = 'inline-block';
-      element.appendChild(space);
-      chars.push(space);
-    }
+    chars.push(wordWrapper); // Add word wrapper to chars for animation
   });
 
   return chars;
