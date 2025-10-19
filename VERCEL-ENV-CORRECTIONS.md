@@ -1,5 +1,29 @@
 # Vercel Environment Variables - Corrections Needed
 
+**Last Updated:** October 18, 2025 - Added authentication system and configured Supabase SMTP with Resend
+
+## ✅ RECENT UPDATES (Completed)
+
+### Authentication System Added:
+- ✅ User login/signup pages created (`/login`, `/signup`)
+- ✅ Supabase authentication configured
+- ✅ Nav updated with stacked LOGIN/SIGNUP or BOOK/LOG OUT buttons
+- ✅ Auth hooks created in `lib/useAuth.ts`
+
+### Email Configuration:
+- ✅ Supabase SMTP configured to use Resend
+- ✅ FROM_EMAIL updated to `noreply@sweetdreamsprod.com`
+- ✅ Customer booking emails now working (sends to both admin and customer)
+- ✅ Sweet Dreams logo hosted at `/public/sweet-dreams-logo.jpg`
+- ✅ Email templates created in `supabaseemails.md`
+
+### ⚠️ NEEDS ATTENTION BEFORE GO-LIVE:
+1. **Email Templates:** Copy all templates from `supabaseemails.md` into Supabase Dashboard → Authentication → Email Templates
+2. **Logo URLs:** Update all email templates to use `sweetdreamsprod.com` instead of `sweet-dreams-phi.vercel.app` (see GO-LIVE-CHECKLIST.md)
+3. **Test Authentication Flow:** Create test account and verify all emails are received
+
+---
+
 ## ❌ Remove These (Old Email System - Not Needed)
 ```
 EMAIL_USER=jayvalleo@sweetdreamsmusic.com  ❌ DELETE

@@ -77,15 +77,53 @@ STRIPE_SECRET_KEY=sk_live_XXXXXXXXXXXXXXXX (get from Stripe dashboard)
 
 **Change from:**
 ```typescript
-export const FROM_EMAIL = 'Sweet Dreams Music <onboarding@resend.dev>';
+export const FROM_EMAIL = 'Sweet Dreams Music <noreply@sweetdreamsprod.com>';
 ```
 
 **Change to:**
 ```typescript
-export const FROM_EMAIL = 'Sweet Dreams Music <bookings@sweetdreamsprod.com>';
+export const FROM_EMAIL = 'Sweet Dreams Music <noreply@sweetdreamsprod.com>';
 ```
 
+**✅ Already Updated!** (Currently uses noreply@sweetdreamsprod.com)
+
 **Commit this change and push to GitHub**
+
+---
+
+### [ ] 3.5. Update Email Template Logo URLs
+
+**⚠️ CRITICAL:** Email templates currently use testing domain for logo images
+
+**Files to update:**
+1. `supabaseemails.md` - Update all logo URLs
+2. Then copy updated templates to Supabase Dashboard → Authentication → Email Templates
+
+**Change from:**
+```html
+<img src="https://sweet-dreams-phi.vercel.app/sweet-dreams-logo.jpg" ...>
+```
+
+**Change to:**
+```html
+<img src="https://sweetdreamsprod.com/sweet-dreams-logo.jpg" ...>
+```
+
+**Steps:**
+1. Open `supabaseemails.md`
+2. Find/Replace all instances of `sweet-dreams-phi.vercel.app` with `sweetdreamsprod.com`
+3. Save file and commit to GitHub
+4. Copy each updated HTML template from the file
+5. Paste into corresponding Supabase email template
+6. Test by signing up with a test account
+
+**Templates to update in Supabase:**
+- Confirm Signup
+- Invite User
+- Magic Link
+- Change Email Address
+- Reset Password
+- Reauthentication
 
 ---
 
