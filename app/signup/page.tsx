@@ -21,8 +21,13 @@ export default function SignupPage() {
     setError('');
     setLoading(true);
 
+    console.log('🚀 SIGNUP: Starting signup process...');
+    console.log('📧 Email:', email);
+    console.log('👤 Full Name:', fullName);
+
     // Validate passwords match
     if (password !== confirmPassword) {
+      console.error('❌ SIGNUP: Passwords do not match');
       setError('Passwords do not match');
       setLoading(false);
       return;
@@ -30,17 +35,26 @@ export default function SignupPage() {
 
     // Validate password length
     if (password.length < 6) {
+      console.error('❌ SIGNUP: Password too short');
       setError('Password must be at least 6 characters');
       setLoading(false);
       return;
     }
 
-    const { error } = await signUp(email, password, fullName);
+    console.log('🔄 SIGNUP: Calling signUp function...');
+    const { data, error } = await signUp(email, password, fullName);
 
     if (error) {
+      console.error('❌ SIGNUP ERROR:', error);
+      console.error('Error message:', error.message);
+      console.error('Error status:', error.status);
+      console.error('Full error object:', JSON.stringify(error, null, 2));
       setError(error.message);
       setLoading(false);
     } else {
+      console.log('✅ SIGNUP SUCCESS:', data);
+      console.log('User created:', data?.user?.id);
+      console.log('Email:', data?.user?.email);
       setSuccess(true);
       setLoading(false);
       // Redirect to login after 2 seconds

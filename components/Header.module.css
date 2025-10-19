@@ -74,6 +74,12 @@
 }
 
 /* Stacked Auth Buttons */
+.authContainer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .authStack {
   display: flex;
   flex-direction: column;
@@ -105,6 +111,19 @@
   height: 1px;
   background: black;
   margin: 1px 0;
+}
+
+.profileIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: black;
+  transition: color 0.3s ease;
+  padding: 4px;
+}
+
+.profileIcon:hover {
+  color: #666;
 }
 
 /* Video Header Styles */
