@@ -5,6 +5,31 @@
   padding: 120px 60px;
 }
 
+/* Custom Cursor with Logo */
+.customCursor {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 50%;
+  border: 3px solid black;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  transition: opacity 0.2s ease;
+}
+
+.cursorLogo {
+  max-width: 70%;
+  max-height: 70%;
+  object-fit: contain;
+}
+
 .scrollContainer {
   position: relative;
   width: 100%;
@@ -55,6 +80,10 @@
   background: #000;
   transform: scaleX(0.85);
   opacity: 0.6;
+}
+
+.grid {
+  cursor: none;
 }
 
 .portfolioCard:hover {

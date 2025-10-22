@@ -107,6 +107,12 @@ export default function PackagesAnimated() {
       </div>
 
       <p className={`${styles.disclaimer} animate-title`}>*Additional charges may apply. All packages subject to availability.</p>
+
+      <div className={styles.buttonContainer}>
+        <a href="#contact" className={`${styles.packageButton} animate-title`}>
+          REACH OUT ABOUT PACKAGES
+        </a>
+      </div>
     </div>
   );
 }

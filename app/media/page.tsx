@@ -16,7 +16,7 @@ export default function MediaPage() {
     {
       href: "/work/knoxville-carnival-coverage",
       image: "https://customer-w6h9o08eg118alny.cloudflarestream.com/d554360a479b1380f96df7a4ef8f03a3/thumbnails/thumbnail.jpg?time=1s&height=600",
-      title: "KISSEL ENTERTAINMENT COMMERCIAL & MORE",
+      title: "KISSEL ENTERTAINMENT",
       client: "Kissel Entertainment",
       category: "Commercial · Event Coverage",
       logo: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/KisselLogo.png",
@@ -43,7 +43,7 @@ export default function MediaPage() {
       title: "FORT WAYNE HYPERLAPSE CITY SHOWCASE",
       client: "Sweet Dreams Media",
       category: "Hyperlapse · Showcase",
-      logo: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/VisitFortWayneLogo.png",
+      logo: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/CityofFortWayneLogo.png",
     },
     {
       href: "/work/heaven-in-fort-wayne",
@@ -51,7 +51,7 @@ export default function MediaPage() {
       title: "HEAVEN IN FORT WAYNE",
       client: "Sweet Dreams Media",
       category: "Showcase · Travel",
-      logo: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/VisitFortWayneLogo.png",
+      logo: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/CityofFortWayneLogo.png",
     },
     {
       href: "/work/wake-up-blind-music-video",

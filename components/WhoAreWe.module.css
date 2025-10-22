@@ -9,6 +9,8 @@
   margin: 0 auto;
   padding-left: 48px;
   padding-right: 48px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .title {
@@ -32,10 +34,31 @@
   font-weight: 400;
   color: white;
   text-align: center;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  max-width: 100%;
+  max-width: 1800px;
+  width: 100%;
   display: block;
+  box-sizing: border-box;
+  padding: 0 20px;
+}
+
+.textLine {
+  display: block;
+  white-space: nowrap;
+}
+
+.mainText :global(.creativeStorytellingWord) {
+  color: #4A90E2;
+  display: inline-block;
+  animation: floatBlue 3s ease-in-out infinite;
+}
+
+@keyframes floatBlue {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
 }
 
 .subText {
@@ -71,10 +94,24 @@
 
 @media (max-width: 1024px) {
   .mainText {
-    font-size: 80px;
+    font-size: 60px;
+  }
+
+  .textLine {
+    white-space: normal;
   }
 
   .subText {
     font-size: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .mainText {
+    font-size: 40px;
+  }
+
+  .textLine {
+    white-space: normal;
   }
 }

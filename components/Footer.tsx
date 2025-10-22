@@ -58,6 +58,18 @@ export default function Footer() {
 
         <div className={styles.bottom}>
           <p className={styles.copyright}>© 2025 Sweet Dreams Music LLC. All rights reserved.</p>
+          <div className={styles.footerLogos}>
+            <img
+              src="https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SweetDreamsLogo/SweetDreams3StackWhiteLogo.png"
+              alt="Sweet Dreams"
+              className={styles.footerLogo}
+            />
+            <img
+              src="https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SweetDreamsLogo/SweetDreamsMusic3StackWhiteLogo.png"
+              alt="Sweet Dreams Music"
+              className={styles.footerLogo}
+            />
+          </div>
         </div>
       </div>
     </footer>

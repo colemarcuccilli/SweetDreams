@@ -3,56 +3,213 @@
   height: auto;
   min-height: auto;
   overflow: hidden;
-  padding: 128px 0;
-  background: #2a2a2a;
+  padding: 80px 0 180px 0;
+  background: #1a1a1a;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.container {
+/* Section header */
+.headerContainer {
   max-width: 1800px;
   width: 100%;
-  margin: 0 auto;
-  padding-left: 48px;
-  padding-right: 48px;
+  margin: 0 auto 64px auto;
+  padding-left: 96px;
+  padding-right: 96px;
   text-align: center;
 }
 
-.largeText {
+.miniTitle {
   font-family: 'Anton', sans-serif;
-  font-size: 40px;
+  font-size: 18px;
   text-transform: uppercase;
-  line-height: 1.2;
-  margin-bottom: 12px;
+  letter-spacing: 0.3em;
+  color: #666;
+  margin-bottom: 0px;
   font-weight: 400;
-  max-width: 1200px;
-  color: #e8e8e8;
-  margin-left: auto;
-  margin-right: auto;
 }
 
-.mediumText {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 20px;
-  line-height: 1.7;
-  margin-bottom: 12px;
-  font-weight: 400;
-  max-width: 1000px;
-  color: #e8e8e8;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.smallText {
+.sectionTitle {
   font-family: 'Anton', sans-serif;
   font-size: 80px;
   text-transform: uppercase;
   line-height: 1;
+  font-weight: 400;
+  color: white;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.container {
+  max-width: 1800px;
+  width: 100%;
+  margin: 0 auto;
+  padding-left: 96px;
+  padding-right: 96px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+/* "THE STRATEGY" label - first line of headline */
+.topLabel {
+  font-family: 'Anton', sans-serif;
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: #666;
+  font-weight: 400;
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* Main headline - right aligned */
+.headline {
+  font-family: 'Anton', sans-serif;
+  text-transform: uppercase;
+  line-height: 1.1;
+  margin-top: 0px;
   margin-bottom: 0;
   font-weight: 400;
-  color: #e8e8e8;
+  color: white;
+  text-align: right;
+}
+
+.headlineIntro {
+  font-size: 40px;
+  display: block;
+}
+
+.headlineLarge {
+  font-size: 120px;
+  display: block;
+}
+
+.headlineMedium {
+  font-size: 100px;
+  display: block;
+}
+
+.headlineNormal {
+  font-size: 80px;
+  display: block;
+}
+
+.headlineSmall {
+  font-size: 60px;
+  display: block;
+}
+
+/* Reactive CONTENT word */
+.contentWord {
+  color: #F4C430;
+  font-size: 120px;
+  display: inline-block;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  transition: color 0.3s ease;
+  animation: floatContent 3s ease-in-out infinite;
+}
+
+@keyframes floatContent {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+/* Left column content wrapper */
+.leftColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Formula section with red accents */
+.formulaSection {
+  margin-bottom: 20px;
+}
+
+.formulaLine {
+  font-family: 'Anton', sans-serif;
+  font-size: 36px;
+  text-transform: uppercase;
+  line-height: 1.4;
+  margin-bottom: 16px;
+  font-weight: 400;
+  color: #ffffff;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.redText {
+  color: #e63636;
+}
+
+/* Credibility section */
+.credibilitySection {
+  margin-bottom: 40px;
+}
+
+.credText {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 18px;
+  line-height: 1.8;
+  margin-bottom: 16px;
+  font-weight: 400;
+  color: #aaaaaa;
+  text-align: left;
+}
+
+/* CTA Button */
+.ctaButton {
+  display: inline-block;
+  background: white;
+  color: black;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 16px 24px;
+  border-radius: 999px;
+  font-size: 14px;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid white;
+  cursor: pointer;
+  margin-top: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.ctaButton::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  background: black;
+  border-radius: 50%;
+  transition: width 1.2s ease, height 1.2s ease;
+  z-index: -1;
+}
+
+.ctaButton:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
+  color: white;
+}
+
+.ctaButton:hover::before {
+  width: 800px;
+  height: 800px;
 }
 
 /* GSAP line animation styles */
@@ -70,33 +227,99 @@
 }
 
 @media (max-width: 1024px) {
-  .largeText {
-    font-size: 20px;
+  .container {
+    padding-left: 48px;
+    padding-right: 48px;
+    grid-template-columns: 1fr;
+    gap: 48px;
   }
 
-  .mediumText {
-    font-size: 18px;
+  .topLabel {
+    font-size: 14px;
   }
 
-  .smallText {
-    font-size: 50px;
+  .headlineIntro {
+    font-size: 28px;
+  }
+
+  .headlineLarge {
+    font-size: 80px;
+  }
+
+  .headlineMedium {
+    font-size: 68px;
+  }
+
+  .headlineNormal {
+    font-size: 56px;
+  }
+
+  .headlineSmall {
+    font-size: 42px;
+  }
+
+  .formulaLine {
+    font-size: 28px;
+  }
+
+  .credText {
+    font-size: 16px;
+  }
+
+  .ctaButton {
+    font-size: 14px;
+    padding: 16px 48px;
   }
 }
 
 @media (max-width: 768px) {
   .section {
-    padding: 80px 32px;
+    padding: 100px 0;
   }
 
-  .largeText {
-    font-size: 18px;
+  .container {
+    padding-left: 32px;
+    padding-right: 32px;
   }
 
-  .mediumText {
-    font-size: 16px;
+  .topLabel {
+    font-size: 12px;
   }
 
-  .smallText {
-    font-size: 36px;
+  .headlineIntro {
+    font-size: 20px;
+  }
+
+  .headlineLarge {
+    font-size: 56px;
+  }
+
+  .headlineMedium {
+    font-size: 48px;
+  }
+
+  .headlineNormal {
+    font-size: 40px;
+  }
+
+  .headlineSmall {
+    font-size: 32px;
+  }
+
+  .formulaLine {
+    font-size: 22px;
+  }
+
+  .credText {
+    font-size: 14px;
+  }
+
+  .ctaButton {
+    font-size: 12px;
+    padding: 14px 40px;
+  }
+
+  .formulaLine {
+    white-space: normal;
   }
 }

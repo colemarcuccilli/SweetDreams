@@ -15,15 +15,15 @@ export default function ContentStrategy() {
         <div className={styles.giveGrid}>
           <div className={styles.giveCard}>
             <h3 className={styles.giveNumber}>GIVE</h3>
-            <p className={styles.giveLabel}>Entertainment First</p>
+            <p className={`${styles.giveLabel} ${styles.redText}`}>Entertainment First</p>
           </div>
           <div className={styles.giveCard}>
             <h3 className={styles.giveNumber}>GIVE</h3>
-            <p className={styles.giveLabel}>Value Through Volume</p>
+            <p className={`${styles.giveLabel} ${styles.blueText}`}>Value Through Volume</p>
           </div>
           <div className={styles.giveCard}>
             <h3 className={styles.giveNumber}>GIVE</h3>
-            <p className={styles.giveLabel}>Trust Through Consistency</p>
+            <p className={`${styles.giveLabel} ${styles.yellowText}`}>Trust Through Consistency</p>
           </div>
         </div>
       </div>

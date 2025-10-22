@@ -7,6 +7,7 @@ import TestimonialsAnimated from "@/components/music/TestimonialsAnimated";
 import LocationInfoAnimated from "@/components/music/LocationInfoAnimated";
 import PricingListAnimated from "@/components/music/PricingListAnimated";
 import BookingCalendar from "@/components/music/BookingCalendar";
+import MusicContactForm from "@/components/music/MusicContactForm";
 
 export default function MusicPage() {
   return (
@@ -97,8 +98,8 @@ export default function MusicPage() {
       {/* Testimonials - Black */}
       <TestimonialsAnimated />
 
-      {/* Studio Hours - White */}
-      <section className={styles.hours}>
+      {/* Studio Hours - Black */}
+      <section className={styles.hoursBlack}>
         <div className={styles.container}>
           <p className={styles.miniTitle}>AVAILABILITY</p>
           <h2 className={styles.sectionTitle}>STUDIO HOURS</h2>
@@ -122,6 +123,9 @@ export default function MusicPage() {
           <p className={styles.note}>Note: After 9 PM sessions include a $10/hr additional fee. Same-day bookings also include a $10/hr fee.</p>
         </div>
       </section>
+
+      {/* Contact Form - White */}
+      <MusicContactForm />
 
       {/* Location & Important Info - Black */}
       <LocationInfoAnimated />

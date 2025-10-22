@@ -16,6 +16,7 @@
   color: #666;
   margin-bottom: 0px;
   font-weight: 400;
+  margin-left: 10%;
 }
 
 .title {
@@ -31,8 +32,12 @@
 }
 
 .rotatingWord {
-  font-size: 160px;
+  font-size: 180px;
   display: inline-block;
+  color: #F4C430;
+  position: relative;
+  z-index: 10;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
 }
 
 .intro {
@@ -50,9 +55,9 @@
 }
 
 .giveGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2px;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
   margin-bottom: 64px;
 }
 
@@ -81,6 +86,19 @@
   color: #888;
   margin: 0;
   text-align: center;
+}
+
+/* Color classes for GIVE labels */
+.redText {
+  color: #e63636 !important;
+}
+
+.blueText {
+  color: #4A90E2 !important;
+}
+
+.yellowText {
+  color: #F4C430 !important;
 }
 
 .ratioExplanation {

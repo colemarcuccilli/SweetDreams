@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Link from 'next/link';
@@ -36,18 +36,49 @@ export default function PortfolioHorizontalScroll({
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const isScrollingRef = useRef(false);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [cursorLogo, setCursorLogo] = useState<string | null>(null);
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
-    // Cleanup function only
+    const handleMouseMove = (e: MouseEvent) => {
+      setCursorPos({ x: e.clientX, y: e.clientY });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+
     return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
       if (scrollTimeoutRef.current) {
         clearTimeout(scrollTimeoutRef.current);
       }
     };
   }, []);
 
+  const handleMouseEnterCard = (logo: string) => {
+    setCursorLogo(logo);
+    onMouseEnter(logo);
+  };
+
+  const handleMouseLeaveCard = () => {
+    setCursorLogo(null);
+    onMouseLeave();
+  };
+
   return (
     <div ref={containerRef} className={styles.portfolioSection}>
+      {/* Custom Cursor with Logo */}
+      {cursorLogo && (
+        <div
+          className={styles.customCursor}
+          style={{
+            left: `${cursorPos.x}px`,
+            top: `${cursorPos.y}px`,
+          }}
+        >
+          <img src={cursorLogo} alt="Client Logo" className={styles.cursorLogo} />
+        </div>
+      )}
+
       <div ref={scrollContainerRef} className={styles.scrollContainer}>
         {/* Section header */}
         <div className={styles.header}>
@@ -61,8 +92,8 @@ export default function PortfolioHorizontalScroll({
               key={itemIndex}
               href={item.href}
               className={`${styles.portfolioCard} ${item.comingSoon ? styles.comingSoonCard : ''}`}
-              onMouseEnter={() => onMouseEnter(item.logo)}
-              onMouseLeave={onMouseLeave}
+              onMouseEnter={() => handleMouseEnterCard(item.logo)}
+              onMouseLeave={handleMouseLeaveCard}
             >
               <div className={styles.portfolioImage}>
                 {item.comingSoon ? (

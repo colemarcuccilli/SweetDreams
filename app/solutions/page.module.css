@@ -119,7 +119,7 @@
   height: 0;
   background: black;
   border-radius: 50%;
-  transition: width 0.6s ease, height 0.6s ease;
+  transition: width 1.2s ease, height 1.2s ease;
   z-index: -1;
 }
 
@@ -130,8 +130,8 @@
 }
 
 .productionButton:hover::before {
-  width: 400px;
-  height: 400px;
+  width: 800px;
+  height: 800px;
 }
 
 /* Right Side - Video Showcase with White Border */
@@ -386,22 +386,40 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  cursor: pointer;
+  position: relative;
 }
 
 .designCard:hover {
   background: rgba(0, 0, 0, 0.04);
-  border-color: rgba(0, 0, 0, 0.15);
+  border: 2px solid black;
   transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
 
 .designCardIcon {
   color: black;
-  opacity: 0.6;
 }
 
 .designCardIcon svg {
   display: block;
+}
+
+/* Individual icon colors */
+.designCard:nth-child(1) .designCardIcon {
+  color: #4A90E2;
+}
+
+.designCard:nth-child(2) .designCardIcon {
+  color: #F4C430;
+}
+
+.designCard:nth-child(3) .designCardIcon {
+  color: #e63636;
+}
+
+.designCard:nth-child(4) .designCardIcon {
+  color: #50C878;
 }
 
 .designCardTitle {
@@ -444,6 +462,169 @@
   letter-spacing: 0.05em;
 }
 
+/* Design Section Modals */
+.designBlurOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  z-index: 999;
+  cursor: pointer;
+}
+
+.designCardExpanded {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: black;
+  border: 4px solid white;
+  border-radius: 40px;
+  padding: 80px;
+  max-width: 1400px;
+  width: 92%;
+  max-height: 90vh;
+  overflow-y: auto;
+  z-index: 1000;
+  box-shadow: 0 32px 96px rgba(0, 0, 0, 0.9);
+  animation: modalSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -45%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.designCardExpanded h3 {
+  font-family: 'Anton', sans-serif;
+  font-size: 64px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: white;
+  margin: 0 0 20px 0;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+}
+
+.designCardExpanded h4 {
+  font-family: 'Anton', sans-serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: #999;
+  margin: 0 0 40px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1.3;
+}
+
+.designCardExpanded p {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 16px;
+  line-height: 1.9;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0 0 28px 0;
+}
+
+.designCardExpanded ul {
+  margin: 0 0 32px 0;
+  padding-left: 32px;
+}
+
+.designCardExpanded li {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 16px;
+  line-height: 2;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 16px;
+}
+
+.designCardEmphasis {
+  font-family: 'Anton', sans-serif !important;
+  font-weight: 400 !important;
+  color: white !important;
+  font-size: 24px !important;
+  margin-top: 20px !important;
+  line-height: 1.4 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.03em !important;
+}
+
+.designCardClose {
+  position: absolute;
+  top: 32px;
+  right: 32px;
+  background: white;
+  color: black;
+  border: none;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  font-size: 28px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  font-weight: 300;
+}
+
+.designCardClose:hover {
+  background: #e5e5e5;
+  transform: rotate(90deg) scale(1.1);
+}
+
+.designCardButton {
+  display: inline-block;
+  background: white;
+  color: black;
+  font-family: 'Anton', sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 24px 56px;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  font-size: 18px;
+  margin-top: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.designCardButton::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  background: black;
+  border-radius: 50%;
+  transition: width 0.6s ease, height 0.6s ease;
+  z-index: -1;
+}
+
+.designCardButton:hover::before {
+  width: 500px;
+  height: 500px;
+}
+
+.designCardButton:hover {
+  color: white;
+  transform: scale(1.08);
+  box-shadow: 0 12px 32px rgba(255, 255, 255, 0.4);
+}
+
 /* Solution Button */
 .solutionButton {
   display: inline-block;
@@ -473,7 +654,7 @@
   height: 0;
   background: white;
   border-radius: 50%;
-  transition: width 0.6s ease, height 0.6s ease;
+  transition: width 1.2s ease, height 1.2s ease;
   z-index: -1;
 }
 
@@ -484,8 +665,8 @@
 }
 
 .solutionButton:hover::before {
-  width: 400px;
-  height: 400px;
+  width: 800px;
+  height: 800px;
 }
 
 /* POST-PRODUCTION - Triple Video Grid */
@@ -635,14 +816,22 @@
 /* 03. SOCIAL STRATEGY - Three Column Layout */
 .socialSection {
   background: linear-gradient(180deg, #ffffff 0%, #f5f5f5 100%);
-  padding: 120px 60px;
-  position: relative;
+  padding: 60px 60px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 100vh;
 }
 
 .socialContent {
   max-width: 1800px;
   margin: 0 auto;
   position: relative;
+  width: 100%;
 }
 
 /* Three Column Grid */
@@ -674,6 +863,7 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-end;
+  padding-left: 40px;
 }
 
 .socialHeader {
@@ -758,6 +948,16 @@
   margin-right: 0;
 }
 
+/* Colored words */
+.socialColoredWord {
+  font-size: 90px;
+  color: white;
+  -webkit-text-stroke: 3px black;
+  text-stroke: 3px black;
+  paint-order: stroke fill;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2));
+}
+
 .socialLine::after {
   content: '';
   position: absolute;
@@ -807,6 +1007,8 @@
 .launchSection {
   background: black;
   padding: 120px 60px 100px 60px;
+  position: relative;
+  z-index: 2;
 }
 
 .launchContainer {
@@ -876,48 +1078,72 @@
   text-align: left;
 }
 
-.launchGrid {
-  max-width: 1400px;
+/* Radial Expanding Container - Unique Design */
+.launchRadialContainer {
+  max-width: 1600px;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
+  padding: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.launchCard {
-  padding: 60px 40px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  border-radius: 24px;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
+.launchRadialGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 280px);
+  grid-template-rows: 280px;
+  gap: 30px;
   perspective: 1000px;
 }
 
-.launchCard::before {
-  content: '';
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
-  border-radius: 24px;
-  opacity: 0;
-  transition: opacity 0.5s ease;
-  z-index: -1;
+/* Responsive - 2x2 grid for smaller screens */
+@media (max-width: 1400px) {
+  .launchRadialGrid {
+    grid-template-columns: repeat(2, 320px);
+    grid-template-rows: repeat(2, 320px);
+  }
 }
 
-.launchCard:hover {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
-  border-color: rgba(255, 255, 255, 0.3);
-  transform: translateY(-15px) rotate(0deg) !important;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+/* Radial Cards - Circular/Round Design */
+.launchRadialCard {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 6px solid white;
+  cursor: pointer;
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px;
+  transform-style: preserve-3d;
+  z-index: 1;
 }
 
-.launchCard:hover::before {
-  opacity: 1;
+.launchRadialCard:hover {
+  transform: scale(1.15);
+  border-color: black;
+  box-shadow:
+    0 0 20px rgba(255, 255, 255, 0.5),
+    0 0 40px rgba(255, 255, 255, 0.3),
+    0 20px 60px rgba(0, 0, 0, 0.5);
+  z-index: 10;
+}
+
+/* Blur other cards when hovering one */
+.launchRadialGrid:has(.launchRadialCard:hover) .launchRadialCard:not(:hover) {
+  filter: blur(4px);
+  opacity: 0.6;
+}
+
+.launchRadialActive {
+  transform: scale(1.3) !important;
+  z-index: 10 !important;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6) !important;
 }
 
 .launchCard h3 {
@@ -935,19 +1161,381 @@
   font-size: 15px;
   line-height: 1.7;
   color: rgba(255, 255, 255, 0.7);
+  margin: 0 0 24px 0;
+}
+
+.launchCardButton {
+  background: white;
+  color: black;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 14px 32px;
+  border-radius: 999px;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  border: 2px solid white;
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+}
+
+.launchCardButton::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  background: black;
+  border-radius: 50%;
+  transition: width 1.2s ease, height 1.2s ease;
+  z-index: -1;
+}
+
+.launchCardButton:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
+  color: white;
+}
+
+.launchCardButton:hover::before {
+  width: 800px;
+  height: 800px;
+}
+
+/* Individual Radial Card Colors & Styles */
+.launchRadial1 {
+  background: linear-gradient(135deg, #e63636 0%, #b82828 100%);
+}
+
+.launchRadial2 {
+  background: linear-gradient(135deg, #4A90E2 0%, #2c5aa0 100%);
+}
+
+.launchRadial3 {
+  background: linear-gradient(135deg, #F4C430 0%, #d4a520 100%);
+}
+
+.launchRadial4 {
+  background: linear-gradient(135deg, #50C878 0%, #3da860 100%);
+}
+
+/* Radial Card Labels (Numbers) */
+.launchRadialLabel {
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.2em;
+  z-index: 2;
+}
+
+/* Radial Card Titles */
+.launchRadialCard h3 {
+  font-family: 'Anton', sans-serif;
+  font-size: 42px;
+  color: white;
   margin: 0;
+  text-transform: uppercase;
+  line-height: 1.1;
+  z-index: 2;
+  position: relative;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Cards with Video Background */
+.launchCardWithVideo .launchVideoWrapper,
+.launchCardWeb .launchVideoWrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.launchCardWithVideo .launchRadialLabel,
+.launchCardWithVideo h3,
+.launchCardWeb .launchRadialLabel,
+.launchCardWeb h3 {
+  z-index: 3;
+  color: white;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.8);
+}
+
+/* Cursor Following "click me" */
+.clickMeCursor {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-family: 'Anton', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: white;
+  background: black;
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 2px solid white;
+  pointer-events: none;
+  z-index: 20;
+  text-shadow: none;
+  animation: fadeInCursor 0.3s ease, pulseCursor 1.5s ease-in-out infinite;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+@keyframes fadeInCursor {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes pulseCursor {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}
+
+.launchVideoWrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  transition: all 0.6s ease;
+}
+
+.launchCardWeb:hover .launchVideoWrapper {
+  filter: brightness(1.1);
+}
+
+.launchVideoIframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(2);
+  width: 100%;
+  height: 100%;
+  border: none;
+  pointer-events: none;
+}
+
+/* Teaser State - Closed */
+.launchCardTeaser {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 40px;
+  background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 70%, transparent 100%);
+  z-index: 2;
+}
+
+.launchCardTeaser h3 {
+  font-family: 'Anton', sans-serif;
+  font-size: 52px;
+  margin: 0 0 16px 0;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  text-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.3),
+    0 4px 12px rgba(0, 0, 0, 0.2);
+  line-height: 1;
+}
+
+.launchCardHint {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  animation: pulseHint 2s ease-in-out infinite;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  font-weight: 500;
+}
+
+@keyframes pulseHint {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+/* Expanded State - Open */
+.launchCardExpanded {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 800px;
+  max-height: 85vh;
+  background: rgba(0, 0, 0, 0.98);
+  border: 3px solid white;
+  border-radius: 24px;
+  padding: 60px;
+  z-index: 1000;
+  overflow-y: auto;
+  animation: expandIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
+}
+
+@keyframes expandIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.launchCardClose {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: white;
+  color: black;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.launchCardClose:hover {
+  transform: rotate(90deg);
+  background: black;
+  color: white;
+}
+
+.launchCardExpanded h3 {
+  font-family: 'Anton', sans-serif;
+  font-size: 56px;
+  color: white;
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+}
+
+.launchCardExpanded h4 {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 18px;
+  color: #F4C430;
+  margin: 0 0 24px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+.launchCardExpanded p {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 16px;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0 0 24px 0;
+}
+
+.launchCardExpanded ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 32px 0;
+}
+
+.launchCardExpanded ul li {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 12px 0 12px 32px;
+  position: relative;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.launchCardExpanded ul li:before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: #F4C430;
+  font-weight: bold;
+}
+
+.launchCardEmphasis {
+  font-weight: bold !important;
+  color: white !important;
+  font-size: 17px !important;
+  background: linear-gradient(90deg, rgba(244, 196, 48, 0.1), transparent);
+  padding: 16px 20px;
+  border-left: 3px solid #F4C430;
+  margin-bottom: 32px !important;
+}
+
+.launchCardExpanded .launchCardButton {
+  background: white;
+  color: black;
+  border: 2px solid white;
+}
+
+.launchCardExpanded .launchCardButton::before {
+  background: black;
+}
+
+.launchCardExpanded .launchCardButton:hover {
+  color: white;
+}
+
+/* Blur Overlay */
+.launchBlurOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  z-index: 999;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 /* SWEET DREAMS STUDIO - White Section */
 .studioSectionWhite {
   background: white;
-  padding: 120px 60px 80px 60px;
+  padding: 60px 60px 80px 60px;
+  position: relative;
+  z-index: 3;
 }
 
 /* SWEET DREAMS STUDIO - Black Section */
 .studioSectionBlack {
   background: black;
   padding: 80px 60px 120px 60px;
+  position: relative;
+  z-index: 4;
 }
 
 .studioContainer {
@@ -1104,7 +1692,7 @@
   font-weight: bold;
   text-transform: uppercase;
   padding: 32px 48px;
-  border-radius: 999px;
+  border-radius: 16px;
   font-size: 14px;
   letter-spacing: 0.15em;
   text-decoration: none;
@@ -1125,7 +1713,7 @@
   height: 0;
   background: white;
   border-radius: 50%;
-  transition: width 0.6s ease, height 0.6s ease;
+  transition: width 1.2s ease, height 1.2s ease;
   z-index: -1;
 }
 
@@ -1136,8 +1724,8 @@
 }
 
 .studioServiceButton:hover::before {
-  width: 600px;
-  height: 600px;
+  width: 800px;
+  height: 800px;
 }
 
 /* Showcase with White Border Frame */
@@ -1292,6 +1880,7 @@
   background: linear-gradient(180deg, #ffffff 0%, #f0f0f0 100%);
   position: relative;
   overflow: hidden;
+  z-index: 5;
 }
 
 .cta::before {
@@ -1348,7 +1937,7 @@
   height: 0;
   background: white;
   border-radius: 50%;
-  transition: width 0.6s ease, height 0.6s ease;
+  transition: width 1.2s ease, height 1.2s ease;
   z-index: -1;
 }
 

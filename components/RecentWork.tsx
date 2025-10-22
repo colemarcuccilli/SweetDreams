@@ -8,12 +8,12 @@ import styles from "./RecentWork.module.css";
 export default function RecentWork() {
   const [projects, setProjects] = useState<PortfolioItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const videoRefs = useRef<Map<string, HTMLVideoElement>>(new Map());
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+  const [cursorLogo, setCursorLogo] = useState<string | null>(null);
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     async function fetchProjects() {
@@ -34,29 +34,39 @@ export default function RecentWork() {
     fetchProjects();
   }, []);
 
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setCursorPos({ x: e.clientX, y: e.clientY });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
   const handlePrevious = () => {
-    setCurrentIndex((prev) => Math.max(0, prev - 1));
+    if (!scrollContainerRef.current) return;
+    scrollContainerRef.current.scrollBy({
+      left: -600,
+      behavior: 'smooth'
+    });
   };
 
   const handleNext = () => {
-    setCurrentIndex((prev) => Math.min(projects.length - 1, prev + 1));
+    if (!scrollContainerRef.current) return;
+    scrollContainerRef.current.scrollBy({
+      left: 600,
+      behavior: 'smooth'
+    });
   };
 
-  const handleMouseEnter = (projectId: string) => {
-    const video = videoRefs.current.get(projectId);
-    if (video) {
-      video.play().catch((error) => {
-        console.log("Video play prevented:", error);
-      });
-    }
+  const handleMouseEnter = (project: PortfolioItem) => {
+    setCursorLogo(project.client_logo_url || null);
   };
 
-  const handleMouseLeave = (projectId: string) => {
-    const video = videoRefs.current.get(projectId);
-    if (video) {
-      video.pause();
-      video.currentTime = 0;
-    }
+  const handleMouseLeave = () => {
+    setCursorLogo(null);
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -96,55 +106,80 @@ export default function RecentWork() {
 
   return (
     <section className={styles.section}>
+      {/* Custom Cursor with Logo */}
+      {cursorLogo && (
+        <div
+          className={styles.customCursor}
+          style={{
+            left: `${cursorPos.x}px`,
+            top: `${cursorPos.y}px`,
+          }}
+        >
+          <img src={cursorLogo} alt="Client Logo" className={styles.cursorLogo} />
+        </div>
+      )}
+
       <div className={styles.headerContainer}>
         <h2 className={styles.title}>RECENT WORK</h2>
         <h3 className={styles.mainText}>THE LATEST</h3>
+        <Link href="/media#portfolio" className={styles.viewAllButton}>
+          VIEW ALL PROJECTS
+        </Link>
       </div>
 
-      <div
-        className={styles.scrollContainer}
-        ref={scrollContainerRef}
-        onMouseDown={handleMouseDown}
-        onMouseLeave={handleMouseLeaveContainer}
-        onMouseUp={handleMouseUp}
-        onMouseMove={handleMouseMove}
-      >
-        <div className={styles.carouselTrack}>
-          {projects.map((project) => (
-            <Link
-              key={project.id}
-              href={`/work/${project.slug}`}
-              className={styles.projectCard}
-              onMouseEnter={() => handleMouseEnter(project.id)}
-              onMouseLeave={() => handleMouseLeave(project.id)}
-              draggable={false}
-            >
-              <div className={styles.videoContainer}>
-                <img
-                  src={project.thumbnail_url}
-                  alt={project.title}
-                  className={styles.thumbnail}
-                  draggable={false}
-                />
-                <video
-                  ref={(el) => {
-                    if (el) videoRefs.current.set(project.id, el);
-                  }}
-                  muted
-                  loop
-                  playsInline
-                  className={styles.video}
-                >
-                  <source
-                    src={`https://customer-930f31024174032bfcbbb01ca4e88215.cloudflarestream.com/${project.cloudflare_stream_id}/manifest/video.m3u8`}
-                    type="application/x-mpegURL"
+      <div className={styles.scrollWrapper}>
+        {/* Navigation Arrows */}
+        <button
+          className={`${styles.arrow} ${styles.arrowLeft}`}
+          onClick={handlePrevious}
+          aria-label="Previous project"
+        >
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+
+        <div
+          className={styles.scrollContainer}
+          ref={scrollContainerRef}
+          onMouseDown={handleMouseDown}
+          onMouseLeave={handleMouseLeaveContainer}
+          onMouseUp={handleMouseUp}
+          onMouseMove={handleMouseMove}
+        >
+          <div className={styles.carouselTrack}>
+            {projects.map((project) => (
+              <Link
+                key={project.id}
+                href={`/work/${project.slug}`}
+                className={styles.projectCard}
+                onMouseEnter={() => handleMouseEnter(project)}
+                onMouseLeave={handleMouseLeave}
+                draggable={false}
+              >
+                <div className={styles.imageContainer}>
+                  <img
+                    src={project.thumbnail_url}
+                    alt={project.title}
+                    className={styles.thumbnail}
+                    draggable={false}
                   />
-                </video>
-              </div>
-              <h4 className={styles.projectTitle}>{project.title}</h4>
-            </Link>
-          ))}
+                </div>
+                <h4 className={styles.projectTitle}>{project.title}</h4>
+              </Link>
+            ))}
+          </div>
         </div>
+
+        <button
+          className={`${styles.arrow} ${styles.arrowRight}`}
+          onClick={handleNext}
+          aria-label="Next project"
+        >
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
       </div>
     </section>
   );

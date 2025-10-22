@@ -42,8 +42,8 @@ export default function TransitionSection() {
           <p className={styles.mainText}>
             ALL YOUR VIDEO AND AUDIO NEEDS. WE STAY AHEAD OF THE CURVE. INNOVATING WITH 2025'S LATEST TRENDS, WE DON'T GET LEFT BEHIND.
           </p>
-          <Link href="/about" className={styles.button}>
-            ABOUT US
+          <Link href="/media" className={styles.button}>
+            SEE MORE
           </Link>
         </div>
       </div>
@@ -54,8 +54,8 @@ export default function TransitionSection() {
           <p className={styles.mainText}>
             ALL YOUR VIDEO AND AUDIO NEEDS. WE STAY AHEAD OF THE CURVE. INNOVATING WITH 2025'S LATEST TRENDS, WE DON'T GET LEFT BEHIND.
           </p>
-          <Link href="/about" className={styles.button}>
-            ABOUT US
+          <Link href="/media" className={styles.button}>
+            SEE MORE
           </Link>
         </div>
       </div>

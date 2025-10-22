@@ -1,0 +1,173 @@
+.formSection {
+  background: white;
+  padding: 80px 48px 120px 48px;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.formHeader {
+  text-align: left;
+}
+
+.miniTitle {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  letter-spacing: 0.3em;
+  color: #666;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+
+.title {
+  font-family: 'Anton', sans-serif;
+  font-size: 80px;
+  text-transform: uppercase;
+  line-height: 1;
+  font-weight: 400;
+  color: black;
+  margin: 0 0 24px 0;
+}
+
+.subtitle {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #666;
+  max-width: 500px;
+  margin: 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.formRow {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.input,
+.textarea {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 16px;
+  padding: 20px 24px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  background: white;
+  transition: all 0.3s ease;
+}
+
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: black;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 160px;
+}
+
+.submitButton {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 20px 60px;
+  border-radius: 16px;
+  font-size: 14px;
+  letter-spacing: 0.15em;
+  background: black;
+  color: white;
+  border: 2px solid black;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.submitButton::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  background: white;
+  border-radius: 50%;
+  transition: width 1.2s ease, height 1.2s ease;
+  z-index: -1;
+}
+
+.submitButton:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  color: black;
+}
+
+.submitButton:hover::before {
+  width: 800px;
+  height: 800px;
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.successMessage {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  color: #059669;
+  background: #d1fae5;
+  padding: 16px 24px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.errorMessage {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  color: #dc2626;
+  background: #fee2e2;
+  padding: 16px 24px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+@media (max-width: 1024px) {
+  .container {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .formHeader {
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .formSection {
+    padding: 60px 32px 80px 32px;
+  }
+
+  .title {
+    font-size: 48px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+  }
+}

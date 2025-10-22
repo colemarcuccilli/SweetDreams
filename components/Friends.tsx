@@ -27,7 +27,7 @@ const CLIENT_LOGOS = [
   },
   {
     name: "Summit City Vintage",
-    url: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SummitCityVintageLogo.jpg"
+    url: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SummitCityVintageLogo.png"
   },
   {
     name: "Trusted Dental",

@@ -23,16 +23,15 @@ export default function MediaHeroAnimated() {
     const contentOverlay = container.querySelector(`.${styles.contentOverlay}`);
     const titleLines = container.querySelectorAll('.title-line');
     const description = container.querySelector(`.${styles.description}`);
-    const button = container.querySelector(`.${styles.ctaButton}`);
     const miniTitle = container.querySelector(`.${styles.miniTitle}`);
 
-    if (!videoBox || !titleLines.length || !description || !button || !miniTitle) return;
+    if (!videoBox || !titleLines.length || !description || !miniTitle) return;
 
     // Kill any existing animations
-    gsap.killTweensOf([videoBox, contentOverlay, titleLines, description, button, miniTitle]);
+    gsap.killTweensOf([videoBox, contentOverlay, titleLines, description, miniTitle]);
 
     // Set initial visibility for all elements to ensure they show
-    gsap.set([videoBox, miniTitle, titleLines, description, button], { clearProps: 'all' });
+    gsap.set([videoBox, miniTitle, titleLines, description], { clearProps: 'all' });
 
     // Main animation timeline
     const mainTimeline = gsap.timeline({
@@ -55,49 +54,47 @@ export default function MediaHeroAnimated() {
       ease: "power2.out"
     }, 0.5);
 
-    // Step 3: Title lines slide in from sides with rotation
-    mainTimeline.from(titleLines[0], {
-      x: '-100vw',
-      rotation: -25,
+    // Step 3: Title lines slide in from top and bottom to close position
+    mainTimeline.fromTo(titleLines[0], {
+      y: '-100vh',
       opacity: 0,
+    }, {
+      y: 40,
+      opacity: 1,
       duration: 1.2,
-      ease: "customEase",
+      ease: "power3.out",
     }, 0.7);
 
-    mainTimeline.from(titleLines[1], {
-      x: '100vw',
-      rotation: 25,
+    mainTimeline.fromTo(titleLines[1], {
+      y: '100vh',
       opacity: 0,
+    }, {
+      y: -40,
+      opacity: 1,
       duration: 1.2,
-      ease: "customEase",
+      ease: "power3.out",
     }, 0.85);
 
-    // Step 4: Settle and scale down text
-    mainTimeline.to(titleLines, {
-      scale: 1,
-      rotation: 0,
+    // Step 4: Push away from each other to final position
+    mainTimeline.to(titleLines[0], {
+      y: 0,
       duration: 0.8,
-      ease: "power3.inOut",
-      stagger: 0.1,
-      onComplete: () => {
-        gsap.set(titleLines, { scale: 1, rotation: 0 });
-      }
-    }, '+=0.3');
+      ease: "elastic.out(1, 0.6)",
+    }, '+=0.1');
 
-    // Step 5: Description and button fade in
+    mainTimeline.to(titleLines[1], {
+      y: 0,
+      duration: 0.8,
+      ease: "elastic.out(1, 0.6)",
+    }, '-=0.8');
+
+    // Step 6: Description fade in
     mainTimeline.from(description, {
       opacity: 0,
       y: 30,
       duration: 0.8,
       ease: "power2.out"
     }, '-=0.3');
-
-    mainTimeline.from(button, {
-      opacity: 0,
-      y: 20,
-      duration: 0.6,
-      ease: "power2.out"
-    }, '-=0.4');
 
     return () => {
       // mainTimeline.kill(); // Commented out so animation state persists
@@ -121,25 +118,25 @@ export default function MediaHeroAnimated() {
 
         {/* Content Overlay */}
         <div className={styles.contentOverlay}>
-          {/* Mini Title */}
-          <p className={styles.miniTitle}>SWEET DREAMS MEDIA</p>
-
-          {/* Main Title */}
+          {/* Main Title - Centered */}
           <div className={styles.titleContainer}>
-            <div className={`${styles.titleLine} title-line`}>YOUR VISION,</div>
-            <div className={`${styles.titleLine} title-line`}>AMPLIFIED</div>
+            <div className={`${styles.titleLine} ${styles.titleLineSmaller} title-line`}>HIGH IMPACT MEDIA,</div>
+            <div className={`${styles.titleLine} title-line`}>MADE AFFORDABLE.</div>
           </div>
 
-          {/* Description */}
-          <p className={styles.description}>
-            Professional video production and content creation<br />
-            that brings your brand to life
-          </p>
-
-          {/* CTA Button */}
+          {/* CTA Button - Centered */}
           <a href="/work/fort-wayne-hyperlapse-showcase" className={styles.ctaButton}>
             VIEW PROJECT
           </a>
+
+          {/* Description - Bottom Left */}
+          <p className={styles.description}>
+            World-class video production at prices that make sense<br />
+            for businesses of all sizes
+          </p>
+
+          {/* Mini Title - Bottom Right */}
+          <p className={styles.miniTitle}>SWEET DREAMS MEDIA</p>
         </div>
       </div>
     </div>

@@ -136,15 +136,37 @@
   font-size: 14px;
   letter-spacing: 0.15em;
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   border: 2px solid white;
   margin-top: 48px;
   align-self: flex-start;
+  position: relative;
+  overflow: hidden;
+}
+
+.learnMoreButton::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  background: white;
+  border-radius: 50%;
+  transition: width 1.2s ease, height 1.2s ease;
+  z-index: -1;
 }
 
 .learnMoreButton:hover {
-  background: white;
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
   color: black;
+}
+
+.learnMoreButton:hover::before {
+  width: 800px;
+  height: 800px;
 }
 
 @media (max-width: 1024px) {

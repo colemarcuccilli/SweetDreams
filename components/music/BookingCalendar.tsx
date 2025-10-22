@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { DayPicker } from 'react-day-picker';
 import { format, addDays, isSameDay as isSameDayFns } from 'date-fns';
 import 'react-day-picker/dist/style.css';
@@ -16,6 +16,8 @@ import {
   BOOKING_PRODUCTS,
   STUDIO_HOURS
 } from '@/lib/booking-config';
+import { createClient } from '@/utils/supabase/client';
+import AuthModal from './AuthModal';
 
 interface BookingCalendarProps {
   onBookingSubmit?: (bookingData: BookingData) => void;
@@ -57,9 +59,50 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
   const [artistName, setArtistName] = useState('');
   const [customerEmail, setCustomerEmail] = useState('');
   const [customerPhone, setCustomerPhone] = useState('');
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const supabase = createClient();
+
+  // Check authentication status and load user data
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+
+      if (user) {
+        setIsAuthenticated(true);
+        setCustomerEmail(user.email || '');
+
+        // Auto-fill user data from Supabase auth metadata
+        if (user.user_metadata) {
+          setFirstName(user.user_metadata.first_name || '');
+          setLastName(user.user_metadata.last_name || '');
+          setArtistName(user.user_metadata.artist_name || '');
+        }
+
+        // Also check raw_user_meta_data as fallback
+        if (user.raw_user_meta_data) {
+          if (!firstName && user.raw_user_meta_data.first_name) {
+            setFirstName(user.raw_user_meta_data.first_name);
+          }
+          if (!lastName && user.raw_user_meta_data.last_name) {
+            setLastName(user.raw_user_meta_data.last_name);
+          }
+          if (!artistName && user.raw_user_meta_data.artist_name) {
+            setArtistName(user.raw_user_meta_data.artist_name);
+          }
+        }
+
+        console.log('User metadata:', user.user_metadata);
+        console.log('Raw user metadata:', user.raw_user_meta_data);
+      }
+    };
+
+    checkAuth();
+  }, [supabase]);
 
   // Adjust duration if it becomes invalid when time changes
-  const handleTimeSelect = (hour: number, minute: number) => {
+  const handleTimeSelect = async (hour: number, minute: number) => {
     setSelectedTime(hour);
     setSelectedMinute(minute);
 
@@ -72,6 +115,47 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
         }
       }
     }
+
+    // Check authentication status when time is selected
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      // User is not logged in, show auth modal
+      setIsAuthModalOpen(true);
+    }
+  };
+
+  const handleAuthSuccess = async () => {
+    setIsAuthModalOpen(false);
+    setIsAuthenticated(true);
+
+    // Reload user data
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      setCustomerEmail(user.email || '');
+
+      if (user.user_metadata) {
+        setFirstName(user.user_metadata.first_name || '');
+        setLastName(user.user_metadata.last_name || '');
+        setArtistName(user.user_metadata.artist_name || '');
+      }
+
+      // Also check raw_user_meta_data as fallback
+      if (user.raw_user_meta_data) {
+        if (!user.user_metadata?.first_name) {
+          setFirstName(user.raw_user_meta_data.first_name || '');
+        }
+        if (!user.user_metadata?.last_name) {
+          setLastName(user.raw_user_meta_data.last_name || '');
+        }
+        if (!user.user_metadata?.artist_name) {
+          setArtistName(user.raw_user_meta_data.artist_name || '');
+        }
+      }
+    }
+  };
+
+  const handleGuestContinue = () => {
+    setIsAuthModalOpen(false);
   };
 
   // Calculate pricing
@@ -380,6 +464,14 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
           )}
         </div>
       </div>
+
+      {/* Auth Modal */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        onGuestContinue={handleGuestContinue}
+        onAuthSuccess={handleAuthSuccess}
+      />
     </div>
   );
 }

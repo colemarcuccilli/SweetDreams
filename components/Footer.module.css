@@ -67,14 +67,35 @@
 .bottom {
   padding-top: 48px;
   border-top: 1px solid #333;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
 }
 
 .copyright {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 12px;
   color: #666;
-  text-align: center;
   margin: 0;
+}
+
+.footerLogos {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.footerLogo {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+.footerLogo:hover {
+  opacity: 1;
 }
 
 @media (max-width: 1024px) {
@@ -86,5 +107,14 @@
 @media (max-width: 640px) {
   .grid {
     grid-template-columns: 1fr;
+  }
+
+  .bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footerLogo {
+    height: 32px;
   }
 }

@@ -1,0 +1,286 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modalContent {
+  background: white;
+  border-radius: 24px;
+  padding: 48px;
+  max-width: 500px;
+  width: 100%;
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.closeButton {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 32px;
+  color: #666;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.closeButton:hover {
+  color: black;
+}
+
+.guestLink {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: none;
+  border: none;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  color: #999;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s;
+  padding: 0;
+}
+
+.guestLink:hover {
+  color: #666;
+}
+
+.choiceContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 20px;
+}
+
+.formContainer {
+  padding-top: 20px;
+}
+
+.modalTitle {
+  font-family: 'Anton', sans-serif;
+  font-size: 48px;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 1;
+  color: black;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.modalSubtitle {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.primaryButton,
+.secondaryButton,
+.submitButton {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 20px 40px;
+  border-radius: 16px;
+  font-size: 14px;
+  letter-spacing: 0.15em;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.primaryButton {
+  background: black;
+  color: white;
+  border: 2px solid black;
+}
+
+.primaryButton::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  background: white;
+  border-radius: 50%;
+  transition: width 1.2s ease, height 1.2s ease;
+  z-index: -1;
+}
+
+.primaryButton:hover {
+  color: black;
+}
+
+.primaryButton:hover::before {
+  width: 800px;
+  height: 800px;
+}
+
+.secondaryButton {
+  background: white;
+  color: black;
+  border: 2px solid black;
+}
+
+.secondaryButton::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  background: black;
+  border-radius: 50%;
+  transition: width 1.2s ease, height 1.2s ease;
+  z-index: -1;
+}
+
+.secondaryButton:hover {
+  color: white;
+}
+
+.secondaryButton:hover::before {
+  width: 800px;
+  height: 800px;
+}
+
+.submitButton {
+  background: black;
+  color: white;
+  border: 2px solid black;
+  margin-top: 24px;
+}
+
+.submitButton::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  background: white;
+  border-radius: 50%;
+  transition: width 1.2s ease, height 1.2s ease;
+  z-index: -1;
+}
+
+.submitButton:hover:not(:disabled) {
+  color: black;
+}
+
+.submitButton:hover:not(:disabled)::before {
+  width: 800px;
+  height: 800px;
+}
+
+.submitButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.backButton {
+  background: none;
+  border: none;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  color: #666;
+  cursor: pointer;
+  margin-bottom: 24px;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.backButton:hover {
+  color: black;
+}
+
+.formGroup {
+  margin-bottom: 20px;
+  flex: 1;
+}
+
+.formRow {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: black;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.input {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  padding: 16px 20px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  background: white;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.input:focus {
+  outline: none;
+  border-color: black;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.error {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  color: #dc2626;
+  background: #fee2e2;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 768px) {
+  .modalContent {
+    padding: 32px 24px;
+  }
+
+  .modalTitle {
+    font-size: 36px;
+  }
+
+  .formRow {
+    flex-direction: column;
+    gap: 0;
+  }
+}

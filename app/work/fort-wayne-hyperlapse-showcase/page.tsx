@@ -5,15 +5,15 @@ import VideoPlayer from "./VideoPlayer";
 export default function FortWayneHyperlapsePage() {
   const project = {
     title: 'FORT WAYNE HYPERLAPSE CITY SHOWCASE',
-    client_name: 'Sweet Dreams Media',
-    client_logo_url: 'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/sign/media/logos/VisitFortWayneLogo.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9lNzYzNTA0Yi05ZmEzLTQxNjAtYWRiZC05OTcyOWUwYTk0YTgiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJtZWRpYS9sb2dvcy9WaXNpdEZvcnRXYXluZUxvZ28ucG5nIiwiaWF0IjoxNzU3Mjc4OTA3LCJleHAiOjE3ODg4MTQ5MDd9.Nqg0-a7mEwbdQ5o5oG87Mq2HJFdl-K8vu27RMI8lgvo',
+    client_name: 'City of Fort Wayne',
+    client_logo_url: 'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/CityofFortWayneLogo.png',
     cloudflare_stream_id: 'a507a5b8a369b70b7332c0567cbbcc4c',
     description: 'Dynamic city showcase using advanced hyperlapse techniques.',
     category: 'Commercial',
     location: 'Fort Wayne, IN',
     year: 2025,
     services: ['Cinematography', 'Editing', 'Color Grading'],
-    full_description: 'Created a stunning hyperlapse showcase of Fort Wayne that highlights the city\'s beauty, energy, and unique character. This personal project demonstrates advanced cinematography techniques while celebrating our hometown.',
+    full_description: 'Created a stunning hyperlapse showcase of Fort Wayne that highlights the city\'s beauty, energy, and unique character. Sold to the mayor\'s office to showcase Fort Wayne\'s vibrant culture and dynamic energy.',
     additional_images: []
   };
 

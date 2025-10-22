@@ -1,8 +1,34 @@
 .section {
   padding-top: 128px;
-  padding-bottom: 128px;
+  padding-bottom: 80px;
   background: white;
-  overflow: hidden;
+  overflow: visible;
+  position: relative;
+}
+
+/* Custom Cursor with Logo */
+.customCursor {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 50%;
+  border: 3px solid black;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  transition: opacity 0.2s ease;
+}
+
+.cursorLogo {
+  max-width: 70%;
+  max-height: 70%;
+  object-fit: contain;
 }
 
 .headerContainer {
@@ -35,12 +61,55 @@
   margin-bottom: 0px;
 }
 
+/* Scroll Wrapper with Arrows */
+.scrollWrapper {
+  position: relative;
+  max-width: 1800px;
+  margin: 0 auto;
+  overflow: visible;
+}
+
+/* Navigation Arrows */
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid black;
+  border-radius: 50%;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: black;
+  backdrop-filter: blur(10px);
+}
+
+.arrow:hover {
+  background: black;
+  color: white;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.arrowLeft {
+  left: 24px;
+}
+
+.arrowRight {
+  right: 24px;
+}
+
 .scrollContainer {
   overflow-x: auto;
-  overflow-y: hidden;
-  cursor: grab;
+  overflow-y: visible;
+  cursor: none;
   padding-left: 48px;
   padding-right: 48px;
+  padding-bottom: 40px;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -50,7 +119,7 @@
 }
 
 .scrollContainer:active {
-  cursor: grabbing;
+  cursor: none;
 }
 
 .carouselTrack {
@@ -61,55 +130,179 @@
 
 .projectCard {
   flex-shrink: 0;
-  width: 850px;
-  cursor: pointer;
+  width: 550px;
+  cursor: none;
   text-decoration: none;
+  user-select: none;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+  opacity: 0.8;
+  transform: scale(0.95);
 }
 
-.videoContainer {
+.projectCard:hover {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.imageContainer {
   position: relative;
-  width: 850px;
-  height: 550px;
+  width: 550px;
+  height: 360px;
   background: black;
   border-radius: 16px;
   overflow: hidden;
   margin-bottom: 24px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.5s ease;
+}
+
+.projectCard:hover .imageContainer {
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 }
 
 .thumbnail {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: opacity 0.3s ease;
+  transition: filter 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: blur(0px);
 }
 
-.video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.videoContainer:hover .thumbnail {
-  opacity: 0;
-}
-
-.videoContainer:hover .video {
-  opacity: 1;
+.projectCard:hover .thumbnail {
+  filter: blur(4px);
 }
 
 .projectTitle {
   font-family: 'Losta Masta', sans-serif;
-  font-size: 32px;
+  font-size: 24px;
   text-transform: uppercase;
   color: black;
   font-weight: 900;
+  transition: color 0.3s ease;
 }
 
-.projectCard {
-  user-select: none;
+.projectCard:hover .projectTitle {
+  color: #333;
+}
+
+/* Responsive */
+@media (max-width: 1400px) {
+  .projectCard {
+    width: 500px;
+  }
+
+  .imageContainer {
+    width: 500px;
+    height: 320px;
+  }
+
+  .projectTitle {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .projectCard {
+    width: 450px;
+  }
+
+  .imageContainer {
+    width: 450px;
+    height: 280px;
+  }
+
+  .projectTitle {
+    font-size: 20px;
+  }
+
+  .arrow {
+    width: 48px;
+    height: 48px;
+  }
+
+  .arrow svg {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+  .projectCard {
+    width: 380px;
+  }
+
+  .imageContainer {
+    width: 380px;
+    height: 240px;
+  }
+
+  .projectTitle {
+    font-size: 18px;
+  }
+
+  .mainText {
+    font-size: 80px;
+  }
+
+  .arrow {
+    width: 40px;
+    height: 40px;
+  }
+
+  .arrow svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .arrowLeft {
+    left: 12px;
+  }
+
+  .arrowRight {
+    right: 12px;
+  }
+}
+
+.viewAllButton {
+  display: inline-block;
+  background: black;
+  color: white;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 16px 48px;
+  border-radius: 999px;
+  font-size: 14px;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-top: 32px;
+  border: 2px solid black;
+  position: relative;
+  overflow: hidden;
+}
+
+.viewAllButton::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  background: white;
+  border-radius: 50%;
+  transition: width 1.2s ease, height 1.2s ease;
+  z-index: -1;
+}
+
+.viewAllButton:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  color: black;
+}
+
+.viewAllButton:hover::before {
+  width: 800px;
+  height: 800px;
 }

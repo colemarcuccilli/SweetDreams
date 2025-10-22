@@ -9,7 +9,7 @@ const PROJECTS = [
     id: 1,
     title: 'KISSEL ENTERTAINMENT COMMERCIAL & MORE',
     slug: 'knoxville-carnival-coverage',
-    thumbnail: 'https://customer-w6h9o08eg118alny.cloudflarestream.com/d554360a479b1380f96df7a4ef8f03a3/thumbnails/thumbnail.jpg?time=1s&height=600',
+    thumbnail: 'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/KnoxvilleCarnival/DJI_20250912212213_0133_D.jpg',
     client: 'Kissel Entertainment',
     category: 'Event Coverage',
     year: '2025',
@@ -29,7 +29,7 @@ const PROJECTS = [
     id: 3,
     title: 'BROOKFIELD ZOO FERRIS WHEEL COMMERCIAL',
     slug: 'brookfield-zoo-ferris-wheel',
-    thumbnail: 'https://videodelivery.net/b3b94bd1543e2452571b90aab0a38e9b/thumbnails/thumbnail.jpg?time=1s&height=600',
+    thumbnail: 'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/BrookfieldZoo/_DSC8445.jpg',
     client: 'RideWorx & Brookfield Zoo',
     category: 'Commercial',
     year: '2025',
@@ -39,7 +39,7 @@ const PROJECTS = [
     id: 4,
     title: 'AEGIS DENTAL - TRUSTED DENTISTRY',
     slug: 'aegis-dental-trusted-dentistry',
-    thumbnail: 'https://videodelivery.net/089a5f4bac2141b90d9583820ee2b6cb/thumbnails/thumbnail.jpg?time=1s&height=600',
+    thumbnail: 'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/AegisDental/_DSC7982.jpg',
     client: 'Aegis Dental Group',
     category: 'Commercial',
     year: '2025',
@@ -86,7 +86,7 @@ export default function Work() {
         {/* Subheader */}
         <div className={styles.subheader}>
           <span className={styles.subheaderLeft}>PROJECTS</span>
-          <Link href="/work" className={styles.exploreLink}>EXPLORE</Link>
+          <Link href="/media#portfolio" className={styles.exploreLink}>EXPLORE</Link>
         </div>
 
         {/* Projects List */}

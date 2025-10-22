@@ -61,8 +61,8 @@
 .clientName {
   font-family: 'Anton', sans-serif;
   font-weight: 400;
-  color: white;
-  opacity: 0.8;
+  color: #e63636;
+  opacity: 1;
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.2em;

@@ -36,9 +36,19 @@
   border-color: white;
 }
 
-.baseLayer .button:hover {
+.baseLayer .button::before {
   background: white;
+}
+
+.baseLayer .button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
   color: black;
+}
+
+.baseLayer .button:hover::before {
+  width: 800px;
+  height: 800px;
 }
 
 .invertedLayer {
@@ -56,9 +66,19 @@
   border-color: black;
 }
 
-.invertedLayer .button:hover {
+.invertedLayer .button::before {
   background: black;
+}
+
+.invertedLayer .button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   color: white;
+}
+
+.invertedLayer .button:hover::before {
+  width: 800px;
+  height: 800px;
 }
 
 .container {
@@ -92,8 +112,23 @@
   font-size: 14px;
   letter-spacing: 0.15em;
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   border: 2px solid;
+  position: relative;
+  overflow: hidden;
+}
+
+.button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  transition: width 1.2s ease, height 1.2s ease;
+  z-index: -1;
 }
 
 @media (max-width: 1024px) {

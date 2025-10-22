@@ -60,36 +60,11 @@
   letter-spacing: 0.15em;
   color: black;
   text-decoration: none;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  padding: 12px 32px;
-  border-radius: 999px;
-  border: 2px solid black;
-  position: relative;
-  overflow: hidden;
-}
-
-.exploreLink::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 0;
-  height: 0;
-  background: white;
-  border-radius: 50%;
-  transition: width 1.2s ease, height 1.2s ease;
-  z-index: -1;
+  transition: opacity 0.3s ease;
 }
 
 .exploreLink:hover {
-  transform: scale(1.05);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-}
-
-.exploreLink:hover::before {
-  width: 800px;
-  height: 800px;
+  opacity: 0.6;
 }
 
 .projectsList {
@@ -128,18 +103,17 @@
 .toggleButton {
   background: none;
   border: none;
-  padding: 8px;
   cursor: pointer;
-  color: #666;
-  transition: color 0.2s ease;
-}
-
-.toggleButton:hover {
-  color: black;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
 }
 
 .arrow {
   transition: transform 0.3s ease;
+  color: black;
 }
 
 .arrowUp {
@@ -151,7 +125,7 @@
   grid-template-columns: 1fr 1fr;
   gap: 48px;
   padding: 0 0 48px 0;
-  animation: slideDown 0.3s ease-out;
+  animation: slideDown 0.3s ease;
 }
 
 @keyframes slideDown {
@@ -166,14 +140,11 @@
 }
 
 .detailsLeft {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 100%;
 }
 
 .thumbnail {
   width: 100%;
-  height: auto;
   aspect-ratio: 16 / 9;
   object-fit: cover;
   border-radius: 16px;
@@ -183,7 +154,9 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
-  justify-content: center;
+  padding: 24px;
+  background: #f5f5f5;
+  border-radius: 16px;
 }
 
 .detailItem {
@@ -221,36 +194,12 @@
   letter-spacing: 0.15em;
   text-decoration: none;
   text-align: center;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background 0.3s ease;
   margin-top: 16px;
-  border: 2px solid black;
-  position: relative;
-  overflow: hidden;
-}
-
-.viewButton::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 0;
-  height: 0;
-  background: white;
-  border-radius: 50%;
-  transition: width 1.2s ease, height 1.2s ease;
-  z-index: -1;
 }
 
 .viewButton:hover {
-  transform: scale(1.05);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  color: black;
-}
-
-.viewButton:hover::before {
-  width: 800px;
-  height: 800px;
+  background: #333;
 }
 
 @media (max-width: 1024px) {
@@ -264,46 +213,5 @@
 
   .projectDetails {
     grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 768px) {
-  .section {
-    padding: 80px 32px 120px 32px;
-    border-radius: 0 0 48px 48px;
-  }
-
-  .mainText {
-    font-size: 56px;
-  }
-
-  .projectTitle {
-    font-size: 20px;
-  }
-
-  .projectHeader {
-    padding: 24px 0;
-  }
-
-  .projectDetails {
-    gap: 32px;
-    padding: 0 0 32px 0;
-  }
-
-  .detailItem {
-    gap: 6px;
-  }
-
-  .detailLabel {
-    font-size: 11px;
-  }
-
-  .detailValue {
-    font-size: 14px;
-  }
-
-  .viewButton {
-    padding: 14px 28px;
-    font-size: 13px;
   }
 }

@@ -10,74 +10,46 @@ if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-// Split text into individual characters, keeping words together
-function splitTextIntoCharacters(element: HTMLElement): HTMLElement[] {
-  const text = element.textContent || '';
-  const words = text.split(' ');
-  element.innerHTML = '';
-
-  const chars: HTMLElement[] = [];
-
-  words.forEach((word, wordIndex) => {
-    // Create a wrapper for each word to prevent breaking
-    const wordWrapper = document.createElement('span');
-    wordWrapper.style.display = 'inline-block';
-    wordWrapper.style.whiteSpace = 'nowrap';
-    wordWrapper.style.marginRight = '0.25em'; // Add small margin for word spacing
-
-    // Split word into characters
-    for (let i = 0; i < word.length; i++) {
-      const char = word[i];
-      const span = document.createElement('span');
-      span.textContent = char;
-      span.style.display = 'inline-block';
-      wordWrapper.appendChild(span);
-      chars.push(span);
-    }
-
-    element.appendChild(wordWrapper);
-    chars.push(wordWrapper); // Add word wrapper to chars for animation
-  });
-
-  return chars;
-}
-
 export default function WhoAreWeAnimated() {
   const sectionRef = useRef<HTMLElement>(null);
-  const mainTextRef = useRef<HTMLParagraphElement>(null);
+  const mainTextRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined' || !mainTextRef.current) return;
+
+    const textElement = mainTextRef.current;
 
     const ctx = gsap.context(() => {
-      if (!mainTextRef.current) return;
+      if (!textElement) return;
 
-      // Split text into characters
-      const chars = splitTextIntoCharacters(mainTextRef.current);
+      // Get all the text lines
+      const lines = textElement.querySelectorAll(`.${styles.textLine}`);
 
-      // Set initial state - coming from the right
-      gsap.set(chars, {
+      // Set initial state - lines slide in from the right
+      gsap.set(lines, {
         x: 100,
         opacity: 0
       });
 
-      // Create ScrollTrigger animation
-      gsap.to(chars, {
+      // Animate lines sliding in
+      gsap.to(lines, {
         x: 0,
         opacity: 1,
         duration: 0.8,
-        stagger: 0.015,
+        stagger: 0.15,
         ease: 'power3.out',
         delay: 0.3,
         scrollTrigger: {
-          trigger: mainTextRef.current,
+          trigger: textElement,
           start: 'top 60%',
           toggleActions: 'play none none reverse',
         }
       });
     }, sectionRef);
 
-    return () => ctx.revert();
+    return () => {
+      ctx.revert();
+    };
   }, []);
 
   return (
@@ -87,9 +59,14 @@ export default function WhoAreWeAnimated() {
           WHO ARE WE
         </h2>
 
-        <p className={styles.mainText} ref={mainTextRef}>
-          WE SPECIALIZE IN BRAND DEVELOPMENT, CREATIVE STORYTELLING, AND MULTIMEDIA SOLUTIONS THAT HELP BUSINESSES STAND OUT AND CONNECT WITH THEIR AUDIENCE.
-        </p>
+        <div className={styles.mainText} ref={mainTextRef}>
+          <div className={styles.textLine}>WE SPECIALIZE IN BRAND DEVELOPMENT,</div>
+          <div className={styles.textLine}>
+            <span className="creativeStorytellingWord">CREATIVE STORYTELLING</span>, AND MULTIMEDIA
+          </div>
+          <div className={styles.textLine}>SOLUTIONS THAT HELP BUSINESSES STAND OUT</div>
+          <div className={styles.textLine}>AND CONNECT WITH THEIR AUDIENCE.</div>
+        </div>
       </div>
     </section>
   );

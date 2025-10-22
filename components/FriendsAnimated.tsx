@@ -31,7 +31,7 @@ const CLIENT_LOGOS = [
   },
   {
     name: "Summit City Vintage",
-    url: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SummitCityVintageLogo.jpg"
+    url: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SummitCityVintageLogo.png"
   },
   {
     name: "Trusted Dental",
@@ -50,8 +50,8 @@ const CLIENT_LOGOS = [
     url: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/TheLandingLogo.png"
   },
   {
-    name: "Visit Fort Wayne",
-    url: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/VisitFortWayneLogo.png"
+    name: "City of Fort Wayne",
+    url: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/CityofFortWayneLogo.png"
   }
 ];
 
@@ -149,8 +149,8 @@ export default function FriendsAnimated() {
     <section className={styles.section}>
       <div className={styles.container} ref={containerRef}>
         <div className={styles.textSection}>
-          <h3 className={styles.mainText}>OUR FRIENDS</h3>
           <h2 className={styles.title}>TRUSTED BY</h2>
+          <h3 className={styles.mainText}>OUR FRIENDS</h3>
         </div>
 
         <div className={styles.logosGrid}>

@@ -48,6 +48,22 @@
   white-space: nowrap;
 }
 
+.standsOut {
+  color: #e63636;
+  display: inline-block;
+  transform: rotate(-2deg);
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: rotate(-2deg) translateY(0px);
+  }
+  50% {
+    transform: rotate(-2deg) translateY(-8px);
+  }
+}
+
 .button {
   display: inline-block;
   align-self: flex-end;
@@ -61,11 +77,35 @@
   font-size: 14px;
   letter-spacing: 0.15em;
   text-decoration: none;
-  transition: background 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  border: 2px solid black;
+}
+
+.button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  background: white;
+  border-radius: 50%;
+  transition: width 1.2s ease, height 1.2s ease;
+  z-index: -1;
 }
 
 .button:hover {
-  background: #333;
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  color: black;
+}
+
+.button:hover::before {
+  width: 800px;
+  height: 800px;
 }
 
 @media (max-width: 1024px) {

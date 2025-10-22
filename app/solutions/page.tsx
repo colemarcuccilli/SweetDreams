@@ -1,10 +1,584 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
 import styles from "./page.module.css";
+
+function LaunchSection() {
+  const [openCard, setOpenCard] = useState<number | null>(null);
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  const [hoveringCard, setHoveringCard] = useState<number | null>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, cardId: number) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setCursorPos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
+
+  return (
+    <section className={styles.launchSection}>
+      <div className={styles.launchContainer}>
+        <div className={`${styles.launchHeader} launch-header`}>
+          <div className={styles.launchNumber}>05</div>
+          <div className={styles.launchTitleWrapper}>
+            <p className={styles.launchMiniTitle}>STRATEGY</p>
+            <h2 className={styles.launchTitle}>LAUNCH & GROWTH</h2>
+          </div>
+        </div>
+      </div>
+      {/* Radial Expanding Circle Design - Completely Unique */}
+      <div className={styles.launchRadialContainer}>
+        <div className={styles.launchRadialGrid}>
+          {/* Top Left - Campaign Planning */}
+          <div
+            className={`${styles.launchRadialCard} ${styles.launchRadial1} ${styles.launchCardWithVideo} ${openCard === 1 ? styles.launchRadialActive : ''} launch-card`}
+            onClick={() => setOpenCard(openCard === 1 ? null : 1)}
+            onMouseMove={(e) => handleMouseMove(e, 1)}
+            onMouseEnter={() => setHoveringCard(1)}
+            onMouseLeave={() => setHoveringCard(null)}
+          >
+            <div className={styles.launchVideoWrapper}>
+              <iframe
+                src="https://customer-w6h9o08eg118alny.cloudflarestream.com/7439dc9c431f2bada649098c541cf88b/iframe?muted=true&autoplay=true&loop=true&controls=false"
+                className={styles.launchVideoIframe}
+                allow="autoplay; encrypted-media;"
+              ></iframe>
+            </div>
+            <div className={styles.launchRadialLabel}>01</div>
+            <h3>Campaign<br/>Planning</h3>
+            {hoveringCard === 1 && !openCard && (
+              <div className={styles.clickMeCursor} style={{ left: `${cursorPos.x}px`, top: `${cursorPos.y}px` }}>
+                click me
+              </div>
+            )}
+          </div>
+
+          {/* Top Right - Digital Marketing with Video */}
+          <div
+            className={`${styles.launchRadialCard} ${styles.launchRadial2} ${styles.launchCardWithVideo} ${openCard === 2 ? styles.launchRadialActive : ''} launch-card`}
+            onClick={() => setOpenCard(openCard === 2 ? null : 2)}
+            onMouseMove={(e) => handleMouseMove(e, 2)}
+            onMouseEnter={() => setHoveringCard(2)}
+            onMouseLeave={() => setHoveringCard(null)}
+          >
+            <div className={styles.launchVideoWrapper}>
+              <iframe
+                src="https://customer-w6h9o08eg118alny.cloudflarestream.com/559702b328b08583c75a53b76a010a59/iframe?muted=true&autoplay=true&loop=true&controls=false"
+                className={styles.launchVideoIframe}
+                allow="autoplay; encrypted-media;"
+              ></iframe>
+            </div>
+            <div className={styles.launchRadialLabel}>02</div>
+            <h3>Digital<br/>Marketing</h3>
+            {hoveringCard === 2 && !openCard && (
+              <div className={styles.clickMeCursor} style={{ left: `${cursorPos.x}px`, top: `${cursorPos.y}px` }}>
+                click me
+              </div>
+            )}
+          </div>
+
+          {/* Bottom Left - Growth Strategy */}
+          <div
+            className={`${styles.launchRadialCard} ${styles.launchRadial3} ${styles.launchCardWithVideo} ${openCard === 3 ? styles.launchRadialActive : ''} launch-card`}
+            onClick={() => setOpenCard(openCard === 3 ? null : 3)}
+            onMouseMove={(e) => handleMouseMove(e, 3)}
+            onMouseEnter={() => setHoveringCard(3)}
+            onMouseLeave={() => setHoveringCard(null)}
+          >
+            <div className={styles.launchVideoWrapper}>
+              <iframe
+                src="https://customer-w6h9o08eg118alny.cloudflarestream.com/2e07fc70e6c22f62e48bc51a8987d058/iframe?muted=true&autoplay=true&loop=true&controls=false"
+                className={styles.launchVideoIframe}
+                allow="autoplay; encrypted-media;"
+              ></iframe>
+            </div>
+            <div className={styles.launchRadialLabel}>03</div>
+            <h3>Growth<br/>Strategy</h3>
+            {hoveringCard === 3 && !openCard && (
+              <div className={styles.clickMeCursor} style={{ left: `${cursorPos.x}px`, top: `${cursorPos.y}px` }}>
+                click me
+              </div>
+            )}
+          </div>
+
+          {/* Bottom Right - Web Development */}
+          <div
+            className={`${styles.launchRadialCard} ${styles.launchRadial4} ${styles.launchCardWithVideo} ${openCard === 4 ? styles.launchRadialActive : ''} launch-card`}
+            onClick={() => setOpenCard(openCard === 4 ? null : 4)}
+            onMouseMove={(e) => handleMouseMove(e, 4)}
+            onMouseEnter={() => setHoveringCard(4)}
+            onMouseLeave={() => setHoveringCard(null)}
+          >
+            <div className={styles.launchVideoWrapper}>
+              <iframe
+                src="https://customer-w6h9o08eg118alny.cloudflarestream.com/9323d8b49961b64e93d4bdc100368d0f/iframe?muted=true&autoplay=true&loop=true&controls=false"
+                className={styles.launchVideoIframe}
+                allow="autoplay; encrypted-media;"
+              ></iframe>
+            </div>
+            <div className={styles.launchRadialLabel}>04</div>
+            <h3>Web<br/>Development</h3>
+            {hoveringCard === 4 && !openCard && (
+              <div className={styles.clickMeCursor} style={{ left: `${cursorPos.x}px`, top: `${cursorPos.y}px` }}>
+                click me
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+      <div className={styles.launchCta}>
+        <Link href="/contact" className={styles.solutionButton}>
+          LAUNCH WITH US
+        </Link>
+      </div>
+
+      {/* Blur Overlay and Modals */}
+      {openCard !== null && (
+        <>
+          <div
+            className={styles.launchBlurOverlay}
+            onClick={() => setOpenCard(null)}
+          />
+
+          {/* Campaign Planning Modal */}
+          {openCard === 1 && (
+            <div className={styles.launchCardExpanded}>
+              <button
+                className={styles.launchCardClose}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenCard(null);
+                }}
+              >
+                ✕
+              </button>
+              <h3>Campaign Planning</h3>
+              <h4>Campaigns That Convert. Not Just Look Cool.</h4>
+              <p>
+                Anyone can throw together a campaign. We architect them. Every touchpoint is mapped. Every piece of content has a purpose. Every metric is tracked.
+              </p>
+              <ul>
+                <li>Full-funnel campaign architecture</li>
+                <li>Multi-channel content calendars</li>
+                <li>A/B testing & optimization frameworks</li>
+                <li>Real-time performance tracking</li>
+                <li>ROI-focused strategy development</li>
+              </ul>
+              <p className={styles.launchCardEmphasis}>
+                Stop guessing. Start growing. Every campaign we build is designed to scale.
+              </p>
+              <Link href="/contact" className={styles.launchCardButton}>
+                PLAN YOUR CAMPAIGN
+              </Link>
+            </div>
+          )}
+
+          {/* Digital Marketing Modal */}
+          {openCard === 2 && (
+            <div className={styles.launchCardExpanded}>
+              <button
+                className={styles.launchCardClose}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenCard(null);
+                }}
+              >
+                ✕
+              </button>
+              <h3>Digital Marketing</h3>
+              <h4>Performance-Driven. Data-Backed. Results-Focused.</h4>
+              <p>
+                We don't do vanity metrics. Every dollar spent is tracked. Every strategy is tested. Every decision is backed by data.
+              </p>
+              <ul>
+                <li>Paid social media advertising (Meta, TikTok, LinkedIn)</li>
+                <li>Google Ads & search engine marketing</li>
+                <li>Conversion rate optimization</li>
+                <li>Email marketing & automation</li>
+                <li>Analytics & performance reporting</li>
+              </ul>
+              <p className={styles.launchCardEmphasis}>
+                Marketing that actually moves the needle. No fluff. Just measurable growth.
+              </p>
+              <Link href="/contact" className={styles.launchCardButton}>
+                GROW YOUR BRAND
+              </Link>
+            </div>
+          )}
+
+          {/* Growth Strategy Modal */}
+          {openCard === 3 && (
+            <div className={styles.launchCardExpanded}>
+              <button
+                className={styles.launchCardClose}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenCard(null);
+                }}
+              >
+                ✕
+              </button>
+              <h3>Growth Strategy</h3>
+              <h4>Built For Scale. Designed To Last.</h4>
+              <p>
+                Growth isn't an accident. It's engineered. We build systems that compound. Strategies that scale. Frameworks that work long-term.
+              </p>
+              <ul>
+                <li>Market research & competitive analysis</li>
+                <li>Audience segmentation & targeting</li>
+                <li>Scalable content production systems</li>
+                <li>Community building & engagement strategies</li>
+                <li>Long-term brand positioning</li>
+              </ul>
+              <p className={styles.launchCardEmphasis}>
+                One-off wins are cool. Sustainable growth is better. Let's build a system that lasts.
+              </p>
+              <Link href="/contact" className={styles.launchCardButton}>
+                BUILD YOUR STRATEGY
+              </Link>
+            </div>
+          )}
+
+          {/* Web Development Modal */}
+          {openCard === 4 && (
+            <div className={styles.launchCardExpanded}>
+              <button
+                className={styles.launchCardClose}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenCard(null);
+                }}
+              >
+                ✕
+              </button>
+              <h3>Web Development</h3>
+              <h4>Real Code. Real Results.</h4>
+              <p>
+                We don't use templates. We don't drag-and-drop. We write clean, custom code that's built specifically for your business.
+              </p>
+              <ul>
+                <li>Custom Next.js & React applications</li>
+                <li>High-performance, SEO-optimized sites</li>
+                <li>Database integration & backend development</li>
+                <li>Responsive design that works everywhere</li>
+                <li>Ongoing support & maintenance</li>
+              </ul>
+              <p className={styles.launchCardEmphasis}>
+                Your competitors are using cookie-cutter templates. Stand out with a site that's uniquely yours.
+              </p>
+              <Link href="/contact" className={styles.launchCardButton}>
+                BUILD NOW
+              </Link>
+            </div>
+          )}
+        </>
+      )}
+    </section>
+  );
+}
+
+function DesignSection() {
+  const [openCard, setOpenCard] = useState<number | null>(null);
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  const [hoveringCard, setHoveringCard] = useState<number | null>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, cardId: number) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setCursorPos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
+
+  return (
+    <section className={styles.designSection}>
+      <div className={styles.designContainer}>
+        {/* Header with Number - Two Column Layout */}
+        <div className={styles.designHeaderGrid}>
+          <div className={styles.designHeaderLeft}>
+            <div className={styles.designHeader}>
+              <div className={`${styles.designNumber} design-number`}>02</div>
+              <div className={styles.designTitleWrapper}>
+                <p className={`${styles.designMiniTitle} design-mini-title`}>PLATFORM STRATEGY</p>
+                <h2 className={`${styles.designTitle} design-title`}>CREATIVE<br />& DESIGN</h2>
+              </div>
+            </div>
+          </div>
+          <div className={styles.designHeaderRight}>
+            <p className={`${styles.designLargeText} design-intro`}>
+              We don't just make content. We engineer it for the platform.
+            </p>
+          </div>
+        </div>
+
+        {/* Main Content */}
+        <div className={styles.designContent}>
+
+          {/* Strategy Cards */}
+          <div className={styles.designGrid}>
+            <div
+              className={`${styles.designCard} design-card`}
+              onClick={() => setOpenCard(openCard === 1 ? null : 1)}
+              onMouseMove={(e) => handleMouseMove(e, 1)}
+              onMouseEnter={() => setHoveringCard(1)}
+              onMouseLeave={() => setHoveringCard(null)}
+            >
+              <div className={styles.designCardIcon}>
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/>
+                  <path d="M9 3v18M3 9h18M3 15h18M15 3v18"/>
+                </svg>
+              </div>
+              <h3 className={styles.designCardTitle}>ALGORITHM-FIRST DESIGN</h3>
+              <p className={styles.designCardDescription}>
+                Every platform has a language. We speak it fluently. Content optimized for maximum reach without paid promotion.
+              </p>
+              {hoveringCard === 1 && !openCard && (
+                <div className={styles.clickMeCursor} style={{ left: `${cursorPos.x}px`, top: `${cursorPos.y}px` }}>
+                  click me
+                </div>
+              )}
+            </div>
+
+            <div
+              className={`${styles.designCard} design-card`}
+              onClick={() => setOpenCard(openCard === 2 ? null : 2)}
+              onMouseMove={(e) => handleMouseMove(e, 2)}
+              onMouseEnter={() => setHoveringCard(2)}
+              onMouseLeave={() => setHoveringCard(null)}
+            >
+              <div className={styles.designCardIcon}>
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                  <polyline points="7.5 4.21 12 6.81 16.5 4.21"/>
+                  <polyline points="7.5 19.79 7.5 14.6 3 12"/>
+                  <polyline points="21 12 16.5 14.6 16.5 19.79"/>
+                  <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                  <line x1="12" y1="22.08" x2="12" y2="12"/>
+                </svg>
+              </div>
+              <h3 className={styles.designCardTitle}>CROSS-PLATFORM ADAPTATION</h3>
+              <p className={styles.designCardDescription}>
+                One concept, infinite formats. We adapt your message for TikTok, Instagram, YouTube, and beyond—each version native to its home.
+              </p>
+              {hoveringCard === 2 && !openCard && (
+                <div className={styles.clickMeCursor} style={{ left: `${cursorPos.x}px`, top: `${cursorPos.y}px` }}>
+                  click me
+                </div>
+              )}
+            </div>
+
+            <div
+              className={`${styles.designCard} design-card`}
+              onClick={() => setOpenCard(openCard === 3 ? null : 3)}
+              onMouseMove={(e) => handleMouseMove(e, 3)}
+              onMouseEnter={() => setHoveringCard(3)}
+              onMouseLeave={() => setHoveringCard(null)}
+            >
+              <div className={styles.designCardIcon}>
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                </svg>
+              </div>
+              <h3 className={styles.designCardTitle}>ORGANIC GROWTH TACTICS</h3>
+              <p className={styles.designCardDescription}>
+                Hooks that stop the scroll. Pacing that holds attention. CTAs that convert. We build content that platforms want to promote.
+              </p>
+              {hoveringCard === 3 && !openCard && (
+                <div className={styles.clickMeCursor} style={{ left: `${cursorPos.x}px`, top: `${cursorPos.y}px` }}>
+                  click me
+                </div>
+              )}
+            </div>
+
+            <div
+              className={`${styles.designCard} design-card`}
+              onClick={() => setOpenCard(openCard === 4 ? null : 4)}
+              onMouseMove={(e) => handleMouseMove(e, 4)}
+              onMouseEnter={() => setHoveringCard(4)}
+              onMouseLeave={() => setHoveringCard(null)}
+            >
+              <div className={styles.designCardIcon}>
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M12 6v6l4 2"/>
+                </svg>
+              </div>
+              <h3 className={styles.designCardTitle}>TREND-AWARE EXECUTION</h3>
+              <p className={styles.designCardDescription}>
+                We stay ahead of the curve. Leveraging current trends while maintaining your brand identity for maximum impact.
+              </p>
+              {hoveringCard === 4 && !openCard && (
+                <div className={styles.clickMeCursor} style={{ left: `${cursorPos.x}px`, top: `${cursorPos.y}px` }}>
+                  click me
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Bottom Statement */}
+          <div className={`${styles.designStatement} design-statement`}>
+            <p>Platform-native content that grows your brand organically.</p>
+            <Link href="/contact" className={styles.solutionButton}>
+              LET'S BUILD YOUR STRATEGY
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Blur Overlay and Modals */}
+      {openCard !== null && (
+        <>
+          <div
+            className={styles.designBlurOverlay}
+            onClick={() => setOpenCard(null)}
+          />
+
+          {/* Algorithm-First Design Modal */}
+          {openCard === 1 && (
+            <div className={styles.designCardExpanded}>
+              <button
+                className={styles.designCardClose}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenCard(null);
+                }}
+              >
+                ✕
+              </button>
+              <h3>Algorithm-First Design</h3>
+              <h4>We Make Content That Gets Seen</h4>
+              <p>
+                Social media platforms want to keep people scrolling. So they push content that keeps people watching. We study what works on each platform—TikTok, Instagram, YouTube—and we make your content in a way that these platforms actually want to show to more people.
+              </p>
+              <ul>
+                <li>Opening seconds that grab attention immediately (because most people scroll past in 2 seconds)</li>
+                <li>Videos paced to keep people watching all the way through (longer watch time = more reach)</li>
+                <li>Content designed to make people comment, share, and engage (platforms love engagement)</li>
+                <li>Proper sizing and framing for each platform (vertical for TikTok, square for Instagram, etc.)</li>
+                <li>Editing styles that feel native to each platform (so it doesn't look out of place)</li>
+              </ul>
+              <p className={styles.designCardEmphasis}>
+                The platforms decide who sees your content. We make content they want to show.
+              </p>
+              <Link href="/contact" className={styles.designCardButton}>
+                OPTIMIZE YOUR CONTENT
+              </Link>
+            </div>
+          )}
+
+          {/* Cross-Platform Adaptation Modal */}
+          {openCard === 2 && (
+            <div className={styles.designCardExpanded}>
+              <button
+                className={styles.designCardClose}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenCard(null);
+                }}
+              >
+                ✕
+              </button>
+              <h3>Cross-Platform Adaptation</h3>
+              <h4>8 Platforms = 8x The Views. Free Eyes On Your Brand.</h4>
+              <p>
+                Here's the math that makes sense: Post on 1 platform, you get 1,000 views. Post on 8 platforms? That's 8,000 views. Same content. Same effort. 8x the reach. For free.
+              </p>
+              <p>
+                We take one core concept and optimize it for every major platform. Each version is native to its home—the right format, the right pacing, the right messaging. Your brand stays consistent. Your reach multiplies.
+              </p>
+              <ul>
+                <li>TikTok & Instagram Reels (9:16 vertical, fast-paced)</li>
+                <li>Instagram Feed (1:1 square, aesthetic-focused)</li>
+                <li>YouTube & LinkedIn (16:9 landscape, long-form)</li>
+                <li>Facebook Feed (4:5 portrait, community-driven)</li>
+                <li>Twitter/X (optimized clips with text overlays)</li>
+                <li>Pinterest (vertical pins that drive traffic)</li>
+                <li>Platform-specific captions, hashtags, & CTAs for each</li>
+              </ul>
+              <p className={styles.designCardEmphasis}>
+                Stop leaving views on the table. One shoot. Eight platforms. Exponential reach.
+              </p>
+              <Link href="/contact" className={styles.designCardButton}>
+                MULTIPLY YOUR REACH
+              </Link>
+            </div>
+          )}
+
+          {/* Organic Growth Tactics Modal */}
+          {openCard === 3 && (
+            <div className={styles.designCardExpanded}>
+              <button
+                className={styles.designCardClose}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenCard(null);
+                }}
+              >
+                ✕
+              </button>
+              <h3>Organic Growth Tactics</h3>
+              <h4>Content That Spreads For Free</h4>
+              <p>
+                Viral content isn't luck. It follows patterns. We study what makes people stop scrolling, what makes them watch the whole thing, and what makes them share it with their friends. Then we apply those same patterns to your content. The result? More views, more followers, and you didn't spend a dollar on ads.
+              </p>
+              <ul>
+                <li>Opening lines that make people stop mid-scroll (you have 2 seconds to grab them)</li>
+                <li>Unexpected moments that break the pattern and demand attention</li>
+                <li>Content that makes people feel something (happy, surprised, inspired—emotion drives shares)</li>
+                <li>Questions and topics that make people want to comment and debate</li>
+                <li>Clear next steps that turn viewers into followers ("Follow for more", "Check out the full video", etc.)</li>
+              </ul>
+              <p className={styles.designCardEmphasis}>
+                Ads cost money every time someone sees them. Good content spreads for free. Forever.
+              </p>
+              <Link href="/contact" className={styles.designCardButton}>
+                GROW ORGANICALLY
+              </Link>
+            </div>
+          )}
+
+          {/* Trend-Aware Execution Modal */}
+          {openCard === 4 && (
+            <div className={styles.designCardExpanded}>
+              <button
+                className={styles.designCardClose}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenCard(null);
+                }}
+              >
+                ✕
+              </button>
+              <h3>Trend-Aware Execution</h3>
+              <h4>Catch Trends While They're Hot</h4>
+              <p>
+                Trends on social media move fast. Really fast. By the time most businesses notice a trend and try to use it, everyone's already moved on. We watch trends all day, every day. We catch them early, figure out which ones fit your brand, and create content before the trend dies. That's how you get massive reach.
+              </p>
+              <ul>
+                <li>We monitor what's trending across all platforms in real-time (so you don't have to)</li>
+                <li>We filter out trends that don't make sense for your brand (not every trend is worth jumping on)</li>
+                <li>We adapt trends to fit your brand's voice and style (so it feels authentic, not forced)</li>
+                <li>We move fast—create and post while the trend is still growing (timing is everything)</li>
+                <li>We put your own spin on trends (so you stand out instead of blending in)</li>
+              </ul>
+              <p className={styles.designCardEmphasis}>
+                Trends are free exposure. But only if you're early. We make sure you are.
+              </p>
+              <Link href="/contact" className={styles.designCardButton}>
+                STAY AHEAD OF TRENDS
+              </Link>
+            </div>
+          )}
+        </>
+      )}
+    </section>
+  );
+}
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -336,25 +910,7 @@ export default function SolutionsPage() {
       });
     }
 
-    // Launch & Growth - 3D card flip effect
-    const launchCards = container.querySelectorAll('.launch-card');
-    launchCards.forEach((card, index) => {
-      const direction = index % 2 === 0 ? -150 : 150;
-      gsap.from(card, {
-        x: direction,
-        opacity: 0,
-        rotationY: index % 2 === 0 ? -45 : 45,
-        rotationX: 15,
-        duration: 1.2,
-        delay: index * 0.15,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: card,
-          start: 'top 75%',
-          toggleActions: 'play none none reverse',
-        }
-      });
-    });
+    // Launch & Growth - Animation removed per user request
 
     // Studio section - dramatic reveal
     const studioContent = container.querySelector('.studio-content');
@@ -484,97 +1040,7 @@ export default function SolutionsPage() {
       </section>
 
       {/* 02. CREATIVE & DESIGN - Platform Strategy */}
-      <section className={styles.designSection}>
-        <div className={styles.designContainer}>
-          {/* Header with Number - Two Column Layout */}
-          <div className={styles.designHeaderGrid}>
-            <div className={styles.designHeaderLeft}>
-              <div className={styles.designHeader}>
-                <div className={`${styles.designNumber} design-number`}>02</div>
-                <div className={styles.designTitleWrapper}>
-                  <p className={`${styles.designMiniTitle} design-mini-title`}>PLATFORM STRATEGY</p>
-                  <h2 className={`${styles.designTitle} design-title`}>CREATIVE<br />& DESIGN</h2>
-                </div>
-              </div>
-            </div>
-            <div className={styles.designHeaderRight}>
-              <p className={`${styles.designLargeText} design-intro`}>
-                We don't just make content. We engineer it for the platform.
-              </p>
-            </div>
-          </div>
-
-          {/* Main Content */}
-          <div className={styles.designContent}>
-
-            {/* Strategy Cards */}
-            <div className={styles.designGrid}>
-              <div className={`${styles.designCard} design-card`}>
-                <div className={styles.designCardIcon}>
-                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <rect x="3" y="3" width="18" height="18" rx="2"/>
-                    <path d="M9 3v18M3 9h18M3 15h18M15 3v18"/>
-                  </svg>
-                </div>
-                <h3 className={styles.designCardTitle}>ALGORITHM-FIRST DESIGN</h3>
-                <p className={styles.designCardDescription}>
-                  Every platform has a language. We speak it fluently. Content optimized for maximum reach without paid promotion.
-                </p>
-              </div>
-
-              <div className={`${styles.designCard} design-card`}>
-                <div className={styles.designCardIcon}>
-                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-                    <polyline points="7.5 4.21 12 6.81 16.5 4.21"/>
-                    <polyline points="7.5 19.79 7.5 14.6 3 12"/>
-                    <polyline points="21 12 16.5 14.6 16.5 19.79"/>
-                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
-                    <line x1="12" y1="22.08" x2="12" y2="12"/>
-                  </svg>
-                </div>
-                <h3 className={styles.designCardTitle}>CROSS-PLATFORM ADAPTATION</h3>
-                <p className={styles.designCardDescription}>
-                  One concept, infinite formats. We adapt your message for TikTok, Instagram, YouTube, and beyond—each version native to its home.
-                </p>
-              </div>
-
-              <div className={`${styles.designCard} design-card`}>
-                <div className={styles.designCardIcon}>
-                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-                  </svg>
-                </div>
-                <h3 className={styles.designCardTitle}>ORGANIC GROWTH TACTICS</h3>
-                <p className={styles.designCardDescription}>
-                  Hooks that stop the scroll. Pacing that holds attention. CTAs that convert. We build content that platforms want to promote.
-                </p>
-              </div>
-
-              <div className={`${styles.designCard} design-card`}>
-                <div className={styles.designCardIcon}>
-                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <circle cx="12" cy="12" r="10"/>
-                    <path d="M12 6v6l4 2"/>
-                  </svg>
-                </div>
-                <h3 className={styles.designCardTitle}>TREND-AWARE EXECUTION</h3>
-                <p className={styles.designCardDescription}>
-                  We stay ahead of the curve. Leveraging current trends while maintaining your brand identity for maximum impact.
-                </p>
-              </div>
-            </div>
-
-            {/* Bottom Statement */}
-            <div className={`${styles.designStatement} design-statement`}>
-              <p>Platform-native content that grows your brand organically.</p>
-              <Link href="/contact" className={styles.solutionButton}>
-                LET'S BUILD YOUR STRATEGY
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      <DesignSection />
 
       {/* POST-PRODUCTION - Triple Video Showcase */}
       <section className={styles.postSection}>
@@ -628,8 +1094,29 @@ export default function SolutionsPage() {
       <section className={`${styles.socialSection} social-section`}>
         <div className={styles.socialContent}>
           <div className={styles.socialGrid}>
-            {/* Left Column - Bottom Aligned CTA */}
+            {/* Left Column - Title */}
             <div className={`${styles.socialLeftColumn} social-left-column`}>
+              <div className={styles.socialHeader}>
+                <div className={`${styles.socialNumber} social-number`}>04</div>
+                <div className={styles.socialTitleWrapper}>
+                  <p className={`${styles.socialMiniTitle} social-mini-title`}>DIGITAL MARKETING</p>
+                  <h2 className={`${styles.socialMainTitle} social-main-title`}>SOCIAL STRATEGY</h2>
+                </div>
+              </div>
+            </div>
+
+            {/* Middle Column - Stair-stepped Lines */}
+            <div className={`${styles.socialMiddleColumn} social-middle-column`}>
+              <div className={styles.socialLines}>
+                <h2 className={`${styles.socialLine} social-line`}><span className={styles.socialColoredWord}>CONTENT</span> CALENDARS.</h2>
+                <h2 className={`${styles.socialLine} social-line`}><span className={styles.socialColoredWord}>PLATFORM</span> MANAGEMENT.</h2>
+                <h2 className={`${styles.socialLine} social-line`}><span className={styles.socialColoredWord}>COMMUNITY</span> ENGAGEMENT.</h2>
+                <h2 className={`${styles.socialLine} social-line`}>REAL GROWTH.</h2>
+              </div>
+            </div>
+
+            {/* Right Column - Bottom Aligned CTA */}
+            <div className={`${styles.socialRightColumn} social-right-column`}>
               <div className={styles.socialBottomLeft}>
                 <p className={`${styles.socialTagline} social-tagline`}>
                   We handle your social so you don't have to.
@@ -641,62 +1128,12 @@ export default function SolutionsPage() {
                 </div>
               </div>
             </div>
-
-            {/* Middle Column - Stair-stepped Lines */}
-            <div className={`${styles.socialMiddleColumn} social-middle-column`}>
-              <div className={styles.socialLines}>
-                <h2 className={`${styles.socialLine} social-line`}>CONTENT CALENDARS.</h2>
-                <h2 className={`${styles.socialLine} social-line`}>PLATFORM MANAGEMENT.</h2>
-                <h2 className={`${styles.socialLine} social-line`}>COMMUNITY ENGAGEMENT.</h2>
-                <h2 className={`${styles.socialLine} social-line`}>REAL GROWTH.</h2>
-              </div>
-            </div>
-
-            {/* Right Column - Title */}
-            <div className={`${styles.socialRightColumn} social-right-column`}>
-              <div className={styles.socialHeader}>
-                <div className={`${styles.socialNumber} social-number`}>04</div>
-                <div className={styles.socialTitleWrapper}>
-                  <p className={`${styles.socialMiniTitle} social-mini-title`}>DIGITAL MARKETING</p>
-                  <h2 className={`${styles.socialMainTitle} social-main-title`}>SOCIAL STRATEGY</h2>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
 
       {/* LAUNCH & GROWTH - Diagonal Cards */}
-      <section className={styles.launchSection}>
-        <div className={styles.launchContainer}>
-          <div className={`${styles.launchHeader} launch-header`}>
-            <div className={styles.launchNumber}>05</div>
-            <div className={styles.launchTitleWrapper}>
-              <p className={styles.launchMiniTitle}>STRATEGY</p>
-              <h2 className={styles.launchTitle}>LAUNCH & GROWTH</h2>
-            </div>
-          </div>
-        </div>
-        <div className={styles.launchGrid}>
-          <div className={`${styles.launchCard} launch-card`}>
-            <h3>Campaign Planning</h3>
-            <p>Strategic campaigns designed to scale your brand.</p>
-          </div>
-          <div className={`${styles.launchCard} launch-card`}>
-            <h3>Digital Marketing</h3>
-            <p>Performance-driven marketing that delivers results.</p>
-          </div>
-          <div className={`${styles.launchCard} launch-card`}>
-            <h3>Growth Strategy</h3>
-            <p>Data-backed strategies built for sustainable growth.</p>
-          </div>
-        </div>
-        <div className={styles.launchCta}>
-          <Link href="/contact" className={styles.solutionButton}>
-            LAUNCH WITH US
-          </Link>
-        </div>
-      </section>
+      <LaunchSection />
 
       {/* AUDIO SOLUTIONS - Header & Services (White) */}
       <section className={styles.studioSectionWhite}>
