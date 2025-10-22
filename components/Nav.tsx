@@ -16,20 +16,9 @@ export default function Nav() {
   const logoRef = useRef<HTMLAnchorElement>(null);
   const solutionsRef = useRef<HTMLAnchorElement>(null);
   const [isHovering, setIsHovering] = useState(false);
-  const [clickOffset, setClickOffset] = useState({ x: 0, y: 0 });
 
   const handleLogout = async () => {
     await signOut();
-  };
-
-  // Capture click position relative to element center
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    const offsetX = e.clientX - centerX;
-    const offsetY = e.clientY - centerY;
-    setClickOffset({ x: offsetX, y: offsetY });
   };
 
   // Determine which logo to show based on current page
@@ -69,8 +58,8 @@ export default function Nav() {
         const navRect = targetRef.current.closest('nav')?.getBoundingClientRect();
 
         if (navRect) {
-          const cx = rect.left + rect.width / 2 - navRect.left + clickOffset.x;
-          const cy = rect.top + rect.height / 2 - navRect.top + clickOffset.y;
+          const cx = rect.left + rect.width / 2 - navRect.left;
+          const cy = rect.top + rect.height / 2 - navRect.top;
           // Use actual element dimensions for tighter fit
           const rx = rect.width / 2 + 10;
           const ry = rect.height / 2 + 2;
@@ -100,7 +89,7 @@ export default function Nav() {
         ease: 'power3.out'
       });
     }
-  }, [pathname, clickOffset]);
+  }, [pathname]);
 
   // Oval hover effect
   useEffect(() => {
@@ -153,7 +142,6 @@ export default function Nav() {
               href="/music"
               className={`${styles.navLink} ${pathname === '/music' ? styles.navLinkActive : ''}`}
               ref={musicRef}
-              onClick={handleNavClick}
               onMouseEnter={() => pathname === '/music' && setIsHovering(true)}
               onMouseLeave={() => pathname === '/music' && setIsHovering(false)}
             >
@@ -163,7 +151,6 @@ export default function Nav() {
               href="/media"
               className={`${styles.navLink} ${pathname === '/media' ? styles.navLinkActive : ''}`}
               ref={mediaRef}
-              onClick={handleNavClick}
               onMouseEnter={() => pathname === '/media' && setIsHovering(true)}
               onMouseLeave={() => pathname === '/media' && setIsHovering(false)}
             >
@@ -188,7 +175,6 @@ export default function Nav() {
               href="/solutions"
               className={`${styles.navLink} ${pathname === '/solutions' ? styles.navLinkActive : ''}`}
               ref={solutionsRef}
-              onClick={handleNavClick}
               onMouseEnter={() => pathname === '/solutions' && setIsHovering(true)}
               onMouseLeave={() => pathname === '/solutions' && setIsHovering(false)}
             >
