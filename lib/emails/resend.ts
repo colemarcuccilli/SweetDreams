@@ -22,4 +22,4 @@ export const resend = {
 
 // Email addresses
 export const ADMIN_EMAIL = 'jayvalleo@sweetdreamsmusic.com';
-export const FROM_EMAIL = 'Sweet Dreams Music <noreply@sweetdreamsprod.com>';
+export const FROM_EMAIL = 'Sweet Dreams Music <noreply@sweetdreamsmusic.com>';

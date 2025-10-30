@@ -1,65 +1,9 @@
-.container {
-  min-height: 100vh;
-  background: white;
-  padding: 80px 48px;
-}
-
-.wrapper {
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-.loading {
-  text-align: center;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 18px;
-  padding: 100px 0;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 60px;
-  padding-bottom: 20px;
-  border-bottom: 2px solid black;
-}
-
-.title {
-  font-family: 'Anton', sans-serif;
-  font-size: 72px;
-  font-weight: 400;
-  text-transform: uppercase;
-  color: black;
-  margin: 0;
-  line-height: 1;
-}
-
-.logoutButton {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 14px;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  padding: 12px 32px;
-  background: black;
-  color: white;
-  border: 2px solid black;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.logoutButton:hover {
-  background: white;
-  color: black;
-}
-
 .section {
-  margin-bottom: 60px;
+  margin-bottom: 40px;
   padding: 40px;
   background: #f9f9f9;
   border-radius: 8px;
+  border: 2px solid #ddd;
 }
 
 .sectionTitle {
@@ -187,138 +131,114 @@
   text-align: center;
 }
 
-/* Bookings */
-.emptyState {
-  text-align: center;
-  padding: 60px 20px;
-}
 
-.emptyState p {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 16px;
-  color: #666;
-  margin-bottom: 20px;
-}
-
-.bookButton {
-  display: inline-block;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 14px;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  padding: 16px 40px;
-  background: black;
-  color: white;
-  border: 2px solid black;
-  border-radius: 4px;
-  text-decoration: none;
-  transition: all 0.3s ease;
-}
-
-.bookButton:hover {
-  background: white;
-  color: black;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-.bookingsList {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.bookingCard {
-  background: white;
-  padding: 24px;
+/* Email Verification Banner */
+.verificationBanner {
+  background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+  border: 3px solid #ffc107;
   border-radius: 8px;
-  border: 2px solid #ddd;
+  margin-bottom: 40px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(255, 193, 7, 0.2);
 }
 
-.bookingHeader {
+.bannerContent {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid #eee;
+  gap: 24px;
+  padding: 24px 32px;
 }
 
-.bookingTitle {
+.bannerIcon {
+  font-size: 48px;
+  flex-shrink: 0;
+}
+
+.bannerText {
+  flex: 1;
+}
+
+.bannerTitle {
   font-family: 'Anton', sans-serif;
   font-size: 24px;
   font-weight: 400;
   text-transform: uppercase;
-  color: black;
-  margin: 0;
-}
-
-.status {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  padding: 6px 12px;
-  border-radius: 4px;
-}
-
-.status.pending_deposit {
-  background: #fff3cd;
   color: #856404;
+  margin: 0 0 8px 0;
 }
 
-.status.confirmed {
-  background: #d4edda;
-  color: #155724;
-}
-
-.status.completed {
-  background: #d1ecf1;
-  color: #0c5460;
-}
-
-.status.cancelled {
-  background: #f8d7da;
-  color: #721c24;
-}
-
-.bookingDetails {
+.bannerMessage {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 14px;
-  color: #333;
+  color: #856404;
+  margin: 0;
+  line-height: 1.6;
 }
 
-.bookingDetails p {
-  margin: 8px 0;
-}
-
-.bookingDetails strong {
-  color: black;
+.resendMessage {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  color: #155724;
+  margin: 8px 0 0 0;
   font-weight: bold;
+}
+
+.resendButton {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  padding: 12px 24px;
+  background: #ffc107;
+  color: #856404;
+  border: 2px solid #856404;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.resendButton:hover:not(:disabled) {
+  background: #856404;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(133, 100, 4, 0.3);
+}
+
+.resendButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 @media (max-width: 768px) {
-  .container {
-    padding: 40px 24px;
-  }
-
-  .title {
-    font-size: 48px;
-  }
-
-  .header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
-  }
-
   .section {
     padding: 24px;
   }
 
   .sectionTitle {
     font-size: 24px;
+  }
+
+  .bannerContent {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .bannerIcon {
+    font-size: 36px;
+  }
+
+  .bannerTitle {
+    font-size: 20px;
+  }
+
+  .bannerMessage {
+    font-size: 13px;
+  }
+
+  .resendButton {
+    width: 100%;
   }
 }

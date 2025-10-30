@@ -91,6 +91,8 @@ export default function LeadForm() {
                     onChange={handleChange}
                     placeholder="YOUR NAME"
                     required
+                    autoComplete="name"
+                    inputMode="text"
                     className="w-full px-0 py-4 border-0 border-b-2 border-gray-300 focus:border-black outline-none transition-colors placeholder:text-gray-400 text-lg"
                   />
                 </div>
@@ -103,6 +105,8 @@ export default function LeadForm() {
                     onChange={handleChange}
                     placeholder="YOUR EMAIL"
                     required
+                    autoComplete="email"
+                    inputMode="email"
                     className="w-full px-0 py-4 border-0 border-b-2 border-gray-300 focus:border-black outline-none transition-colors placeholder:text-gray-400 text-lg"
                   />
                 </div>
@@ -114,6 +118,8 @@ export default function LeadForm() {
                     value={formData.phone}
                     onChange={handleChange}
                     placeholder="YOUR PHONE (OPTIONAL)"
+                    autoComplete="tel"
+                    inputMode="tel"
                     className="w-full px-0 py-4 border-0 border-b-2 border-gray-300 focus:border-black outline-none transition-colors placeholder:text-gray-400 text-lg"
                   />
                 </div>

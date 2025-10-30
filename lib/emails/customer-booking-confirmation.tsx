@@ -95,7 +95,6 @@ export const CustomerBookingConfirmation: React.FC<CustomerBookingConfirmationPr
         <ul style={{ fontSize: '14px', color: '#666', lineHeight: '1.8', paddingLeft: '20px' }}>
           <li>Please arrive 5-10 minutes early for your session</li>
           <li>All guests must be pre-approved</li>
-          <li>First time booking? Mention it when you arrive for 20% off!</li>
         </ul>
       </div>
 

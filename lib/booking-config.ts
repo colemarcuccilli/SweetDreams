@@ -13,8 +13,8 @@ export interface BookingProduct {
 export const BOOKING_PRODUCTS: Record<string, BookingProduct> = {
   // 1 Hour Session - Full payment upfront
   '1hr_full': {
-    productId: 'prod_TEzb5OMjrFBOjM',
-    priceId: 'price_1SIVcm4M2L4m9dALYnLJDQyC',
+    productId: 'prod_TJzRyi06m0d9Yl',
+    priceId: 'price_1SNLZOGLKrGlFRBUTc2x4wyL',
     name: '1hr Studio Session',
     amount: 6000, // $60.00
     type: 'full',
@@ -23,16 +23,16 @@ export const BOOKING_PRODUCTS: Record<string, BookingProduct> = {
 
   // 2 Hour Session
   '2hr_deposit': {
-    productId: 'prod_TEzeKBNnoi76Vu',
-    priceId: 'price_1SIVgF4M2L4m9dALwiCGzdVD',
+    productId: 'prod_Sc91XyreQxCW5T',
+    priceId: 'price_1RgujAGLKrGlFRBUFZqK7jIe',
     name: '2Hr Studio Session (Deposit)',
     amount: 5000, // $50.00
     type: 'deposit',
     sessionDuration: 2
   },
   '2hr_remainder': {
-    productId: 'prod_TEzfSaaPR21bxQ',
-    priceId: 'price_XXX', // TODO: Missing from your price list - please provide
+    productId: 'prod_TJzZ5TlG8pIanK',
+    priceId: 'price_1SNLbHGLKrGlFRBUvZwulfsa',
     name: '2Hr Studio Session (Remainder)',
     amount: 5000, // $50.00
     type: 'remainder',
@@ -41,16 +41,16 @@ export const BOOKING_PRODUCTS: Record<string, BookingProduct> = {
 
   // 3 Hour Session
   '3hr_deposit': {
-    productId: 'prod_TEzfhzC8rn6Fwr',
-    priceId: 'price_1SIVgd4M2L4m9dALKl4CjXWs',
+    productId: 'prod_SLCsTSU4Jk0KJa',
+    priceId: 'price_1SNLZwGLKrGlFRBU6LedKrnd',
     name: '3Hr Studio Session (Deposit)',
     amount: 7500, // $75.00
     type: 'deposit',
     sessionDuration: 3
   },
   '3hr_remainder': {
-    productId: 'prod_TEzg6YASO5foca',
-    priceId: 'price_1SIVgv4M2L4m9dALL7OD7bD1',
+    productId: 'prod_TJzZoCXS5UleYD',
+    priceId: 'price_1SNLbLGLKrGlFRBUWVXd32p1',
     name: '3Hr Studio Session (Remainder)',
     amount: 7500, // $75.00
     type: 'remainder',
@@ -59,16 +59,16 @@ export const BOOKING_PRODUCTS: Record<string, BookingProduct> = {
 
   // 4 Hour Session
   '4hr_deposit': {
-    productId: 'prod_TEzgNKlplkf429',
-    priceId: 'price_1SIVhB4M2L4m9dALrRk20Qug',
+    productId: 'prod_TJzZ4u42Ebrt5f',
+    priceId: 'price_1SNLc6GLKrGlFRBUaBW3dNLG',
     name: '4Hr Studio Session (Deposit)',
     amount: 9000, // $90.00
     type: 'deposit',
     sessionDuration: 4
   },
   '4hr_remainder': {
-    productId: 'prod_TF0h5js84wYb1U',
-    priceId: 'price_1SIWgR4M2L4m9dALNYYktHPC',
+    productId: 'prod_TJzZwgbnjONmVa',
+    priceId: 'price_1SNLcCGLKrGlFRBU7nPwvG1s',
     name: '4Hr Studio Session (Remainder)',
     amount: 9000, // $90.00
     type: 'remainder',
@@ -77,16 +77,16 @@ export const BOOKING_PRODUCTS: Record<string, BookingProduct> = {
 
   // 5 Hour Session
   '5hr_deposit': {
-    productId: 'prod_TEzjbDHWZfmKYX',
-    priceId: 'price_1SIVjq4M2L4m9dALXdGVdBkh',
+    productId: 'prod_TJzZ6CndQkKPHB',
+    priceId: 'price_1SNLcXGLKrGlFRBUgHYhhVzk',
     name: '5Hr Studio Session (Deposit)',
     amount: 11250, // $112.50
     type: 'deposit',
     sessionDuration: 5
   },
   '5hr_remainder': {
-    productId: 'prod_TEzjfRPxmCQvDL',
-    priceId: 'price_1SIVk94M2L4m9dALLfI3zoCH',
+    productId: 'prod_TJzZZ68BXiC2F6',
+    priceId: 'price_1SNLhCGLKrGlFRBU3NSYEInh',
     name: '5Hr Studio Session (Remainder)',
     amount: 11250, // $112.50
     type: 'remainder',
@@ -95,16 +95,16 @@ export const BOOKING_PRODUCTS: Record<string, BookingProduct> = {
 
   // 6 Hour Session
   '6hr_deposit': {
-    productId: 'prod_TF1pn9RlWhdoHh',
-    priceId: 'price_1SIXlM4M2L4m9dALtlJRSrig',
+    productId: 'prod_TJza169WRxR9Pr',
+    priceId: 'price_1SNLhFGLKrGlFRBUl8HelUhL',
     name: '6Hr Studio Session (Deposit)',
     amount: 13500, // $135.00
     type: 'deposit',
     sessionDuration: 6
   },
   '6hr_remainder': {
-    productId: 'prod_TF1pRaRcFtA41T',
-    priceId: 'price_1SIXmE4M2L4m9dALlzsNRp9e',
+    productId: 'prod_TJzanFS5QzsqJA',
+    priceId: 'price_1SNLhJGLKrGlFRBUrJHa4LJ3',
     name: '6Hr Studio Session (Remainder)',
     amount: 13500, // $135.00
     type: 'remainder',
@@ -113,15 +113,15 @@ export const BOOKING_PRODUCTS: Record<string, BookingProduct> = {
 
   // Additional Fees
   'same_day_fee': {
-    productId: 'prod_TEzhlSDpodZ8wC',
-    priceId: 'price_1SIViI4M2L4m9dALIgURyL29',
+    productId: 'prod_TJzaA4EKSbYGjB',
+    priceId: 'price_1SNLm6GLKrGlFRBUtTjqoGqk',
     name: 'Same Day Hourly Fee',
     amount: 1000, // $10.00
     type: 'fee'
   },
   'after_hours_fee': {
-    productId: 'prod_TEzhs37LD24Wdt',
-    priceId: 'price_1SIViZ4M2L4m9dAL0w5uICZx',
+    productId: 'prod_TJzaB5VSynvR3y',
+    priceId: 'price_1SNLmDGLKrGlFRBUTYHL662f',
     name: 'After Hours Fee',
     amount: 1000, // $10.00
     type: 'fee'

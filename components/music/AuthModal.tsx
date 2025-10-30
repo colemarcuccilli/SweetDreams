@@ -7,11 +7,10 @@ import styles from './AuthModal.module.css';
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onGuestContinue: () => void;
   onAuthSuccess: () => void;
 }
 
-export default function AuthModal({ isOpen, onClose, onGuestContinue, onAuthSuccess }: AuthModalProps) {
+export default function AuthModal({ isOpen, onClose, onAuthSuccess }: AuthModalProps) {
   const [mode, setMode] = useState<'choice' | 'login' | 'signup'>('choice');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -84,14 +83,10 @@ export default function AuthModal({ isOpen, onClose, onGuestContinue, onAuthSucc
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         <button className={styles.closeButton} onClick={onClose}>×</button>
 
-        <button className={styles.guestLink} onClick={onGuestContinue}>
-          Continue as Guest →
-        </button>
-
         {mode === 'choice' && (
           <div className={styles.choiceContainer}>
-            <h2 className={styles.modalTitle}>Book Your Session</h2>
-            <p className={styles.modalSubtitle}>Login or create an account for faster checkout</p>
+            <h2 className={styles.modalTitle}>Authentication Required</h2>
+            <p className={styles.modalSubtitle}>Please sign in or create an account to book your session. This ensures we can send you confirmation emails and booking reminders.</p>
 
             <button className={styles.primaryButton} onClick={() => setMode('login')}>
               Login

@@ -19,7 +19,7 @@ export default function TransitionSection2() {
   const line4Ref = useRef<HTMLParagraphElement>(null);
   const line5Ref = useRef<HTMLParagraphElement>(null);
   const line6Ref = useRef<HTMLParagraphElement>(null);
-  const line7Ref = useRef<HTMLParagraphElement>(null);
+  const line7Ref = useRef<HTMLAnchorElement>(null);
   const contentWordRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {

@@ -4,15 +4,16 @@ import styles from "./project.module.css";
 export default function NissanWarsawPage() {
   const project = {
     title: 'NISSAN WARSAW DEALERSHIP COMMERCIAL',
-    client_name: 'Nissan Prime Dealer',
-    client_logo_url: 'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/sign/media/logos/nissanredlogo.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9lNzYzNTA0Yi05ZmEzLTQxNjAtYWRiZC05OTcyOWUwYTg0YTgiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJtZWRpYS9sb2dvcy9uaXNzYW5yZWRsb2dvLnBuZyIsImlhdCI6MTc1NzI3ODg2MSwiZXhwIjoxNzg4ODE0ODYxfQ.mMjos5LXuRWylwP0OHDtyLrxZF2svS_Fa60nHifOioA',
+    client_name: 'Nissan Warsaw Dealer',
+    client_logo_url: 'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/nissanredlogo.png',
     description: 'Professional dealership commercial showcasing Nissan vehicles and customer experience.',
     category: 'Commercial',
     location: 'Warsaw, IN',
     year: 2025,
     services: ['Cinematography', 'Editing', 'Color Grading'],
     full_description: 'Created a polished commercial for Nissan\'s Warsaw dealership that highlights their vehicle selection and customer service excellence. The project showcases the dealership experience and the quality that customers can expect.',
-    coming_soon: true
+    cloudflare_video_uid: '700297c313e97262173f0c2107f3b8db',
+    coming_soon: false
   };
 
   return (
@@ -35,27 +36,15 @@ export default function NissanWarsawPage() {
         </div>
       </header>
 
-      {/* Coming Soon Placeholder */}
+      {/* Video Section */}
       <section className={styles.videoSection}>
-        <div
-          className={styles.videoWrapper}
-          style={{
-            aspectRatio: '16/9',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: 'linear-gradient(135deg, #000000 0%, #333333 100%)',
-            borderRadius: '24px'
-          }}
-        >
-          <div style={{ textAlign: 'center', color: 'white' }}>
-            <h2 style={{ fontFamily: 'Anton, sans-serif', fontSize: '64px', margin: '0 0 16px 0' }}>
-              COMING SOON
-            </h2>
-            <p style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: '18px', opacity: 0.8 }}>
-              This project is currently in production
-            </p>
-          </div>
+        <div className={styles.videoWrapper} style={{ aspectRatio: '16/9' }}>
+          <iframe
+            src={`https://customer-w6h9o08eg118alny.cloudflarestream.com/${project.cloudflare_video_uid}/iframe?preload=true&poster=https%3A%2F%2Fcustomer-w6h9o08eg118alny.cloudflarestream.com%2F${project.cloudflare_video_uid}%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D2s%26height%3D600`}
+            style={{ border: 'none', position: 'absolute', top: 0, left: 0, height: '100%', width: '100%' }}
+            allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+            allowFullScreen={true}
+          />
         </div>
       </section>
 

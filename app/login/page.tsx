@@ -53,6 +53,8 @@ export default function LoginPage() {
               className={styles.input}
               required
               disabled={loading}
+              autoComplete="email"
+              inputMode="email"
             />
           </div>
 
@@ -68,6 +70,7 @@ export default function LoginPage() {
               className={styles.input}
               required
               disabled={loading}
+              autoComplete="current-password"
             />
           </div>
 

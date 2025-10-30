@@ -86,7 +86,8 @@
   cursor: none;
 }
 
-.portfolioCard:hover {
+.portfolioCard:hover,
+.portfolioCard.centered {
   transform: scaleX(1);
   height: 320px;
   opacity: 1;
@@ -112,7 +113,8 @@
   filter: blur(8px);
 }
 
-.portfolioCard:hover .portfolioImage img {
+.portfolioCard:hover .portfolioImage img,
+.portfolioCard.centered .portfolioImage img {
   filter: blur(0px);
   transform: scale(1);
 }
@@ -130,7 +132,8 @@
   z-index: 1;
 }
 
-.portfolioCard:hover .portfolioImage::after {
+.portfolioCard:hover .portfolioImage::after,
+.portfolioCard.centered .portfolioImage::after {
   background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.6) 100%);
 }
 
@@ -149,7 +152,8 @@
   pointer-events: none;
 }
 
-.portfolioCard:hover::before {
+.portfolioCard:hover::before,
+.portfolioCard.centered::before {
   opacity: 0.25;
 }
 
@@ -175,7 +179,8 @@
   margin: 0;
 }
 
-.portfolioCard:hover .portfolioClient {
+.portfolioCard:hover .portfolioClient,
+.portfolioCard.centered .portfolioClient {
   color: #333;
 }
 
@@ -190,7 +195,8 @@
   transition: color 0.4s ease;
 }
 
-.portfolioCard:hover .portfolioTitle {
+.portfolioCard:hover .portfolioTitle,
+.portfolioCard.centered .portfolioTitle {
   color: #000;
 }
 
@@ -204,7 +210,8 @@
   margin: 0;
 }
 
-.portfolioCard:hover .portfolioCategory {
+.portfolioCard:hover .portfolioCategory,
+.portfolioCard.centered .portfolioCategory {
   color: #555;
 }
 
@@ -247,7 +254,8 @@
     height: 160px;
   }
 
-  .portfolioCard:hover {
+  .portfolioCard:hover,
+  .portfolioCard.centered {
     height: 280px;
   }
 
@@ -274,7 +282,8 @@
     height: 180px;
   }
 
-  .portfolioCard:hover {
+  .portfolioCard:hover,
+  .portfolioCard.centered {
     height: 300px;
   }
 
@@ -314,7 +323,8 @@
     transform: scaleX(0.92);
   }
 
-  .portfolioCard:hover {
+  .portfolioCard:hover,
+  .portfolioCard.centered {
     height: 280px;
     transform: scaleX(1);
   }

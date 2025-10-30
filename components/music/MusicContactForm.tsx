@@ -71,6 +71,8 @@ export default function MusicContactForm() {
             value={formData.name}
             onChange={handleChange}
             required
+            autoComplete="name"
+            inputMode="text"
           />
           <input
             type="email"
@@ -80,6 +82,8 @@ export default function MusicContactForm() {
             value={formData.email}
             onChange={handleChange}
             required
+            autoComplete="email"
+            inputMode="email"
           />
           <input
             type="tel"
@@ -88,6 +92,8 @@ export default function MusicContactForm() {
             className={styles.input}
             value={formData.phone}
             onChange={handleChange}
+            autoComplete="tel"
+            inputMode="tel"
           />
           <textarea
             name="message"

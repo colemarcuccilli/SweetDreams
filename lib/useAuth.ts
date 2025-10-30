@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { supabase } from './supabase';
+import { createClient } from '@/utils/supabase/client';
 import { User } from '@supabase/supabase-js';
 
 // Log Supabase configuration on load (only once)
@@ -14,10 +14,12 @@ if (typeof window !== 'undefined') {
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const supabase = createClient();
 
   useEffect(() => {
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
+      console.log('🔐 useAuth: Session check:', session ? '✅ Logged in as ' + session.user.email : '❌ No session');
       setUser(session?.user ?? null);
       setLoading(false);
     });
@@ -26,12 +28,13 @@ export function useAuth() {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
+      console.log('🔐 useAuth: Auth state changed:', _event, session ? '✅ User: ' + session.user.email : '❌ No session');
       setUser(session?.user ?? null);
       setLoading(false);
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [supabase]);
 
   return { user, loading };
 }
@@ -41,6 +44,7 @@ export async function signUp(email: string, password: string, fullName: string) 
   console.log('📧 Email:', email);
   console.log('👤 Full Name:', fullName);
 
+  const supabase = createClient();
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
@@ -68,6 +72,7 @@ export async function signIn(email: string, password: string) {
   console.log('🔐 AUTH: signIn function called');
   console.log('📧 Email:', email);
 
+  const supabase = createClient();
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
@@ -86,6 +91,15 @@ export async function signIn(email: string, password: string) {
 }
 
 export async function signOut() {
+  console.log('🔐 AUTH: signOut function called');
+  const supabase = createClient();
   const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    console.error('❌ LOGOUT ERROR:', error);
+  } else {
+    console.log('✅ LOGOUT SUCCESS');
+  }
+
   return { error };
 }

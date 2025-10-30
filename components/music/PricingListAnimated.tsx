@@ -15,6 +15,10 @@ export default function PricingListAnimated() {
   useEffect(() => {
     if (typeof window === 'undefined' || !containerRef.current) return;
 
+    // Check if mobile for earlier trigger
+    const isMobile = window.innerWidth <= 768;
+    const triggerStart = isMobile ? 'top 90%' : 'top 70%';
+
     const rows = containerRef.current.querySelectorAll('.animate-price-row');
 
     gsap.set(rows, { x: 100, opacity: 0 });
@@ -27,7 +31,7 @@ export default function PricingListAnimated() {
       ease: 'power3.out',
       scrollTrigger: {
         trigger: containerRef.current,
-        start: 'top 70%',
+        start: triggerStart,
         toggleActions: 'play none none reverse',
       }
     });

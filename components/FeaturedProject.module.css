@@ -116,8 +116,12 @@
 
 .bottomRow {
   position: absolute;
-  bottom: 200px;
+  bottom: 24px;
   left: 64px;
+  right: auto;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
 .subtitle {
@@ -126,14 +130,304 @@
   color: white;
   text-transform: uppercase;
   line-height: 1;
+  text-align: left;
+  margin: 0;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1439px) {
+  .videoSection {
+    padding: 44px;
+  }
+
+  .videoContent {
+    padding: 58px;
+  }
+
   .titleText {
-    font-size: 120px;
+    font-size: 170px;
+  }
+
+  .centerTitle {
+    top: -70px;
+  }
+
+  .subtitle {
+    font-size: 46px;
+  }
+
+  .bottomRow {
+    bottom: 0;
+    left: 58px;
+  }
+
+  .clientName {
+    font-size: 11px;
+  }
+
+  .viewButton {
+    padding: 11px 36px;
+  }
+
+  .viewButtonText {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 1300px) {
+  .videoSection {
+    padding: 40px;
+  }
+
+  .videoContent {
+    padding: 54px;
+  }
+
+  .titleText {
+    font-size: 145px;
+  }
+
+  .centerTitle {
+    top: -60px;
+  }
+
+  .subtitle {
+    font-size: 43px;
+  }
+
+  .bottomRow {
+    bottom: 0;
+    left: 54px;
+  }
+
+  .clientName {
+    font-size: 11px;
+  }
+
+  .viewButton {
+    padding: 10px 34px;
+  }
+
+  .viewButtonText {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .videoSection {
+    padding: 38px;
+  }
+
+  .videoContent {
+    padding: 50px;
+  }
+
+  .titleText {
+    font-size: 130px;
+  }
+
+  .centerTitle {
+    top: -50px;
   }
 
   .subtitle {
     font-size: 40px;
+  }
+
+  .bottomRow {
+    bottom: 0;
+    left: 50px;
+  }
+
+  .clientName {
+    font-size: 10px;
+  }
+
+  .viewButton {
+    padding: 10px 32px;
+  }
+
+  .viewButtonText {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .videoSection {
+    padding: 36px;
+  }
+
+  .videoContent {
+    padding: 46px;
+  }
+
+  .titleText {
+    font-size: 115px;
+  }
+
+  .centerTitle {
+    top: -45px;
+  }
+
+  .subtitle {
+    font-size: 38px;
+  }
+
+  .bottomRow {
+    bottom: 0;
+    left: 46px;
+  }
+
+  .clientName {
+    font-size: 10px;
+  }
+
+  .viewButton {
+    padding: 9px 30px;
+  }
+
+  .viewButtonText {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .videoSection {
+    padding: 32px;
+  }
+
+  .videoContent {
+    padding: 42px;
+  }
+
+  .titleText {
+    font-size: 100px;
+  }
+
+  .centerTitle {
+    top: -40px;
+  }
+
+  .subtitle {
+    font-size: 36px;
+  }
+
+  .bottomRow {
+    bottom: 0;
+    left: 42px;
+  }
+
+  .clientName {
+    font-size: 10px;
+  }
+
+  .viewButton {
+    padding: 9px 26px;
+  }
+
+  .viewButtonText {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 768px) {
+  .videoSection {
+    padding: 24px;
+  }
+
+  .videoBox {
+    border-radius: 24px;
+  }
+
+  .videoContent {
+    padding: 32px;
+  }
+
+  .titleText {
+    font-size: 72px;
+  }
+
+  .centerTitle {
+    top: -30px;
+  }
+
+  .subtitle {
+    font-size: 28px;
+    opacity: 0.9;
+  }
+
+  .bottomRow {
+    bottom: 0;
+    left: 32px;
+  }
+
+  .clientName {
+    font-size: 9px;
+  }
+
+  .viewButton {
+    padding: 8px 24px;
+  }
+
+  .viewButtonText {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 430px) {
+  .videoSection {
+    padding: 16px;
+  }
+
+  .videoBox {
+    border-radius: 16px;
+  }
+
+  .videoContent {
+    padding: 24px;
+  }
+
+  .titleText {
+    font-size: 48px;
+  }
+
+  .centerTitle {
+    top: -20px;
+  }
+
+  .subtitle {
+    font-size: 20px;
+    opacity: 0.85;
+  }
+
+  .bottomRow {
+    bottom: 0;
+    left: 24px;
+  }
+
+  .clientName {
+    font-size: 8px;
+  }
+
+  .viewButton {
+    padding: 6px 18px;
+  }
+
+  .viewButtonText {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 374px) {
+  .titleText {
+    font-size: 40px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+    opacity: 0.8;
+  }
+
+  .bottomRow {
+    bottom: 0;
   }
 }

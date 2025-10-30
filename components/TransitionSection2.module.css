@@ -2,7 +2,6 @@
   position: relative;
   height: auto;
   min-height: auto;
-  overflow: hidden;
   padding: 80px 0 180px 0;
   background: #1a1a1a;
   display: flex;
@@ -33,7 +32,7 @@
 
 .sectionTitle {
   font-family: 'Anton', sans-serif;
-  font-size: 80px;
+  font-size: 120px;
   text-transform: uppercase;
   line-height: 1;
   font-weight: 400;
@@ -79,34 +78,34 @@
 }
 
 .headlineIntro {
-  font-size: 40px;
+  font-size: 50px;
   display: block;
 }
 
 .headlineLarge {
-  font-size: 120px;
+  font-size: 140px;
   display: block;
 }
 
 .headlineMedium {
-  font-size: 100px;
+  font-size: 120px;
   display: block;
 }
 
 .headlineNormal {
-  font-size: 80px;
+  font-size: 100px;
   display: block;
 }
 
 .headlineSmall {
-  font-size: 60px;
+  font-size: 80px;
   display: block;
 }
 
 /* Reactive CONTENT word */
 .contentWord {
   color: #F4C430;
-  font-size: 120px;
+  font-size: 140px;
   display: inline-block;
   cursor: pointer;
   position: relative;
@@ -137,14 +136,13 @@
 
 .formulaLine {
   font-family: 'Anton', sans-serif;
-  font-size: 36px;
+  font-size: 48px;
   text-transform: uppercase;
   line-height: 1.4;
   margin-bottom: 16px;
   font-weight: 400;
   color: #ffffff;
   text-align: left;
-  white-space: nowrap;
 }
 
 .redText {
@@ -226,7 +224,204 @@
   margin-right: 0.35em;
 }
 
+@media (max-width: 1439px) {
+  .headerContainer {
+    padding-left: 80px;
+    padding-right: 80px;
+  }
+
+  .container {
+    padding-left: 80px;
+    padding-right: 80px;
+  }
+
+  .sectionTitle {
+    font-size: 108px;
+  }
+
+  .headlineIntro {
+    font-size: 46px;
+  }
+
+  .headlineLarge {
+    font-size: 126px;
+  }
+
+  .headlineMedium {
+    font-size: 108px;
+  }
+
+  .contentWord {
+    font-size: 126px;
+  }
+
+  .headlineNormal {
+    font-size: 90px;
+  }
+
+  .headlineSmall {
+    font-size: 72px;
+  }
+
+  .formulaLine {
+    font-size: 44px;
+  }
+
+  .credText {
+    font-size: 17px;
+  }
+}
+
+@media (max-width: 1300px) {
+  .headerContainer {
+    padding-left: 70px;
+    padding-right: 70px;
+  }
+
+  .container {
+    padding-left: 70px;
+    padding-right: 70px;
+  }
+
+  .sectionTitle {
+    font-size: 100px;
+  }
+
+  .headlineIntro {
+    font-size: 42px;
+  }
+
+  .headlineLarge {
+    font-size: 115px;
+  }
+
+  .headlineMedium {
+    font-size: 100px;
+  }
+
+  .contentWord {
+    font-size: 115px;
+  }
+
+  .headlineNormal {
+    font-size: 82px;
+  }
+
+  .headlineSmall {
+    font-size: 65px;
+  }
+
+  .formulaLine {
+    font-size: 40px;
+  }
+
+  .credText {
+    font-size: 17px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .headerContainer {
+    padding-left: 60px;
+    padding-right: 60px;
+  }
+
+  .container {
+    padding-left: 60px;
+    padding-right: 60px;
+  }
+
+  .sectionTitle {
+    font-size: 90px;
+  }
+
+  .headlineIntro {
+    font-size: 38px;
+  }
+
+  .headlineLarge {
+    font-size: 105px;
+  }
+
+  .headlineMedium {
+    font-size: 90px;
+  }
+
+  .contentWord {
+    font-size: 105px;
+  }
+
+  .headlineNormal {
+    font-size: 75px;
+  }
+
+  .headlineSmall {
+    font-size: 60px;
+  }
+
+  .formulaLine {
+    font-size: 36px;
+  }
+
+  .credText {
+    font-size: 17px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .headerContainer {
+    padding-left: 54px;
+    padding-right: 54px;
+  }
+
+  .container {
+    padding-left: 54px;
+    padding-right: 54px;
+  }
+
+  .sectionTitle {
+    font-size: 82px;
+  }
+
+  .headlineIntro {
+    font-size: 35px;
+  }
+
+  .headlineLarge {
+    font-size: 96px;
+  }
+
+  .headlineMedium {
+    font-size: 82px;
+  }
+
+  .contentWord {
+    font-size: 96px;
+  }
+
+  .headlineNormal {
+    font-size: 68px;
+  }
+
+  .headlineSmall {
+    font-size: 54px;
+  }
+
+  .formulaLine {
+    font-size: 33px;
+  }
+
+  .credText {
+    font-size: 17px;
+  }
+}
+
 @media (max-width: 1024px) {
+  .headerContainer {
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+
   .container {
     padding-left: 48px;
     padding-right: 48px;
@@ -234,32 +429,40 @@
     gap: 48px;
   }
 
+  .headline {
+    text-align: center;
+  }
+
   .topLabel {
     font-size: 14px;
   }
 
   .headlineIntro {
-    font-size: 28px;
+    font-size: 32px;
   }
 
   .headlineLarge {
-    font-size: 80px;
+    font-size: 88px;
   }
 
   .headlineMedium {
-    font-size: 68px;
+    font-size: 76px;
+  }
+
+  .contentWord {
+    font-size: 76px;
   }
 
   .headlineNormal {
-    font-size: 56px;
+    font-size: 62px;
   }
 
   .headlineSmall {
-    font-size: 42px;
+    font-size: 50px;
   }
 
   .formulaLine {
-    font-size: 28px;
+    font-size: 30px;
   }
 
   .credText {
@@ -269,6 +472,14 @@
   .ctaButton {
     font-size: 14px;
     padding: 16px 48px;
+  }
+
+  .miniTitle {
+    letter-spacing: 0.2em;
+  }
+
+  .sectionTitle {
+    font-size: 72px;
   }
 }
 
@@ -298,6 +509,10 @@
     font-size: 48px;
   }
 
+  .contentWord {
+    font-size: 48px;
+  }
+
   .headlineNormal {
     font-size: 40px;
   }
@@ -308,6 +523,7 @@
 
   .formulaLine {
     font-size: 22px;
+    white-space: normal;
   }
 
   .credText {
@@ -319,7 +535,105 @@
     padding: 14px 40px;
   }
 
+  .miniTitle {
+    letter-spacing: 0.15em;
+  }
+
+  .sectionTitle {
+    font-size: 40px;
+  }
+}
+
+/* Small phones */
+@media (max-width: 430px) {
+  .section {
+    padding: 60px 0;
+  }
+
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .headerContainer {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .miniTitle {
+    letter-spacing: 0.1em;
+  }
+
+  .sectionTitle {
+    font-size: 36px;
+  }
+
+  .headlineIntro {
+    font-size: 16px;
+  }
+
+  .headlineLarge {
+    font-size: 36px;
+  }
+
+  .headlineMedium {
+    font-size: 32px;
+  }
+
+  .contentWord {
+    font-size: 32px;
+  }
+
+  .headlineNormal {
+    font-size: 28px;
+  }
+
+  .headlineSmall {
+    font-size: 22px;
+  }
+
   .formulaLine {
-    white-space: normal;
+    font-size: 16px;
+  }
+
+  .credText {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .ctaButton {
+    font-size: 11px;
+    padding: 12px 32px;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 374px) {
+  .miniTitle {
+    letter-spacing: 0.05em;
+  }
+
+  .sectionTitle {
+    font-size: 30px;
+  }
+
+  .headlineLarge {
+    font-size: 28px;
+  }
+
+  .headlineMedium {
+    font-size: 24px;
+  }
+
+  .contentWord {
+    font-size: 24px;
+  }
+
+  .headlineNormal {
+    font-size: 20px;
+  }
+
+  .formulaLine {
+    font-size: 14px;
   }
 }

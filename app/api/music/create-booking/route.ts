@@ -1,12 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { getSessionProducts, BOOKING_PRODUCTS } from '@/lib/booking-config';
-import { createClient } from '@/utils/supabase/server';
-import { resend, ADMIN_EMAIL, FROM_EMAIL } from '@/lib/emails/resend';
-import { AdminBookingNotification } from '@/lib/emails/admin-booking-notification';
-import { CustomerBookingConfirmation } from '@/lib/emails/customer-booking-confirmation';
-import { format } from 'date-fns';
-import * as React from 'react';
+import { createServiceRoleClient } from '@/utils/supabase/service-role';
 
 export async function POST(request: NextRequest) {
   // Initialize Stripe inside the function to avoid build-time errors
@@ -82,7 +77,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Check for booking conflicts in Supabase
-    const supabase = await createClient();
+    const supabase = createServiceRoleClient();
     const bookingStartTime = new Date(date);
     bookingStartTime.setHours(startTime, 0, 0, 0);
 
@@ -124,6 +119,7 @@ export async function POST(request: NextRequest) {
       customer: customer.id,
       line_items: lineItems,
       mode: 'payment',
+      allow_promotion_codes: true, // Enable promo codes at checkout
       success_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/music/booking-success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/music#booking`,
       payment_intent_data: {
@@ -168,7 +164,7 @@ export async function POST(request: NextRequest) {
         same_day_fee: fees.sameDayFee,
         after_hours_fee: fees.afterHoursFee,
         status: 'pending_deposit',
-        stripe_payment_intent_id: session.payment_intent as string,
+        stripe_session_id: session.id, // Save session ID (available immediately)
         stripe_customer_id: customer.id,
       })
       .select()
@@ -179,61 +175,16 @@ export async function POST(request: NextRequest) {
       // Continue anyway - the booking can be manually created if needed
     }
 
-    // Format date and time strings for emails
-    const formattedDate = format(new Date(date), 'EEEE, MMMM d, yyyy');
-    const formattedStartTime = format(new Date(date).setHours(startTime, 0), 'h:mm a');
-    const formattedEndTime = format(bookingEndTime, 'h:mm a');
+    // Note: Emails will be sent AFTER successful payment via Stripe webhook
+    // See /api/webhooks/stripe/route.ts for confirmation email logic
 
-    // Send admin notification email
-    try {
-      await resend.emails.send({
-        from: FROM_EMAIL,
-        to: ADMIN_EMAIL,
-        subject: `New Booking: ${artistName} - ${formattedDate}`,
-        react: AdminBookingNotification({
-          firstName,
-          lastName,
-          artistName,
-          email: customerEmail,
-          phone: customerPhone,
-          date: formattedDate,
-          startTime: formattedStartTime,
-          endTime: formattedEndTime,
-          duration,
-          depositAmount,
-          totalAmount,
-          sameDayFee: fees.sameDayFee,
-          afterHoursFee: fees.afterHoursFee,
-        }) as React.ReactElement,
-      });
-    } catch (emailError) {
-      console.error('Failed to send admin notification email:', emailError);
-      // Don't fail the booking if email fails
-    }
-
-    // Send customer confirmation email
-    try {
-      await resend.emails.send({
-        from: FROM_EMAIL,
-        to: customerEmail,
-        subject: `Your Sweet Dreams Music Studio Booking - ${formattedDate}`,
-        react: CustomerBookingConfirmation({
-          firstName,
-          artistName,
-          date: formattedDate,
-          startTime: formattedStartTime,
-          endTime: formattedEndTime,
-          duration,
-          depositAmount,
-          totalAmount,
-          sameDayFee: fees.sameDayFee,
-          afterHoursFee: fees.afterHoursFee,
-        }) as React.ReactElement,
-      });
-    } catch (emailError) {
-      console.error('Failed to send customer confirmation email:', emailError);
-      // Don't fail the booking if email fails
-    }
+    console.log('✅ BOOKING CREATED SUCCESSFULLY');
+    console.log('📋 Booking ID:', booking?.id);
+    console.log('📋 Session ID:', session.id);
+    console.log('📋 Customer Email:', customerEmail);
+    console.log('📋 Status:', 'pending_deposit');
+    console.log('💳 Stripe Checkout URL:', session.url);
+    console.log('⏳ Waiting for Stripe webhook to confirm payment and send emails...');
 
     return NextResponse.json({
       checkoutUrl: session.url,

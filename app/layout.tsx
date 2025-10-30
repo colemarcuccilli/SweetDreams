@@ -13,6 +13,12 @@ const ibmPlexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   title: "Sweet Dreams - Music & Media Production",
   description: "Develop Your Brand, Your Way - Professional music production and media services in Fort Wayne, IN",
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 5,
+    viewportFit: 'cover',
+  },
 };
 
 export default function RootLayout({

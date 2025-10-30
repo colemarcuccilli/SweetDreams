@@ -1,6 +1,7 @@
 import Link from "next/link";
 import styles from "./project.module.css";
 import VideoPlayer from "./VideoPlayer";
+import PhotoGallery from "@/components/PhotoGallery";
 
 export default function BrookfieldZooPage() {
   const project = {
@@ -15,13 +16,14 @@ export default function BrookfieldZooPage() {
     services: ['Scripting', 'Cinematography', 'Editing', 'Color Grading'],
     full_description: 'Partnered with RideWorx and Brookfield Zoo to create a compelling commercial that showcases their new ferris wheel attraction. The project captures the excitement of families enjoying this unique zoo experience while highlighting the beautiful park setting.',
     additional_images: [
-      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/BrookfieldZoo/_DSC8300.jpg',
-      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/BrookfieldZoo/_DSC8303.jpg',
-      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/BrookfieldZoo/_DSC8364.jpg',
-      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/BrookfieldZoo/_DSC8396.jpg',
-      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/BrookfieldZoo/_DSC8429.jpg',
-      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/BrookfieldZoo/_DSC8445.jpg',
-      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/BrookfieldZoo/_DSC8487.jpg'
+      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/BrookfieldZoo/_DSC8300.webp',
+      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/BrookfieldZoo/_DSC8303.webp',
+      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/BrookfieldZoo/_DSC8322.webp',
+      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/BrookfieldZoo/_DSC8364.webp',
+      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/BrookfieldZoo/_DSC8396.webp',
+      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/BrookfieldZoo/_DSC8429.webp',
+      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/BrookfieldZoo/_DSC8445.webp',
+      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/BrookfieldZoo/_DSC8487.webp'
     ]
   };
 
@@ -87,18 +89,7 @@ export default function BrookfieldZooPage() {
       {project.additional_images && project.additional_images.length > 0 && (
         <section className={styles.gallery}>
           <h2 className={styles.sectionTitle}>PHOTO GALLERY</h2>
-          <div className={styles.photoGalleryGrid}>
-            {project.additional_images.map((image, index) => (
-              <div key={index} className={styles.galleryImageItem}>
-                <img
-                  src={image}
-                  alt={`${project.title} - Photo ${index + 1}`}
-                  className={styles.galleryImage}
-                  loading="lazy"
-                />
-              </div>
-            ))}
-          </div>
+          <PhotoGallery images={project.additional_images} projectTitle={project.title} />
         </section>
       )}
 

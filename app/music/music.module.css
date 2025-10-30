@@ -1,6 +1,8 @@
 .page {
     min-height: 100vh;
     background: black;
+    overflow-x: hidden;
+    width: 100%;
 }
 
 
@@ -180,7 +182,7 @@
 
 .showcaseTitleText {
     font-family: 'Anton', sans-serif;
-    font-size: 200px;
+    font-size: clamp(80px, 12vw, 200px); /* Fluid scaling from 80px to 200px */
     color: white;
     text-transform: uppercase;
     line-height: 0.9;
@@ -189,7 +191,7 @@
 
 .showcaseBottomRow {
     position: absolute;
-    bottom: 200px;
+    bottom: 64px; /* Move to actual bottom left */
     left: 64px;
 }
 
@@ -256,6 +258,15 @@
     padding: 48px 32px;
     background: rgba(255, 255, 255, 0.05);
     border-radius: 16px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+    border: 3px solid transparent;
+}
+
+.serviceCard:hover {
+    border: 3px dotted white;
+    background: rgba(255, 255, 255, 0.08);
 }
 
 .serviceTitle {
@@ -272,6 +283,225 @@
     font-size: 14px;
     line-height: 1.6;
     color: #aaa;
+}
+
+/* Click Me Cursor */
+.clickMeCursor {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    font-family: 'Anton', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: white;
+    background: black;
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 2px solid white;
+    pointer-events: none;
+    z-index: 20;
+    animation: fadeInCursor 0.3s ease, pulseCursor 1.5s ease-in-out infinite;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+@keyframes fadeInCursor {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+@keyframes pulseCursor {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.05);
+    }
+}
+
+/* Service Modals */
+.serviceBlurOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    z-index: 999;
+    cursor: pointer;
+}
+
+.serviceCardExpanded {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: black;
+    border: 4px solid white;
+    border-radius: 40px;
+    padding: 80px;
+    max-width: 1400px;
+    width: 92%;
+    max-height: 90vh;
+    overflow-y: auto;
+    z-index: 1000;
+    box-shadow: 0 32px 96px rgba(0, 0, 0, 0.9);
+    animation: modalSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -45%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.serviceCardExpanded h3 {
+    font-family: 'Anton', sans-serif;
+    font-size: 64px;
+    font-weight: 400;
+    text-transform: uppercase;
+    color: white;
+    margin: 0 0 20px 0;
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+}
+
+.serviceCardExpanded h4 {
+    font-family: 'Anton', sans-serif;
+    font-size: 28px;
+    font-weight: 400;
+    color: #999;
+    margin: 0 0 40px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    line-height: 1.3;
+}
+
+.serviceCardExpanded p {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 16px;
+    line-height: 1.9;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0 0 28px 0;
+}
+
+.serviceCardExpanded ul {
+    margin: 0 0 32px 0;
+    padding-left: 32px;
+}
+
+.serviceCardExpanded li {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 16px;
+    line-height: 2;
+    color: rgba(255, 255, 255, 0.75);
+    margin-bottom: 16px;
+}
+
+.serviceCardEmphasis {
+    font-family: 'Anton', sans-serif !important;
+    font-weight: 400 !important;
+    color: white !important;
+    font-size: 24px !important;
+    margin-top: 20px !important;
+    line-height: 1.4 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.03em !important;
+}
+
+.serviceCardClose {
+    position: absolute;
+    top: 32px;
+    right: 32px;
+    background: white;
+    color: black;
+    border: none;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    font-size: 28px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    font-weight: 300;
+}
+
+.serviceCardClose:hover {
+    background: #e5e5e5;
+    transform: rotate(90deg) scale(1.1);
+}
+
+.serviceCardButton {
+    display: inline-block;
+    background: white;
+    color: black;
+    font-family: 'Anton', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 24px 56px;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    font-size: 18px;
+    margin-top: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.serviceCardButton::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 0;
+    height: 0;
+    background: black;
+    border-radius: 50%;
+    transition: width 0.6s ease, height 0.6s ease;
+    z-index: -1;
+}
+
+.serviceCardButton:hover::before {
+    width: 500px;
+    height: 500px;
+}
+
+.serviceCardButton:hover {
+    color: white;
+    transform: scale(1.08);
+    box-shadow: 0 12px 32px rgba(255, 255, 255, 0.4);
+}
+
+.comingSoonButton {
+    background: #333;
+    color: #999;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.comingSoonButton::before {
+    display: none;
+}
+
+.comingSoonButton:hover {
+    transform: none;
+    box-shadow: none;
+    color: #999;
 }
 
 
@@ -404,10 +634,24 @@
     background: rgba(0, 0, 0, 0.8);
     border-radius: 16px;
     position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 3px solid transparent;
+}
+
+.packageCard:hover {
+    border: 3px dotted white;
+    background: rgba(0, 0, 0, 0.9);
+    transform: translateY(-8px);
+    box-shadow: 0 16px 48px rgba(255, 255, 255, 0.15);
 }
 
 .packagePopular {
-    border: 2px solid white;
+    border: 3px solid white;
+}
+
+.packagePopular:hover {
+    border: 3px dotted white;
 }
 
 .popularBadge {
@@ -666,6 +910,55 @@
     font-style: italic;
 }
 
+.reviewButtonContainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 48px;
+}
+
+.reviewButton {
+    display: inline-block;
+    background: white;
+    color: black;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 20px 60px;
+    border-radius: 999px;
+    font-size: 14px;
+    letter-spacing: 0.15em;
+    text-decoration: none;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 2px solid white;
+    position: relative;
+    overflow: hidden;
+}
+
+.reviewButton::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 0;
+    height: 0;
+    background: black;
+    border-radius: 50%;
+    transition: width 1.2s ease, height 1.2s ease;
+    z-index: -1;
+}
+
+.reviewButton:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
+    color: white;
+}
+
+.reviewButton:hover::before {
+    width: 800px;
+    height: 800px;
+}
+
 
 /* Booking Section - White */
 
@@ -815,6 +1108,10 @@
     .showcaseSubtitle {
         font-size: 40px;
     }
+    .showcaseBottomRow {
+        bottom: 48px; /* Keep at bottom left */
+        left: 48px;
+    }
     .sectionTitle,
     .ctaTitle {
         font-size: 50px;
@@ -834,6 +1131,11 @@
         grid-template-columns: 1fr;
         gap: 48px;
     }
+    /* Pricing image - add spacing when grid becomes single column */
+    .pricingImage {
+        top: 0;
+        margin-top: 32px;
+    }
     .locationInfoGrid {
         grid-template-columns: 1fr;
         gap: 48px;
@@ -850,19 +1152,37 @@
     .heroTitle {
         font-size: 40px;
     }
+
+    /* Showcase section */
     .showcaseTitleText {
-        font-size: 80px;
+        font-size: 60px; /* Much smaller */
+    }
+    .showcaseCenterTitle {
+        top: 0px; /* Fix overflow at top */
     }
     .showcaseSubtitle {
-        font-size: 24px;
+        font-size: 28px;
     }
     .showcaseContent {
         padding: 32px;
     }
     .showcaseBottomRow {
-        bottom: 100px;
-        left: 32px;
+        bottom: 32px !important; /* Actually at bottom */
+        left: 32px !important;
     }
+    .showcaseViewButton {
+        padding: 8px 24px;
+    }
+    .showcaseViewButtonText {
+        font-size: 11px;
+    }
+
+    /* Pricing section - fix image overlap */
+    .pricingImage {
+        top: 0; /* Reset negative top on mobile */
+        margin-top: 40px; /* Add spacing below pricing chart */
+    }
+
     .sectionTitle,
     .ctaTitle {
         font-size: 36px;
@@ -875,6 +1195,130 @@
     }
     .priceValue {
         font-size: 18px;
+    }
+}
+
+@media (max-width: 600px) {
+    /* Reduce all section padding to prevent white bar on right */
+    .hero,
+    .showcase,
+    .pricing,
+    .packages,
+    .bookingSection,
+    .testimonials,
+    .hoursBlack,
+    .contactSection,
+    .locationInfo,
+    .ctaSection {
+        padding-left: 24px !important;
+        padding-right: 24px !important;
+    }
+
+    .container {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+
+    /* Showcase section fixes */
+    .showcaseTitleText {
+        font-size: 36px; /* Even smaller */
+    }
+
+    .showcaseCenterTitle {
+        top: 0px;
+    }
+
+    .showcaseSubtitle {
+        font-size: 20px;
+    }
+
+    .showcaseBottomRow {
+        bottom: 24px !important; /* Actually at bottom left */
+        left: 24px !important;
+    }
+
+    .showcaseViewButton {
+        padding: 6px 16px;
+    }
+
+    .showcaseViewButtonText {
+        font-size: 9px;
+    }
+
+    .showcaseContent {
+        padding: 24px;
+    }
+
+    /* Pricing section - more spacing on smaller screens */
+    .pricingImage {
+        margin-top: 48px;
+    }
+
+    .sectionTitle,
+    .ctaTitle {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Further reduce padding on very small screens */
+    .hero,
+    .showcase,
+    .pricing,
+    .packages,
+    .bookingSection,
+    .testimonials,
+    .hoursBlack,
+    .contactSection,
+    .locationInfo,
+    .ctaSection {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+
+    .container {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+
+    /* Showcase section - even smaller */
+    .showcaseTitleText {
+        font-size: 28px; /* Very small for tiny screens */
+    }
+
+    .showcaseCenterTitle {
+        top: 0px;
+    }
+
+    .showcaseSubtitle {
+        font-size: 16px;
+    }
+
+    .showcaseBottomRow {
+        bottom: 20px !important; /* Right at bottom */
+        left: 20px !important;
+    }
+
+    .showcaseViewButton {
+        padding: 5px 14px;
+    }
+
+    .showcaseViewButtonText {
+        font-size: 8px;
+    }
+
+    .showcaseContent {
+        padding: 20px;
+    }
+
+    /* Pricing section - even more spacing on very small screens */
+    .pricingImage {
+        margin-top: 56px;
+    }
+
+    .sectionTitle,
+    .ctaTitle {
+        font-size: 24px;
     }
 }
 /* Package Button */
@@ -897,7 +1341,7 @@
     letter-spacing: 0.15em;
     text-decoration: none;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 2px solid white;
+    border: 2px solid black;
     position: relative;
     overflow: hidden;
 }

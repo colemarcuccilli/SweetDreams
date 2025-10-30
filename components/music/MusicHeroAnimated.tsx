@@ -203,9 +203,9 @@ export default function MusicHeroAnimated() {
             <div className={styles.value}>$40/HR</div>
           </div>
 
-          <button className={styles.ctaButton}>
+          <a href="#booking" className={styles.ctaButton}>
             BOOK A SESSION
-          </button>
+          </a>
         </div>
       </div>
 

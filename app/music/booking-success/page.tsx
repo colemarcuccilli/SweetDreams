@@ -39,8 +39,8 @@ export default function BookingSuccessPage() {
 
         <div className={styles.contactInfo}>
           <p className={styles.contactTitle}>Questions?</p>
-          <p>Contact us at <a href="tel:+12603138012">(260) 313-8012</a></p>
-          <p>Or email <a href="mailto:contact@sweetdreamsmusic.com">contact@sweetdreamsmusic.com</a></p>
+          <p>Contact us at <a href="tel:+12604507739">(260) 450-7739</a></p>
+          <p>Or email <a href="mailto:jayvalleo@sweetdreamsmusic.com">jayvalleo@sweetdreamsmusic.com</a></p>
         </div>
 
         <div className={styles.actions}>

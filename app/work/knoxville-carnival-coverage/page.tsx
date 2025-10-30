@@ -1,6 +1,7 @@
 import Link from "next/link";
 import styles from "./project.module.css";
 import VideoPlayer from "./VideoPlayer";
+import PhotoGallery from "@/components/PhotoGallery";
 
 export default function KnoxvilleCarnivalPage() {
   const project = {
@@ -23,22 +24,14 @@ export default function KnoxvilleCarnivalPage() {
       { id: '851821b5ba9d7b4ca9abc3f80660016d', title: 'Carnival Template Video', aspectRatio: '16/9' }
     ],
     additional_images: [
-      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/KnoxvilleCarnival/_DSC8522.jpg',
-      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/KnoxvilleCarnival/_DSC8875.jpg',
-      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/KnoxvilleCarnival/_DSC8934.jpg',
-      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/KnoxvilleCarnival/_DSC8959.jpg',
-      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/KnoxvilleCarnival/_DSC9074.jpg',
-      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/KnoxvilleCarnival/DJI_20250912211137_0109_D.jpg',
-      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/KnoxvilleCarnival/DJI_20250912213926_0169_D.jpg',
-      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/KnoxvilleCarnival/DSC08500.jpg',
-      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/KnoxvilleCarnival/DSC08526.jpg',
-      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/KnoxvilleCarnival/DSC08568.jpg',
-      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/KnoxvilleCarnival/DSC08595.jpg',
-      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/KnoxvilleCarnival/DSC08619.jpg',
-      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/KnoxvilleCarnival/DSC08650.jpg',
-      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/KnoxvilleCarnival/DSC08681.jpg',
-      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/KnoxvilleCarnival/DSC08775.jpg',
-      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/KnoxvilleCarnival/DSC08864.jpg'
+      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/KnoxvilleCarnival/_DSC8487.webp',
+      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/KnoxvilleCarnival/_DSC8871.webp',
+      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/KnoxvilleCarnival/_DSC8883.webp',
+      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/KnoxvilleCarnival/_DSC8923.webp',
+      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/KnoxvilleCarnival/_DSC8943.webp',
+      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/KnoxvilleCarnival/_DSC8976.webp',
+      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/KnoxvilleCarnival/_DSC9078.webp',
+      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/KnoxvilleCarnival/_DSC9083.webp'
     ]
   };
 
@@ -123,18 +116,7 @@ export default function KnoxvilleCarnivalPage() {
       {project.additional_images && project.additional_images.length > 0 && (
         <section className={styles.gallery}>
           <h2 className={styles.sectionTitle}>PHOTO GALLERY</h2>
-          <div className={styles.photoGalleryGrid}>
-            {project.additional_images.map((image, index) => (
-              <div key={index} className={styles.galleryImageItem}>
-                <img
-                  src={image}
-                  alt={`${project.title} - Photo ${index + 1}`}
-                  className={styles.galleryImage}
-                  loading="lazy"
-                />
-              </div>
-            ))}
-          </div>
+          <PhotoGallery images={project.additional_images} projectTitle={project.title} />
         </section>
       )}
 

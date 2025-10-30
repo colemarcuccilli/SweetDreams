@@ -9,13 +9,10 @@ import MediaHeroAnimated from "@/components/media/MediaHeroAnimated";
 import PortfolioHorizontalScroll from "@/components/media/PortfolioHorizontalScroll";
 
 export default function MediaPage() {
-  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
-  const [cursorLogo, setCursorLogo] = useState<string | null>(null);
-
   const portfolioItems = [
     {
       href: "/work/knoxville-carnival-coverage",
-      image: "https://customer-w6h9o08eg118alny.cloudflarestream.com/d554360a479b1380f96df7a4ef8f03a3/thumbnails/thumbnail.jpg?time=1s&height=600",
+      image: "https://customer-w6h9o08eg118alny.cloudflarestream.com/d554360a479b1380f96df7a4ef8f03a3/thumbnails/thumbnail.jpg?time=13s&height=600",
       title: "KISSEL ENTERTAINMENT",
       client: "Kissel Entertainment",
       category: "Commercial · Event Coverage",
@@ -31,7 +28,7 @@ export default function MediaPage() {
     },
     {
       href: "/work/brookfield-zoo-ferris-wheel",
-      image: "https://videodelivery.net/b3b94bd1543e2452571b90aab0a38e9b/thumbnails/thumbnail.jpg?time=1s&height=600",
+      image: "https://videodelivery.net/b3b94bd1543e2452571b90aab0a38e9b/thumbnails/thumbnail.jpg?time=13s&height=600",
       title: "BROOKFIELD ZOO FERRIS WHEEL",
       client: "RideWorx & Brookfield Zoo",
       category: "Brand Film · Event",
@@ -59,7 +56,7 @@ export default function MediaPage() {
       title: "WAKE UP BLIND MUSIC VIDEO",
       client: "Jay Val Leo",
       category: "Music Video",
-      logo: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SWEETDREAMSLOGO_1.jpg",
+      logo: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SweetDreamsLogo/SweetDreamsMusic3StackBlackLogo%20(1).png",
     },
     {
       href: "/work/aegis-dental-trusted-dentistry",
@@ -127,12 +124,12 @@ export default function MediaPage() {
     },
     {
       href: "/work/nissan-warsaw-dealership",
-      image: "",
+      image: "https://customer-w6h9o08eg118alny.cloudflarestream.com/700297c313e97262173f0c2107f3b8db/thumbnails/thumbnail.jpg?time=2s&height=600",
       title: "NISSAN WARSAW DEALERSHIP",
-      client: "Nissan Prime Dealer",
+      client: "Nissan Warsaw Dealer",
       category: "Commercial · Automotive",
-      logo: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/NissanLogo.png",
-      comingSoon: true,
+      logo: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/nissanredlogo.png",
+      comingSoon: false,
     },
     {
       href: "/work/dear-lover-music-video",
@@ -140,7 +137,7 @@ export default function MediaPage() {
       title: "DEAR LOVER - MUSIC VIDEO",
       client: "Lyaz",
       category: "Music Video",
-      logo: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/LyazLogo.png",
+      logo: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SweetDreamsLogo/SweetDreamsMusic3StackBlackLogo%20(1).png",
     },
   ];
 
@@ -158,37 +155,25 @@ export default function MediaPage() {
       }
     };
 
-    const handleMouseMove = (e: MouseEvent) => {
-      setCursorPos({ x: e.clientX, y: e.clientY });
-    };
-
     window.addEventListener('scroll', handleScroll);
-    window.addEventListener('mousemove', handleMouseMove);
     handleScroll();
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('mousemove', handleMouseMove);
     };
   }, []);
 
   return (
     <div className={styles.page}>
-      {/* Custom Cursor with Logo */}
-      {cursorLogo && (
-        <div
-          className={styles.customCursor}
-          style={{
-            left: `${cursorPos.x}px`,
-            top: `${cursorPos.y}px`,
-          }}
-        >
-          <img src={cursorLogo} alt="Client Logo" className={styles.cursorLogo} />
-        </div>
-      )}
-
       {/* Hero Section - White */}
       <MediaHeroAnimated />
+
+      {/* Complete Portfolio - Horizontal Scroll */}
+      <PortfolioHorizontalScroll
+        items={portfolioItems}
+        onMouseEnter={() => {}}
+        onMouseLeave={() => {}}
+      />
 
       {/* Why Choose Us - Black */}
       <WhyAnimated />
@@ -204,13 +189,6 @@ export default function MediaPage() {
           </p>
         </div>
       </section>
-
-      {/* Complete Portfolio - Horizontal Scroll */}
-      <PortfolioHorizontalScroll
-        items={portfolioItems}
-        onMouseEnter={(logo) => setCursorLogo(logo)}
-        onMouseLeave={() => setCursorLogo(null)}
-      />
 
       {/* Services - White */}
       <ServicesAnimated />

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import Link from 'next/link';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import styles from '../../app/media/media.module.css';
@@ -15,6 +16,10 @@ export default function ServicesAnimated() {
   useEffect(() => {
     if (typeof window === 'undefined' || !containerRef.current) return;
 
+    // Check if mobile for earlier trigger
+    const isMobile = window.innerWidth <= 768;
+    const triggerStart = isMobile ? 'top 90%' : 'top 70%';
+
     // Animate title elements
     const titleElements = containerRef.current.querySelectorAll('.animate-title');
     gsap.set(titleElements, { y: 30, opacity: 0 });
@@ -26,7 +31,7 @@ export default function ServicesAnimated() {
       ease: 'power3.out',
       scrollTrigger: {
         trigger: containerRef.current,
-        start: 'top 70%',
+        start: triggerStart,
         toggleActions: 'play none none reverse',
       }
     });
@@ -42,7 +47,7 @@ export default function ServicesAnimated() {
       ease: 'power3.out',
       scrollTrigger: {
         trigger: containerRef.current,
-        start: 'top 70%',
+        start: triggerStart,
         toggleActions: 'play none none reverse',
       }
     });
@@ -79,6 +84,12 @@ export default function ServicesAnimated() {
               From training videos to internal communications, we help your business communicate effectively.
             </p>
           </div>
+        </div>
+
+        <div className={styles.learnMoreButtonContainer}>
+          <Link href="/solutions" className={`${styles.learnMoreButton} animate-title`}>
+            LEARN MORE
+          </Link>
         </div>
       </div>
     </section>

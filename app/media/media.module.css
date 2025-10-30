@@ -1,6 +1,8 @@
 .page {
   min-height: 100vh;
   background: black;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 /* Custom Cursor */
@@ -208,6 +210,55 @@
   font-size: 16px;
   line-height: 1.8;
   color: #555;
+}
+
+.learnMoreButtonContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 64px;
+}
+
+.learnMoreButton {
+  display: inline-block;
+  background: black;
+  color: white;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 20px 60px;
+  border-radius: 999px;
+  font-size: 14px;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid black;
+  position: relative;
+  overflow: hidden;
+}
+
+.learnMoreButton::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  background: white;
+  border-radius: 50%;
+  transition: width 1.2s ease, height 1.2s ease;
+  z-index: -1;
+}
+
+.learnMoreButton:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  color: black;
+}
+
+.learnMoreButton:hover::before {
+  width: 800px;
+  height: 800px;
 }
 
 /* Clients Section - Black */
@@ -584,13 +635,36 @@
   border-radius: 999px;
   font-size: 16px;
   letter-spacing: 0.15em;
-  border: none;
+  border: 2px solid white;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.submitButton::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  background: black;
+  border-radius: 50%;
+  transition: width 1.2s ease, height 1.2s ease;
+  z-index: -1;
 }
 
 .submitButton:hover {
-  background: rgba(255, 255, 255, 0.9);
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
+  color: white;
+}
+
+.submitButton:hover::before {
+  width: 800px;
+  height: 800px;
 }
 
 /* Info Section - Black */
@@ -696,5 +770,31 @@
 
   .ctaSubtitle {
     margin-bottom: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  /* Reduce padding to prevent white bars */
+  .hero,
+  .why,
+  .value,
+  .services,
+  .cta,
+  .info {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Further reduce padding on very small screens */
+  .hero,
+  .why,
+  .value,
+  .services,
+  .cta,
+  .info {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
   }
 }

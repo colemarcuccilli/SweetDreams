@@ -831,67 +831,57 @@ export default function SolutionsPage() {
       });
     });
 
-    // Social strategy scroll animations - vertical movement based on scroll position
+    // Social strategy - directional animations
     const socialSection = container.querySelector('.social-section');
-
-    // Right column (title) - starts lower, moves down as you scroll
     const socialRightColumn = container.querySelector('.social-right-column');
+    const socialLines = container.querySelectorAll('.social-line');
+    const socialBottomLeft = container.querySelector('.social-tagline')?.parentElement;
+
+    // Header (04 SOCIAL STRATEGY) - slide from left
     if (socialRightColumn) {
-      gsap.fromTo(socialRightColumn,
-        {
-          y: 500,
-        },
-        {
-          y: 0,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: socialSection,
-            start: 'top 90%',
-            end: 'bottom 10%',
-            scrub: 1.5,
-          }
+      gsap.from(socialRightColumn, {
+        opacity: 0,
+        x: -200,
+        duration: 1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: socialSection,
+          start: 'top 70%',
+          toggleActions: 'play none none reverse',
         }
-      );
+      });
     }
 
-    // Middle column phrases - move from right to left as you scroll
-    const socialLines = container.querySelectorAll('.social-line');
+    // Four phrases - slide from right, staggered
     socialLines.forEach((line, index) => {
-      gsap.fromTo(line,
-        {
-          x: 600 - (index * 100),
-        },
-        {
-          x: 0,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: socialSection,
-            start: 'top 90%',
-            end: 'bottom 10%',
-            scrub: 2,
-          }
+      gsap.from(line, {
+        opacity: 0,
+        x: 200,
+        duration: 1,
+        delay: 0.2 + (index * 0.1),
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: socialSection,
+          start: 'top 70%',
+          toggleActions: 'play none none reverse',
         }
-      );
+      });
     });
 
-    // Left column (tagline + button) - starts higher up, moves up as you scroll
-    const socialLeftColumn = container.querySelector('.social-left-column');
-    if (socialLeftColumn) {
-      gsap.fromTo(socialLeftColumn,
-        {
-          y: -500,
-        },
-        {
-          y: 0,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: socialSection,
-            start: 'top 90%',
-            end: 'bottom 10%',
-            scrub: 1.5,
-          }
+    // Tagline and button - slide up from bottom
+    if (socialBottomLeft) {
+      gsap.from(socialBottomLeft, {
+        opacity: 0,
+        y: 100,
+        duration: 1,
+        delay: 0.4,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: socialSection,
+          start: 'top 70%',
+          toggleActions: 'play none none reverse',
         }
-      );
+      });
     }
 
     // Launch header
@@ -938,7 +928,7 @@ export default function SolutionsPage() {
         ease: 'power4.out',
         scrollTrigger: {
           trigger: ctaTitle,
-          start: 'top 80%',
+          start: 'top bottom',
           toggleActions: 'play none none reverse',
         }
       });
@@ -947,14 +937,14 @@ export default function SolutionsPage() {
     const ctaButton = container.querySelector('.cta-button');
     if (ctaButton) {
       gsap.from(ctaButton, {
-        scale: 0,
         opacity: 0,
-        duration: 0.8,
+        y: 60,
+        duration: 1,
         delay: 0.3,
-        ease: 'back.out(2)',
+        ease: 'power3.out',
         scrollTrigger: {
           trigger: ctaButton,
-          start: 'top 85%',
+          start: 'top bottom',
           toggleActions: 'play none none reverse',
         }
       });
@@ -992,16 +982,16 @@ export default function SolutionsPage() {
             </div>
 
           {/* Right Side - Featured Project Video with White Border Frame */}
-          <Link href="/work/dear-lover-music-video" className={styles.productionShowcaseLink}>
+          <Link href="/work/nissan-warsaw-dealership" className={styles.productionShowcaseLink}>
             <div className={`${styles.productionShowcaseWrapper} production-showcase`}>
               {/* White border frame */}
               <div className={styles.productionShowcaseFrame}></div>
 
               {/* Video container */}
               <div className={styles.productionShowcase}>
-                {/* Video Background - Dear Lover Music Video */}
+                {/* Video Background - Nissan Warsaw Commercial */}
                 <iframe
-                  src="https://customer-w6h9o08eg118alny.cloudflarestream.com/beeb2ee6a9a30c655e79bdc1f4fb6d20/iframe?muted=true&autoplay=true&loop=true&controls=false"
+                  src="https://customer-w6h9o08eg118alny.cloudflarestream.com/700297c313e97262173f0c2107f3b8db/iframe?muted=true&autoplay=true&loop=true&controls=false&preload=true&poster=https%3A%2F%2Fcustomer-w6h9o08eg118alny.cloudflarestream.com%2F700297c313e97262173f0c2107f3b8db%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D2s%26height%3D600"
                   className={styles.productionShowcaseVideo}
                   allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
                   allowFullScreen={true}
@@ -1015,7 +1005,7 @@ export default function SolutionsPage() {
                 <div className={styles.productionShowcaseContent}>
                   {/* Top Row */}
                   <div className={styles.showcaseTopRow}>
-                    <div className={styles.showcaseClient}>LYAZ</div>
+                    <div className={styles.showcaseClient}>NISSAN WARSAW</div>
                     <div className={styles.showcaseViewButton}>
                       <span>VIEW PROJECT</span>
                     </div>
@@ -1023,13 +1013,13 @@ export default function SolutionsPage() {
 
                   {/* Center Title */}
                   <div className={styles.showcaseCenterTitle}>
-                    <div className={styles.showcaseTitleText}>DEAR</div>
-                    <div className={styles.showcaseTitleText}>LOVER</div>
+                    <div className={styles.showcaseTitleText}>NISSAN</div>
+                    <div className={styles.showcaseTitleText}>WARSAW</div>
                   </div>
 
                   {/* Bottom Subtitle */}
                   <div className={styles.showcaseBottomRow}>
-                    <div className={styles.showcaseSubtitle}>MUSIC VIDEO</div>
+                    <div className={styles.showcaseSubtitle}>COMMERCIAL</div>
                   </div>
                 </div>
               </div>
@@ -1068,7 +1058,7 @@ export default function SolutionsPage() {
           </div>
           <div className={`${styles.postVideoItem} post-video-item`}>
             <iframe
-              src="https://customer-w6h9o08eg118alny.cloudflarestream.com/d912b8bd58831e95431db3c24791e44b/iframe?muted=true&autoplay=true&loop=true&controls=false"
+              src="https://customer-w6h9o08eg118alny.cloudflarestream.com/beeb2ee6a9a30c655e79bdc1f4fb6d20/iframe?muted=true&autoplay=true&loop=true&controls=false"
               className={styles.postVideoIframe}
               allow="autoplay; encrypted-media;"
             ></iframe>
@@ -1076,7 +1066,7 @@ export default function SolutionsPage() {
           </div>
           <div className={`${styles.postVideoItem} post-video-item`}>
             <iframe
-              src="https://customer-w6h9o08eg118alny.cloudflarestream.com/a507a5b8a369b70b7332c0567cbbcc4c/iframe?muted=true&autoplay=true&loop=true&controls=false"
+              src="https://customer-w6h9o08eg118alny.cloudflarestream.com/851821b5ba9d7b4ca9abc3f80660016d/iframe?muted=true&autoplay=true&loop=true&controls=false"
               className={styles.postVideoIframe}
               allow="autoplay; encrypted-media;"
             ></iframe>
@@ -1090,33 +1080,22 @@ export default function SolutionsPage() {
         </div>
       </section>
 
-      {/* 03. SOCIAL STRATEGY - Three Column Layout */}
+      {/* 03. SOCIAL STRATEGY - Two Column Layout */}
       <section className={`${styles.socialSection} social-section`}>
         <div className={styles.socialContent}>
           <div className={styles.socialGrid}>
-            {/* Left Column - Title */}
+            {/* Left Column - Header at top, Tagline & CTA below */}
             <div className={`${styles.socialLeftColumn} social-left-column`}>
-              <div className={styles.socialHeader}>
-                <div className={`${styles.socialNumber} social-number`}>04</div>
-                <div className={styles.socialTitleWrapper}>
-                  <p className={`${styles.socialMiniTitle} social-mini-title`}>DIGITAL MARKETING</p>
-                  <h2 className={`${styles.socialMainTitle} social-main-title`}>SOCIAL STRATEGY</h2>
+              <div className={styles.socialRightColumn}>
+                <div className={styles.socialHeader}>
+                  <div className={`${styles.socialNumber} social-number`}>04</div>
+                  <div className={styles.socialTitleWrapper}>
+                    <p className={`${styles.socialMiniTitle} social-mini-title`}>DIGITAL MARKETING</p>
+                    <h2 className={`${styles.socialMainTitle} social-main-title`}>SOCIAL STRATEGY</h2>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Middle Column - Stair-stepped Lines */}
-            <div className={`${styles.socialMiddleColumn} social-middle-column`}>
-              <div className={styles.socialLines}>
-                <h2 className={`${styles.socialLine} social-line`}><span className={styles.socialColoredWord}>CONTENT</span> CALENDARS.</h2>
-                <h2 className={`${styles.socialLine} social-line`}><span className={styles.socialColoredWord}>PLATFORM</span> MANAGEMENT.</h2>
-                <h2 className={`${styles.socialLine} social-line`}><span className={styles.socialColoredWord}>COMMUNITY</span> ENGAGEMENT.</h2>
-                <h2 className={`${styles.socialLine} social-line`}>REAL GROWTH.</h2>
-              </div>
-            </div>
-
-            {/* Right Column - Bottom Aligned CTA */}
-            <div className={`${styles.socialRightColumn} social-right-column`}>
               <div className={styles.socialBottomLeft}>
                 <p className={`${styles.socialTagline} social-tagline`}>
                   We handle your social so you don't have to.
@@ -1126,6 +1105,16 @@ export default function SolutionsPage() {
                     GROW YOUR AUDIENCE
                   </Link>
                 </div>
+              </div>
+            </div>
+
+            {/* Right Column - Stair-stepped Lines */}
+            <div className={`${styles.socialMiddleColumn} social-middle-column`}>
+              <div className={styles.socialLines}>
+                <h2 className={`${styles.socialLine} social-line`}><span className={styles.socialColoredWord}>CONTENT</span> CALENDARS.</h2>
+                <h2 className={`${styles.socialLine} social-line`}><span className={styles.socialColoredWord}>PLATFORM</span> MANAGEMENT.</h2>
+                <h2 className={`${styles.socialLine} social-line`}><span className={styles.socialColoredWord}>COMMUNITY</span> ENGAGEMENT.</h2>
+                <h2 className={`${styles.socialLine} social-line`}>REAL GROWTH.</h2>
               </div>
             </div>
           </div>

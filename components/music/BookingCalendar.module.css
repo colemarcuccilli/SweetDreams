@@ -355,4 +355,68 @@
     font-size: 0.75rem;
     padding: 0.6rem 0.5rem;
   }
+
+  .discountHint {
+    padding: 0.75rem;
+  }
+
+  .discountTitle {
+    font-size: 0.85rem;
+  }
+
+  .discountText {
+    font-size: 0.75rem;
+  }
+}
+
+/* Discount Hint Styles */
+.discountHint {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.discountBadge {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border: 2px solid #fbbf24;
+  border-radius: 8px;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 2px 8px rgba(251, 191, 36, 0.2);
+  transition: all 0.3s ease;
+}
+
+.discountBadge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
+}
+
+.discountIcon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.discountTitle {
+  font-family: 'Anton', sans-serif;
+  font-size: 1rem;
+  text-transform: uppercase;
+  color: #000;
+  margin: 0 0 0.25rem 0;
+  letter-spacing: 0.05em;
+}
+
+.discountText {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.85rem;
+  color: #333;
+  margin: 0;
+}
+
+.discountText strong {
+  color: #000;
+  background: rgba(0, 0, 0, 0.1);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  font-weight: 600;
 }

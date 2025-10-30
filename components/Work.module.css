@@ -173,10 +173,12 @@
 
 .thumbnail {
   width: 100%;
+  max-width: 100%;
   height: auto;
   aspect-ratio: 16 / 9;
   object-fit: cover;
   border-radius: 16px;
+  display: block;
 }
 
 .detailsRight {
@@ -253,13 +255,73 @@
   height: 800px;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1439px) {
+  .section {
+    padding: 110px 44px 150px 44px;
+  }
+
   .mainText {
-    font-size: 80px;
+    font-size: 125px;
   }
 
   .projectTitle {
-    font-size: 28px;
+    font-size: 34px;
+  }
+}
+
+@media (max-width: 1300px) {
+  .section {
+    padding: 105px 40px 145px 40px;
+  }
+
+  .mainText {
+    font-size: 110px;
+  }
+
+  .projectTitle {
+    font-size: 32px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .section {
+    padding: 100px 38px 140px 38px;
+  }
+
+  .mainText {
+    font-size: 95px;
+  }
+
+  .projectTitle {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .section {
+    padding: 95px 36px 135px 36px;
+  }
+
+  .mainText {
+    font-size: 88px;
+  }
+
+  .projectTitle {
+    font-size: 29px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .section {
+    padding: 90px 32px 130px 32px;
+  }
+
+  .mainText {
+    font-size: 76px;
+  }
+
+  .projectTitle {
+    font-size: 26px;
   }
 
   .projectDetails {
@@ -305,5 +367,65 @@
   .viewButton {
     padding: 14px 28px;
     font-size: 13px;
+  }
+}
+
+@media (max-width: 430px) {
+  .section {
+    padding: 60px 16px 100px 16px;
+    border-radius: 0 0 32px 32px;
+  }
+
+  .mainText {
+    font-size: 40px;
+  }
+
+  .title {
+    font-size: 14px;
+  }
+
+  .projectTitle {
+    font-size: 18px;
+  }
+
+  .projectHeader {
+    padding: 20px 0;
+  }
+
+  .projectDetails {
+    gap: 24px;
+    padding: 0 0 24px 0;
+  }
+
+  .detailLabel {
+    font-size: 10px;
+  }
+
+  .detailValue {
+    font-size: 13px;
+  }
+
+  .viewButton {
+    padding: 12px 24px;
+    font-size: 12px;
+  }
+
+  .exploreLink {
+    padding: 10px 28px;
+    font-size: 13px;
+  }
+
+  .subheaderLeft {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 374px) {
+  .mainText {
+    font-size: 32px;
+  }
+
+  .projectTitle {
+    font-size: 16px;
   }
 }

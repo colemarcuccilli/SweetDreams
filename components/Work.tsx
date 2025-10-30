@@ -17,6 +17,16 @@ const PROJECTS = [
   },
   {
     id: 2,
+    title: 'NISSAN WARSAW DEALERSHIP COMMERCIAL',
+    slug: 'nissan-warsaw-dealership',
+    thumbnail: 'https://customer-w6h9o08eg118alny.cloudflarestream.com/700297c313e97262173f0c2107f3b8db/thumbnails/thumbnail.jpg?time=2s&height=600',
+    client: 'Nissan Warsaw Dealer',
+    category: 'Commercial',
+    year: '2025',
+    services: 'Cinematography, Editing, Color Grading'
+  },
+  {
+    id: 3,
     title: 'INDIANAPOLIS CHILDREN\'S MUSEUM FERRIS WHEEL EXPERIENCE',
     slug: 'indianapolis-childrens-museum-ferris-wheel',
     thumbnail: 'https://videodelivery.net/7a243650c649bdcf4369622acd47abf6/thumbnails/thumbnail.jpg?time=1s&height=600',
@@ -26,7 +36,7 @@ const PROJECTS = [
     services: 'Scripting, Cinematography, Editing, Color Grading'
   },
   {
-    id: 3,
+    id: 4,
     title: 'BROOKFIELD ZOO FERRIS WHEEL COMMERCIAL',
     slug: 'brookfield-zoo-ferris-wheel',
     thumbnail: 'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/BrookfieldZoo/_DSC8445.jpg',
@@ -36,7 +46,7 @@ const PROJECTS = [
     services: 'Scripting, Cinematography, Editing, Color Grading'
   },
   {
-    id: 4,
+    id: 5,
     title: 'AEGIS DENTAL - TRUSTED DENTISTRY',
     slug: 'aegis-dental-trusted-dentistry',
     thumbnail: 'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/AegisDental/_DSC7982.jpg',
@@ -46,7 +56,7 @@ const PROJECTS = [
     services: 'Cinematography, Editing, Color Grading'
   },
   {
-    id: 5,
+    id: 6,
     title: 'SWEET DREAMS RECORDING STUDIO SHOWCASE',
     slug: 'sweet-dreams-recording-studio',
     thumbnail: 'https://customer-w6h9o08eg118alny.cloudflarestream.com/d912b8bd58831e95431db3c24791e44b/thumbnails/thumbnail.jpg?time=1s&height=600',
@@ -56,7 +66,7 @@ const PROJECTS = [
     services: 'Cinematography, Editing, Color Grading'
   },
   {
-    id: 6,
+    id: 7,
     title: 'DEAR LOVER - MUSIC VIDEO',
     slug: 'dear-lover-music-video',
     thumbnail: 'https://customer-w6h9o08eg118alny.cloudflarestream.com/beeb2ee6a9a30c655e79bdc1f4fb6d20/thumbnails/thumbnail.jpg?time=3s&height=600',

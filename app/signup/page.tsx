@@ -55,12 +55,28 @@ export default function SignupPage() {
       console.log('✅ SIGNUP SUCCESS:', data);
       console.log('User created:', data?.user?.id);
       console.log('Email:', data?.user?.email);
-      setSuccess(true);
-      setLoading(false);
-      // Redirect to login after 2 seconds
-      setTimeout(() => {
-        router.push('/login');
-      }, 2000);
+      console.log('Session exists:', !!data?.session);
+
+      // Check if user is auto-logged in (no email confirmation required)
+      if (data?.session) {
+        console.log('✅ User auto-logged in, redirecting to profile...');
+        setSuccess(true);
+        setLoading(false);
+        // User is already logged in, redirect to profile
+        setTimeout(() => {
+          router.push('/profile');
+          router.refresh(); // Refresh to update auth state
+        }, 1500);
+      } else {
+        // Email confirmation required
+        console.log('📧 Email confirmation required');
+        setSuccess(true);
+        setLoading(false);
+        // Redirect to login after showing message
+        setTimeout(() => {
+          router.push('/login');
+        }, 4000); // Longer delay to read message
+      }
     }
   };
 
@@ -107,6 +123,8 @@ export default function SignupPage() {
               className={styles.input}
               required
               disabled={loading}
+              autoComplete="name"
+              inputMode="text"
             />
           </div>
 
@@ -122,6 +140,8 @@ export default function SignupPage() {
               className={styles.input}
               required
               disabled={loading}
+              autoComplete="email"
+              inputMode="email"
             />
           </div>
 
@@ -138,6 +158,7 @@ export default function SignupPage() {
               required
               disabled={loading}
               minLength={6}
+              autoComplete="new-password"
             />
           </div>
 
@@ -154,6 +175,7 @@ export default function SignupPage() {
               required
               disabled={loading}
               minLength={6}
+              autoComplete="new-password"
             />
           </div>
 

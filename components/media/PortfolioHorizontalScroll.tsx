@@ -38,6 +38,54 @@ export default function PortfolioHorizontalScroll({
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [cursorLogo, setCursorLogo] = useState<string | null>(null);
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  const [centeredCardIndex, setCenteredCardIndex] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile on mount
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Intersection Observer for mobile centered card detection
+  useEffect(() => {
+    if (!isMobile || !containerRef.current) return;
+
+    const cards = containerRef.current.querySelectorAll('[data-card-index]');
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '-40% 0px -40% 0px', // Center 20% of viewport
+      threshold: [0, 0.5, 1]
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      let maxRatio = 0;
+      let mostVisibleIndex: number | null = null;
+
+      entries.forEach(entry => {
+        if (entry.intersectionRatio > maxRatio) {
+          maxRatio = entry.intersectionRatio;
+          const index = parseInt(entry.target.getAttribute('data-card-index') || '-1');
+          mostVisibleIndex = index;
+        }
+      });
+
+      if (maxRatio > 0.3) {
+        setCenteredCardIndex(mostVisibleIndex);
+      }
+    }, observerOptions);
+
+    cards.forEach(card => observer.observe(card as Element));
+
+    return () => observer.disconnect();
+  }, [isMobile, items]);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -91,7 +139,8 @@ export default function PortfolioHorizontalScroll({
             <Link
               key={itemIndex}
               href={item.href}
-              className={`${styles.portfolioCard} ${item.comingSoon ? styles.comingSoonCard : ''}`}
+              className={`${styles.portfolioCard} ${item.comingSoon ? styles.comingSoonCard : ''} ${isMobile && centeredCardIndex === itemIndex ? styles.centered : ''}`}
+              data-card-index={itemIndex}
               onMouseEnter={() => handleMouseEnterCard(item.logo)}
               onMouseLeave={handleMouseLeaveCard}
             >

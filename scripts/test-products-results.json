@@ -1,0 +1,67 @@
+{
+  "1hr Studio Session": {
+    "productId": "prod_TK08Ztvh8X9trn",
+    "priceId": "price_1SNM81GLKrGlFRBUlayNXavL",
+    "amount": 6000
+  },
+  "2Hr Studio Session (Deposit)": {
+    "productId": "prod_TK08RfUrB6a6yV",
+    "priceId": "price_1SNM82GLKrGlFRBUjs5YMtri",
+    "amount": 5000
+  },
+  "2Hr Studio Session (Remainder)": {
+    "productId": "prod_TK08dzD7GbCXo9",
+    "priceId": "price_1SNM82GLKrGlFRBUppxuNrJd",
+    "amount": 5000
+  },
+  "3Hr Studio Session (Deposit)": {
+    "productId": "prod_TK08uj0ISYlhq3",
+    "priceId": "price_1SNM83GLKrGlFRBUJ6UENmQv",
+    "amount": 7500
+  },
+  "3Hr Studio Session (Remainder)": {
+    "productId": "prod_TK08cQc6wFusEx",
+    "priceId": "price_1SNM83GLKrGlFRBUOtyufxsa",
+    "amount": 7500
+  },
+  "4Hr Studio Session (Deposit)": {
+    "productId": "prod_TK084Bw2qg7h3q",
+    "priceId": "price_1SNM84GLKrGlFRBU6QO94cFe",
+    "amount": 9000
+  },
+  "4Hr Studio Session (Remainder)": {
+    "productId": "prod_TK08QB5ChUuM2G",
+    "priceId": "price_1SNM84GLKrGlFRBUxcxTl3qd",
+    "amount": 9000
+  },
+  "5Hr Studio Session (Deposit)": {
+    "productId": "prod_TK08Apxihs9Hux",
+    "priceId": "price_1SNM85GLKrGlFRBUAIjILPEc",
+    "amount": 11250
+  },
+  "5Hr Studio Session (Remainder)": {
+    "productId": "prod_TK08xaWkEx1F6X",
+    "priceId": "price_1SNM85GLKrGlFRBUS6bAhfUv",
+    "amount": 11250
+  },
+  "6Hr Studio Session (Deposit)": {
+    "productId": "prod_TK0817yqGo1vqa",
+    "priceId": "price_1SNM86GLKrGlFRBUxtAHizjL",
+    "amount": 13500
+  },
+  "6Hr Studio Session (Remainder)": {
+    "productId": "prod_TK081I4pIWMrcQ",
+    "priceId": "price_1SNM86GLKrGlFRBUu4LL7APu",
+    "amount": 13500
+  },
+  "Same Day Hourly Fee": {
+    "productId": "prod_TK08EKXoQs3k2J",
+    "priceId": "price_1SNM87GLKrGlFRBURGm7vi8r",
+    "amount": 1000
+  },
+  "After Hours Fee": {
+    "productId": "prod_TK08oX7vQAtrPP",
+    "priceId": "price_1SNM87GLKrGlFRBUq9RfTDpi",
+    "amount": 1000
+  }
+}

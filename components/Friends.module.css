@@ -35,7 +35,7 @@
 
 .mainText {
   font-family: 'Anton', sans-serif;
-  font-size: 120px;
+  font-size: 140px;
   text-transform: uppercase;
   line-height: 1;
   font-weight: 400;
@@ -82,10 +82,102 @@
   opacity: 1;
 }
 
+@media (max-width: 1439px) {
+  .section {
+    padding-top: 115px;
+    padding-bottom: 115px;
+  }
+
+  .container {
+    padding-left: 44px;
+    padding-right: 44px;
+  }
+
+  .mainText {
+    font-size: 125px;
+  }
+}
+
+@media (max-width: 1400px) {
+  .section {
+    padding-top: 100px;
+    padding-bottom: 100px;
+  }
+
+  .container {
+    padding-left: 42px;
+    padding-right: 42px;
+  }
+
+  .mainText {
+    font-size: 100px;
+  }
+}
+
+@media (max-width: 1300px) {
+  .section {
+    padding-top: 95px;
+    padding-bottom: 95px;
+  }
+
+  .container {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  .mainText {
+    font-size: 95px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .section {
+    padding-top: 88px;
+    padding-bottom: 88px;
+  }
+
+  .container {
+    padding-left: 38px;
+    padding-right: 38px;
+  }
+
+  .mainText {
+    font-size: 88px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .section {
+    padding-top: 84px;
+    padding-bottom: 84px;
+  }
+
+  .container {
+    padding-left: 36px;
+    padding-right: 36px;
+  }
+
+  .mainText {
+    font-size: 82px;
+  }
+}
+
 @media (max-width: 1024px) {
+  .section {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+
   .container {
     grid-template-columns: 1fr;
     gap: 48px;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .mainText {
+    font-size: 72px;
+    margin-bottom: 0;
   }
 
   .logosGrid {
@@ -94,15 +186,85 @@
     justify-content: center;
   }
 
-  .mainText {
-    font-size: 80px;
-    margin-bottom: 0;
+  .logoItem {
+    max-width: 150px;
   }
 }
 
 @media (max-width: 768px) {
+  .section {
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+
+  .container {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .title {
+    font-size: 14px;
+    letter-spacing: 0.2em;
+  }
+
+  .mainText {
+    font-size: 60px;
+  }
+
   .logosGrid {
     grid-template-columns: repeat(2, 1fr);
     gap: 32px;
+  }
+
+  .logoItem {
+    max-width: 120px;
+    height: 80px;
+  }
+}
+
+@media (max-width: 430px) {
+  .section {
+    padding-top: 48px;
+    padding-bottom: 48px;
+  }
+
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .title {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+  }
+
+  .mainText {
+    font-size: 36px;
+    line-height: 1.1;
+  }
+
+  .logosGrid {
+    gap: 24px;
+  }
+
+  .logoItem {
+    max-width: 100px;
+    height: 70px;
+  }
+}
+
+@media (max-width: 374px) {
+  .title {
+    font-size: 9px;
+    letter-spacing: 0.05em;
+  }
+
+  .mainText {
+    font-size: 28px;
+  }
+
+  .logoItem {
+    max-width: 80px;
+    height: 60px;
   }
 }

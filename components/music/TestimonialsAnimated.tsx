@@ -15,6 +15,10 @@ export default function TestimonialsAnimated() {
   useEffect(() => {
     if (typeof window === 'undefined' || !containerRef.current) return;
 
+    // Check if mobile for earlier trigger
+    const isMobile = window.innerWidth <= 768;
+    const triggerStart = isMobile ? 'top 90%' : 'top 70%';
+
     const lines = containerRef.current.querySelectorAll('.animate-line');
 
     gsap.set(lines, { y: 30, opacity: 0 });
@@ -27,7 +31,7 @@ export default function TestimonialsAnimated() {
       ease: 'power3.out',
       scrollTrigger: {
         trigger: containerRef.current,
-        start: 'top 70%',
+        start: triggerStart,
         toggleActions: 'play none none reverse',
       }
     });
@@ -60,6 +64,17 @@ export default function TestimonialsAnimated() {
             </p>
             <p className={`${styles.testimonialAuthor} animate-line`}>— anonymous, Musician</p>
           </div>
+        </div>
+
+        <div className={styles.reviewButtonContainer}>
+          <a
+            href="https://www.google.com/search?sca_esv=17b6ad23b7736742&rlz=1C1VDKB_enUS1132US1135&si=AMgyJEtREmoPL4P1I5IDCfuA8gybfVI2d5Uj7QMwYCZHKDZ-E_Fbb1JIa0A3upfybv9EfT83mKQl6G41C1mfhObi8Wi1d080OEpwnMPI1MYEfjM2EutCo5nraIRRNMiRvKK1cvXpvEHFPNlONVNodpkb5pfpWTK0lw%3D%3D&q=Sweet+Dreams+Music+Reviews&sa=X&ved=2ahUKEwjFvITDoceQAxVZmokEHRgREa8Q0bkNegQIIBAE&biw=2560&bih=1271&dpr=1#lrd=0x8815e5d841363d9d:0x690321e5456380c5,3,,,,"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`${styles.reviewButton} animate-line`}
+          >
+            LEAVE A REVIEW
+          </a>
         </div>
       </div>
     </section>

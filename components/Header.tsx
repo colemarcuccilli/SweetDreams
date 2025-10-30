@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import styles from "./Header.module.css";
+import MobileNav from "./MobileNav";
 
 export default function Header() {
 
@@ -12,7 +13,7 @@ export default function Header() {
         <div className={styles.navContainer}>
           <div className={styles.navContent}>
 
-            {/* Left Navigation Links */}
+            {/* Left Navigation Links - Desktop Only */}
             <div className={styles.navLeft}>
               <Link href="/solutions" className={styles.navLink}>
                 SOLUTIONS
@@ -36,7 +37,7 @@ export default function Header() {
               </Link>
             </div>
 
-            {/* Right Navigation Links */}
+            {/* Right Navigation Links - Desktop Only */}
             <div className={styles.navRight}>
               <Link href="/shop" className={styles.navLink}>
                 SHOP
@@ -44,6 +45,11 @@ export default function Header() {
               <Link href="/info" className={styles.navLink}>
                 INFO
               </Link>
+            </div>
+
+            {/* Mobile Navigation - Mobile/Tablet Only */}
+            <div className={styles.mobileNavWrapper}>
+              <MobileNav />
             </div>
 
           </div>

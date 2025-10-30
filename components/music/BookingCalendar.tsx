@@ -61,6 +61,9 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
   const [customerPhone, setCustomerPhone] = useState('');
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isFirstTimeBooker, setIsFirstTimeBooker] = useState(false);
+  const [showDiscountHint, setShowDiscountHint] = useState(false);
+  const [authCheckComplete, setAuthCheckComplete] = useState(false);
 
   const supabase = createClient();
 
@@ -68,6 +71,12 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
   useEffect(() => {
     const checkAuth = async () => {
       const { data: { user } } = await supabase.auth.getUser();
+
+      console.log('🔐 BookingCalendar: Auth check', {
+        hasUser: !!user,
+        email: user?.email,
+        currentEmailValue: customerEmail
+      });
 
       if (user) {
         setIsAuthenticated(true);
@@ -78,27 +87,83 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
           setFirstName(user.user_metadata.first_name || '');
           setLastName(user.user_metadata.last_name || '');
           setArtistName(user.user_metadata.artist_name || '');
+          setCustomerPhone(user.user_metadata.phone || '');
         }
 
-        // Also check raw_user_meta_data as fallback
-        if (user.raw_user_meta_data) {
-          if (!firstName && user.raw_user_meta_data.first_name) {
-            setFirstName(user.raw_user_meta_data.first_name);
-          }
-          if (!lastName && user.raw_user_meta_data.last_name) {
-            setLastName(user.raw_user_meta_data.last_name);
-          }
-          if (!artistName && user.raw_user_meta_data.artist_name) {
-            setArtistName(user.raw_user_meta_data.artist_name);
-          }
+        // Check if this is a first-time booker
+        const { data: previousBookings } = await supabase
+          .from('bookings')
+          .select('id')
+          .eq('customer_email', user.email)
+          .limit(1);
+
+        if (!previousBookings || previousBookings.length === 0) {
+          setIsFirstTimeBooker(true);
         }
 
-        console.log('User metadata:', user.user_metadata);
-        console.log('Raw user metadata:', user.raw_user_meta_data);
+        console.log('✅ User authenticated:', user.email);
+        console.log('📋 First time booker:', !previousBookings || previousBookings.length === 0);
+      } else {
+        // IMPORTANT: Clear all user data when not authenticated
+        console.log('❌ No user - clearing all fields');
+        setIsAuthenticated(false);
+        setCustomerEmail('');
+        setFirstName('');
+        setLastName('');
+        setArtistName('');
+        setCustomerPhone('');
+        setIsFirstTimeBooker(false);
       }
+
+      // Mark auth check as complete
+      setAuthCheckComplete(true);
     };
 
     checkAuth();
+
+    // Also listen for auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      console.log('🔐 BookingCalendar: Auth state changed:', _event);
+
+      if (session?.user) {
+        setIsAuthenticated(true);
+        setCustomerEmail(session.user.email || '');
+
+        if (session.user.user_metadata) {
+          setFirstName(session.user.user_metadata.first_name || '');
+          setLastName(session.user.user_metadata.last_name || '');
+          setArtistName(session.user.user_metadata.artist_name || '');
+          setCustomerPhone(session.user.user_metadata.phone || '');
+        }
+
+        // Check if first-time booker
+        const { data: previousBookings } = await supabase
+          .from('bookings')
+          .select('id')
+          .eq('customer_email', session.user.email)
+          .limit(1);
+
+        if (!previousBookings || previousBookings.length === 0) {
+          setIsFirstTimeBooker(true);
+        }
+
+        console.log('✅ User logged in:', session.user.email);
+      } else {
+        // IMPORTANT: Clear all user data when logged out
+        console.log('❌ User logged out - clearing all fields');
+        setIsAuthenticated(false);
+        setCustomerEmail('');
+        setFirstName('');
+        setLastName('');
+        setArtistName('');
+        setCustomerPhone('');
+        setIsFirstTimeBooker(false);
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, [supabase]);
 
   // Adjust duration if it becomes invalid when time changes
@@ -116,10 +181,8 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
       }
     }
 
-    // Check authentication status when time is selected
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      // User is not logged in, show auth modal
+    // Only show auth modal if auth check is complete AND user is not authenticated
+    if (authCheckComplete && !isAuthenticated) {
       setIsAuthModalOpen(true);
     }
   };
@@ -137,25 +200,9 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
         setFirstName(user.user_metadata.first_name || '');
         setLastName(user.user_metadata.last_name || '');
         setArtistName(user.user_metadata.artist_name || '');
-      }
-
-      // Also check raw_user_meta_data as fallback
-      if (user.raw_user_meta_data) {
-        if (!user.user_metadata?.first_name) {
-          setFirstName(user.raw_user_meta_data.first_name || '');
-        }
-        if (!user.user_metadata?.last_name) {
-          setLastName(user.raw_user_meta_data.last_name || '');
-        }
-        if (!user.user_metadata?.artist_name) {
-          setArtistName(user.raw_user_meta_data.artist_name || '');
-        }
+        setCustomerPhone(user.user_metadata.phone || '');
       }
     }
-  };
-
-  const handleGuestContinue = () => {
-    setIsAuthModalOpen(false);
   };
 
   // Calculate pricing
@@ -205,6 +252,20 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
   ];
 
   const handleSubmit = async () => {
+    // Require authentication before booking
+    if (!isAuthenticated) {
+      alert('Please sign in or create an account to complete your booking.');
+      setIsAuthModalOpen(true);
+      return;
+    }
+
+    // Check if email is verified
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user && !user.email_confirmed_at) {
+      alert('Please verify your email address before booking. Check your inbox for the verification email from Supabase.');
+      return;
+    }
+
     if (!selectedDate || selectedTime === undefined || !firstName || !lastName || !artistName || !customerEmail) {
       alert('Please fill in all required fields');
       return;
@@ -388,7 +449,12 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
                   onChange={(e) => setCustomerEmail(e.target.value)}
                   placeholder="john@example.com"
                   required
+                  disabled={isAuthenticated}
+                  style={isAuthenticated ? { backgroundColor: '#f5f5f5', cursor: 'not-allowed' } : {}}
                 />
+                {isAuthenticated && (
+                  <p className={styles.helpText}>Using your verified account email</p>
+                )}
               </div>
 
               <div className={styles.formGroup}>
@@ -452,6 +518,21 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
                 )}
               </div>
 
+              {/* First-Timer Discount Hint */}
+              {isFirstTimeBooker && (
+                <div className={styles.discountHint}>
+                  <div className={styles.discountBadge}>
+                    <span className={styles.discountIcon}>🎉</span>
+                    <div>
+                      <p className={styles.discountTitle}>First Session Special!</p>
+                      <p className={styles.discountText}>
+                        Use code <strong>FIRSTTIME20</strong> at checkout for 20% off
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Submit Button */}
               <button
                 className={styles.submitButton}
@@ -469,7 +550,6 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
       <AuthModal
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
-        onGuestContinue={handleGuestContinue}
         onAuthSuccess={handleAuthSuccess}
       />
     </div>
