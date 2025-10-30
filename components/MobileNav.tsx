@@ -231,7 +231,9 @@ export default function MobileNav() {
             <Link
               key={link.href}
               href={link.href}
-              ref={(el) => (linkRefs.current[link.href] = el)}
+              ref={(el) => {
+                linkRefs.current[link.href] = el;
+              }}
               className={`${styles.navLink} ${
                 pathname === link.href ? styles.active : ''
               }`}
