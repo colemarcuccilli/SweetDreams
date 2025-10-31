@@ -110,7 +110,7 @@ export default function ChildrensMuseumPage() {
       {/* CTA Section */}
       <section className={styles.cta}>
         <h2 className={styles.ctaTitle}>READY TO CREATE SOMETHING AMAZING?</h2>
-        <Link href="/contact" className={styles.ctaButton}>
+        <Link href="/media#contact" className={styles.ctaButton}>
           GET IN TOUCH
         </Link>
       </section>

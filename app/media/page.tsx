@@ -195,7 +195,9 @@ export default function MediaPage() {
       <ServicesAnimated />
 
       {/* Contact Form */}
-      <MusicContactForm />
+      <div id="contact">
+        <MusicContactForm />
+      </div>
 
       {/* Footer Info - Black */}
       <section className={styles.info}>
