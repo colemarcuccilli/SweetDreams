@@ -1140,7 +1140,7 @@ export default function SolutionsPage() {
           <div className={styles.promoBannerStudio}>
             <span className={styles.promoIcon}>🎉</span>
             <span className={styles.promoTextStudio}>
-              <strong>Welcome to Dream Suite!</strong> New Account Special: Get 40% off your first session with code <strong>FIRSTTIME40</strong>
+              <strong>Welcome to Dream Suite! </strong>New Account Special: Get 40% off your first session with code: <strong>FIRSTTIME40</strong>
             </span>
           </div>
 

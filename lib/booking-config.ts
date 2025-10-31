@@ -159,6 +159,22 @@ export function isAfterHours(startHour: number): boolean {
   return startHour >= 21; // 9 PM or later
 }
 
+// Helper function to calculate how many hours fall after 9 PM (21:00)
+export function calculateOvertimeHours(startHour: number, duration: number): number {
+  const overtimeStartHour = 21; // 9 PM
+  let overtimeHours = 0;
+
+  // Loop through each hour of the session
+  for (let i = 0; i < duration; i++) {
+    const currentHour = startHour + i;
+    if (currentHour >= overtimeStartHour) {
+      overtimeHours++;
+    }
+  }
+
+  return overtimeHours;
+}
+
 // Helper function to check if same day fee applies
 export function isSameDay(bookingDate: Date): boolean {
   const today = new Date();
@@ -183,9 +199,9 @@ export function calculateSameDayFee(duration: number): number {
   return BOOKING_PRODUCTS.same_day_fee.amount * duration;
 }
 
-// Helper function to calculate total after-hours fee (per hour)
-export function calculateAfterHoursFee(duration: number): number {
-  return BOOKING_PRODUCTS.after_hours_fee.amount * duration;
+// Helper function to calculate total after-hours fee (only for hours after 9 PM)
+export function calculateAfterHoursFee(overtimeHours: number): number {
+  return BOOKING_PRODUCTS.after_hours_fee.amount * overtimeHours;
 }
 
 // Helper function to validate if a booking time + duration is valid

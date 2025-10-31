@@ -42,7 +42,7 @@ export default function MusicPage() {
         <div className={styles.promoContent}>
           <span className={styles.promoIcon}>🎉</span>
           <span className={styles.promoText}>
-            <strong>Welcome to Dream Suite!</strong> New Account Special: Get 40% off your first session with code <strong>FIRSTTIME40</strong>
+            <strong>Welcome to Dream Suite! </strong>New Account Special: Get 40% off your first session with code: <strong>FIRSTTIME40</strong>
           </span>
         </div>
       </div>

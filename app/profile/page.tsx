@@ -110,6 +110,23 @@ export default function ProfilePage() {
     setUpdating(true);
 
     try {
+      // Trim password fields to handle accidental spaces
+      const trimmedNewPassword = newPassword.trim();
+      const trimmedConfirmPassword = confirmPassword.trim();
+
+      // Validate password fields if either has content
+      if (trimmedNewPassword || trimmedConfirmPassword) {
+        if (!trimmedNewPassword || !trimmedConfirmPassword) {
+          throw new Error('Please fill in both password fields');
+        }
+        if (trimmedNewPassword !== trimmedConfirmPassword) {
+          throw new Error('Passwords do not match');
+        }
+        if (trimmedNewPassword.length < 6) {
+          throw new Error('Password must be at least 6 characters');
+        }
+      }
+
       // Update user metadata (name, artist name, phone, photo)
       const { error: metadataError } = await supabase.auth.updateUser({
         data: {
@@ -123,16 +140,9 @@ export default function ProfilePage() {
       if (metadataError) throw metadataError;
 
       // Update password if provided
-      if (newPassword) {
-        if (newPassword !== confirmPassword) {
-          throw new Error('Passwords do not match');
-        }
-        if (newPassword.length < 6) {
-          throw new Error('Password must be at least 6 characters');
-        }
-
+      if (trimmedNewPassword) {
         const { error: passwordError } = await supabase.auth.updateUser({
-          password: newPassword,
+          password: trimmedNewPassword,
         });
 
         if (passwordError) throw passwordError;

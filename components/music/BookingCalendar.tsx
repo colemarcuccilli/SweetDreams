@@ -13,6 +13,7 @@ import {
   isTooSoonToBook,
   calculateSameDayFee,
   calculateAfterHoursFee,
+  calculateOvertimeHours,
   BOOKING_PRODUCTS,
   STUDIO_HOURS
 } from '@/lib/booking-config';
@@ -208,7 +209,7 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
   // Calculate pricing
   const calculatePricing = () => {
     if (!selectedDate || selectedTime === undefined) {
-      return { deposit: 0, total: 0, fees: { sameDayFee: false, afterHoursFee: false }, feeAmounts: { sameDayFee: 0, afterHoursFee: 0 } };
+      return { deposit: 0, total: 0, fees: { sameDayFee: false, afterHoursFee: false }, feeAmounts: { sameDayFee: 0, afterHoursFee: 0 }, overtimeHours: 0 };
     }
 
     const { deposit: depositProduct } = getSessionProducts(duration);
@@ -220,9 +221,12 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
       totalAmount = depositAmount;
     }
 
+    // Calculate how many hours fall after 9 PM
+    const overtimeHours = calculateOvertimeHours(selectedTime, duration);
+
     const fees = {
       sameDayFee: isSameDay(selectedDate),
-      afterHoursFee: isAfterHours(selectedTime)
+      afterHoursFee: overtimeHours > 0
     };
 
     const feeAmounts = {
@@ -230,17 +234,17 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
       afterHoursFee: 0
     };
 
-    // Add fees to total (multiplied by hours)
+    // Add fees to total
     if (fees.sameDayFee) {
       feeAmounts.sameDayFee = calculateSameDayFee(duration);
       totalAmount += feeAmounts.sameDayFee;
     }
     if (fees.afterHoursFee) {
-      feeAmounts.afterHoursFee = calculateAfterHoursFee(duration);
+      feeAmounts.afterHoursFee = calculateAfterHoursFee(overtimeHours);
       totalAmount += feeAmounts.afterHoursFee;
     }
 
-    return { deposit: depositAmount, total: totalAmount, fees, feeAmounts };
+    return { deposit: depositAmount, total: totalAmount, fees, feeAmounts, overtimeHours };
   };
 
   const pricing = calculatePricing();
@@ -498,7 +502,7 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
                 )}
                 {pricing.fees.afterHoursFee && (
                   <div className={styles.summaryRow}>
-                    <span>After Hours Fee ({duration} hrs × $10)</span>
+                    <span>After Hours Fee ({pricing.overtimeHours} {pricing.overtimeHours === 1 ? 'hr' : 'hrs'} after 9pm × $10)</span>
                     <span>+${(pricing.feeAmounts.afterHoursFee / 100).toFixed(2)}</span>
                   </div>
                 )}
