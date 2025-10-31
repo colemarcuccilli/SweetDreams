@@ -496,17 +496,17 @@ SUPABASE_SERVICE_ROLE_KEY=<redacted>
 # Stripe (LIVE KEYS)
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_live_<redacted>
 STRIPE_SECRET_KEY=sk_live_<redacted>
-STRIPE_WEBHOOK_SECRET=whsec_V8gLU8pDsHHBhEBr0TSS74Q7KMdQhLrc
+STRIPE_WEBHOOK_SECRET=whsec_<redacted>
 
 # Resend
-RESEND_API_KEY=re_V7JFKxYp_FEvvonpMuJDNvDsMxbE1WnhH
+RESEND_API_KEY=re_<redacted>
 
 # Site URLs
 NEXT_PUBLIC_BASE_URL=https://sweet-dreams-phi.vercel.app
 NEXT_PUBLIC_SITE_URL=https://sweet-dreams-phi.vercel.app
 
 # Cron
-CRON_SECRET=sweetdreams_secure_cron_key_2025_prod
+CRON_SECRET=<redacted>
 
 # Cloudflare
 CLOUDFLARE_ACCOUNT_ID=<redacted>
