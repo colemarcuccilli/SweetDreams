@@ -17,18 +17,20 @@ export default function HomePage() {
       {/* Promo Banner */}
       <div style={{
         background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
-        padding: '16px 48px',
-        borderBottom: '3px solid #FF8C00',
+        padding: '10px 48px',
+        marginTop: '8px',
+        marginBottom: '12px',
+        borderBottom: '2px solid #FF8C00',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: '12px',
+        gap: '10px',
         flexWrap: 'wrap'
       }}>
-        <span style={{ fontSize: '24px' }}>🎉</span>
+        <span style={{ fontSize: '20px' }}>🎉</span>
         <span style={{
           fontFamily: 'IBM Plex Mono, monospace',
-          fontSize: '16px',
+          fontSize: '14px',
           color: 'black',
           letterSpacing: '0.05em',
           textAlign: 'center'
