@@ -73,11 +73,40 @@
   gap: 32px;
 }
 
+.bottomLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 .copyright {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 12px;
   color: #666;
   margin: 0;
+}
+
+.legalLinks {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+}
+
+.legalLink {
+  color: #999;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.legalLink:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+.separator {
+  color: #666;
 }
 
 .footerLogos {

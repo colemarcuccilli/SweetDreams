@@ -57,7 +57,14 @@ export default function Footer() {
         </div>
 
         <div className={styles.bottom}>
-          <p className={styles.copyright}>© 2025 Sweet Dreams Music LLC. All rights reserved.</p>
+          <div className={styles.bottomLeft}>
+            <p className={styles.copyright}>© 2025 Sweet Dreams Music LLC. All rights reserved.</p>
+            <div className={styles.legalLinks}>
+              <Link href="/privacy" className={styles.legalLink}>Privacy Policy</Link>
+              <span className={styles.separator}>•</span>
+              <Link href="/terms" className={styles.legalLink}>Terms of Service</Link>
+            </div>
+          </div>
           <div className={styles.footerLogos}>
             <img
               src="https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SweetDreamsLogo/SweetDreams3StackWhiteLogo.png"

@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import CookieConsent from "@/components/CookieConsent";
 import { localBusinessSchema, organizationSchema, websiteSchema } from "@/lib/schema";
 
 const ibmPlexMono = IBM_Plex_Mono({
@@ -23,6 +24,10 @@ export const metadata: Metadata = {
     initialScale: 1,
     maximumScale: 5,
     viewportFit: 'cover',
+  },
+  icons: {
+    icon: 'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SweetDreamsLogo/SweetDreams3StackBlackLogo.png',
+    apple: 'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SweetDreamsLogo/SweetDreams3StackBlackLogo.png',
   },
   robots: {
     index: true,
@@ -170,6 +175,7 @@ export default function RootLayout({
         <Nav />
         <main className="min-h-screen">{children}</main>
         <Footer />
+        <CookieConsent />
         <Analytics />
       </body>
     </html>
