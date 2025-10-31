@@ -36,19 +36,14 @@ module.exports = {
       '/music': 0.9,         // Main booking page - very high
       '/solutions': 0.8,     // Services page - high
       '/media': 0.8,         // Media page - high
-      '/blog': 0.7,          // Blog index (when created)
     }
 
-    // Blog posts will get 0.6 priority
-    const priority = path.startsWith('/blog/') && path !== '/blog'
-      ? 0.6
-      : (priorities[path] || 0.5)
+    const priority = priorities[path] || 0.5
 
     // Change frequency based on page type
     let changefreq = 'weekly'
     if (path === '/') changefreq = 'daily'
     if (path === '/music') changefreq = 'daily'  // Booking page changes often
-    if (path.startsWith('/blog/')) changefreq = 'monthly'  // Blog posts are stable
 
     return {
       loc: path,
