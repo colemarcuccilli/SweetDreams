@@ -24,6 +24,10 @@ export default function ProfilePage() {
   const [resendingEmail, setResendingEmail] = useState(false);
   const [resendMessage, setResendMessage] = useState('');
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [passwordError, setPasswordError] = useState('');
+  const [passwordMessage, setPasswordMessage] = useState('');
+  const [updatingPassword, setUpdatingPassword] = useState(false);
   const supabase = createClient();
 
   useEffect(() => {
@@ -110,23 +114,6 @@ export default function ProfilePage() {
     setUpdating(true);
 
     try {
-      // Trim password fields to handle accidental spaces
-      const trimmedNewPassword = newPassword.trim();
-      const trimmedConfirmPassword = confirmPassword.trim();
-
-      // Validate password fields if either has content
-      if (trimmedNewPassword || trimmedConfirmPassword) {
-        if (!trimmedNewPassword || !trimmedConfirmPassword) {
-          throw new Error('Please fill in both password fields');
-        }
-        if (trimmedNewPassword !== trimmedConfirmPassword) {
-          throw new Error('Passwords do not match');
-        }
-        if (trimmedNewPassword.length < 6) {
-          throw new Error('Password must be at least 6 characters');
-        }
-      }
-
       // Update user metadata (name, artist name, phone, photo)
       const { error: metadataError } = await supabase.auth.updateUser({
         data: {
@@ -139,23 +126,53 @@ export default function ProfilePage() {
 
       if (metadataError) throw metadataError;
 
-      // Update password if provided
-      if (trimmedNewPassword) {
-        const { error: passwordError } = await supabase.auth.updateUser({
-          password: trimmedNewPassword,
-        });
-
-        if (passwordError) throw passwordError;
-
-        setNewPassword('');
-        setConfirmPassword('');
-      }
-
       setMessage('Profile updated successfully!');
     } catch (err: any) {
       setError(err.message);
     } finally {
       setUpdating(false);
+    }
+  };
+
+  const handlePasswordChange = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPasswordError('');
+    setPasswordMessage('');
+    setUpdatingPassword(true);
+
+    try {
+      const trimmedNewPassword = newPassword.trim();
+      const trimmedConfirmPassword = confirmPassword.trim();
+
+      if (!trimmedNewPassword || !trimmedConfirmPassword) {
+        throw new Error('Please fill in both password fields');
+      }
+      if (trimmedNewPassword !== trimmedConfirmPassword) {
+        throw new Error('Passwords do not match');
+      }
+      if (trimmedNewPassword.length < 6) {
+        throw new Error('Password must be at least 6 characters');
+      }
+
+      const { error: passwordError } = await supabase.auth.updateUser({
+        password: trimmedNewPassword,
+      });
+
+      if (passwordError) throw passwordError;
+
+      setNewPassword('');
+      setConfirmPassword('');
+      setPasswordMessage('Password updated successfully!');
+
+      // Close modal after 2 seconds
+      setTimeout(() => {
+        setShowPasswordModal(false);
+        setPasswordMessage('');
+      }, 2000);
+    } catch (err: any) {
+      setPasswordError(err.message);
+    } finally {
+      setUpdatingPassword(false);
     }
   };
 
@@ -321,39 +338,6 @@ export default function ProfilePage() {
               />
             </div>
 
-            <div className={styles.divider}></div>
-
-            <h3 className={styles.subsectionTitle}>Change Password</h3>
-
-            <div className={styles.inputGroup}>
-              <label htmlFor="newPassword" className={styles.label}>
-                NEW PASSWORD
-              </label>
-              <input
-                type="password"
-                id="newPassword"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                className={styles.input}
-                disabled={updating}
-                placeholder="Leave blank to keep current password"
-              />
-            </div>
-
-            <div className={styles.inputGroup}>
-              <label htmlFor="confirmPassword" className={styles.label}>
-                CONFIRM NEW PASSWORD
-              </label>
-              <input
-                type="password"
-                id="confirmPassword"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className={styles.input}
-                disabled={updating}
-              />
-            </div>
-
             <button
               type="submit"
               className={styles.submitButton}
@@ -361,8 +345,83 @@ export default function ProfilePage() {
             >
               {updating ? 'UPDATING...' : 'UPDATE PROFILE'}
             </button>
+
+            <div className={styles.divider}></div>
+
+            <button
+              type="button"
+              className={styles.passwordButton}
+              onClick={() => setShowPasswordModal(true)}
+            >
+              CHANGE PASSWORD
+            </button>
           </form>
         </section>
+
+      {/* Password Change Modal */}
+      {showPasswordModal && (
+        <div className={styles.modalOverlay} onClick={() => setShowPasswordModal(false)}>
+          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+            <button
+              className={styles.modalClose}
+              onClick={() => setShowPasswordModal(false)}
+              aria-label="Close"
+            >
+              ×
+            </button>
+
+            <h2 className={styles.modalTitle}>Change Password</h2>
+
+            <form onSubmit={handlePasswordChange} className={styles.form}>
+              {passwordMessage && (
+                <div className={styles.success}>{passwordMessage}</div>
+              )}
+              {passwordError && (
+                <div className={styles.error}>{passwordError}</div>
+              )}
+
+              <div className={styles.inputGroup}>
+                <label htmlFor="modalNewPassword" className={styles.label}>
+                  NEW PASSWORD
+                </label>
+                <input
+                  type="password"
+                  id="modalNewPassword"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className={styles.input}
+                  disabled={updatingPassword}
+                  required
+                  autoFocus
+                />
+              </div>
+
+              <div className={styles.inputGroup}>
+                <label htmlFor="modalConfirmPassword" className={styles.label}>
+                  CONFIRM NEW PASSWORD
+                </label>
+                <input
+                  type="password"
+                  id="modalConfirmPassword"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className={styles.input}
+                  disabled={updatingPassword}
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                className={styles.submitButton}
+                disabled={updatingPassword}
+              >
+                {updatingPassword ? 'UPDATING...' : 'UPDATE PASSWORD'}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </>
   );
 }
