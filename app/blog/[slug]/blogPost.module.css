@@ -1,0 +1,58 @@
+.page {
+  min-height: 100vh;
+  background: #000;
+  color: #fff;
+}
+
+.content {
+  padding: 120px 20px 80px;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.notFound {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.notFound h1 {
+  font-size: 36px;
+  margin-bottom: 24px;
+  color: #fff;
+}
+
+.notFound p {
+  font-size: 18px;
+  color: #aaa;
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+
+.backButton {
+  display: inline-block;
+  padding: 14px 28px;
+  background: #fff;
+  color: #000;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.backButton:hover {
+  background: #f0f0f0;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .notFound h1 {
+    font-size: 28px;
+  }
+
+  .notFound p {
+    font-size: 16px;
+  }
+}
