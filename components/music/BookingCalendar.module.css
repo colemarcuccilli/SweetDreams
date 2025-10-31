@@ -347,6 +347,22 @@
     padding: 1.5rem;
   }
 
+  .calendar :global(.rdp) {
+    --rdp-cell-size: 40px;
+  }
+
+  .calendar :global(.rdp-caption_label) {
+    font-size: 0.9rem;
+  }
+
+  .calendar :global(.rdp-head_cell) {
+    font-size: 0.7rem;
+  }
+
+  .calendar :global(.rdp-day) {
+    font-size: 0.85rem;
+  }
+
   .timeGrid {
     grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
   }
@@ -366,6 +382,24 @@
 
   .discountText {
     font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .calendar :global(.rdp) {
+    --rdp-cell-size: 36px;
+  }
+
+  .calendar :global(.rdp-caption_label) {
+    font-size: 0.85rem;
+  }
+
+  .calendar :global(.rdp-head_cell) {
+    font-size: 0.65rem;
+  }
+
+  .calendar :global(.rdp-day) {
+    font-size: 0.8rem;
   }
 }
 
