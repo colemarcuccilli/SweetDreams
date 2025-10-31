@@ -37,7 +37,7 @@ export default function Error({
         <div className={styles.helpText}>
           <p>Need immediate assistance?</p>
           <div className={styles.contactInfo}>
-            <a href="tel:+12604206397">(260) 420-6397</a>
+            <a href="tel:+12604507739">(260) 450-7739</a>
             <a href="mailto:jayvalleo@sweetdreamsmusic.com">Email Support</a>
           </div>
         </div>

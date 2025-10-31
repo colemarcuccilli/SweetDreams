@@ -14,7 +14,7 @@ export const localBusinessSchema = {
   "image": "https://sweetdreamsmusic.com/studio-photo.jpg",
 
   // Contact Information
-  "telephone": "+1-260-420-6397",
+  "telephone": "+1-260-450-7739",
   "email": "jayvalleo@sweetdreamsmusic.com",
 
   // Physical Address
@@ -117,7 +117,7 @@ export const organizationSchema = {
   ],
   "contactPoint": {
     "@type": "ContactPoint",
-    "telephone": "+1-260-420-6397",
+    "telephone": "+1-260-450-7739",
     "contactType": "customer service",
     "email": "jayvalleo@sweetdreamsmusic.com",
     "areaServed": "US",

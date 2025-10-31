@@ -224,7 +224,7 @@ export default function PrivacyPage() {
             <p>If you have questions about this Privacy Policy, contact us:</p>
             <ul>
               <li><strong>Email:</strong> <a href="mailto:jayvalleo@sweetdreamsmusic.com">jayvalleo@sweetdreamsmusic.com</a></li>
-              <li><strong>Phone:</strong> <a href="tel:+12604206397">(260) 420-6397</a></li>
+              <li><strong>Phone:</strong> <a href="tel:+12604507739">(260) 450-7739</a></li>
               <li><strong>Address:</strong> 3943 Parnell Ave, Fort Wayne, IN 46805</li>
             </ul>
           </section>
