@@ -2,6 +2,14 @@ import { NextResponse } from 'next/server';
 import { resend, ADMIN_EMAIL, FROM_EMAIL } from '@/lib/emails/resend';
 
 export async function GET() {
+  // Protect this route in production - only allow in development
+  if (process.env.NODE_ENV === 'production') {
+    return NextResponse.json(
+      { error: 'This endpoint is only available in development mode' },
+      { status: 403 }
+    );
+  }
+
   console.log('🧪 TEST EMAIL ROUTE CALLED');
   console.log('📧 Testing email configuration...');
   console.log('📧 FROM:', FROM_EMAIL);

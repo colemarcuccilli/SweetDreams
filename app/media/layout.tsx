@@ -4,6 +4,9 @@ export const metadata: Metadata = {
   title: "Media Production | Sweet Dreams Studio Fort Wayne",
   description: "Professional media production services in Fort Wayne: music videos, social media content, photography, and videography. Creative media solutions for artists and brands.",
   keywords: "media production Fort Wayne, music videos, videography Fort Wayne, social media content, photography, video production Indiana, creative media services",
+  alternates: {
+    canonical: 'https://sweetdreamsmusic.com/media',
+  },
   openGraph: {
     title: "Media Production | Sweet Dreams Fort Wayne",
     description: "Music videos, photography, and creative media production services in Fort Wayne, Indiana.",

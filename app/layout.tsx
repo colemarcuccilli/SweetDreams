@@ -37,6 +37,9 @@ export const metadata: Metadata = {
       follow: true,
     },
   },
+  alternates: {
+    canonical: 'https://sweetdreamsmusic.com',
+  },
   // Geo-targeting for local SEO (CRITICAL)
   other: {
     'geo.region': 'US-IN',
@@ -53,7 +56,7 @@ export const metadata: Metadata = {
     locale: 'en_US',
     images: [
       {
-        url: 'https://sweetdreamsmusic.com/og-image.jpg',
+        url: 'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SweetDreamsLogo/SweetDreams3StackBlackLogo.png',
         width: 1200,
         height: 630,
         alt: 'Sweet Dreams Music Studio Logo',
@@ -66,7 +69,7 @@ export const metadata: Metadata = {
     creator: '@jayvalleo',
     title: 'Sweet Dreams Studio | Fort Wayne Recording Studio',
     description: 'Fort Wayne\'s premier recording studio offering professional music production, mixing & mastering.',
-    images: ['https://sweetdreamsmusic.com/og-image.jpg'],
+    images: ['https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SweetDreamsLogo/SweetDreams3StackBlackLogo.png'],
   },
 };
 
