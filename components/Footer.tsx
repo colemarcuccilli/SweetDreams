@@ -17,7 +17,7 @@ export default function Footer() {
             <div className={styles.contact}>
               <p>3943 Parnell Ave</p>
               <p>Fort Wayne, IN 46805</p>
-              <p>info@sweetdreamsmusic.com</p>
+              <p>jayvalleo@sweetdreamsmusic.com</p>
             </div>
           </div>
 
@@ -30,7 +30,7 @@ export default function Footer() {
               <Link href="/media" className={styles.link}>Commercials</Link>
             </div>
             <div className={styles.contact}>
-              <p>jayvalleo@sweetdreamsmusic.com</p>
+              <p>cole@sweetdreamsmusic.com</p>
             </div>
           </div>
 
@@ -38,10 +38,10 @@ export default function Footer() {
           <div className={styles.column}>
             <h3 className={styles.brandTitle}>QUICK LINKS</h3>
             <div className={styles.links}>
-              <Link href="/work" className={styles.link}>Our Work</Link>
+              <Link href="/#work" className={styles.link}>Our Work</Link>
               <Link href="/solutions" className={styles.link}>Solutions</Link>
-              <Link href="/about" className={styles.link}>About Us</Link>
-              <Link href="/contact" className={styles.link}>Contact</Link>
+              <Link href="/solutions" className={styles.link}>About Us</Link>
+              <Link href="/music#contact" className={styles.link}>Contact</Link>
             </div>
           </div>
 

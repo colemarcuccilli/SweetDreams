@@ -2302,12 +2302,25 @@
     gap: 40px;
   }
 
+  .productionTitleGroup {
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+  }
+
   .productionNumber {
-    font-size: 60px;
+    font-size: 50px;
+  }
+
+  .productionMiniTitle {
+    text-align: center;
   }
 
   .productionHeroTitle {
-    font-size: 40px;
+    font-size: 32px;
+    text-align: center;
+    max-width: 90%;
+    margin: 0 auto;
   }
 
   .productionHeroDescription {
@@ -2319,23 +2332,36 @@
   }
 
   .productionShowcaseContent {
-    padding: 32px;
+    padding: 24px;
+  }
+
+  .showcaseTopRow {
+    flex-wrap: nowrap;
+    gap: 12px;
+  }
+
+  .showcaseClient {
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    white-space: nowrap;
   }
 
   .showcaseTitleText {
-    font-size: 50px;
+    font-size: 40px;
   }
 
   .showcaseSubtitle {
-    font-size: 20px;
+    font-size: 16px;
   }
 
   .showcaseViewButton {
-    padding: 8px 24px;
+    padding: 6px 16px;
+    flex-shrink: 0;
   }
 
   .showcaseViewButton span {
-    font-size: 10px;
+    font-size: 9px;
+    letter-spacing: 0.08em;
   }
 
   .designSection {
@@ -2345,18 +2371,30 @@
   .designHeader {
     gap: 20px;
     margin-bottom: 40px;
+    justify-content: center;
   }
 
   .designNumber {
-    font-size: 60px;
+    font-size: 50px;
+  }
+
+  .designMiniTitle {
+    text-align: center;
   }
 
   .designTitle {
-    font-size: 40px;
+    font-size: 32px;
+    text-align: center;
+    max-width: 90%;
+    margin: 0 auto;
   }
 
   .designLargeText {
-    font-size: 24px;
+    font-size: 20px;
+    text-align: center;
+    max-width: 90%;
+    margin: 0 auto;
+    line-height: 1.3;
   }
 
   .designContent {
@@ -2387,12 +2425,30 @@
     padding: 60px 20px;
   }
 
+  .postHeader {
+    justify-content: center;
+  }
+
+  .postNumber {
+    font-size: 50px;
+  }
+
+  .postMiniTitle {
+    text-align: center;
+  }
+
   .postTitle {
-    font-size: 40px;
+    font-size: 32px;
+    text-align: center;
+    max-width: 90%;
+    margin: 0 auto;
   }
 
   .postSubtitle {
-    font-size: 16px;
+    font-size: 15px;
+    text-align: center;
+    max-width: 90%;
+    margin: 0 auto;
   }
 
   .socialSection {
@@ -2427,10 +2483,22 @@
   .socialHeader {
     gap: 20px;
     margin-bottom: 8px;
+    justify-content: center;
+  }
+
+  .socialMiniTitle {
+    text-align: center;
   }
 
   .socialNumber {
-    font-size: clamp(40px, 8vw, 60px);
+    font-size: 50px;
+  }
+
+  .socialMainTitle {
+    font-size: 32px;
+    text-align: center;
+    max-width: 90%;
+    margin: 0 auto;
   }
 
   .socialLine {
@@ -2465,6 +2533,18 @@
     padding: 60px 20px;
   }
 
+  .launchHeader {
+    justify-content: center;
+  }
+
+  .launchNumber {
+    font-size: 50px;
+  }
+
+  .launchMiniTitle {
+    text-align: center;
+  }
+
   .launchRadialGrid {
     grid-template-columns: 1fr;
     grid-template-rows: auto;
@@ -2477,7 +2557,10 @@
   }
 
   .launchTitle {
-    font-size: 40px;
+    font-size: 32px;
+    text-align: center;
+    max-width: 90%;
+    margin: 0 auto;
   }
 
   .launchCard h3 {
@@ -2488,8 +2571,23 @@
     font-size: 14px;
   }
 
+  .studioHeader {
+    justify-content: center;
+  }
+
+  .studioNumber {
+    font-size: 50px;
+  }
+
+  .studioMiniTitle {
+    text-align: center;
+  }
+
   .studioTitle {
-    font-size: 48px;
+    font-size: 32px;
+    text-align: center;
+    max-width: 90%;
+    margin: 0 auto;
   }
 
   .studioServices {
@@ -2548,16 +2646,33 @@
     font-size: 13px;
   }
 
+  .studioShowcaseContent {
+    padding: 24px;
+  }
+
+  .studioShowcaseTopRow {
+    flex-wrap: nowrap;
+    gap: 12px;
+  }
+
+  .studioShowcaseClient {
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    white-space: nowrap;
+  }
+
   .studioShowcaseTitleText {
     font-size: 40px;
   }
 
   .studioShowcaseViewButton {
     padding: 6px 16px;
+    flex-shrink: 0;
   }
 
   .studioShowcaseViewButton span {
     font-size: 9px;
+    letter-spacing: 0.08em;
   }
 
   .studioShowcaseSubtitle {
