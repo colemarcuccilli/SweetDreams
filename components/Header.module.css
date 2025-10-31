@@ -48,7 +48,7 @@
   text-transform: uppercase;
   color: black;
   text-decoration: none;
-  padding: 16px 24px;
+  padding: 8px 24px;
   transition: all 0.3s ease;
   position: relative;
 }
@@ -104,7 +104,7 @@
   white-space: nowrap;
   display: flex;
   align-items: center;
-  padding: 16px 36px;
+  padding: 8px 36px;
 }
 
 .logoImage {
@@ -123,7 +123,7 @@
 
 .baseLogo {
   height: 155px;
-  padding-bottom: 30px;
+  padding-bottom: 4px;
 }
 
 .navRight {
