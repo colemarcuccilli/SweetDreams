@@ -39,12 +39,9 @@ export default function MusicPage() {
     <div className={styles.page}>
       {/* Promo Banner */}
       <div className={styles.promoBanner}>
-        <div className={styles.promoContent}>
-          <span className={styles.promoIcon}>🎉</span>
-          <span className={styles.promoText}>
-            <strong>Welcome to Dream Suite! </strong>New Account Special: Get 40% off your first session with code: <strong>FIRSTTIME40</strong>
-          </span>
-        </div>
+        <span className={styles.promoText}>
+          <strong>Welcome to Dream Suite! </strong>New Account Special: Get 40% off your first session with code: <strong>FIRSTTIME40</strong> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Welcome to Dream Suite! </strong>New Account Special: Get 40% off your first session with code: <strong>FIRSTTIME40</strong> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Welcome to Dream Suite! </strong>New Account Special: Get 40% off your first session with code: <strong>FIRSTTIME40</strong> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Welcome to Dream Suite! </strong>New Account Special: Get 40% off your first session with code: <strong>FIRSTTIME40</strong> &nbsp;&nbsp;|&nbsp;&nbsp;
+        </span>
       </div>
 
       {/* Animated Hero Section */}

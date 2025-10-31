@@ -7,49 +7,46 @@
 
 /* Promo Banner */
 .promoBanner {
-    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-    padding: 12px 48px;
+    background: black;
+    padding: 8px 0;
     margin-top: 0;
     margin-bottom: 24px;
-}
-
-.promoContent {
-    max-width: 1800px;
-    margin: 0 auto;
+    overflow: hidden;
+    position: relative;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-}
-
-.promoIcon {
-    font-size: 24px;
 }
 
 .promoText {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 16px;
-    color: black;
+    font-size: 14px;
+    color: white;
     letter-spacing: 0.05em;
+    white-space: nowrap;
+    display: flex;
+    animation: scroll-left 30s linear infinite;
+    will-change: transform;
 }
 
-.promoText strong {
-    font-weight: bold;
+@keyframes scroll-left {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-25%);
+    }
 }
 
 @media (max-width: 768px) {
     .promoBanner {
-        padding: 8px 24px;
+        padding: 6px 0;
+        margin-top: 0;
         margin-bottom: 16px;
     }
 
     .promoText {
-        font-size: 13px;
-        text-align: center;
-    }
-
-    .promoIcon {
-        font-size: 20px;
+        font-size: 10px;
+        letter-spacing: 0.02em;
+        animation: scroll-left 20s linear infinite;
     }
 }
 

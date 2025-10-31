@@ -42,8 +42,17 @@
   color: #000;
 }
 
+.calendar :global(.rdp-day) {
+  color: #000 !important;
+}
+
+.calendar :global(.rdp-button) {
+  color: #000;
+}
+
 .calendar :global(.rdp-button:hover:not([disabled]):not(.rdp-day_selected)) {
   background-color: rgba(0, 0, 0, 0.08);
+  color: #000;
 }
 
 .calendar :global(.rdp-day_selected) {
@@ -54,6 +63,7 @@
 
 .calendar :global(.rdp-day_disabled) {
   opacity: 0.3;
+  color: rgba(0, 0, 0, 0.3);
 }
 
 .calendar :global(.rdp-caption_label) {
