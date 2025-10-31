@@ -1,9 +1,8 @@
 .promoBanner {
   background: black;
-  padding: 10px 0;
-  margin-top: 8px;
-  margin-bottom: 12px;
-  border-bottom: 2px solid white;
+  padding: 8px 0;
+  margin-top: 0;
+  margin-bottom: 0;
   overflow: hidden;
   position: relative;
   display: flex;
@@ -31,14 +30,13 @@
 
 @media (max-width: 768px) {
   .promoBanner {
-    padding: 6px 0;
-    margin-top: 4px;
-    margin-bottom: 8px;
-    border-bottom: 1px solid white;
+    padding: 4px 0;
+    margin-top: 0;
+    margin-bottom: 0;
   }
 
   .promoText {
-    font-size: 11px;
+    font-size: 10px;
     letter-spacing: 0.02em;
     animation: scroll-left 20s linear infinite;
   }
