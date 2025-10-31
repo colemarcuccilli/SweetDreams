@@ -10,16 +10,20 @@ export default function ProfilePage() {
   const router = useRouter();
   const { user, loading } = useAuth();
   const [fullName, setFullName] = useState('');
+  const [artistName, setArtistName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [profilePhotoUrl, setProfilePhotoUrl] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [updating, setUpdating] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [emailVerified, setEmailVerified] = useState(false);
   const [resendingEmail, setResendingEmail] = useState(false);
   const [resendMessage, setResendMessage] = useState('');
+  const [dataLoaded, setDataLoaded] = useState(false);
   const supabase = createClient();
 
   useEffect(() => {
@@ -29,11 +33,75 @@ export default function ProfilePage() {
       console.log('🔐 Profile: Loading user data');
       setEmail(user.email || '');
       setFullName(user.user_metadata?.full_name || '');
+      setArtistName(user.user_metadata?.artist_name || '');
       setPhone(user.user_metadata?.phone || '');
+      setProfilePhotoUrl(user.user_metadata?.profile_photo_url || '');
       setEmailVerified(!!user.email_confirmed_at);
+      setDataLoaded(true);
       console.log('📧 Email verified:', !!user.email_confirmed_at);
     }
   }, [user, loading]);
+
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !user) return;
+
+    // Check file size (max 2MB)
+    if (file.size > 2 * 1024 * 1024) {
+      setError('Image must be less than 2MB');
+      return;
+    }
+
+    // Check file type
+    if (!file.type.startsWith('image/')) {
+      setError('File must be an image');
+      return;
+    }
+
+    setUploading(true);
+    setError('');
+
+    try {
+      // Create unique filename
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${user.id}-${Date.now()}.${fileExt}`;
+      const filePath = `profile-photos/${fileName}`;
+
+      // Upload to Supabase Storage
+      const { error: uploadError } = await supabase.storage
+        .from('profile-photos')
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
+
+      if (uploadError) throw uploadError;
+
+      // Get public URL
+      const { data } = supabase.storage
+        .from('profile-photos')
+        .getPublicUrl(filePath);
+
+      const publicUrl = data.publicUrl;
+
+      // Update user metadata with photo URL
+      const { error: updateError } = await supabase.auth.updateUser({
+        data: {
+          profile_photo_url: publicUrl,
+        },
+      });
+
+      if (updateError) throw updateError;
+
+      setProfilePhotoUrl(publicUrl);
+      setMessage('Profile photo updated successfully!');
+    } catch (err: any) {
+      console.error('Photo upload error:', err);
+      setError(err.message || 'Failed to upload photo');
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const handleUpdateProfile = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,11 +110,13 @@ export default function ProfilePage() {
     setUpdating(true);
 
     try {
-      // Update user metadata (name, phone)
+      // Update user metadata (name, artist name, phone, photo)
       const { error: metadataError } = await supabase.auth.updateUser({
         data: {
           full_name: fullName,
+          artist_name: artistName,
           phone: phone,
+          profile_photo_url: profilePhotoUrl,
         },
       });
 
@@ -103,6 +173,15 @@ export default function ProfilePage() {
     }
   };
 
+  // Show loading state while data is being fetched
+  if (!dataLoaded) {
+    return (
+      <div className={styles.loading}>
+        <div className={styles.loadingText}>Loading profile...</div>
+      </div>
+    );
+  }
+
   return (
     <>
       {/* Email Verification Banner */}
@@ -142,6 +221,39 @@ export default function ProfilePage() {
               <div className={styles.error}>{error}</div>
             )}
 
+            {/* Profile Photo */}
+            <div className={styles.photoSection}>
+              <label className={styles.label}>PROFILE PHOTO</label>
+              <div className={styles.photoUpload}>
+                <div className={styles.photoPreview}>
+                  {profilePhotoUrl ? (
+                    <img src={profilePhotoUrl} alt="Profile" className={styles.profileImage} />
+                  ) : (
+                    <div className={styles.photoPlaceholder}>
+                      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <circle cx="12" cy="8" r="4"/>
+                        <path d="M20 21a8 8 0 1 0-16 0"/>
+                      </svg>
+                    </div>
+                  )}
+                </div>
+                <div className={styles.photoActions}>
+                  <label htmlFor="photoUpload" className={styles.uploadButton}>
+                    {uploading ? 'UPLOADING...' : 'CHOOSE PHOTO'}
+                    <input
+                      type="file"
+                      id="photoUpload"
+                      accept="image/*"
+                      onChange={handlePhotoUpload}
+                      disabled={uploading}
+                      style={{ display: 'none' }}
+                    />
+                  </label>
+                  <p className={styles.photoHelperText}>Max size: 2MB. JPG, PNG, or GIF.</p>
+                </div>
+              </div>
+            </div>
+
             <div className={styles.inputGroup}>
               <label htmlFor="fullName" className={styles.label}>
                 FULL NAME
@@ -153,6 +265,21 @@ export default function ProfilePage() {
                 onChange={(e) => setFullName(e.target.value)}
                 className={styles.input}
                 disabled={updating}
+              />
+            </div>
+
+            <div className={styles.inputGroup}>
+              <label htmlFor="artistName" className={styles.label}>
+                ARTIST NAME / ALIAS
+              </label>
+              <input
+                type="text"
+                id="artistName"
+                value={artistName}
+                onChange={(e) => setArtistName(e.target.value)}
+                className={styles.input}
+                disabled={updating}
+                placeholder="Stage name, band name, or how you want to be known"
               />
             </div>
 

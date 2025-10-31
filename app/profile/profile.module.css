@@ -211,6 +211,106 @@
   cursor: not-allowed;
 }
 
+/* Loading State */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  padding: 40px;
+}
+
+.loadingText {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 18px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+/* Profile Photo Section */
+.photoSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 24px 0;
+  border-bottom: 2px solid #ddd;
+}
+
+.photoUpload {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.photoPreview {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid black;
+  background: white;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profileImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photoPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f5;
+  color: #999;
+}
+
+.photoActions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.uploadButton {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  padding: 14px 24px;
+  background: black;
+  color: white;
+  border: 2px solid black;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  display: inline-block;
+  width: fit-content;
+}
+
+.uploadButton:hover {
+  background: white;
+  color: black;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.photoHelperText {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  color: #666;
+  margin: 0;
+}
+
 @media (max-width: 768px) {
   .section {
     padding: 24px;
@@ -239,6 +339,19 @@
   }
 
   .resendButton {
+    width: 100%;
+  }
+
+  .photoUpload {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .photoActions {
+    width: 100%;
+  }
+
+  .uploadButton {
     width: 100%;
   }
 }
