@@ -200,7 +200,7 @@ export default function MusicHeroAnimated() {
 
           <div className={styles.infoCard}>
             <div className={styles.label}>STARTING AT</div>
-            <div className={styles.value}>$40/HR</div>
+            <div className={styles.value}>$50/HR</div>
           </div>
 
           <a href="#booking" className={styles.ctaButton}>

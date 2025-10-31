@@ -5,6 +5,51 @@
     width: 100%;
 }
 
+/* Promo Banner */
+.promoBanner {
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+    padding: 16px 48px;
+    border-bottom: 3px solid #FF8C00;
+}
+
+.promoContent {
+    max-width: 1800px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.promoIcon {
+    font-size: 24px;
+}
+
+.promoText {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 16px;
+    color: black;
+    letter-spacing: 0.05em;
+}
+
+.promoText strong {
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .promoBanner {
+        padding: 12px 24px;
+    }
+
+    .promoText {
+        font-size: 13px;
+        text-align: center;
+    }
+
+    .promoIcon {
+        font-size: 20px;
+    }
+}
 
 /* Hero Section - Black */
 

@@ -524,9 +524,9 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
                   <div className={styles.discountBadge}>
                     <span className={styles.discountIcon}>🎉</span>
                     <div>
-                      <p className={styles.discountTitle}>First Session Special!</p>
+                      <p className={styles.discountTitle}>Welcome to Dream Suite!</p>
                       <p className={styles.discountText}>
-                        Use code <strong>FIRSTTIME20</strong> at checkout for 20% off
+                        New Account Special: Use code <strong>FIRSTTIME40</strong> at checkout for 40% off your first session
                       </p>
                     </div>
                   </div>

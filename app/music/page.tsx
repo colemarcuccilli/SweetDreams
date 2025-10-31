@@ -12,6 +12,16 @@ import MusicContactForm from "@/components/music/MusicContactForm";
 export default function MusicPage() {
   return (
     <div className={styles.page}>
+      {/* Promo Banner */}
+      <div className={styles.promoBanner}>
+        <div className={styles.promoContent}>
+          <span className={styles.promoIcon}>🎉</span>
+          <span className={styles.promoText}>
+            <strong>Welcome to Dream Suite!</strong> New Account Special: Get 40% off your first session with code <strong>FIRSTTIME40</strong>
+          </span>
+        </div>
+      </div>
+
       {/* Animated Hero Section */}
       <MusicHeroAnimated />
 
@@ -90,7 +100,7 @@ export default function MusicPage() {
           <BookingCalendar />
 
           <p className={styles.note}>
-            <strong>First time booking?</strong> Mention it when you arrive for 20% off your first session!
+            <strong>First time booking?</strong> Use code <strong>FIRSTTIME40</strong> at checkout for 40% off your first session!
           </p>
         </div>
       </section>

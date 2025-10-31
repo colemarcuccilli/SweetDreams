@@ -1136,6 +1136,14 @@ export default function SolutionsPage() {
             </div>
           </div>
 
+          {/* Promo Banner */}
+          <div className={styles.promoBannerStudio}>
+            <span className={styles.promoIcon}>🎉</span>
+            <span className={styles.promoTextStudio}>
+              <strong>Welcome to Dream Suite!</strong> New Account Special: Get 40% off your first session with code <strong>FIRSTTIME40</strong>
+            </span>
+          </div>
+
           {/* Bento Grid - All Services */}
           <div className={styles.studioBentoGrid}>
             {/* Large Recording Card */}

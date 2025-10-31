@@ -14,6 +14,29 @@ import WhoAreWeAnimated from "@/components/WhoAreWeAnimated";
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-black">
+      {/* Promo Banner */}
+      <div style={{
+        background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
+        padding: '16px 48px',
+        borderBottom: '3px solid #FF8C00',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '12px',
+        flexWrap: 'wrap'
+      }}>
+        <span style={{ fontSize: '24px' }}>🎉</span>
+        <span style={{
+          fontFamily: 'IBM Plex Mono, monospace',
+          fontSize: '16px',
+          color: 'black',
+          letterSpacing: '0.05em',
+          textAlign: 'center'
+        }}>
+          <strong>Welcome to Dream Suite!</strong> New Account Special: Get 40% off your first session with code <strong>FIRSTTIME40</strong>
+        </span>
+      </div>
+
       {/* Video Hero - Only on homepage */}
       <VideoHero />
 
