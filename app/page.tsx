@@ -24,10 +24,8 @@ export default function HomePage() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: '10px',
         flexWrap: 'wrap'
       }}>
-        <span style={{ fontSize: '20px' }}>🎉</span>
         <span style={{
           fontFamily: 'IBM Plex Mono, monospace',
           fontSize: '14px',
