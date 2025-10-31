@@ -56,6 +56,9 @@
   line-height: 0.8;
   margin: 0;
   flex-shrink: 0;
+  -webkit-text-stroke: 2px white;
+  text-stroke: 2px white;
+  paint-order: stroke fill;
 }
 
 .productionTitleWrapper {
@@ -365,7 +368,7 @@
   text-transform: uppercase;
   line-height: 1.2;
   color: black;
-  margin: 0;
+  margin: 0 0 48px 0;
   text-align: left;
 }
 
@@ -722,6 +725,9 @@
   line-height: 0.8;
   margin: 0;
   flex-shrink: 0;
+  -webkit-text-stroke: 2px white;
+  text-stroke: 2px white;
+  paint-order: stroke fill;
 }
 
 .postTitleWrapper {
@@ -1054,6 +1060,9 @@
   line-height: 0.8;
   margin: 0;
   flex-shrink: 0;
+  -webkit-text-stroke: 2px white;
+  text-stroke: 2px white;
+  paint-order: stroke fill;
 }
 
 .launchTitleWrapper {
@@ -2368,9 +2377,21 @@
     padding: 60px 20px;
   }
 
+  .designHeaderGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .designHeaderLeft,
+  .designHeaderRight {
+    display: block;
+    width: 100%;
+  }
+
   .designHeader {
     gap: 20px;
-    margin-bottom: 40px;
+    margin-bottom: 24px;
     justify-content: center;
   }
 
@@ -2393,7 +2414,7 @@
     font-size: 20px;
     text-align: center;
     max-width: 90%;
-    margin: 0 auto;
+    margin: 0 auto 48px auto;
     line-height: 1.3;
   }
 
