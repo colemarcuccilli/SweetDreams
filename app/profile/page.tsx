@@ -336,7 +336,6 @@ export default function ProfilePage() {
                 onChange={(e) => setNewPassword(e.target.value)}
                 className={styles.input}
                 disabled={updating}
-                minLength={6}
                 placeholder="Leave blank to keep current password"
               />
             </div>
@@ -352,7 +351,6 @@ export default function ProfilePage() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 className={styles.input}
                 disabled={updating}
-                minLength={6}
               />
             </div>
 
