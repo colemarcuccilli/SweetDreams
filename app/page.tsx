@@ -10,29 +10,14 @@ import ContentStrategyAnimated from "@/components/ContentStrategyAnimated";
 import TransitionSection from "@/components/TransitionSection";
 import TransitionSection2 from "@/components/TransitionSection2";
 import WhoAreWeAnimated from "@/components/WhoAreWeAnimated";
+import styles from "./home.module.css";
 
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-black">
       {/* Promo Banner */}
-      <div style={{
-        background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
-        padding: '10px 48px',
-        marginTop: '8px',
-        marginBottom: '12px',
-        borderBottom: '2px solid #FF8C00',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexWrap: 'wrap'
-      }}>
-        <span style={{
-          fontFamily: 'IBM Plex Mono, monospace',
-          fontSize: '14px',
-          color: 'black',
-          letterSpacing: '0.05em',
-          textAlign: 'center'
-        }}>
+      <div className={styles.promoBanner}>
+        <span className={styles.promoText}>
           <strong>Welcome to Dream Suite!</strong> New Account Special: Get 40% off your first session with code <strong>FIRSTTIME40</strong>
         </span>
       </div>

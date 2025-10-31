@@ -1,0 +1,33 @@
+.promoBanner {
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+  padding: 10px 48px;
+  margin-top: 8px;
+  margin-bottom: 12px;
+  border-bottom: 2px solid #FF8C00;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.promoText {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  color: black;
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .promoBanner {
+    padding: 6px 16px;
+    margin-top: 4px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #FF8C00;
+  }
+
+  .promoText {
+    font-size: 11px;
+    letter-spacing: 0.02em;
+  }
+}
