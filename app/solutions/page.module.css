@@ -1571,10 +1571,10 @@
 /* Promo Banner for Studio Section */
 .promoBannerStudio {
   background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-  padding: 16px 32px;
+  padding: 12px 32px;
   border-radius: 8px;
-  border: 3px solid #FF8C00;
-  margin-bottom: 40px;
+  margin-top: 0;
+  margin-bottom: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2296,6 +2296,19 @@
 }
 
 @media (max-width: 768px) {
+  .promoBannerStudio {
+    padding: 8px 24px;
+    margin-bottom: 20px;
+  }
+
+  .promoTextStudio {
+    font-size: 13px;
+  }
+
+  .promoIcon {
+    font-size: 20px;
+  }
+
   .productionHero {
     padding: 20px 20px 10px 20px;
     height: auto;

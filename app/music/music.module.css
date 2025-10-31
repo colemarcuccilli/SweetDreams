@@ -8,8 +8,9 @@
 /* Promo Banner */
 .promoBanner {
     background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-    padding: 16px 48px;
-    border-bottom: 3px solid #FF8C00;
+    padding: 12px 48px;
+    margin-top: 0;
+    margin-bottom: 24px;
 }
 
 .promoContent {
@@ -38,7 +39,8 @@
 
 @media (max-width: 768px) {
     .promoBanner {
-        padding: 12px 24px;
+        padding: 8px 24px;
+        margin-bottom: 16px;
     }
 
     .promoText {
