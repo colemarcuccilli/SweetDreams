@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import styles from "./music.module.css";
 import MusicHeroAnimated from "@/components/music/MusicHeroAnimated";
@@ -8,6 +9,27 @@ import LocationInfoAnimated from "@/components/music/LocationInfoAnimated";
 import PricingListAnimated from "@/components/music/PricingListAnimated";
 import BookingCalendar from "@/components/music/BookingCalendar";
 import MusicContactForm from "@/components/music/MusicContactForm";
+
+export const metadata: Metadata = {
+  title: "Studio Recording & Booking | Sweet Dreams Fort Wayne - $50/HR",
+  description: "Professional recording studio in Fort Wayne, IN. Book your session starting at $50/hour. Music production, mixing, and mastering services. Get 40% off your first session with code FIRSTTIME40!",
+  keywords: "Fort Wayne recording studio, book studio session, music production Fort Wayne, studio rental, professional recording, recording studio near me, mixing and mastering, studio booking Fort Wayne",
+  openGraph: {
+    title: "Studio Booking | Sweet Dreams Fort Wayne",
+    description: "Book your recording session at Fort Wayne's premier music studio. $50/hour starting rate. First-time special: 40% off with code FIRSTTIME40.",
+    url: "https://sweetdreamsmusic.com/music",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Studio Booking | Sweet Dreams Fort Wayne",
+    description: "Book your recording session. $50/hour. 40% off first session!",
+  },
+  other: {
+    'geo.region': 'US-IN',
+    'geo.placename': 'Fort Wayne',
+  },
+};
 
 export default function MusicPage() {
   return (

@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import { localBusinessSchema, organizationSchema, websiteSchema } from "@/lib/schema";
 
 const ibmPlexMono = IBM_Plex_Mono({
   weight: ["400", "500", "600", "700"],
@@ -13,13 +14,54 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Sweet Dreams - Music & Media Production",
-  description: "Develop Your Brand, Your Way - Professional music production and media services in Fort Wayne, IN",
+  title: "Sweet Dreams Studio | Fort Wayne Recording Studio",
+  description: "Fort Wayne's premier recording studio offering professional music production, mixing & mastering. State-of-the-art studio for musicians & creators. Book now at $50/hr!",
+  keywords: "Sweet Dreams Studio, Fort Wayne recording studio, Indiana music production, professional mixing, audio mastering, beat making, music videos, podcast production, voice over recording, audio engineering, Northeast Indiana studio, Fort Wayne music, studio rental, professional sound recording",
+  authors: [{ name: "Sweet Dreams Music LLC" }],
   viewport: {
     width: 'device-width',
     initialScale: 1,
     maximumScale: 5,
     viewportFit: 'cover',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
+  // Geo-targeting for local SEO (CRITICAL)
+  other: {
+    'geo.region': 'US-IN',
+    'geo.placename': 'Fort Wayne',
+    'geo.position': '41.0793;-85.1394',
+    'ICBM': '41.0793, -85.1394',
+  },
+  openGraph: {
+    type: 'website',
+    title: 'Sweet Dreams Studio | Fort Wayne Recording & Production',
+    description: 'Professional music recording, mixing, mastering, and video production services in Fort Wayne, Indiana. State-of-the-art studio equipment and experienced engineers.',
+    url: 'https://sweetdreamsmusic.com',
+    siteName: 'Sweet Dreams Music',
+    locale: 'en_US',
+    images: [
+      {
+        url: 'https://sweetdreamsmusic.com/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Sweet Dreams Music Studio Logo',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@jayvalleo',
+    creator: '@jayvalleo',
+    title: 'Sweet Dreams Studio | Fort Wayne Recording Studio',
+    description: 'Fort Wayne\'s premier recording studio offering professional music production, mixing & mastering.',
+    images: ['https://sweetdreamsmusic.com/og-image.jpg'],
   },
 };
 
@@ -82,6 +124,26 @@ export default function RootLayout({
             })(window, document, "clarity", "script", "tyjolmx04i");
           `}
         </Script>
+
+        {/* Schema.org Structured Data - CRITICAL for local SEO */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(localBusinessSchema)
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationSchema)
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(websiteSchema)
+          }}
+        />
       </head>
       <body className={ibmPlexMono.className}>
         {/* Google Tag Manager (noscript) */}
