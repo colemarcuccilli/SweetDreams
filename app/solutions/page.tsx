@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
+import MusicContactForm from "@/components/music/MusicContactForm";
 import styles from "./page.module.css";
 
 function LaunchSection() {
@@ -1138,9 +1139,8 @@ export default function SolutionsPage() {
 
           {/* Promo Banner */}
           <div className={styles.promoBannerStudio}>
-            <span className={styles.promoIcon}>🎉</span>
             <span className={styles.promoTextStudio}>
-              <strong>Welcome to Dream Suite! </strong>New Account Special: Get 40% off your first session with code: <strong>FIRSTTIME40</strong>
+              <strong>Welcome to Dream Suite! </strong>New Account Special: Get 40% off your first session with code: <strong>FIRSTTIME40</strong> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Welcome to Dream Suite! </strong>New Account Special: Get 40% off your first session with code: <strong>FIRSTTIME40</strong> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Welcome to Dream Suite! </strong>New Account Special: Get 40% off your first session with code: <strong>FIRSTTIME40</strong> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Welcome to Dream Suite! </strong>New Account Special: Get 40% off your first session with code: <strong>FIRSTTIME40</strong> &nbsp;&nbsp;|&nbsp;&nbsp;
             </span>
           </div>
 
@@ -1233,13 +1233,8 @@ export default function SolutionsPage() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className={styles.cta}>
-        <h2 className={`${styles.ctaTitle} cta-title`}>LET'S WORK</h2>
-        <Link href="/contact" className={`${styles.ctaButton} cta-button`}>
-          GET IN TOUCH
-        </Link>
-      </section>
+      {/* Contact Form */}
+      <MusicContactForm />
     </div>
   );
 }

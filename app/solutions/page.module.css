@@ -1570,31 +1570,33 @@
 
 /* Promo Banner for Studio Section */
 .promoBannerStudio {
-  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-  padding: 12px 32px;
-  border-radius: 8px;
+  background: black;
+  padding: 8px 0;
   margin-top: 0;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
+  overflow: hidden;
+  position: relative;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-}
-
-.promoIcon {
-  font-size: 24px;
 }
 
 .promoTextStudio {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 16px;
-  color: black;
+  font-size: 14px;
+  color: white;
   letter-spacing: 0.05em;
-  text-align: center;
+  white-space: nowrap;
+  display: flex;
+  animation: scroll-left-studio 30s linear infinite;
+  will-change: transform;
 }
 
-.promoTextStudio strong {
-  font-weight: bold;
+@keyframes scroll-left-studio {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-25%);
+  }
 }
 
 .studioNumber {
@@ -2297,16 +2299,14 @@
 
 @media (max-width: 768px) {
   .promoBannerStudio {
-    padding: 8px 24px;
-    margin-bottom: 20px;
+    padding: 6px 0;
+    margin-bottom: 16px;
   }
 
   .promoTextStudio {
-    font-size: 13px;
-  }
-
-  .promoIcon {
-    font-size: 20px;
+    font-size: 10px;
+    letter-spacing: 0.02em;
+    animation: scroll-left-studio 20s linear infinite;
   }
 
   .productionHero {

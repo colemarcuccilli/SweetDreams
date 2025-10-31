@@ -7,6 +7,7 @@ import WhyAnimated from "@/components/media/WhyAnimated";
 import ServicesAnimated from "@/components/media/ServicesAnimated";
 import MediaHeroAnimated from "@/components/media/MediaHeroAnimated";
 import PortfolioHorizontalScroll from "@/components/media/PortfolioHorizontalScroll";
+import MusicContactForm from "@/components/music/MusicContactForm";
 
 export default function MediaPage() {
   const portfolioItems = [
@@ -193,52 +194,8 @@ export default function MediaPage() {
       {/* Services - White */}
       <ServicesAnimated />
 
-      {/* CTA Section - Grey */}
-      <section className={styles.cta} id="contact">
-        <div className={styles.container}>
-          <div className={styles.ctaContent}>
-            <p className={styles.miniTitle}>GET IN TOUCH</p>
-            <h2 className={styles.ctaTitle}>
-              READY TO CREATE<br />
-              SOMETHING AMAZING?
-            </h2>
-            <p className={styles.ctaSubtitle}>
-              Let's discuss your project and bring your vision to life
-            </p>
-          </div>
-
-          <form className={styles.form}>
-            <div className={styles.formRow}>
-              <input
-                type="text"
-                placeholder="Your Name"
-                className={styles.input}
-                required
-              />
-              <input
-                type="email"
-                placeholder="Your Email"
-                className={styles.input}
-                required
-              />
-            </div>
-            <input
-              type="tel"
-              placeholder="Phone Number (Optional)"
-              className={styles.input}
-            />
-            <textarea
-              placeholder="Tell us about your project..."
-              className={styles.textarea}
-              rows={6}
-              required
-            />
-            <button type="submit" className={styles.submitButton}>
-              SEND MESSAGE
-            </button>
-          </form>
-        </div>
-      </section>
+      {/* Contact Form */}
+      <MusicContactForm />
 
       {/* Footer Info - Black */}
       <section className={styles.info}>
