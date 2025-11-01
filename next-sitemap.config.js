@@ -58,17 +58,34 @@ module.exports = {
   additionalPaths: async (config) => {
     const result = []
 
-    // Add any dynamic blog paths here when blog is created
-    // Example:
-    // const blogPosts = await getBlogPosts()
-    // blogPosts.forEach(post => {
-    //   result.push({
-    //     loc: `/blog/${post.slug}`,
-    //     changefreq: 'monthly',
-    //     priority: 0.6,
-    //     lastmod: post.updatedAt,
-    //   })
-    // })
+    // Add all work/portfolio project pages
+    const projectSlugs = [
+      'knoxville-carnival-coverage',
+      'wake-up-blind-music-video',
+      'aegis-dental-trusted-dentistry',
+      'fort-wayne-carnival-recap',
+      'cumberland-falls-ky-nature-showcase',
+      'indianapolis-childrens-museum-ferris-wheel',
+      'sliced-by-sonny-commercial',
+      'vintage-fest-fort-wayne',
+      'snobiz-snowcone-truck-commercial',
+      'vegas-dream-travel-content',
+      'nissan-warsaw-dealership',
+      'brookfield-zoo-ferris-wheel',
+      'fort-wayne-hyperlapse-showcase',
+      'dear-lover-music-video',
+      'heaven-in-fort-wayne',
+      'sweet-dreams-recording-studio',
+    ]
+
+    projectSlugs.forEach(slug => {
+      result.push({
+        loc: `/work/${slug}`,
+        changefreq: 'monthly',
+        priority: 0.7,
+        lastmod: new Date().toISOString(),
+      })
+    })
 
     return result
   },

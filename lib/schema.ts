@@ -216,3 +216,48 @@ export const websiteSchema = {
     }
   }
 };
+
+// Helper function to generate VideoObject schema for portfolio projects
+export const createVideoSchema = (params: {
+  name: string;
+  description: string;
+  uploadDate: string;
+  thumbnailUrl: string;
+  contentUrl?: string;
+  embedUrl?: string;
+  duration?: string; // ISO 8601 format (e.g., "PT1M30S" for 1 min 30 sec)
+}) => ({
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  "name": params.name,
+  "description": params.description,
+  "uploadDate": params.uploadDate,
+  "thumbnailUrl": params.thumbnailUrl,
+  "contentUrl": params.contentUrl,
+  "embedUrl": params.embedUrl,
+  "duration": params.duration,
+  "publisher": {
+    "@type": "Organization",
+    "name": "Sweet Dreams Media",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://sweetdreamsmusic.com/logo.png"
+    }
+  },
+  "creator": {
+    "@type": "Organization",
+    "name": "Sweet Dreams Media"
+  }
+});
+
+// BreadcrumbList schema for better navigation in search results
+export const createBreadcrumbSchema = (items: Array<{ name: string; url: string }>) => ({
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": items.map((item, index) => ({
+    "@type": "ListItem",
+    "position": index + 1,
+    "name": item.name,
+    "item": item.url
+  }))
+});
