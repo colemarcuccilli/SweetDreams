@@ -6,7 +6,7 @@ export default function RecordingStudioPage() {
   const project = {
     title: 'SWEET DREAMS RECORDING STUDIO SHOWCASE',
     client_name: 'Sweet Dreams Media',
-    client_logo_url: 'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/sweetDreamsProdlogo.png',
+    client_logo_url: 'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SWEETDREAMSLOGO_1.jpg',
     cloudflare_stream_id: 'd912b8bd58831e95431db3c24791e44b',
     description: 'Professional studio showcase highlighting recording facilities and capabilities.',
     category: 'Commercial',

@@ -54,7 +54,7 @@ export default function MusicPage() {
       <section className={styles.pricing}>
         <div className={styles.container}>
           {/* Video Showcase */}
-          <Link href="/work/sweet-dreams-studio" className={styles.showcaseLink}>
+          <Link href="/work/sweet-dreams-recording-studio" className={styles.showcaseLink}>
             <div className={styles.showcaseBox}>
               <iframe
                 src="https://customer-w6h9o08eg118alny.cloudflarestream.com/d912b8bd58831e95431db3c24791e44b/iframe?muted=true&autoplay=true&loop=true&controls=false"
