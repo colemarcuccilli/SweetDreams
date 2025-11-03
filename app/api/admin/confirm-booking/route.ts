@@ -117,29 +117,14 @@ export async function POST(request: NextRequest) {
     // Fallback: Try payment intent if session didn't work or isn't available
     if (!couponCode && booking.stripe_payment_intent_id) {
       try {
-        const paymentIntent = await stripe.paymentIntents.retrieve(booking.stripe_payment_intent_id);
+        const paymentIntent = await stripe.paymentIntents.retrieve(
+          booking.stripe_payment_intent_id,
+          { expand: ['charges'] }
+        );
 
         // Get the actual amount charged
         if (paymentIntent.amount_received !== null && paymentIntent.amount_received !== undefined) {
           actualDepositPaid = paymentIntent.amount_received;
-        }
-
-        // Check for charges with invoice data (where coupon info lives)
-        if (paymentIntent.charges && paymentIntent.charges.data.length > 0) {
-          const charge = paymentIntent.charges.data[0];
-          if (charge.invoice) {
-            try {
-              const invoice = await stripe.invoices.retrieve(charge.invoice as string);
-              if (invoice.discount && invoice.discount.coupon) {
-                couponCode = invoice.discount.coupon.name || invoice.discount.coupon.id;
-                if (invoice.total_discount_amounts && invoice.total_discount_amounts.length > 0) {
-                  discountAmount = invoice.total_discount_amounts[0].amount;
-                }
-              }
-            } catch (invoiceError) {
-              console.error('⚠️ Could not retrieve invoice:', invoiceError);
-            }
-          }
         }
 
         console.log('✅ Retrieved payment info from PaymentIntent:', {
