@@ -94,7 +94,12 @@ export async function POST(request: NextRequest) {
         if (session.discounts && session.discounts.length > 0) {
           const discount = session.discounts[0];
           if (discount && typeof discount === 'object' && 'coupon' in discount && discount.coupon) {
-            couponCode = discount.coupon.name || discount.coupon.id;
+            // discount.coupon can be a string (coupon ID) or Coupon object
+            if (typeof discount.coupon === 'string') {
+              couponCode = discount.coupon;
+            } else if (typeof discount.coupon === 'object') {
+              couponCode = discount.coupon.name || discount.coupon.id;
+            }
           }
         }
 
