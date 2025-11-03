@@ -32,6 +32,7 @@
 /* Calendar Styling */
 .calendar {
   width: 100%;
+  overflow-x: auto; /* Allow horizontal scroll on small screens if needed */
 }
 
 .calendar :global(.rdp) {
@@ -40,6 +41,17 @@
   --rdp-background-color: rgba(0, 0, 0, 0.05);
   font-family: 'IBM Plex Mono', monospace;
   color: #000;
+  margin: 0 auto; /* Center the calendar */
+  max-width: 100%; /* Ensure it doesn't exceed container */
+}
+
+.calendar :global(.rdp-months) {
+  max-width: 100%;
+}
+
+.calendar :global(.rdp-table) {
+  max-width: 100%;
+  margin: 0 auto;
 }
 
 .calendar :global(.rdp-day) {
@@ -198,6 +210,17 @@
   font-weight: 700;
 }
 
+.noTimesAvailable {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.9rem;
+  color: rgba(0, 0, 0, 0.6);
+  text-align: center;
+  padding: 2rem 1rem;
+  background: rgba(255, 0, 0, 0.05);
+  border: 1px dashed rgba(255, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
 /* Input Fields */
 .input {
   width: 100%;
@@ -354,11 +377,11 @@
 
   .calendarSection,
   .detailsSection {
-    padding: 1.5rem;
+    padding: 1.5rem 1rem;
   }
 
   .calendar :global(.rdp) {
-    --rdp-cell-size: 40px;
+    --rdp-cell-size: 38px;
   }
 
   .calendar :global(.rdp-caption_label) {
@@ -396,8 +419,13 @@
 }
 
 @media (max-width: 480px) {
+  .calendarSection,
+  .detailsSection {
+    padding: 1rem 0.75rem;
+  }
+
   .calendar :global(.rdp) {
-    --rdp-cell-size: 36px;
+    --rdp-cell-size: 32px;
   }
 
   .calendar :global(.rdp-caption_label) {
@@ -409,7 +437,34 @@
   }
 
   .calendar :global(.rdp-day) {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
+  }
+
+  .calendar :global(.rdp-nav) {
+    scale: 0.9;
+  }
+}
+
+@media (max-width: 375px) {
+  .calendarSection,
+  .detailsSection {
+    padding: 1rem 0.5rem;
+  }
+
+  .calendar :global(.rdp) {
+    --rdp-cell-size: 30px;
+  }
+
+  .calendar :global(.rdp-day) {
+    font-size: 0.7rem;
+  }
+
+  .calendar :global(.rdp-head_cell) {
+    font-size: 0.6rem;
+  }
+
+  .calendar :global(.rdp-nav) {
+    scale: 0.8;
   }
 }
 

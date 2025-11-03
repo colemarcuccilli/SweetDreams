@@ -3,6 +3,10 @@ import Stripe from 'stripe';
 import { getSessionProducts } from '@/lib/booking-config';
 import { createClient } from '@/utils/supabase/server';
 import { verifyAdminAccess } from '@/lib/admin-auth';
+import { resend, FROM_EMAIL } from '@/lib/emails/resend';
+import { RemainderCharged } from '@/lib/emails/remainder-charged';
+import { format } from 'date-fns';
+import * as React from 'react';
 
 export async function POST(request: NextRequest) {
   // Initialize Stripe inside the function to avoid build-time errors
@@ -112,10 +116,41 @@ export async function POST(request: NextRequest) {
         // Return success anyway since payment went through
       }
 
+      // Send email notification to customer
+      try {
+        const startTime = new Date(booking.start_time);
+        const endTime = new Date(booking.end_time);
+        const formattedDate = format(startTime, 'EEEE, MMMM d, yyyy');
+        const formattedStartTime = format(startTime, 'h:mm a');
+        const formattedEndTime = format(endTime, 'h:mm a');
+
+        console.log('📧 Sending remainder charge notification to:', booking.customer_email);
+
+        await resend.emails.send({
+          from: FROM_EMAIL,
+          to: booking.customer_email,
+          subject: 'Payment Processed - Sweet Dreams Music Studio',
+          react: RemainderCharged({
+            firstName: booking.first_name,
+            artistName: booking.artist_name,
+            date: formattedDate,
+            startTime: formattedStartTime,
+            endTime: formattedEndTime,
+            duration: booking.duration,
+            remainderAmount: amount,
+          }) as React.ReactElement,
+        });
+
+        console.log('✅ Remainder charge notification sent');
+      } catch (emailError) {
+        console.error('❌ Failed to send remainder charge email:', emailError);
+        // Don't fail the charge if email fails
+      }
+
       return NextResponse.json({
         success: true,
         paymentIntentId: paymentIntent.id,
-        message: 'Remainder charged successfully'
+        message: 'Remainder charged successfully and notification sent'
       });
     } else {
       return NextResponse.json(
