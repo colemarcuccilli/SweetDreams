@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth, signOut } from '@/lib/useAuth';
+import { isAdmin } from '@/lib/admin-auth';
 import styles from './layout.module.css';
 
 export default function ProfileLayout({
@@ -88,6 +89,21 @@ export default function ProfileLayout({
               </svg>
               <span>My Bookings</span>
             </Link>
+
+            {/* Admin Dashboard - Only visible to admins */}
+            {user && isAdmin(user.email) && (
+              <Link
+                href="/admin"
+                className={`${styles.navItem} ${pathname?.startsWith('/admin') ? styles.navItemActive : ''}`}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                  <path d="M2 17l10 5 10-5"/>
+                  <path d="M2 12l10 5 10-5"/>
+                </svg>
+                <span>Admin Dashboard</span>
+              </Link>
+            )}
 
             <button
               onClick={handleLogout}
