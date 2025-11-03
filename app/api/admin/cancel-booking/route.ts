@@ -56,6 +56,7 @@ export async function POST(request: NextRequest) {
 
     let refunded = false;
     let refundMessage = '';
+    let actualAmountRefunded = 0;
 
     if (isFuture && hasPayment) {
       try {
@@ -73,9 +74,10 @@ export async function POST(request: NextRequest) {
             }
           });
 
-          console.log('✅ Refund created:', refund.id, 'Amount:', paymentIntent.amount_received);
+          actualAmountRefunded = paymentIntent.amount_received;
+          console.log('✅ Refund created:', refund.id, 'Amount:', actualAmountRefunded);
           refunded = true;
-          refundMessage = `Refunded $${(paymentIntent.amount_received / 100).toFixed(2)}`;
+          refundMessage = `Refunded $${(actualAmountRefunded / 100).toFixed(2)}`;
         } else {
           console.log('⚠️ No refund needed - payment was $0 or not completed');
           refundMessage = 'No refund needed (100% coupon used or payment not completed)';
@@ -127,7 +129,7 @@ export async function POST(request: NextRequest) {
           endTime: formattedEndTime,
           duration: booking.duration,
           refunded,
-          refundAmount: refunded ? booking.deposit_amount : undefined,
+          refundAmount: refunded ? actualAmountRefunded : undefined,
         }) as React.ReactElement,
       });
 

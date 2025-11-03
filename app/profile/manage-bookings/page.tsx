@@ -37,25 +37,25 @@ export default function AdminBookingsPage() {
   const [confirmingBookingId, setConfirmingBookingId] = useState<string | null>(null);
   const [editingRemainderBookingId, setEditingRemainderBookingId] = useState<string | null>(null);
   const [customRemainderAmount, setCustomRemainderAmount] = useState<string>('');
-  const [showCompleted, setShowCompleted] = useState(false);
+  const [showCompleted, setShowCompleted] = useState(true);
+
+  const fetchBookings = async () => {
+    try {
+      const response = await fetch('/api/admin/bookings');
+      const data = await response.json();
+
+      if (data.bookings) {
+        setBookings(data.bookings);
+      }
+    } catch (error) {
+      console.error('Error fetching bookings:', error);
+      alert('Failed to fetch bookings');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchBookings = async () => {
-      try {
-        const response = await fetch('/api/admin/bookings');
-        const data = await response.json();
-
-        if (data.bookings) {
-          setBookings(data.bookings);
-        }
-      } catch (error) {
-        console.error('Error fetching bookings:', error);
-        alert('Failed to fetch bookings');
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchBookings();
   }, []);
 
@@ -78,11 +78,9 @@ export default function AdminBookingsPage() {
       const data = await response.json();
 
       if (data.success) {
-        alert('Booking confirmed successfully!');
-        // Update booking status
-        setBookings(bookings.map(b =>
-          b.id === booking.id ? { ...b, status: 'confirmed' } : b
-        ));
+        alert('Booking confirmed and payment data updated!');
+        // Refetch all bookings to get fresh data from database
+        await fetchBookings();
       } else {
         alert('Error confirming booking: ' + (data.error || 'Unknown error'));
       }
@@ -158,14 +156,19 @@ export default function AdminBookingsPage() {
   const handleCancelBooking = async (booking: Booking) => {
     const bookingDate = new Date(booking.date);
     const isFuture = bookingDate > new Date();
-    const hasPayment = booking.depositAmount > 0 && booking.stripePaymentIntentId;
+
+    // Check if actual money was paid (not just deposit amount, which could be before coupon)
+    const actualPaid = booking.actualDepositPaid !== undefined && booking.actualDepositPaid !== null
+      ? booking.actualDepositPaid
+      : booking.depositAmount;
+    const hasPayment = actualPaid > 0 && booking.stripePaymentIntentId;
 
     let confirmMessage = `Cancel booking for ${booking.firstName} ${booking.lastName}?\n\n`;
 
     if (isFuture && hasPayment) {
-      confirmMessage += `This will attempt to refund the deposit ($${(booking.depositAmount / 100).toFixed(2)}) if it was actually charged.`;
+      confirmMessage += `This will refund the deposit: $${(actualPaid / 100).toFixed(2)}`;
     } else if (isFuture && !hasPayment) {
-      confirmMessage += 'No refund will be issued (100% coupon or no payment made).';
+      confirmMessage += 'No refund will be issued (100% coupon was used or no payment made).';
     } else {
       confirmMessage += 'No refund will be issued (booking is in the past).';
     }
@@ -420,12 +423,18 @@ export default function AdminBookingsPage() {
                       {booking.depositAmount === 0 && <span className={styles.freeTag}> FREE</span>}
                     </span>
                   </div>
-                  {booking.actualDepositPaid !== undefined && booking.actualDepositPaid !== booking.depositAmount && (
+                  {booking.status !== 'pending_deposit' && (
                     <div className={styles.moneyRow}>
                       <span className={styles.moneyLabel}>Paid:</span>
                       <span className={`${styles.moneyValue} ${styles.paidAmount}`}>
-                        ${(booking.actualDepositPaid / 100).toFixed(2)}
-                        {booking.actualDepositPaid === 0 && <span className={styles.freeTag}> FREE</span>}
+                        {booking.actualDepositPaid !== undefined && booking.actualDepositPaid !== null ? (
+                          <>
+                            ${(booking.actualDepositPaid / 100).toFixed(2)}
+                            {booking.actualDepositPaid === 0 && <span className={styles.freeTag}> FREE</span>}
+                          </>
+                        ) : (
+                          <span style={{ opacity: 0.6 }}>Pending...</span>
+                        )}
                       </span>
                     </div>
                   )}
@@ -458,6 +467,17 @@ export default function AdminBookingsPage() {
                       title="Manually confirm this booking (use if webhook failed)"
                     >
                       {confirmingBookingId === booking.id ? 'Confirming...' : 'Confirm'}
+                    </button>
+                  )}
+
+                  {booking.status === 'confirmed' && (booking.actualDepositPaid === undefined || booking.actualDepositPaid === null) && (
+                    <button
+                      className={styles.confirmButton}
+                      onClick={() => handleConfirmBooking(booking)}
+                      disabled={confirmingBookingId === booking.id}
+                      title="Fetch payment data from Stripe"
+                    >
+                      {confirmingBookingId === booking.id ? 'Fetching...' : 'Refresh Payment Data'}
                     </button>
                   )}
 

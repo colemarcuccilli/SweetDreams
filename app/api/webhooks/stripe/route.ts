@@ -88,10 +88,13 @@ export async function POST(request: NextRequest) {
       console.log('💰 Discount applied:', discountAmount, 'cents');
     }
 
-    // Get coupon code if available
-    if (session.discount && session.discount.coupon) {
-      couponCode = session.discount.coupon.name || session.discount.coupon.id;
-      console.log('🎟️ Coupon used:', couponCode);
+    // Get coupon code if available (discounts is an array in Stripe Session)
+    if (session.discounts && session.discounts.length > 0) {
+      const discount = session.discounts[0];
+      if (discount && typeof discount === 'object' && 'coupon' in discount && discount.coupon) {
+        couponCode = discount.coupon.name || discount.coupon.id;
+        console.log('🎟️ Coupon used:', couponCode);
+      }
     }
 
     console.log('📊 Payment details:', {
