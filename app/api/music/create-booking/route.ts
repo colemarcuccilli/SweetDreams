@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { getSessionProducts, BOOKING_PRODUCTS } from '@/lib/booking-config';
 import { createServiceRoleClient } from '@/utils/supabase/service-role';
+import { resend, ADMIN_EMAIL, FROM_EMAIL } from '@/lib/emails/resend';
+import { PendingBookingAlert } from '@/lib/emails/pending-booking-alert';
+import { format } from 'date-fns';
+import * as React from 'react';
 
 export async function POST(request: NextRequest) {
   // Initialize Stripe inside the function to avoid build-time errors
@@ -175,7 +179,7 @@ export async function POST(request: NextRequest) {
       // Continue anyway - the booking can be manually created if needed
     }
 
-    // Note: Emails will be sent AFTER successful payment via Stripe webhook
+    // Note: Confirmation emails will be sent AFTER successful payment via Stripe webhook
     // See /api/webhooks/stripe/route.ts for confirmation email logic
 
     console.log('✅ BOOKING CREATED SUCCESSFULLY');
@@ -185,6 +189,39 @@ export async function POST(request: NextRequest) {
     console.log('📋 Status:', 'pending_deposit');
     console.log('💳 Stripe Checkout URL:', session.url);
     console.log('⏳ Waiting for Stripe webhook to confirm payment and send emails...');
+
+    // Send alert to admin about pending booking (for manual confirmation if webhook fails)
+    try {
+      const formattedDate = format(bookingStartTime, 'EEEE, MMMM d, yyyy');
+      const formattedStartTime = format(bookingStartTime, 'h:mm a');
+      const formattedEndTime = format(bookingEndTime, 'h:mm a');
+
+      console.log('📧 Sending pending booking alert to admin:', ADMIN_EMAIL);
+
+      await resend.emails.send({
+        from: FROM_EMAIL,
+        to: ADMIN_EMAIL,
+        subject: `⚠️ New Booking Needs Confirmation - ${artistName} on ${formattedDate}`,
+        react: PendingBookingAlert({
+          firstName,
+          lastName,
+          artistName,
+          email: customerEmail,
+          phone: customerPhone || '',
+          date: formattedDate,
+          startTime: formattedStartTime,
+          endTime: formattedEndTime,
+          duration,
+          depositAmount,
+          totalAmount,
+        }) as React.ReactElement,
+      });
+
+      console.log('✅ Admin alert sent successfully');
+    } catch (emailError) {
+      console.error('❌ Failed to send admin alert:', emailError);
+      // Don't fail the booking if email fails
+    }
 
     return NextResponse.json({
       checkoutUrl: session.url,
