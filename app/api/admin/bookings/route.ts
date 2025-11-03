@@ -1,12 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
+import { verifyAdminAccess } from '@/lib/admin-auth';
 
 export async function GET(request: NextRequest) {
   try {
-    // TODO: Add authentication check for admin
-    // Verify the request is from an authenticated admin user
-
     const supabase = await createClient();
+
+    // Verify admin access
+    const isAdmin = await verifyAdminAccess(supabase);
+    if (!isAdmin) {
+      return NextResponse.json(
+        { error: 'Unauthorized - Admin access required' },
+        { status: 401 }
+      );
+    }
 
     // Fetch all bookings ordered by creation date (newest first)
     const { data: bookings, error } = await supabase

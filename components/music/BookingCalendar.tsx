@@ -287,6 +287,24 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
       return;
     }
 
+    // Check if time slot is blocked by admin
+    try {
+      const dateStr = format(selectedDate, 'yyyy-MM-dd');
+      const availabilityResponse = await fetch(
+        `/api/music/check-availability?date=${dateStr}&startTime=${selectedTime}&duration=${duration}`
+      );
+      const availabilityData = await availabilityResponse.json();
+
+      if (!availabilityData.available) {
+        alert('Sorry, this time slot is not available. Please select a different time or date.');
+        return;
+      }
+    } catch (error) {
+      console.error('Error checking availability:', error);
+      alert('Failed to verify availability. Please try again.');
+      return;
+    }
+
     const bookingData: BookingData = {
       date: selectedDate,
       startTime: selectedTime,

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { getSessionProducts } from '@/lib/booking-config';
 import { createClient } from '@/utils/supabase/server';
+import { verifyAdminAccess } from '@/lib/admin-auth';
 
 export async function POST(request: NextRequest) {
   // Initialize Stripe inside the function to avoid build-time errors
@@ -10,6 +11,17 @@ export async function POST(request: NextRequest) {
   });
 
   try {
+    const supabase = await createClient();
+
+    // Verify admin access
+    const isAdmin = await verifyAdminAccess(supabase);
+    if (!isAdmin) {
+      return NextResponse.json(
+        { error: 'Unauthorized - Admin access required' },
+        { status: 401 }
+      );
+    }
+
     const body = await request.json();
     const { bookingId, customerId, amount, duration } = body;
 
@@ -21,14 +33,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // TODO: Add authentication check for admin
-    // Verify the request is from an authenticated admin user
-    // if (!session || session.user.role !== 'admin') {
-    //   return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    // }
-
-    // Fetch booking from Supabase to verify status
-    const supabase = await createClient();
+    // Fetch booking to verify status
     const { data: booking, error: fetchError } = await supabase
       .from('bookings')
       .select('*')
