@@ -12,20 +12,53 @@ import styles from './availability.module.css';
 interface BlockedSlot {
   id: string;
   blocked_date: string;
-  start_time: number | null;
-  end_time: number | null;
+  start_time: number | null; // Decimal format: 9.0, 9.5, 10.0, etc.
+  end_time: number | null;   // 9.5 = 9:30 AM
   reason: string | null;
   block_entire_day: boolean;
   created_by: string;
   created_at: string;
 }
 
+// Time slots with half-hour intervals (9:00 AM - 11:00 PM)
+interface TimeSlot {
+  value: number; // Decimal: 9.0, 9.5, 10.0, etc.
+  label: string; // "9:00 AM", "9:30 AM", etc.
+}
+
+const generateTimeSlots = (): TimeSlot[] => {
+  const slots: TimeSlot[] = [];
+  for (let hour = 9; hour <= 23; hour++) {
+    // Add hour:00
+    slots.push({
+      value: hour,
+      label: formatTimeSlot(hour, 0)
+    });
+    // Add hour:30 (except for 11 PM)
+    if (hour < 23) {
+      slots.push({
+        value: hour + 0.5,
+        label: formatTimeSlot(hour, 30)
+      });
+    }
+  }
+  return slots;
+};
+
+const formatTimeSlot = (hour: number, minute: number): string => {
+  const period = hour >= 12 ? 'PM' : 'AM';
+  const displayHour = hour > 12 ? hour - 12 : hour === 0 ? 12 : hour;
+  return `${displayHour}:${minute.toString().padStart(2, '0')} ${period}`;
+};
+
+const TIME_SLOTS = generateTimeSlots();
+
 export default function AdminAvailabilityPage() {
   const [blockedSlots, setBlockedSlots] = useState<BlockedSlot[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState<Date>();
-  const [startTime, setStartTime] = useState<number>(9);
-  const [endTime, setEndTime] = useState<number>(17);
+  const [startTime, setStartTime] = useState<number>(9.0); // Decimal format
+  const [endTime, setEndTime] = useState<number>(17.0);    // Decimal format
   const [reason, setReason] = useState('');
   const [blockEntireDay, setBlockEntireDay] = useState(false);
   const [isBlocking, setIsBlocking] = useState(false);
@@ -144,10 +177,12 @@ export default function AdminAvailabilityPage() {
     }
   };
 
-  const formatTime = (hour: number) => {
+  const formatTime = (time: number) => {
+    const hour = Math.floor(time);
+    const minute = time % 1 === 0.5 ? 30 : 0;
     const period = hour >= 12 ? 'PM' : 'AM';
     const displayHour = hour > 12 ? hour - 12 : hour === 0 ? 12 : hour;
-    return `${displayHour}:00 ${period}`;
+    return `${displayHour}:${minute.toString().padStart(2, '0')} ${period}`;
   };
 
   const groupedSlots = blockedSlots.reduce((acc, slot) => {
@@ -209,12 +244,12 @@ export default function AdminAvailabilityPage() {
                   <label className={styles.label}>Start Time</label>
                   <select
                     value={startTime}
-                    onChange={(e) => setStartTime(parseInt(e.target.value))}
+                    onChange={(e) => setStartTime(parseFloat(e.target.value))}
                     className={styles.select}
                   >
-                    {Array.from({ length: 15 }, (_, i) => i + 9).map((hour) => (
-                      <option key={hour} value={hour}>
-                        {formatTime(hour)}
+                    {TIME_SLOTS.map((slot) => (
+                      <option key={slot.value} value={slot.value}>
+                        {slot.label}
                       </option>
                     ))}
                   </select>
@@ -224,12 +259,12 @@ export default function AdminAvailabilityPage() {
                   <label className={styles.label}>End Time</label>
                   <select
                     value={endTime}
-                    onChange={(e) => setEndTime(parseInt(e.target.value))}
+                    onChange={(e) => setEndTime(parseFloat(e.target.value))}
                     className={styles.select}
                   >
-                    {Array.from({ length: 15 }, (_, i) => i + 9).map((hour) => (
-                      <option key={hour} value={hour}>
-                        {formatTime(hour)}
+                    {TIME_SLOTS.map((slot) => (
+                      <option key={slot.value} value={slot.value}>
+                        {slot.label}
                       </option>
                     ))}
                   </select>

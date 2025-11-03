@@ -65,8 +65,32 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
   const [isFirstTimeBooker, setIsFirstTimeBooker] = useState(false);
   const [showDiscountHint, setShowDiscountHint] = useState(false);
   const [authCheckComplete, setAuthCheckComplete] = useState(false);
+  const [blockedSlots, setBlockedSlots] = useState<Array<{
+    blocked_date: string;
+    start_time: number | null;
+    end_time: number | null;
+    block_entire_day: boolean;
+  }>>([]);
 
   const supabase = createClient();
+
+  // Fetch blocked availability slots
+  useEffect(() => {
+    const fetchBlockedSlots = async () => {
+      try {
+        const response = await fetch('/api/admin/availability');
+        const data = await response.json();
+        if (data.blockedSlots) {
+          setBlockedSlots(data.blockedSlots);
+          console.log(`📅 Loaded ${data.blockedSlots.length} blocked slots`);
+        }
+      } catch (error) {
+        console.error('Error fetching blocked slots:', error);
+      }
+    };
+
+    fetchBlockedSlots();
+  }, []);
 
   // Check authentication status and load user data
   useEffect(() => {
@@ -83,24 +107,37 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
         setIsAuthenticated(true);
         setCustomerEmail(user.email || '');
 
-        // Auto-fill user data from Supabase auth metadata
-        if (user.user_metadata) {
-          setFirstName(user.user_metadata.first_name || '');
-          setLastName(user.user_metadata.last_name || '');
-          setArtistName(user.user_metadata.artist_name || '');
-          setCustomerPhone(user.user_metadata.phone || '');
-        }
+        // Auto-fill user data - try metadata first, then last booking
+        let firstName = user.user_metadata?.first_name || '';
+        let lastName = user.user_metadata?.last_name || '';
+        let artistName = user.user_metadata?.artist_name || '';
+        let phone = user.user_metadata?.phone || '';
 
-        // Check if this is a first-time booker
+        // Check if this is a first-time booker and fetch previous booking data
         const { data: previousBookings } = await supabase
           .from('bookings')
-          .select('id')
+          .select('first_name, last_name, artist_name, customer_phone')
           .eq('customer_email', user.email)
+          .in('status', ['confirmed', 'completed'])
+          .order('created_at', { ascending: false })
           .limit(1);
 
-        if (!previousBookings || previousBookings.length === 0) {
+        if (previousBookings && previousBookings.length > 0) {
+          // Not first time - use data from last booking if metadata is empty
+          const lastBooking = previousBookings[0];
+          if (!firstName) firstName = lastBooking.first_name || '';
+          if (!lastName) lastName = lastBooking.last_name || '';
+          if (!artistName) artistName = lastBooking.artist_name || '';
+          if (!phone) phone = lastBooking.customer_phone || '';
+          setIsFirstTimeBooker(false);
+        } else {
           setIsFirstTimeBooker(true);
         }
+
+        setFirstName(firstName);
+        setLastName(lastName);
+        setArtistName(artistName);
+        setCustomerPhone(phone);
 
         console.log('✅ User authenticated:', user.email);
         console.log('📋 First time booker:', !previousBookings || previousBookings.length === 0);
@@ -130,23 +167,37 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
         setIsAuthenticated(true);
         setCustomerEmail(session.user.email || '');
 
-        if (session.user.user_metadata) {
-          setFirstName(session.user.user_metadata.first_name || '');
-          setLastName(session.user.user_metadata.last_name || '');
-          setArtistName(session.user.user_metadata.artist_name || '');
-          setCustomerPhone(session.user.user_metadata.phone || '');
-        }
+        // Auto-fill user data - try metadata first, then last booking
+        let firstName = session.user.user_metadata?.first_name || '';
+        let lastName = session.user.user_metadata?.last_name || '';
+        let artistName = session.user.user_metadata?.artist_name || '';
+        let phone = session.user.user_metadata?.phone || '';
 
-        // Check if first-time booker
+        // Fetch previous booking data
         const { data: previousBookings } = await supabase
           .from('bookings')
-          .select('id')
+          .select('first_name, last_name, artist_name, customer_phone')
           .eq('customer_email', session.user.email)
+          .in('status', ['confirmed', 'completed'])
+          .order('created_at', { ascending: false })
           .limit(1);
 
-        if (!previousBookings || previousBookings.length === 0) {
+        if (previousBookings && previousBookings.length > 0) {
+          // Not first time - use data from last booking if metadata is empty
+          const lastBooking = previousBookings[0];
+          if (!firstName) firstName = lastBooking.first_name || '';
+          if (!lastName) lastName = lastBooking.last_name || '';
+          if (!artistName) artistName = lastBooking.artist_name || '';
+          if (!phone) phone = lastBooking.customer_phone || '';
+          setIsFirstTimeBooker(false);
+        } else {
           setIsFirstTimeBooker(true);
         }
+
+        setFirstName(firstName);
+        setLastName(lastName);
+        setArtistName(artistName);
+        setCustomerPhone(phone);
 
         console.log('✅ User logged in:', session.user.email);
       } else {
@@ -197,12 +248,33 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
     if (user) {
       setCustomerEmail(user.email || '');
 
-      if (user.user_metadata) {
-        setFirstName(user.user_metadata.first_name || '');
-        setLastName(user.user_metadata.last_name || '');
-        setArtistName(user.user_metadata.artist_name || '');
-        setCustomerPhone(user.user_metadata.phone || '');
+      // Auto-fill user data - try metadata first, then last booking
+      let firstName = user.user_metadata?.first_name || '';
+      let lastName = user.user_metadata?.last_name || '';
+      let artistName = user.user_metadata?.artist_name || '';
+      let phone = user.user_metadata?.phone || '';
+
+      // Fetch previous booking data
+      const { data: previousBookings } = await supabase
+        .from('bookings')
+        .select('first_name, last_name, artist_name, customer_phone')
+        .eq('customer_email', user.email)
+        .in('status', ['confirmed', 'completed'])
+        .order('created_at', { ascending: false })
+        .limit(1);
+
+      if (previousBookings && previousBookings.length > 0) {
+        const lastBooking = previousBookings[0];
+        if (!firstName) firstName = lastBooking.first_name || '';
+        if (!lastName) lastName = lastBooking.last_name || '';
+        if (!artistName) artistName = lastBooking.artist_name || '';
+        if (!phone) phone = lastBooking.customer_phone || '';
       }
+
+      setFirstName(firstName);
+      setLastName(lastName);
+      setArtistName(artistName);
+      setCustomerPhone(phone);
     }
   };
 
@@ -249,10 +321,48 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
 
   const pricing = calculatePricing();
 
-  // Disable past dates and Sundays
+  // Helper: Check if a date is fully blocked
+  const isDateFullyBlocked = (date: Date): boolean => {
+    const dateStr = format(date, 'yyyy-MM-dd');
+    return blockedSlots.some(slot =>
+      slot.blocked_date === dateStr && slot.block_entire_day
+    );
+  };
+
+  // Helper: Check if a specific time slot is blocked
+  const isTimeSlotBlocked = (date: Date, hour: number, minute: number, duration: number): boolean => {
+    const dateStr = format(date, 'yyyy-MM-dd');
+    const requestedStart = hour + (minute / 60); // Convert to decimal (e.g., 9:30 = 9.5)
+    const requestedEnd = requestedStart + duration;
+
+    return blockedSlots.some(slot => {
+      if (slot.blocked_date !== dateStr) return false;
+      if (slot.block_entire_day) return true;
+      if (slot.start_time === null || slot.end_time === null) return false;
+
+      // Check for time overlap
+      return requestedStart < slot.end_time && requestedEnd > slot.start_time;
+    });
+  };
+
+  // Get available time slots for the selected date
+  const getAvailableTimeSlots = () => {
+    if (!selectedDate) return TIME_SLOTS;
+
+    return TIME_SLOTS.filter(slot => {
+      // Check if this time slot is blocked (using 1 hour minimum check)
+      // We check with the current duration to see if the ENTIRE booking would fit
+      return !isTimeSlotBlocked(selectedDate, slot.hour, slot.minute, duration);
+    });
+  };
+
+  const availableTimeSlots = getAvailableTimeSlots();
+
+  // Disable past dates, Sundays, and fully blocked dates
   const disabledDays = [
     { before: new Date() },
-    { dayOfWeek: [0] } // Sunday
+    { dayOfWeek: [0] }, // Sunday
+    isDateFullyBlocked  // Custom matcher function for fully blocked dates
   ];
 
   const handleSubmit = async () => {
@@ -399,26 +509,32 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
             <div className={styles.formGroup}>
               <label className={styles.label}>Select Time</label>
               <div className={styles.timeGrid}>
-                {TIME_SLOTS.map((slot) => {
-                  const isAfterHoursSlot = isAfterHours(slot.hour);
-                  const isTooSoon = selectedDate && isTooSoonToBook(selectedDate, slot.hour, slot.minute);
-                  const isSelected = selectedTime === slot.hour && selectedMinute === slot.minute;
+                {availableTimeSlots.length === 0 ? (
+                  <p className={styles.noTimesAvailable}>
+                    No times available for this date. All slots are blocked by admin.
+                  </p>
+                ) : (
+                  availableTimeSlots.map((slot) => {
+                    const isAfterHoursSlot = isAfterHours(slot.hour);
+                    const isTooSoon = selectedDate && isTooSoonToBook(selectedDate, slot.hour, slot.minute);
+                    const isSelected = selectedTime === slot.hour && selectedMinute === slot.minute;
 
-                  return (
-                    <button
-                      key={`${slot.hour}-${slot.minute}`}
-                      className={`${styles.timeButton} ${isSelected ? styles.active : ''} ${
-                        isAfterHoursSlot ? styles.afterHours : ''
-                      }`}
-                      onClick={() => handleTimeSelect(slot.hour, slot.minute)}
-                      disabled={isTooSoon}
-                      title={isTooSoon ? 'Must book at least 2 hours in advance' : ''}
-                    >
-                      {slot.label}
-                      {isAfterHoursSlot && <span className={styles.badge}>+$10/hr</span>}
-                    </button>
-                  );
-                })}
+                    return (
+                      <button
+                        key={`${slot.hour}-${slot.minute}`}
+                        className={`${styles.timeButton} ${isSelected ? styles.active : ''} ${
+                          isAfterHoursSlot ? styles.afterHours : ''
+                        }`}
+                        onClick={() => handleTimeSelect(slot.hour, slot.minute)}
+                        disabled={isTooSoon}
+                        title={isTooSoon ? 'Must book at least 2 hours in advance' : ''}
+                      >
+                        {slot.label}
+                        {isAfterHoursSlot && <span className={styles.badge}>+$10/hr</span>}
+                      </button>
+                    );
+                  })
+                )}
               </div>
             </div>
           )}

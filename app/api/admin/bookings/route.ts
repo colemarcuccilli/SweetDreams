@@ -15,10 +15,11 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Fetch all bookings ordered by creation date (newest first)
+    // Fetch all bookings except cancelled (including pending_deposit for debugging)
     const { data: bookings, error } = await supabase
       .from('bookings')
       .select('*')
+      .neq('status', 'cancelled')
       .order('created_at', { ascending: false });
 
     if (error) {
@@ -34,7 +35,9 @@ export async function GET(request: NextRequest) {
       const startTime = new Date(booking.start_time);
       return {
         id: booking.id,
-        customerName: booking.customer_name,
+        firstName: booking.first_name,
+        lastName: booking.last_name,
+        artistName: booking.artist_name,
         customerEmail: booking.customer_email,
         customerPhone: booking.customer_phone,
         date: startTime.toISOString().split('T')[0],
@@ -46,6 +49,9 @@ export async function GET(request: NextRequest) {
         status: booking.status,
         stripeCustomerId: booking.stripe_customer_id,
         stripePaymentIntentId: booking.stripe_payment_intent_id,
+        couponCode: booking.coupon_code,
+        discountAmount: booking.discount_amount,
+        actualDepositPaid: booking.actual_deposit_paid,
         createdAt: booking.created_at,
       };
     });

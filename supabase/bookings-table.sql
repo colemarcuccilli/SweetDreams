@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS bookings (
   after_hours_fee BOOLEAN DEFAULT FALSE,
   status TEXT NOT NULL CHECK (status IN ('pending_deposit', 'confirmed', 'completed', 'cancelled')),
   stripe_customer_id TEXT,
+  stripe_session_id TEXT, -- Stripe Checkout Session ID for webhook processing
   stripe_payment_intent_id TEXT,
   stripe_remainder_payment_intent_id TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW(),
@@ -27,6 +28,7 @@ CREATE TABLE IF NOT EXISTS bookings (
 CREATE INDEX IF NOT EXISTS idx_bookings_start_time ON bookings(start_time);
 CREATE INDEX IF NOT EXISTS idx_bookings_status ON bookings(status);
 CREATE INDEX IF NOT EXISTS idx_bookings_customer_email ON bookings(customer_email);
+CREATE INDEX IF NOT EXISTS idx_bookings_stripe_session_id ON bookings(stripe_session_id);
 CREATE INDEX IF NOT EXISTS idx_bookings_created_at ON bookings(created_at DESC);
 
 -- Enable Row Level Security (RLS)

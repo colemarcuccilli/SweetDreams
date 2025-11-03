@@ -90,19 +90,40 @@ export default function ProfileLayout({
               <span>My Bookings</span>
             </Link>
 
-            {/* Admin Dashboard - Only visible to admins */}
+            {/* Admin Features - Only visible to admins */}
             {user && isAdmin(user.email) && (
-              <Link
-                href="/admin"
-                className={`${styles.navItem} ${pathname?.startsWith('/admin') ? styles.navItemActive : ''}`}
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                  <path d="M2 17l10 5 10-5"/>
-                  <path d="M2 12l10 5 10-5"/>
-                </svg>
-                <span>Admin Dashboard</span>
-              </Link>
+              <>
+                <Link
+                  href="/profile/manage-bookings"
+                  className={`${styles.navItem} ${pathname === '/profile/manage-bookings' ? styles.navItemActive : ''}`}
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                    <line x1="16" y1="2" x2="16" y2="6"/>
+                    <line x1="8" y1="2" x2="8" y2="6"/>
+                    <line x1="3" y1="10" x2="21" y2="10"/>
+                    <circle cx="8" cy="14" r="1"/>
+                    <circle cx="12" cy="14" r="1"/>
+                    <circle cx="16" cy="14" r="1"/>
+                  </svg>
+                  <span>Manage Bookings</span>
+                </Link>
+
+                <Link
+                  href="/profile/availability"
+                  className={`${styles.navItem} ${pathname === '/profile/availability' ? styles.navItemActive : ''}`}
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                    <line x1="16" y1="2" x2="16" y2="6"/>
+                    <line x1="8" y1="2" x2="8" y2="6"/>
+                    <line x1="3" y1="10" x2="21" y2="10"/>
+                    <line x1="12" y1="13" x2="12" y2="17"/>
+                    <line x1="10" y1="15" x2="14" y2="15"/>
+                  </svg>
+                  <span>Calendar Availability</span>
+                </Link>
+              </>
             )}
 
             <button

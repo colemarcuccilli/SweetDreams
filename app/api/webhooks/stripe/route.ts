@@ -78,12 +78,38 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
     }
 
-    // Update booking status to 'confirmed' and save payment_intent_id for reference
+    // Extract coupon and discount information
+    let couponCode = null;
+    let discountAmount = 0;
+    let actualDepositPaid = session.amount_total || 0; // Amount actually paid after discount
+
+    if (session.total_details?.amount_discount && session.total_details.amount_discount > 0) {
+      discountAmount = session.total_details.amount_discount;
+      console.log('💰 Discount applied:', discountAmount, 'cents');
+    }
+
+    // Get coupon code if available
+    if (session.discount && session.discount.coupon) {
+      couponCode = session.discount.coupon.name || session.discount.coupon.id;
+      console.log('🎟️ Coupon used:', couponCode);
+    }
+
+    console.log('📊 Payment details:', {
+      originalAmount: booking.deposit_amount,
+      discountAmount,
+      actualPaid: actualDepositPaid,
+      couponCode
+    });
+
+    // Update booking status to 'confirmed' and save payment info
     const { error: updateError } = await supabase
       .from('bookings')
       .update({
         status: 'confirmed',
-        stripe_payment_intent_id: session.payment_intent as string
+        stripe_payment_intent_id: session.payment_intent as string,
+        coupon_code: couponCode,
+        discount_amount: discountAmount,
+        actual_deposit_paid: actualDepositPaid
       })
       .eq('id', booking.id);
 
