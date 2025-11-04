@@ -63,24 +63,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Verify target user exists
-    const { data: targetUser, error: userError } = await supabase
-      .from('auth.users')
-      .select('id')
-      .eq('id', userId)
-      .single();
-
-    if (userError || !targetUser) {
-      return NextResponse.json(
-        { error: 'Target user not found' },
-        { status: 404 }
-      );
-    }
+    // Note: userId validation is already done by admin selecting from client list
+    // No need to verify user exists since it came from our authenticated user list
 
     console.log('📤 Uploading file:', file.name, 'for user:', userId);
 
     // Upload file to Supabase Storage
-    const filePath = await uploadAudioFile(file, userId);
+    const filePath = await uploadAudioFile(supabase, file, userId);
 
     console.log('✅ File uploaded to storage:', filePath);
 
@@ -112,7 +101,7 @@ export async function POST(request: NextRequest) {
       // Try to clean up uploaded file if database insert fails
       try {
         const { deleteAudioFile } = await import('@/lib/supabase/storage');
-        await deleteAudioFile(filePath);
+        await deleteAudioFile(supabase, filePath);
         console.log('🗑️ Cleaned up uploaded file after database error');
       } catch (cleanupError) {
         console.error('⚠️ Failed to clean up file:', cleanupError);

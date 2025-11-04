@@ -1,27 +1,21 @@
 /**
  * Supabase Storage Helper Functions
- * Handles file uploads, downloads, and deletions for the My Library feature
+ * THESE ARE SERVER-SIDE ONLY - Use in API routes, not client components
  */
 
-import { createClient } from '@/utils/supabase/server';
+import { SupabaseClient } from '@supabase/supabase-js';
 
 const BUCKET_NAME = 'client-audio-files';
 
 /**
  * Upload an audio file to Supabase Storage
- * Files are stored in user-specific folders: {userId}/{timestamp}_{filename}
- *
- * @param file - The file to upload
- * @param userId - The user ID this file belongs to
- * @returns The file path in storage
+ * SERVER-SIDE ONLY - Call from API routes
  */
 export async function uploadAudioFile(
+  supabase: SupabaseClient,
   file: File,
   userId: string
 ): Promise<string> {
-  const supabase = await createClient();
-
-  // Create unique file path: userId/timestamp_filename
   const timestamp = Date.now();
   const sanitizedFileName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
   const filePath = `${userId}/${timestamp}_${sanitizedFileName}`;
@@ -43,17 +37,18 @@ export async function uploadAudioFile(
 
 /**
  * Get a signed URL for downloading a file
- * URL expires after 24 hours for security
- *
- * @param filePath - The path to the file in storage
- * @returns Signed download URL (valid for 24 hours)
+ * SERVER-SIDE ONLY - Call from API routes
  */
-export async function getDownloadUrl(filePath: string): Promise<string> {
-  const supabase = await createClient();
-
+export async function getDownloadUrl(
+  supabase: SupabaseClient,
+  filePath: string,
+  fileName?: string
+): Promise<string> {
   const { data, error } = await supabase.storage
     .from(BUCKET_NAME)
-    .createSignedUrl(filePath, 86400); // 24 hours in seconds
+    .createSignedUrl(filePath, 86400, {
+      download: fileName || true // Force download with optional custom filename
+    });
 
   if (error) {
     console.error('Signed URL error:', error);
@@ -69,12 +64,12 @@ export async function getDownloadUrl(filePath: string): Promise<string> {
 
 /**
  * Delete a file from Supabase Storage
- *
- * @param filePath - The path to the file in storage
+ * SERVER-SIDE ONLY - Call from API routes
  */
-export async function deleteAudioFile(filePath: string): Promise<void> {
-  const supabase = await createClient();
-
+export async function deleteAudioFile(
+  supabase: SupabaseClient,
+  filePath: string
+): Promise<void> {
   const { error } = await supabase.storage
     .from(BUCKET_NAME)
     .remove([filePath]);
@@ -86,14 +81,13 @@ export async function deleteAudioFile(filePath: string): Promise<void> {
 }
 
 /**
- * Get file metadata from storage (size, MIME type, etc.)
- *
- * @param filePath - The path to the file in storage
- * @returns File metadata
+ * Get file metadata from storage
+ * SERVER-SIDE ONLY - Call from API routes
  */
-export async function getFileMetadata(filePath: string) {
-  const supabase = await createClient();
-
+export async function getFileMetadata(
+  supabase: SupabaseClient,
+  filePath: string
+) {
   const { data, error } = await supabase.storage
     .from(BUCKET_NAME)
     .list(filePath.split('/')[0], {

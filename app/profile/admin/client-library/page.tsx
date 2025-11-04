@@ -32,6 +32,7 @@ interface Note {
   admin_name: string;
   note_content: string;
   created_at: string;
+  category: string;
 }
 
 export default function AdminClientLibraryPage() {
@@ -53,6 +54,7 @@ export default function AdminClientLibraryPage() {
 
   // Note state
   const [noteContent, setNoteContent] = useState('');
+  const [noteCategory, setNoteCategory] = useState('general');
   const [addingNote, setAddingNote] = useState(false);
 
   useEffect(() => {
@@ -88,7 +90,7 @@ export default function AdminClientLibraryPage() {
 
     try {
       // Fetch client's files
-      const filesResponse = await fetch(`/api/admin/library/notes?userId=${client.id}`);
+      const filesResponse = await fetch(`/api/admin/library/deliverables?userId=${client.id}`);
       const filesData = await filesResponse.json();
 
       // Fetch client's notes
@@ -96,8 +98,7 @@ export default function AdminClientLibraryPage() {
       const notesData = await notesResponse.json();
 
       if (filesData.success) {
-        // TODO: Need to create an API to fetch deliverables by userId
-        setDeliverables([]);
+        setDeliverables(filesData.deliverables);
       }
 
       if (notesData.success) {
@@ -166,7 +167,8 @@ export default function AdminClientLibraryPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           userId: selectedClient.id,
-          noteContent: noteContent.trim()
+          noteContent: noteContent.trim(),
+          category: noteCategory
         })
       });
 
@@ -175,6 +177,7 @@ export default function AdminClientLibraryPage() {
       if (data.success) {
         alert('Note added successfully!');
         setNoteContent('');
+        setNoteCategory('general');
         // Refresh notes
         handleSelectClient(selectedClient);
       } else {
@@ -304,6 +307,22 @@ export default function AdminClientLibraryPage() {
               <section className={styles.section}>
                 <h2 className={styles.sectionTitle}>📝 Add Studio Note</h2>
                 <div className={styles.noteForm}>
+                  <div className={styles.formGroup}>
+                    <label className={styles.label}>Category</label>
+                    <select
+                      value={noteCategory}
+                      onChange={(e) => setNoteCategory(e.target.value)}
+                      className={styles.categorySelect}
+                    >
+                      <option value="general">💬 General</option>
+                      <option value="audio">🎵 Audio</option>
+                      <option value="video">🎥 Video</option>
+                      <option value="mixing">🎚️ Mixing</option>
+                      <option value="mastering">💿 Mastering</option>
+                      <option value="planning">📋 Planning</option>
+                      <option value="feedback">💭 Feedback</option>
+                    </select>
+                  </div>
                   <textarea
                     value={noteContent}
                     onChange={(e) => setNoteContent(e.target.value)}
@@ -327,9 +346,14 @@ export default function AdminClientLibraryPage() {
                     {notes.map((note) => (
                       <div key={note.id} className={styles.noteCard}>
                         <div className={styles.noteHeader}>
-                          <span className={styles.noteDate}>
-                            {format(new Date(note.created_at), 'MMM d, yyyy - h:mm a')}
-                          </span>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                            <span className={styles.noteDate}>
+                              {format(new Date(note.created_at), 'MMM d, yyyy - h:mm a')}
+                            </span>
+                            <span className={`${styles.categoryBadge} ${styles[note.category || 'general']}`}>
+                              {note.category || 'general'}
+                            </span>
+                          </div>
                           <span className={styles.noteAuthor}>by {note.admin_name}</span>
                         </div>
                         <div className={styles.noteText}>{note.note_content}</div>

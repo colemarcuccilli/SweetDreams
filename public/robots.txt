@@ -1,0 +1,12 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /profile
+Disallow: /api
+Disallow: /(auth)
+
+# Host
+Host: https://sweetdreamsmusic.com
+
+# Sitemaps
+Sitemap: https://sweetdreamsmusic.com/sitemap.xml

@@ -9,7 +9,7 @@ import { getDownloadUrl } from '@/lib/supabase/storage';
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { fileId: string } }
+  { params }: { params: Promise<{ fileId: string }> }
 ) {
   try {
     const supabase = await createClient();
@@ -24,7 +24,7 @@ export async function GET(
       );
     }
 
-    const { fileId } = params;
+    const { fileId } = await params;
 
     if (!fileId) {
       return NextResponse.json(
@@ -52,7 +52,9 @@ export async function GET(
     }
 
     // Generate signed download URL (valid for 24 hours)
-    const signedUrl = await getDownloadUrl(deliverable.file_path);
+    // Pass display_name or file_name to force download with proper filename
+    const downloadFileName = deliverable.display_name || deliverable.file_name;
+    const signedUrl = await getDownloadUrl(supabase, deliverable.file_path, downloadFileName);
 
     console.log('✅ Download URL generated successfully');
 

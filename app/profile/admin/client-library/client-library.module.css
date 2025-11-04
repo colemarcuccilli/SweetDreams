@@ -1,13 +1,13 @@
 .container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0;
 }
 
 .loading {
   text-align: center;
   padding: 4rem 2rem;
-  color: #fff;
+  color: #666;
   font-size: 1.2rem;
 }
 
@@ -18,13 +18,13 @@
 .title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #fff;
+  color: #000;
   margin-bottom: 0.5rem;
 }
 
 .subtitle {
   font-size: 1.1rem;
-  color: #999;
+  color: #666;
 }
 
 /* LAYOUT */
@@ -37,8 +37,8 @@
 
 /* CLIENTS LIST SIDEBAR */
 .clientsList {
-  background: #1a1a1a;
-  border: 1px solid #333;
+  background: #f9f9f9;
+  border: 2px solid #ddd;
   border-radius: 12px;
   padding: 1.5rem;
   height: fit-content;
@@ -49,10 +49,10 @@
 .sidebarTitle {
   font-size: 1.3rem;
   font-weight: 700;
-  color: #ffc800;
+  color: #000;
   margin-bottom: 1rem;
   padding-bottom: 0.75rem;
-  border-bottom: 2px solid #333;
+  border-bottom: 2px solid #ddd;
 }
 
 .clientItems {
@@ -66,8 +66,8 @@
   align-items: center;
   gap: 1rem;
   padding: 1rem;
-  background: #111;
-  border: 2px solid transparent;
+  background: #fff;
+  border: 2px solid #ddd;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -76,13 +76,15 @@
 }
 
 .clientItem:hover {
-  background: #222;
-  border-color: #555;
+  background: #fff;
+  border-color: #000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .clientItemActive {
-  background: #222;
-  border-color: #ffc800 !important;
+  background: #fff;
+  border-color: #000 !important;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
 }
 
 .clientInitial {
@@ -106,14 +108,14 @@
 
 .clientName {
   font-weight: 600;
-  color: #fff;
+  color: #000;
   font-size: 1rem;
   margin-bottom: 0.25rem;
 }
 
 .clientEmail {
   font-size: 0.85rem;
-  color: #999;
+  color: #666;
   margin-bottom: 0.25rem;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -122,12 +124,12 @@
 
 .clientCounts {
   font-size: 0.8rem;
-  color: #ffc800;
+  color: #ff9800;
   font-family: 'IBM Plex Mono', monospace;
 }
 
 .emptyText {
-  color: #999;
+  color: #666;
   font-size: 0.95rem;
   text-align: center;
   padding: 2rem 1rem;
@@ -135,8 +137,8 @@
 
 /* MAIN CONTENT */
 .mainContent {
-  background: #1a1a1a;
-  border: 1px solid #333;
+  background: #f9f9f9;
+  border: 2px solid #ddd;
   border-radius: 12px;
   padding: 2rem;
   min-height: 600px;
@@ -151,7 +153,7 @@
 }
 
 .emptyState p {
-  color: #999;
+  color: #666;
   font-size: 1.2rem;
 }
 
@@ -162,10 +164,10 @@
 .sectionTitle {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #ffc800;
+  color: #000;
   margin-bottom: 1.5rem;
   padding-bottom: 0.75rem;
-  border-bottom: 2px solid #333;
+  border-bottom: 2px solid #ddd;
 }
 
 /* UPLOAD FORM */
@@ -182,7 +184,7 @@
 }
 
 .label {
-  color: #fff;
+  color: #000;
   font-weight: 600;
   font-size: 0.95rem;
   text-transform: uppercase;
@@ -191,48 +193,49 @@
 
 .fileInput {
   padding: 0.75rem;
-  background: #111;
-  border: 2px solid #333;
+  background: #fff;
+  border: 2px solid #ddd;
   border-radius: 8px;
-  color: #fff;
+  color: #000;
   font-size: 1rem;
   cursor: pointer;
 }
 
 .fileInput:hover {
-  border-color: #ffc800;
+  border-color: #000;
 }
 
 .filePreview {
   padding: 0.75rem;
-  background: #222;
+  background: #fff;
+  border: 2px solid #ff9800;
   border-radius: 6px;
-  color: #ffc800;
+  color: #ff9800;
   font-size: 0.9rem;
   font-family: 'IBM Plex Mono', monospace;
 }
 
 .input {
   padding: 0.75rem 1rem;
-  background: #111;
-  border: 2px solid #333;
+  background: #fff;
+  border: 2px solid #ddd;
   border-radius: 8px;
-  color: #fff;
+  color: #000;
   font-size: 1rem;
   transition: border-color 0.2s ease;
 }
 
 .input:focus {
   outline: none;
-  border-color: #ffc800;
+  border-color: #000;
 }
 
 .textarea {
   padding: 0.75rem 1rem;
-  background: #111;
-  border: 2px solid #333;
+  background: #fff;
+  border: 2px solid #ddd;
   border-radius: 8px;
-  color: #fff;
+  color: #000;
   font-size: 1rem;
   font-family: inherit;
   resize: vertical;
@@ -241,7 +244,7 @@
 
 .textarea:focus {
   outline: none;
-  border-color: #ffc800;
+  border-color: #000;
 }
 
 .uploadButton,
@@ -280,23 +283,39 @@
   gap: 1rem;
 }
 
+.categorySelect {
+  padding: 0.75rem 1rem;
+  background: #fff;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  color: #000;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+  cursor: pointer;
+}
+
+.categorySelect:focus {
+  outline: none;
+  border-color: #000;
+}
+
 /* NOTES HISTORY */
 .notesHistory {
   margin-top: 2rem;
   padding-top: 2rem;
-  border-top: 2px solid #333;
+  border-top: 2px solid #ddd;
 }
 
 .historyTitle {
   font-size: 1.2rem;
   font-weight: 600;
-  color: #fff;
+  color: #000;
   margin-bottom: 1rem;
 }
 
 .noteCard {
-  background: #111;
-  border: 1px solid #333;
+  background: #fff;
+  border: 2px solid #ddd;
   border-radius: 8px;
   padding: 1rem;
   margin-bottom: 1rem;
@@ -304,8 +323,9 @@
 }
 
 .noteCard:hover {
-  background: #1a1a1a;
-  border-color: #555;
+  background: #fff;
+  border-color: #999;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .noteHeader {
@@ -314,24 +334,71 @@
   align-items: center;
   margin-bottom: 0.75rem;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid #333;
+  border-bottom: 2px solid #eee;
   flex-wrap: wrap;
   gap: 0.5rem;
 }
 
 .noteDate {
-  color: #ffc800;
+  color: #ff9800;
   font-weight: 600;
   font-size: 0.9rem;
 }
 
 .noteAuthor {
-  color: #999;
+  color: #666;
   font-size: 0.85rem;
 }
 
+.categoryBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.categoryBadge.general {
+  background: #e0e0e0;
+  color: #424242;
+}
+
+.categoryBadge.audio {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.categoryBadge.video {
+  background: #fce4ec;
+  color: #c2185b;
+}
+
+.categoryBadge.mixing {
+  background: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.categoryBadge.mastering {
+  background: #fff3e0;
+  color: #ef6c00;
+}
+
+.categoryBadge.planning {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.categoryBadge.feedback {
+  background: #fff9c4;
+  color: #f57f17;
+}
+
 .noteText {
-  color: #fff;
+  color: #000;
   line-height: 1.6;
   white-space: pre-wrap;
   word-break: break-word;
@@ -350,7 +417,7 @@
 
 @media (max-width: 768px) {
   .container {
-    padding: 1rem;
+    padding: 0;
   }
 
   .title {

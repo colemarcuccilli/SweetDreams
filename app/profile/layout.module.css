@@ -121,6 +121,9 @@
 /* Main Content */
 .mainContent {
   min-height: 400px;
+  background: white;
+  padding: 48px;
+  border-radius: 8px;
 }
 
 /* Mobile Responsive */
@@ -149,6 +152,10 @@
   .navItem {
     padding: 14px 24px;
     font-size: 13px;
+  }
+
+  .mainContent {
+    padding: 32px;
   }
 }
 
@@ -225,5 +232,9 @@
     border-top: 2px solid #ddd !important;
     margin-top: 8px !important;
     padding-top: 16px !important;
+  }
+
+  .mainContent {
+    padding: 24px;
   }
 }

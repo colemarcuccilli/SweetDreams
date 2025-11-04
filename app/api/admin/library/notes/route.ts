@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { userId, noteContent } = body;
+    const { userId, noteContent, category = 'general' } = body;
 
     // Validate inputs
     if (!userId) {
@@ -98,12 +98,21 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Validate category
+    const validCategories = ['audio', 'video', 'planning', 'mixing', 'mastering', 'feedback', 'general'];
+    if (!validCategories.includes(category)) {
+      return NextResponse.json(
+        { error: 'Invalid category' },
+        { status: 400 }
+      );
+    }
+
     // Get admin name from user metadata or email
     const adminName = adminUser.user_metadata?.full_name ||
                      adminUser.email?.split('@')[0] ||
                      'Admin';
 
-    console.log('📝 Creating note for user:', userId, 'by:', adminName);
+    console.log('📝 Creating note for user:', userId, 'by:', adminName, 'category:', category);
 
     // Create note
     const { data: note, error } = await supabase
@@ -112,7 +121,8 @@ export async function POST(request: NextRequest) {
         user_id: userId,
         admin_id: adminUser.id,
         admin_name: adminName,
-        note_content: noteContent.trim()
+        note_content: noteContent.trim(),
+        category
       })
       .select()
       .single();

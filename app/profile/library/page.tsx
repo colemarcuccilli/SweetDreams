@@ -21,6 +21,7 @@ interface LibraryNote {
   admin_name: string;
   note_content: string;
   created_at: string;
+  category: string;
 }
 
 export default function MyLibraryPage() {
@@ -56,15 +57,35 @@ export default function MyLibraryPage() {
     setDownloadingId(deliverable.id);
 
     try {
+      // Step 1: Get the signed URL from our API
       const response = await fetch(`/api/library/download/${deliverable.id}`);
       const data = await response.json();
 
-      if (data.success && data.signedUrl) {
-        // Open download in new tab
-        window.open(data.signedUrl, '_blank');
-      } else {
+      if (!data.success || !data.signedUrl) {
         alert('Failed to download file: ' + (data.error || 'Unknown error'));
+        return;
       }
+
+      // Step 2: Fetch the actual file as a blob
+      const fileResponse = await fetch(data.signedUrl);
+      if (!fileResponse.ok) {
+        throw new Error('Failed to fetch file');
+      }
+
+      const blob = await fileResponse.blob();
+
+      // Step 3: Create a blob URL and force download
+      const blobUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = data.displayName || data.fileName || deliverable.file_name;
+      document.body.appendChild(link);
+      link.click();
+
+      // Step 4: Cleanup
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl);
+
     } catch (error) {
       console.error('Download error:', error);
       alert('Failed to download file');
@@ -164,9 +185,14 @@ export default function MyLibraryPage() {
             {notes.map((note) => (
               <div key={note.id} className={styles.noteCard}>
                 <div className={styles.noteHeader}>
-                  <span className={styles.noteDate}>
-                    {format(new Date(note.created_at), 'MMM d, yyyy')} at {format(new Date(note.created_at), 'h:mm a')}
-                  </span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                    <span className={styles.noteDate}>
+                      {format(new Date(note.created_at), 'MMM d, yyyy - h:mm a')}
+                    </span>
+                    <span className={`${styles.categoryBadge} ${styles[note.category || 'general']}`}>
+                      {note.category || 'general'}
+                    </span>
+                  </div>
                   <span className={styles.noteAuthor}>
                     from {note.admin_name}
                   </span>

@@ -1,5 +1,6 @@
 .container {
   width: 100%;
+  /* Remove any default styling - parent handles background/padding */
 }
 
 .header {

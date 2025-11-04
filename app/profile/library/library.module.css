@@ -1,13 +1,13 @@
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0;
 }
 
 .loading {
   text-align: center;
   padding: 4rem 2rem;
-  color: #fff;
+  color: #666;
   font-size: 1.2rem;
 }
 
@@ -18,13 +18,13 @@
 .title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #fff;
+  color: #000;
   margin-bottom: 0.5rem;
 }
 
 .subtitle {
   font-size: 1.1rem;
-  color: #999;
+  color: #666;
 }
 
 .section {
@@ -34,22 +34,22 @@
 .sectionTitle {
   font-size: 1.8rem;
   font-weight: 700;
-  color: #ffc800;
+  color: #000;
   margin-bottom: 1.5rem;
-  border-bottom: 2px solid #333;
+  border-bottom: 2px solid #ddd;
   padding-bottom: 0.5rem;
 }
 
 .emptyState {
-  background: #1a1a1a;
-  border: 2px dashed #333;
+  background: #f9f9f9;
+  border: 2px dashed #ddd;
   border-radius: 12px;
   padding: 3rem 2rem;
   text-align: center;
 }
 
 .emptyState p {
-  color: #999;
+  color: #666;
   font-size: 1.1rem;
 }
 
@@ -61,8 +61,8 @@
 }
 
 .fileCard {
-  background: #1a1a1a;
-  border: 1px solid #333;
+  background: #f9f9f9;
+  border: 2px solid #ddd;
   border-radius: 12px;
   padding: 1.5rem;
   display: flex;
@@ -72,10 +72,10 @@
 }
 
 .fileCard:hover {
-  background: #222;
-  border-color: #ffc800;
+  background: #fff;
+  border-color: #000;
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(255, 200, 0, 0.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
 .fileIcon {
@@ -90,7 +90,7 @@
 .fileName {
   font-size: 1.3rem;
   font-weight: 600;
-  color: #fff;
+  color: #000;
   margin-bottom: 0.5rem;
 }
 
@@ -100,27 +100,27 @@
   gap: 0.5rem;
   flex-wrap: wrap;
   font-size: 0.9rem;
-  color: #999;
+  color: #666;
   margin-bottom: 0.5rem;
 }
 
 .fileSize {
-  color: #ffc800;
+  color: #ff9800;
   font-weight: 600;
   font-family: 'IBM Plex Mono', monospace;
 }
 
 .fileDivider {
-  color: #555;
+  color: #999;
 }
 
 .fileDate,
 .fileUploader {
-  color: #999;
+  color: #666;
 }
 
 .fileDescription {
-  color: #ccc;
+  color: #444;
   font-size: 0.95rem;
   margin-top: 0.5rem;
   line-height: 1.5;
@@ -159,16 +159,16 @@
 }
 
 .noteCard {
-  background: #1a1a1a;
-  border: 1px solid #333;
+  background: #f9f9f9;
+  border: 2px solid #ddd;
   border-radius: 12px;
   padding: 1.5rem;
   transition: all 0.2s ease;
 }
 
 .noteCard:hover {
-  background: #222;
-  border-color: #555;
+  background: #fff;
+  border-color: #999;
 }
 
 .noteHeader {
@@ -177,24 +177,71 @@
   align-items: center;
   margin-bottom: 1rem;
   padding-bottom: 0.75rem;
-  border-bottom: 1px solid #333;
+  border-bottom: 2px solid #ddd;
   flex-wrap: wrap;
   gap: 0.5rem;
 }
 
 .noteDate {
-  color: #ffc800;
+  color: #ff9800;
   font-weight: 600;
   font-size: 0.95rem;
 }
 
 .noteAuthor {
-  color: #999;
+  color: #666;
   font-size: 0.9rem;
 }
 
+.categoryBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.categoryBadge.general {
+  background: #e0e0e0;
+  color: #424242;
+}
+
+.categoryBadge.audio {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.categoryBadge.video {
+  background: #fce4ec;
+  color: #c2185b;
+}
+
+.categoryBadge.mixing {
+  background: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.categoryBadge.mastering {
+  background: #fff3e0;
+  color: #ef6c00;
+}
+
+.categoryBadge.planning {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.categoryBadge.feedback {
+  background: #fff9c4;
+  color: #f57f17;
+}
+
 .noteContent {
-  color: #fff;
+  color: #000;
   line-height: 1.7;
   font-size: 1.05rem;
   white-space: pre-wrap;
