@@ -24,6 +24,7 @@ interface Deliverable {
   file_size: number;
   file_type: string;
   uploaded_by_name: string;
+  description: string | null;
   created_at: string;
 }
 
@@ -56,6 +57,14 @@ export default function AdminClientLibraryPage() {
   const [noteContent, setNoteContent] = useState('');
   const [noteCategory, setNoteCategory] = useState('general');
   const [addingNote, setAddingNote] = useState(false);
+
+  // Delete state
+  const [deletingFileId, setDeletingFileId] = useState<string | null>(null);
+  const [deletingNoteId, setDeletingNoteId] = useState<string | null>(null);
+
+  // Form visibility state
+  const [showUploadForm, setShowUploadForm] = useState(false);
+  const [showNoteForm, setShowNoteForm] = useState(false);
 
   useEffect(() => {
     if (!loading && user && !isAdmin(user.email)) {
@@ -143,6 +152,7 @@ export default function AdminClientLibraryPage() {
         setUploadFile(null);
         setDisplayName('');
         setDescription('');
+        setShowUploadForm(false);
         // Refresh client data
         handleSelectClient(selectedClient);
       } else {
@@ -178,6 +188,7 @@ export default function AdminClientLibraryPage() {
         alert('Note added successfully!');
         setNoteContent('');
         setNoteCategory('general');
+        setShowNoteForm(false);
         // Refresh notes
         handleSelectClient(selectedClient);
       } else {
@@ -188,6 +199,72 @@ export default function AdminClientLibraryPage() {
       alert('Failed to add note');
     } finally {
       setAddingNote(false);
+    }
+  };
+
+  const handleDeleteFile = async (fileId: string, fileName: string) => {
+    if (!confirm(`Are you sure you want to delete "${fileName}"? This cannot be undone.`)) {
+      return;
+    }
+
+    setDeletingFileId(fileId);
+
+    try {
+      const response = await fetch('/api/admin/library/deliverables', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ deliverableId: fileId })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert('File deleted successfully!');
+        // Refresh client data
+        if (selectedClient) {
+          handleSelectClient(selectedClient);
+        }
+      } else {
+        alert('Failed to delete file: ' + (data.error || 'Unknown error'));
+      }
+    } catch (error) {
+      console.error('Delete file error:', error);
+      alert('Failed to delete file');
+    } finally {
+      setDeletingFileId(null);
+    }
+  };
+
+  const handleDeleteNote = async (noteId: string) => {
+    if (!confirm('Are you sure you want to delete this note? This cannot be undone.')) {
+      return;
+    }
+
+    setDeletingNoteId(noteId);
+
+    try {
+      const response = await fetch('/api/admin/library/notes', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ noteId })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert('Note deleted successfully!');
+        // Refresh client data
+        if (selectedClient) {
+          handleSelectClient(selectedClient);
+        }
+      } else {
+        alert('Failed to delete note: ' + (data.error || 'Unknown error'));
+      }
+    } catch (error) {
+      console.error('Delete note error:', error);
+      alert('Failed to delete note');
+    } finally {
+      setDeletingNoteId(null);
     }
   };
 
@@ -252,9 +329,26 @@ export default function AdminClientLibraryPage() {
             <div className={styles.loading}>Loading client data...</div>
           ) : (
             <>
+              {/* Action Buttons */}
+              <div className={styles.actionButtons}>
+                <button
+                  onClick={() => setShowUploadForm(!showUploadForm)}
+                  className={styles.actionButton}
+                >
+                  📤 {showUploadForm ? 'Hide Upload Form' : 'Upload Audio File'}
+                </button>
+                <button
+                  onClick={() => setShowNoteForm(!showNoteForm)}
+                  className={styles.actionButton}
+                >
+                  📝 {showNoteForm ? 'Hide Note Form' : 'Add Studio Note'}
+                </button>
+              </div>
+
               {/* File Upload Section */}
-              <section className={styles.section}>
-                <h2 className={styles.sectionTitle}>📤 Upload Audio File</h2>
+              {showUploadForm && (
+                <section className={styles.section}>
+                  <h2 className={styles.sectionTitle}>📤 Upload Audio File</h2>
                 <div className={styles.uploadForm}>
                   <div className={styles.formGroup}>
                     <label className={styles.label}>Choose File</label>
@@ -301,50 +395,105 @@ export default function AdminClientLibraryPage() {
                     {uploading ? 'Uploading...' : 'Upload File'}
                   </button>
                 </div>
-              </section>
+                </section>
+              )}
 
               {/* Add Note Section */}
-              <section className={styles.section}>
-                <h2 className={styles.sectionTitle}>📝 Add Studio Note</h2>
-                <div className={styles.noteForm}>
-                  <div className={styles.formGroup}>
-                    <label className={styles.label}>Category</label>
-                    <select
-                      value={noteCategory}
-                      onChange={(e) => setNoteCategory(e.target.value)}
-                      className={styles.categorySelect}
+              {showNoteForm && (
+                <section className={styles.section}>
+                  <h2 className={styles.sectionTitle}>📝 Add Studio Note</h2>
+                  <div className={styles.noteForm}>
+                    <div className={styles.formGroup}>
+                      <label className={styles.label}>Category</label>
+                      <select
+                        value={noteCategory}
+                        onChange={(e) => setNoteCategory(e.target.value)}
+                        className={styles.categorySelect}
+                      >
+                        <option value="general">💬 General</option>
+                        <option value="audio">🎵 Audio</option>
+                        <option value="video">🎥 Video</option>
+                        <option value="mixing">🎚️ Mixing</option>
+                        <option value="mastering">💿 Mastering</option>
+                        <option value="planning">📋 Planning</option>
+                        <option value="feedback">💭 Feedback</option>
+                      </select>
+                    </div>
+                    <textarea
+                      value={noteContent}
+                      onChange={(e) => setNoteContent(e.target.value)}
+                      placeholder="Type your message to the client here... You can include links to external video services if needed."
+                      className={styles.textarea}
+                      rows={5}
+                    />
+                    <button
+                      onClick={handleAddNote}
+                      disabled={!noteContent.trim() || addingNote}
+                      className={styles.addNoteButton}
                     >
-                      <option value="general">💬 General</option>
-                      <option value="audio">🎵 Audio</option>
-                      <option value="video">🎥 Video</option>
-                      <option value="mixing">🎚️ Mixing</option>
-                      <option value="mastering">💿 Mastering</option>
-                      <option value="planning">📋 Planning</option>
-                      <option value="feedback">💭 Feedback</option>
-                    </select>
+                      {addingNote ? 'Adding...' : 'Add Note'}
+                    </button>
                   </div>
-                  <textarea
-                    value={noteContent}
-                    onChange={(e) => setNoteContent(e.target.value)}
-                    placeholder="Type your message to the client here... You can include links to external video services if needed."
-                    className={styles.textarea}
-                    rows={5}
-                  />
-                  <button
-                    onClick={handleAddNote}
-                    disabled={!noteContent.trim() || addingNote}
-                    className={styles.addNoteButton}
-                  >
-                    {addingNote ? 'Adding...' : 'Add Note'}
-                  </button>
-                </div>
+                </section>
+              )}
 
-                {/* Notes History */}
-                {notes.length > 0 && (
-                  <div className={styles.notesHistory}>
-                    <h3 className={styles.historyTitle}>Recent Notes</h3>
+              {/* Uploaded Files Section */}
+              <section className={styles.section}>
+                <h2 className={styles.sectionTitle}>📁 Uploaded Files ({deliverables.length})</h2>
+                {deliverables.length === 0 ? (
+                  <div className={styles.emptyState}>
+                    <p>No files uploaded yet</p>
+                  </div>
+                ) : (
+                  <div className={styles.filesList}>
+                    {deliverables.map((file) => (
+                      <div key={file.id} className={styles.fileCard}>
+                        <div className={styles.fileInfo}>
+                          <h3 className={styles.fileName}>{file.display_name}</h3>
+                          <div className={styles.fileMetadata}>
+                            <span className={styles.fileSize}>
+                              {formatFileSize(file.file_size)}
+                            </span>
+                            <span> • </span>
+                            <span>
+                              {format(new Date(file.created_at), 'MMM d, yyyy')}
+                            </span>
+                            {file.uploaded_by_name && (
+                              <>
+                                <span> • </span>
+                                <span>by {file.uploaded_by_name}</span>
+                              </>
+                            )}
+                          </div>
+                          {file.description && (
+                            <p className={styles.fileDescription}>{file.description}</p>
+                          )}
+                        </div>
+                        <button
+                          onClick={() => handleDeleteFile(file.id, file.display_name)}
+                          disabled={deletingFileId === file.id}
+                          className={styles.deleteButton}
+                          title="Delete file"
+                        >
+                          {deletingFileId === file.id ? '⏳' : '🗑️'}
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </section>
+
+              {/* Studio Notes History */}
+              <section className={styles.section}>
+                <h2 className={styles.sectionTitle}>💬 Studio Notes ({notes.length})</h2>
+                {notes.length === 0 ? (
+                  <div className={styles.emptyState}>
+                    <p>No notes yet</p>
+                  </div>
+                ) : (
+                  <div className={styles.notesList}>
                     {notes.map((note) => (
-                      <div key={note.id} className={styles.noteCard}>
+                      <div key={note.id} className={`${styles.noteCard} ${styles[note.category || 'general']}`}>
                         <div className={styles.noteHeader}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
                             <span className={styles.noteDate}>
@@ -354,7 +503,17 @@ export default function AdminClientLibraryPage() {
                               {note.category || 'general'}
                             </span>
                           </div>
-                          <span className={styles.noteAuthor}>by {note.admin_name}</span>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                            <span className={styles.noteAuthor}>by {note.admin_name}</span>
+                            <button
+                              onClick={() => handleDeleteNote(note.id)}
+                              disabled={deletingNoteId === note.id}
+                              className={styles.deleteNoteButton}
+                              title="Delete note"
+                            >
+                              {deletingNoteId === note.id ? '⏳' : '🗑️'}
+                            </button>
+                          </div>
                         </div>
                         <div className={styles.noteText}>{note.note_content}</div>
                       </div>

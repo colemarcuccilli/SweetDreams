@@ -167,8 +167,44 @@
 }
 
 .noteCard:hover {
-  background: #fff;
   border-color: #999;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Category-colored note cards */
+.noteCard.general {
+  background: #e0e0e0;
+  border-color: #bdbdbd;
+}
+
+.noteCard.audio {
+  background: #e3f2fd;
+  border-color: #90caf9;
+}
+
+.noteCard.video {
+  background: #fce4ec;
+  border-color: #f48fb1;
+}
+
+.noteCard.mixing {
+  background: #f3e5f5;
+  border-color: #ce93d8;
+}
+
+.noteCard.mastering {
+  background: #fff3e0;
+  border-color: #ffcc80;
+}
+
+.noteCard.planning {
+  background: #e8f5e9;
+  border-color: #a5d6a7;
+}
+
+.noteCard.feedback {
+  background: #fff9c4;
+  border-color: #fff59d;
 }
 
 .noteHeader {

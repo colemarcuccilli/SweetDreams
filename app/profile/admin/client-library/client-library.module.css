@@ -170,6 +170,36 @@
   border-bottom: 2px solid #ddd;
 }
 
+/* ACTION BUTTONS */
+.actionButtons {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.actionButton {
+  background: linear-gradient(135deg, #ffc800, #ff9800);
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  flex: 1;
+  min-width: 200px;
+}
+
+.actionButton:hover {
+  background: linear-gradient(135deg, #ffd700, #ffa500);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 200, 0, 0.4);
+}
+
 /* UPLOAD FORM */
 .uploadForm {
   display: flex;
@@ -299,18 +329,11 @@
   border-color: #000;
 }
 
-/* NOTES HISTORY */
-.notesHistory {
-  margin-top: 2rem;
-  padding-top: 2rem;
-  border-top: 2px solid #ddd;
-}
-
-.historyTitle {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #000;
-  margin-bottom: 1rem;
+/* NOTES LIST */
+.notesList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .noteCard {
@@ -323,9 +346,44 @@
 }
 
 .noteCard:hover {
-  background: #fff;
   border-color: #999;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Category-colored note cards */
+.noteCard.general {
+  background: #e0e0e0;
+  border-color: #bdbdbd;
+}
+
+.noteCard.audio {
+  background: #e3f2fd;
+  border-color: #90caf9;
+}
+
+.noteCard.video {
+  background: #fce4ec;
+  border-color: #f48fb1;
+}
+
+.noteCard.mixing {
+  background: #f3e5f5;
+  border-color: #ce93d8;
+}
+
+.noteCard.mastering {
+  background: #fff3e0;
+  border-color: #ffcc80;
+}
+
+.noteCard.planning {
+  background: #e8f5e9;
+  border-color: #a5d6a7;
+}
+
+.noteCard.feedback {
+  background: #fff9c4;
+  border-color: #fff59d;
 }
 
 .noteHeader {
@@ -402,6 +460,104 @@
   line-height: 1.6;
   white-space: pre-wrap;
   word-break: break-word;
+}
+
+/* FILES LIST */
+.filesList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.fileCard {
+  background: #fff;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  transition: all 0.2s ease;
+}
+
+.fileCard:hover {
+  border-color: #999;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.fileInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.fileName {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 0.5rem;
+}
+
+.fileMetadata {
+  color: #666;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.fileSize {
+  color: #ff9800;
+  font-weight: 600;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.fileDescription {
+  color: #444;
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+  line-height: 1.5;
+}
+
+/* DELETE BUTTONS */
+.deleteButton,
+.deleteNoteButton {
+  background: #ff4444;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  min-width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deleteButton:hover:not(:disabled),
+.deleteNoteButton:hover:not(:disabled) {
+  background: #ff0000;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(255, 68, 68, 0.4);
+}
+
+.deleteButton:disabled,
+.deleteNoteButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.deleteNoteButton {
+  padding: 0.25rem 0.75rem;
+  font-size: 1rem;
+  min-width: 36px;
+  height: 36px;
 }
 
 /* MOBILE RESPONSIVE */

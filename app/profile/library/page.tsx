@@ -183,7 +183,7 @@ export default function MyLibraryPage() {
         ) : (
           <div className={styles.notesList}>
             {notes.map((note) => (
-              <div key={note.id} className={styles.noteCard}>
+              <div key={note.id} className={`${styles.noteCard} ${styles[note.category || 'general']}`}>
                 <div className={styles.noteHeader}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
                     <span className={styles.noteDate}>
