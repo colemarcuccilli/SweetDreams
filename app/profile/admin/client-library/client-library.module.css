@@ -1,0 +1,363 @@
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.loading {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #fff;
+  font-size: 1.2rem;
+}
+
+.header {
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: #999;
+}
+
+/* LAYOUT */
+.layout {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 2rem;
+  min-height: 600px;
+}
+
+/* CLIENTS LIST SIDEBAR */
+.clientsList {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 1.5rem;
+  height: fit-content;
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+}
+
+.sidebarTitle {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #ffc800;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #333;
+}
+
+.clientItems {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.clientItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: #111;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  width: 100%;
+}
+
+.clientItem:hover {
+  background: #222;
+  border-color: #555;
+}
+
+.clientItemActive {
+  background: #222;
+  border-color: #ffc800 !important;
+}
+
+.clientInitial {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ffc800, #ff9800);
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.clientInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.clientName {
+  font-weight: 600;
+  color: #fff;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.clientEmail {
+  font-size: 0.85rem;
+  color: #999;
+  margin-bottom: 0.25rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.clientCounts {
+  font-size: 0.8rem;
+  color: #ffc800;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.emptyText {
+  color: #999;
+  font-size: 0.95rem;
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+/* MAIN CONTENT */
+.mainContent {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 2rem;
+  min-height: 600px;
+}
+
+.emptyState {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 400px;
+}
+
+.emptyState p {
+  color: #999;
+  font-size: 1.2rem;
+}
+
+.section {
+  margin-bottom: 3rem;
+}
+
+.sectionTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffc800;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #333;
+}
+
+/* UPLOAD FORM */
+.uploadForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.fileInput {
+  padding: 0.75rem;
+  background: #111;
+  border: 2px solid #333;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.fileInput:hover {
+  border-color: #ffc800;
+}
+
+.filePreview {
+  padding: 0.75rem;
+  background: #222;
+  border-radius: 6px;
+  color: #ffc800;
+  font-size: 0.9rem;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.input {
+  padding: 0.75rem 1rem;
+  background: #111;
+  border: 2px solid #333;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #ffc800;
+}
+
+.textarea {
+  padding: 0.75rem 1rem;
+  background: #111;
+  border: 2px solid #333;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 1rem;
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.2s ease;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: #ffc800;
+}
+
+.uploadButton,
+.addNoteButton {
+  background: linear-gradient(135deg, #ffc800, #ff9800);
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.uploadButton:hover:not(:disabled),
+.addNoteButton:hover:not(:disabled) {
+  background: linear-gradient(135deg, #ffd700, #ffa500);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 200, 0, 0.4);
+}
+
+.uploadButton:disabled,
+.addNoteButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* NOTE FORM */
+.noteForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* NOTES HISTORY */
+.notesHistory {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 2px solid #333;
+}
+
+.historyTitle {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.noteCard {
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  transition: all 0.2s ease;
+}
+
+.noteCard:hover {
+  background: #1a1a1a;
+  border-color: #555;
+}
+
+.noteHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #333;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.noteDate {
+  color: #ffc800;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.noteAuthor {
+  color: #999;
+  font-size: 0.85rem;
+}
+
+.noteText {
+  color: #fff;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 1024px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .clientsList {
+    max-height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .mainContent {
+    padding: 1.5rem;
+  }
+}
