@@ -156,26 +156,22 @@
   font-style: italic;
 }
 
-/* Gift Box Animation for 3-Hour Holiday Special */
-.giftBoxWrapper {
-  position: relative;
-  perspective: 1000px;
-}
-
+/* Gift Box Animation for 3-Hour Holiday Special - GSAP Powered */
 .giftButton {
   position: relative;
   overflow: visible;
   padding: 0;
-  background: transparent;
-  border: none;
-  min-height: 100px;
-  transition: transform 0.3s ease;
+  background: transparent !important;
+  border: none !important;
+  min-height: 70px;
+  perspective: 1000px;
+  will-change: transform;
 }
 
 .giftButton:hover {
-  transform: scale(1.05);
-  background: transparent;
-  border: none;
+  transform: scale(1.02);
+  background: transparent !important;
+  border: none !important;
 }
 
 .giftBox {
@@ -189,8 +185,8 @@
   border: 2px solid #fff;
   box-shadow: 0 4px 20px rgba(194, 24, 91, 0.4);
   border-radius: 8px;
-  padding: 1.5rem 1rem;
-  transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  padding: 0.5rem 1rem;
+  will-change: transform, box-shadow;
 }
 
 .giftLid {
@@ -202,9 +198,21 @@
   background: linear-gradient(135deg, #c2185b 0%, #d81b60 100%);
   border: 2px solid #fff;
   border-radius: 8px 8px 0 0;
-  transform-origin: bottom;
-  transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transform-origin: bottom center;
   z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.giftIcon {
+  font-size: 1.5rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  z-index: 5;
+  position: relative;
+  will-change: transform;
 }
 
 .giftRibbon {
@@ -212,12 +220,13 @@
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 20px;
+  transform-origin: top center;
+  width: 15px;
   height: 100%;
   background: linear-gradient(90deg, #ffd700 0%, #ffed4e 100%);
   box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
   z-index: 2;
-  transition: all 0.6s ease;
+  will-change: transform, opacity;
 }
 
 .giftBow {
@@ -225,102 +234,58 @@
   top: -5px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 2rem;
+  font-size: 1.1rem;
   z-index: 4;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-  animation: bowBounce 2s ease-in-out infinite;
-  transition: all 0.6s ease;
-}
-
-@keyframes bowBounce {
-  0%, 100% {
-    transform: translateX(-50%) translateY(0) scale(1);
-  }
-  50% {
-    transform: translateX(-50%) translateY(-5px) scale(1.1);
-  }
+  will-change: transform, opacity;
 }
 
 .giftContent {
   opacity: 0;
   transform: scale(0.5);
-  transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   z-index: 1;
+  will-change: transform, opacity;
 }
 
 .giftText {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.1rem;
   color: #fff;
   font-family: 'Anton', sans-serif;
   text-transform: uppercase;
 }
 
 .giftHours {
-  font-size: 1rem;
+  font-size: 0.7rem;
   letter-spacing: 0.05em;
 }
 
 .giftPrice {
-  font-size: 1.5rem;
+  font-size: 1rem;
   letter-spacing: 0.05em;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .giftSavings {
-  font-size: 0.75rem;
+  font-size: 0.6rem;
   color: #ffd700;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-/* Unwrapped State */
-.giftButton.unwrapped .giftLid {
-  transform: rotateX(-180deg) translateY(-120%);
-  opacity: 0;
+/* Active state - override default button active styles */
+.giftButton.active {
+  background: transparent !important;
+  color: #fff !important;
+  border: none !important;
 }
 
-.giftButton.unwrapped .giftRibbon {
-  opacity: 0;
-  transform: translateX(-50%) scaleY(0);
-}
-
-.giftButton.unwrapped .giftBow {
-  opacity: 0;
-  transform: translateX(-50%) translateY(-100px) rotate(360deg);
-}
-
-.giftButton.unwrapped .giftContent {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.giftButton.unwrapped .giftBox {
-  box-shadow: 0 8px 30px rgba(194, 24, 91, 0.6);
-  transform: scale(1.05);
-}
-
-/* Active state */
 .giftButton.active .giftBox {
   background: linear-gradient(135deg, #d81b60 0%, #e91e63 100%);
   border-color: #ffd700;
-  box-shadow: 0 8px 30px rgba(255, 215, 0, 0.6);
-}
-
-.giftButton.active.unwrapped .giftBox {
-  animation: giftPulse 1.5s ease-in-out infinite;
-}
-
-@keyframes giftPulse {
-  0%, 100% {
-    box-shadow: 0 8px 30px rgba(255, 215, 0, 0.6);
-  }
-  50% {
-    box-shadow: 0 8px 40px rgba(255, 215, 0, 0.9);
-  }
 }
 
 /* Time Selection */

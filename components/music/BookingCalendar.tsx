@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { DayPicker } from 'react-day-picker';
 import { format, addDays, isSameDay as isSameDayFns } from 'date-fns';
 import 'react-day-picker/dist/style.css';
+import gsap from 'gsap';
 import styles from './BookingCalendar.module.css';
 import {
   getSessionProducts,
@@ -72,6 +73,14 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
     block_entire_day: boolean;
   }>>([]);
   const [isGiftUnwrapped, setIsGiftUnwrapped] = useState(false);
+
+  // GSAP refs for gift animation
+  const giftBoxRef = useRef<HTMLDivElement>(null);
+  const giftLidRef = useRef<HTMLDivElement>(null);
+  const giftRibbonRef = useRef<HTMLDivElement>(null);
+  const giftBowRef = useRef<HTMLDivElement>(null);
+  const giftIconRef = useRef<HTMLDivElement>(null);
+  const giftContentRef = useRef<HTMLDivElement>(null);
 
   const supabase = createClient();
 
@@ -218,6 +227,109 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
       subscription.unsubscribe();
     };
   }, [supabase]);
+
+  // GSAP gift box animations
+  useEffect(() => {
+    if (isGiftUnwrapped) {
+      // Unwrap animation
+      const tl = gsap.timeline();
+
+      tl.to(giftBowRef.current, {
+        y: -100,
+        rotation: 360,
+        opacity: 0,
+        duration: 0.6,
+        ease: 'back.in(2)'
+      })
+      .to(giftLidRef.current, {
+        rotationX: -120,
+        y: -60,
+        opacity: 0,
+        duration: 0.8,
+        ease: 'back.in(1.7)'
+      }, '-=0.4')
+      .to(giftRibbonRef.current, {
+        scaleY: 0,
+        opacity: 0,
+        duration: 0.5,
+        ease: 'power2.in'
+      }, '-=0.6')
+      .to(giftContentRef.current, {
+        scale: 1,
+        opacity: 1,
+        duration: 0.7,
+        ease: 'elastic.out(1, 0.5)'
+      }, '-=0.2')
+      .to(giftBoxRef.current, {
+        scale: 1.05,
+        boxShadow: '0 8px 30px rgba(255, 215, 0, 0.6)',
+        duration: 0.3
+      }, '-=0.4');
+
+    } else {
+      // Re-wrap animation
+      const tl = gsap.timeline();
+
+      tl.to(giftContentRef.current, {
+        scale: 0.5,
+        opacity: 0,
+        duration: 0.3,
+        ease: 'back.in(2)'
+      })
+      .to(giftBoxRef.current, {
+        scale: 1,
+        boxShadow: '0 4px 20px rgba(194, 24, 91, 0.4)',
+        duration: 0.3
+      }, '-=0.2')
+      .set([giftLidRef.current, giftRibbonRef.current, giftBowRef.current], {
+        opacity: 1
+      })
+      .to(giftRibbonRef.current, {
+        scaleY: 1,
+        duration: 0.4,
+        ease: 'elastic.out(1, 0.3)'
+      })
+      .to(giftLidRef.current, {
+        rotationX: 0,
+        y: 0,
+        duration: 0.6,
+        ease: 'back.out(1.7)'
+      }, '-=0.3')
+      .to(giftBowRef.current, {
+        y: 0,
+        rotation: 0,
+        duration: 0.5,
+        ease: 'elastic.out(1, 0.5)'
+      }, '-=0.4');
+    }
+  }, [isGiftUnwrapped]);
+
+  // GSAP idle animations (bow bounce, icon wiggle)
+  useEffect(() => {
+    if (!isGiftUnwrapped) {
+      // Bow bounce
+      gsap.to(giftBowRef.current, {
+        y: -5,
+        scale: 1.1,
+        duration: 1,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut'
+      });
+
+      // Icon wiggle
+      gsap.to(giftIconRef.current, {
+        rotation: 5,
+        duration: 0.75,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut'
+      });
+    } else {
+      // Kill idle animations when unwrapped
+      gsap.killTweensOf([giftBowRef.current, giftIconRef.current]);
+    }
+  }, [isGiftUnwrapped]);
 
   // Adjust duration if it becomes invalid when time changes
   const handleTimeSelect = async (hour: number, minute: number) => {
@@ -488,44 +600,41 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
                 const isDisabled = selectedTime !== undefined && !isValidBookingTime(selectedTime, hrs);
                 const isThreeHour = hrs === 3;
 
-                if (isThreeHour) {
-                  return (
-                    <div key={hrs} className={styles.giftBoxWrapper}>
-                      <button
-                        className={`${styles.durationButton} ${styles.giftButton} ${duration === hrs ? styles.active : ''} ${isGiftUnwrapped ? styles.unwrapped : ''}`}
-                        onClick={() => {
-                          setIsGiftUnwrapped(true);
-                          setDuration(hrs);
-                        }}
-                        disabled={isDisabled}
-                        title={isDisabled ? `${hrs} hour session would exceed studio hours` : 'Holiday Special!'}
-                      >
-                        <div className={styles.giftBox}>
-                          <div className={styles.giftLid}></div>
-                          <div className={styles.giftRibbon}></div>
-                          <div className={styles.giftBow}>🎀</div>
-                          <div className={styles.giftContent}>
-                            <div className={styles.giftText}>
-                              <span className={styles.giftHours}>{hrs} Hours</span>
-                              <span className={styles.giftPrice}>$100</span>
-                              <span className={styles.giftSavings}>Save $50!</span>
-                            </div>
-                          </div>
-                        </div>
-                      </button>
-                    </div>
-                  );
-                }
-
                 return (
                   <button
                     key={hrs}
-                    className={`${styles.durationButton} ${duration === hrs ? styles.active : ''}`}
-                    onClick={() => setDuration(hrs)}
+                    className={`${styles.durationButton} ${isThreeHour ? styles.giftButton : ''} ${duration === hrs ? styles.active : ''} ${isThreeHour && isGiftUnwrapped ? styles.unwrapped : ''}`}
+                    onClick={() => {
+                      if (isThreeHour) {
+                        setIsGiftUnwrapped(true);
+                      } else {
+                        setIsGiftUnwrapped(false); // Re-wrap the gift when clicking other buttons
+                      }
+                      setDuration(hrs);
+                    }}
                     disabled={isDisabled}
-                    title={isDisabled ? `${hrs} hour session would exceed studio hours` : ''}
+                    title={isDisabled ? `${hrs} hour session would exceed studio hours` : isThreeHour ? 'Holiday Special!' : ''}
                   >
-                    {hrs} {hrs === 1 ? 'Hour' : 'Hours'}
+                    {isThreeHour ? (
+                      <div ref={giftBoxRef} className={styles.giftBox}>
+                        <div ref={giftLidRef} className={styles.giftLid}>
+                          <div ref={giftIconRef} className={styles.giftIcon}>🎁</div>
+                        </div>
+                        <div ref={giftRibbonRef} className={styles.giftRibbon}></div>
+                        <div ref={giftBowRef} className={styles.giftBow}>🎀</div>
+                        <div ref={giftContentRef} className={styles.giftContent}>
+                          <div className={styles.giftText}>
+                            <span className={styles.giftHours}>{hrs} Hours</span>
+                            <span className={styles.giftPrice}>$100</span>
+                            <span className={styles.giftSavings}>Save $50!</span>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        {hrs} {hrs === 1 ? 'Hour' : 'Hours'}
+                      </>
+                    )}
                   </button>
                 );
               })}
