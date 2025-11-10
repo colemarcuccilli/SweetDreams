@@ -71,6 +71,7 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
     end_time: number | null;
     block_entire_day: boolean;
   }>>([]);
+  const [isGiftUnwrapped, setIsGiftUnwrapped] = useState(false);
 
   const supabase = createClient();
 
@@ -485,6 +486,37 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
             <div className={styles.durationGrid}>
               {SESSION_DURATIONS.map((hrs) => {
                 const isDisabled = selectedTime !== undefined && !isValidBookingTime(selectedTime, hrs);
+                const isThreeHour = hrs === 3;
+
+                if (isThreeHour) {
+                  return (
+                    <div key={hrs} className={styles.giftBoxWrapper}>
+                      <button
+                        className={`${styles.durationButton} ${styles.giftButton} ${duration === hrs ? styles.active : ''} ${isGiftUnwrapped ? styles.unwrapped : ''}`}
+                        onClick={() => {
+                          setIsGiftUnwrapped(true);
+                          setDuration(hrs);
+                        }}
+                        disabled={isDisabled}
+                        title={isDisabled ? `${hrs} hour session would exceed studio hours` : 'Holiday Special!'}
+                      >
+                        <div className={styles.giftBox}>
+                          <div className={styles.giftLid}></div>
+                          <div className={styles.giftRibbon}></div>
+                          <div className={styles.giftBow}>🎀</div>
+                          <div className={styles.giftContent}>
+                            <div className={styles.giftText}>
+                              <span className={styles.giftHours}>{hrs} Hours</span>
+                              <span className={styles.giftPrice}>$100</span>
+                              <span className={styles.giftSavings}>Save $50!</span>
+                            </div>
+                          </div>
+                        </div>
+                      </button>
+                    </div>
+                  );
+                }
+
                 return (
                   <button
                     key={hrs}
