@@ -36,7 +36,7 @@ interface ShowcaseItem {
     file_type: string;
     file_size: number;
     description: string | null;
-  };
+  }[];
 }
 
 interface Project {
@@ -262,8 +262,11 @@ export default async function PublicProfilePage({
           <h2 className={styles.sectionTitle}>Audio Showcase</h2>
           <div className={styles.audioList}>
             {showcase.map((item) => {
-              const title = item.custom_title || item.deliverables.display_name;
-              const description = item.custom_description || item.deliverables.description;
+              const deliverable = item.deliverables?.[0];
+              if (!deliverable) return null;
+
+              const title = item.custom_title || deliverable.display_name;
+              const description = item.custom_description || deliverable.description;
 
               return (
                 <div key={item.id} className={styles.audioItem}>
@@ -273,14 +276,14 @@ export default async function PublicProfilePage({
                       <p className={styles.audioDescription}>{description}</p>
                     )}
                     <div className={styles.audioMeta}>
-                      {item.deliverables.file_type} • {formatFileSize(item.deliverables.file_size)}
+                      {deliverable.file_type} • {formatFileSize(deliverable.file_size)}
                     </div>
                   </div>
 
                   <div className={styles.audioPlayerPlaceholder}>
                     🎧 Audio player coming soon
                     <div className={styles.audioFileName}>
-                      {item.deliverables.file_name}
+                      {deliverable.file_name}
                     </div>
                   </div>
                 </div>
