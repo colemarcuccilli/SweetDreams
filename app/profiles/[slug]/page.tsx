@@ -13,6 +13,12 @@ interface Profile {
   photo_1_url: string | null;
   photo_2_url: string | null;
   photo_3_url: string | null;
+  cover_photo_url: string | null;
+  square_photo_url: string | null;
+  tall_photo_url: string | null;
+  gallery_photo_1_url: string | null;
+  gallery_photo_2_url: string | null;
+  gallery_photo_3_url: string | null;
   social_links: {
     instagram?: string;
     spotify?: string;
