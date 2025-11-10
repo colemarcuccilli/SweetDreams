@@ -286,11 +286,12 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
 
     const { deposit: depositProduct } = getSessionProducts(duration);
     let depositAmount = depositProduct.amount;
-    let totalAmount = depositAmount * 2; // Deposit + Remainder
+    let totalAmount = depositAmount;
 
-    // For 1-hour sessions, total = deposit (no remainder)
-    if (duration === 1) {
-      totalAmount = depositAmount;
+    // For 'full' payment products (1-hour, 3-hour holiday), total = deposit (no remainder)
+    // For 'deposit' products, total = deposit + remainder (deposit * 2)
+    if (depositProduct.type !== 'full') {
+      totalAmount = depositAmount * 2; // Deposit + Remainder
     }
 
     // Calculate how many hours fall after 9 PM
@@ -641,18 +642,34 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
                   </div>
                 )}
                 <div className={styles.summaryDivider} />
-                <div className={styles.summaryRow}>
-                  <span className={styles.depositLabel}>Deposit Due Today</span>
-                  <span className={styles.depositAmount}>${(pricing.deposit / 100).toFixed(2)}</span>
-                </div>
-                <div className={styles.summaryRow}>
-                  <span className={styles.totalLabel}>Total Session Cost</span>
-                  <span className={styles.totalAmount}>${(pricing.total / 100).toFixed(2)}</span>
-                </div>
-                {duration > 1 && (
-                  <p className={styles.remainderNote}>
-                    Remainder of ${((pricing.total - pricing.deposit) / 100).toFixed(2)} will be charged after your session
-                  </p>
+                {duration === 3 ? (
+                  // 3-hour holiday special - full payment
+                  <>
+                    <div className={styles.summaryRow}>
+                      <span className={styles.depositLabel}>Full Payment Due Today</span>
+                      <span className={styles.depositAmount}>${(pricing.total / 100).toFixed(2)}</span>
+                    </div>
+                    <p className={styles.remainderNote}>
+                      Holiday Special: 3 Hours for $100 - No additional charges after your session!
+                    </p>
+                  </>
+                ) : (
+                  // All other sessions
+                  <>
+                    <div className={styles.summaryRow}>
+                      <span className={styles.depositLabel}>Deposit Due Today</span>
+                      <span className={styles.depositAmount}>${(pricing.deposit / 100).toFixed(2)}</span>
+                    </div>
+                    <div className={styles.summaryRow}>
+                      <span className={styles.totalLabel}>Total Session Cost</span>
+                      <span className={styles.totalAmount}>${(pricing.total / 100).toFixed(2)}</span>
+                    </div>
+                    {duration > 1 && (
+                      <p className={styles.remainderNote}>
+                        Remainder of ${((pricing.total - pricing.deposit) / 100).toFixed(2)} will be charged after your session
+                      </p>
+                    )}
+                  </>
                 )}
               </div>
 
@@ -662,9 +679,9 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
                   <div className={styles.discountBadge}>
                     <span className={styles.discountIcon}>🎉</span>
                     <div>
-                      <p className={styles.discountTitle}>Welcome to Dream Suite!</p>
+                      <p className={styles.discountTitle}>Holiday Special!</p>
                       <p className={styles.discountText}>
-                        New Account Special: Use code <strong>FIRSTTIME40</strong> at checkout for 40% off your first session
+                        Book <strong>3 Hours for $100</strong> (regularly $150) - Limited Time Offer!
                       </p>
                     </div>
                   </div>

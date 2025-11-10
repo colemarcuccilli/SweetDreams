@@ -58,6 +58,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Check if this booking has a remainder to charge
+    if (booking.remainder_amount === 0) {
+      return NextResponse.json(
+        { error: 'This booking was paid in full - no remainder to charge (full payment product like 1-hour session or 3-hour holiday special)' },
+        { status: 400 }
+      );
+    }
+
     // Get the remainder product for this session duration
     const { remainder: remainderProduct } = getSessionProducts(duration);
 

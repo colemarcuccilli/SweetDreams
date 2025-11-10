@@ -39,7 +39,17 @@ export const BOOKING_PRODUCTS: Record<string, BookingProduct> = {
     sessionDuration: 2
   },
 
-  // 3 Hour Session
+  // 3 Hour Session - Holiday Special
+  '3hr_holiday_full': {
+    productId: 'prod_TOUp0SK1fct3XH',
+    priceId: 'price_1SRhqCGLKrGlFRBUAyJZtz79',
+    name: '3 Hour Studio Session Holiday Deal',
+    amount: 10000, // $100.00 - Full payment, no deposit/remainder split
+    type: 'full',
+    sessionDuration: 3
+  },
+
+  // 3 Hour Session - Regular (Legacy - kept for potential future use)
   '3hr_deposit': {
     productId: 'prod_SLCsTSU4Jk0KJa',
     priceId: 'price_1SNLZwGLKrGlFRBU6LedKrnd',
@@ -141,13 +151,21 @@ export const STUDIO_HOURS = {
 
 // Helper function to get deposit and remainder products for a session duration
 export function getSessionProducts(hours: number) {
-  const key = hours === 1 ? '1hr_full' : `${hours}hr_deposit`;
-  const deposit = BOOKING_PRODUCTS[key];
-
-  if (hours === 1) {
-    return { deposit, remainder: null };
+  // Special handling for 3-hour holiday deal - full payment upfront
+  if (hours === 3) {
+    const holidayProduct = BOOKING_PRODUCTS['3hr_holiday_full'];
+    return { deposit: holidayProduct, remainder: null };
   }
 
+  // 1-hour sessions are full payment
+  if (hours === 1) {
+    const fullPayment = BOOKING_PRODUCTS['1hr_full'];
+    return { deposit: fullPayment, remainder: null };
+  }
+
+  // All other sessions use deposit + remainder
+  const depositKey = `${hours}hr_deposit`;
+  const deposit = BOOKING_PRODUCTS[depositKey];
   const remainderKey = `${hours}hr_remainder`;
   const remainder = BOOKING_PRODUCTS[remainderKey];
 

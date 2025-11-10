@@ -2,8 +2,11 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { supabase, PortfolioItem } from "@/lib/supabase";
+import { createClient, PortfolioItem } from "@/lib/supabase";
 import styles from "./RecentWork.module.css";
+
+// Get singleton client instance
+const supabase = createClient();
 
 export default function RecentWork() {
   const [projects, setProjects] = useState<PortfolioItem[]>([]);

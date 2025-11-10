@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Mono } from "next/font/google";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
@@ -6,7 +6,7 @@ import "./globals.css";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import CookieConsent from "@/components/CookieConsent";
-import { localBusinessSchema, organizationSchema, websiteSchema } from "@/lib/schema";
+import { consolidatedSchema } from "@/lib/schema";
 
 const ibmPlexMono = IBM_Plex_Mono({
   weight: ["400", "500", "600", "700"],
@@ -14,17 +14,18 @@ const ibmPlexMono = IBM_Plex_Mono({
   display: "swap",
 });
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: 'cover',
+};
+
 export const metadata: Metadata = {
   title: "Sweet Dreams Studio | Fort Wayne Recording Studio",
-  description: "Fort Wayne's premier recording studio offering professional music production, mixing & mastering. State-of-the-art studio for musicians & creators. Book now at $50/hr!",
+  description: "Fort Wayne's premier recording studio. Professional music production, mixing & mastering services. Book your session now at $50/hr!",
   keywords: "Sweet Dreams Studio, Fort Wayne recording studio, Indiana music production, professional mixing, audio mastering, beat making, music videos, podcast production, voice over recording, audio engineering, Northeast Indiana studio, Fort Wayne music, studio rental, professional sound recording",
   authors: [{ name: "Sweet Dreams Music LLC" }],
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 5,
-    viewportFit: 'cover',
-  },
   icons: {
     icon: 'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SweetDreamsLogo/SweetDreams3StackBlackLogo.png',
     apple: 'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SweetDreamsLogo/SweetDreams3StackBlackLogo.png',
@@ -137,19 +138,7 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(localBusinessSchema)
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(organizationSchema)
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(websiteSchema)
+            __html: JSON.stringify(consolidatedSchema)
           }}
         />
       </head>

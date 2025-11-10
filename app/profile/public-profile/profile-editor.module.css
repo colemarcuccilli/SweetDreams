@@ -1,0 +1,516 @@
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.loading {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #666;
+  font-size: 1.2rem;
+}
+
+.header {
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #000;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: #666;
+}
+
+/* URL PREVIEW */
+.urlPreview {
+  background: linear-gradient(135deg, #ffc800, #ff9800);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.urlLabel {
+  font-weight: 700;
+  color: #000;
+  font-size: 1.1rem;
+}
+
+.urlLink {
+  color: #000;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 600;
+  text-decoration: underline;
+  font-size: 1.1rem;
+}
+
+.urlLink:hover {
+  opacity: 0.8;
+}
+
+.urlPlaceholder {
+  color: #000;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 600;
+  font-size: 1.1rem;
+  font-style: italic;
+  opacity: 0.7;
+}
+
+/* SECTIONS */
+.section {
+  background: #f9f9f9;
+  border: 2px solid #ddd;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.sectionTitle {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #000;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #ddd;
+}
+
+.sectionDescription {
+  color: #666;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.subsectionTitle {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 1rem;
+}
+
+/* FORM ELEMENTS */
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+.label {
+  display: block;
+  color: #000;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: #fff;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  color: #000;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color 0.2s ease;
+}
+
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: #000;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.hint {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: #666;
+  font-style: italic;
+}
+
+.slugPreview {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: #e8f5e9;
+  border: 2px solid #a5d6a7;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: #2e7d32;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+/* SHOWCASE LIST */
+.showcaseList,
+.availableList {
+  margin-bottom: 2rem;
+}
+
+.showcaseItem,
+.availableItem {
+  background: #fff;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  transition: all 0.2s ease;
+}
+
+.showcaseItem:hover,
+.availableItem:hover {
+  border-color: #999;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.showcaseInfo,
+.availableInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.showcaseName,
+.availableName {
+  font-weight: 600;
+  color: #000;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.showcaseMeta,
+.availableMeta {
+  font-size: 0.85rem;
+  color: #666;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.removeButton,
+.addButton {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+.removeButton {
+  background: #ff4444;
+  color: #fff;
+}
+
+.removeButton:hover {
+  background: #ff0000;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(255, 68, 68, 0.4);
+}
+
+.addButton {
+  background: linear-gradient(135deg, #ffc800, #ff9800);
+  color: #000;
+}
+
+.addButton:hover {
+  background: linear-gradient(135deg, #ffd700, #ffa500);
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(255, 200, 0, 0.4);
+}
+
+.emptyText {
+  color: #666;
+  text-align: center;
+  padding: 2rem;
+  font-style: italic;
+}
+
+/* SAVE BUTTON */
+.saveContainer {
+  position: sticky;
+  bottom: 2rem;
+  z-index: 10;
+  text-align: center;
+  margin-top: 3rem;
+}
+
+.saveButton {
+  background: linear-gradient(135deg, #ffc800, #ff9800);
+  color: #000;
+  border: none;
+  border-radius: 12px;
+  padding: 1.25rem 3rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 16px rgba(255, 200, 0, 0.3);
+}
+
+.saveButton:hover:not(:disabled) {
+  background: linear-gradient(135deg, #ffd700, #ffa500);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(255, 200, 0, 0.5);
+}
+
+.saveButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* IMAGE UPLOAD */
+.imageUploadGroup {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: #fff;
+  border: 2px dashed #ddd;
+  border-radius: 8px;
+}
+
+.imageHint {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+
+.imagePreview,
+.imagePreviewRound,
+.imagePreviewSquare,
+.imagePreviewTall {
+  max-width: 100%;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  border: 2px solid #ddd;
+}
+
+.imagePreview {
+  max-height: 200px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.imagePreviewRound {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.imagePreviewSquare {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+}
+
+.imagePreviewTall {
+  width: 200px;
+  height: 300px;
+  object-fit: cover;
+}
+
+.fileInput {
+  width: 100%;
+  padding: 0.75rem;
+  background: #fff;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.fileInput:hover:not(:disabled) {
+  border-color: #000;
+}
+
+.fileInput:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.uploading {
+  margin-top: 0.5rem;
+  color: #ff9800;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* SHOWCASE CARDS */
+.showcaseCard {
+  background: #fff;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.showcaseHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.editButton {
+  background: linear-gradient(135deg, #4CAF50, #45a049);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.editButton:hover {
+  background: linear-gradient(135deg, #45a049, #3d8b40);
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+}
+
+.showcaseActions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.showcaseStatus {
+  margin-top: 0.5rem;
+}
+
+.statusPublic,
+.statusPrivate {
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 6px;
+  display: inline-block;
+}
+
+.statusPublic {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #a5d6a7;
+}
+
+.statusPrivate {
+  background: #ffebee;
+  color: #c62828;
+  border: 1px solid #ef9a9a;
+}
+
+/* METADATA EDITOR */
+.metadataEditor {
+  background: #f9f9f9;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #000;
+  font-weight: 600;
+}
+
+.checkboxLabel input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.saveMetadataButton {
+  background: linear-gradient(135deg, #4CAF50, #45a049);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.saveMetadataButton:hover {
+  background: linear-gradient(135deg, #45a049, #3d8b40);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
+}
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .section {
+    padding: 1.5rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.5rem;
+  }
+
+  .urlPreview {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .showcaseItem,
+  .availableItem {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .removeButton,
+  .addButton {
+    width: 100%;
+  }
+
+  .saveButton {
+    width: 100%;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+  }
+}

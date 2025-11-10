@@ -1140,7 +1140,7 @@ export default function SolutionsPage() {
           {/* Promo Banner */}
           <div className={styles.promoBannerStudio}>
             <span className={styles.promoTextStudio}>
-              <strong>Welcome to Dream Suite! </strong>New Account Special: Get 40% off your first session with code: <strong>FIRSTTIME40</strong> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Welcome to Dream Suite! </strong>New Account Special: Get 40% off your first session with code: <strong>FIRSTTIME40</strong> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Welcome to Dream Suite! </strong>New Account Special: Get 40% off your first session with code: <strong>FIRSTTIME40</strong> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Welcome to Dream Suite! </strong>New Account Special: Get 40% off your first session with code: <strong>FIRSTTIME40</strong> &nbsp;&nbsp;|&nbsp;&nbsp;
+              <strong>Holiday Special! </strong>Book 3 Hours for $100 (regularly $150) - Limited Time! &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Holiday Special! </strong>Book 3 Hours for $100 (regularly $150) - Limited Time! &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Holiday Special! </strong>Book 3 Hours for $100 (regularly $150) - Limited Time! &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Holiday Special! </strong>Book 3 Hours for $100 (regularly $150) - Limited Time! &nbsp;&nbsp;|&nbsp;&nbsp;
             </span>
           </div>
 

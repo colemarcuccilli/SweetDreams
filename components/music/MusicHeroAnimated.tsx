@@ -7,16 +7,16 @@ import styles from './MusicHeroAnimated.module.css';
 
 // Studio photos
 const STUDIO_PHOTOS = [
-  'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/general/studio/_DSC0502.jpg',
-  'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/general/studio/_DSC0506.jpg',
-  'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/general/studio/_DSC0519.jpg',
-  'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/general/studio/_DSC0538.jpg',
-  'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/general/studio/_DSC0545.jpg',
-  'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/general/studio/_DSC0564.jpg',
-  'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/general/studio/_DSC0587.jpg',
-  'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/general/studio/_DSC0601.jpg',
-  'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/general/studio/_DSC0607.jpg',
-  'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/general/studio/_DSC0617.jpg',
+  'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/general/studio/_DSC0502.webp',
+  'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/general/studio/_DSC0506.webp',
+  'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/general/studio/_DSC0519%20(1).webp',
+  'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/general/studio/_DSC0538.webp',
+  'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/general/studio/_DSC0545%20(1).webp',
+  'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/general/studio/_DSC0564.webp',
+  'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/general/studio/_DSC0587.webp',
+  'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/general/studio/_DSC0601.webp',
+  'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/general/studio/_DSC0607.webp',
+  'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/general/studio/_DSC0617.webp',
 ];
 
 // Register GSAP plugins

@@ -1,26 +1,11 @@
-import { createClient } from "@supabase/supabase-js";
+// This file now only exports types and re-exports the singleton client
+// The actual client is created in utils/supabase/client.ts as a singleton
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+// Re-export the singleton browser client
+export { createClient } from '@/utils/supabase/client';
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
-// Server-side only admin client
-let supabaseAdmin: ReturnType<typeof createClient> | null = null;
-
-if (typeof window === 'undefined') {
-  const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY;
-  if (supabaseServiceKey) {
-    supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
-      auth: {
-        autoRefreshToken: false,
-        persistSession: false,
-      },
-    });
-  }
-}
-
-export { supabaseAdmin };
+// Server-side admin client (if needed) - kept for backward compatibility
+// but no longer used in client components
 
 // Types for database tables
 export interface PortfolioItem {

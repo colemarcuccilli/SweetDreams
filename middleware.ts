@@ -8,12 +8,6 @@ import type { NextRequest } from 'next/server';
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // 301 Redirects for old blog URLs
-  // Redirect to /music until blog is implemented
-  if (pathname.startsWith('/blog')) {
-    return NextResponse.redirect(new URL('/music', request.url), 301);
-  }
-
   // Handle old artist profile pages if they existed
   // Example: /seeyouinmydreams/ -> /music
   const oldArtistPages = [

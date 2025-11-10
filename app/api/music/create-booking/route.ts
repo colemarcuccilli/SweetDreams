@@ -150,6 +150,10 @@ export async function POST(request: NextRequest) {
     const bookingEndTime = new Date(date);
     bookingEndTime.setHours(startTime + duration, 0, 0, 0);
 
+    // For 'full' payment products (1-hour, 3-hour holiday), remainder is 0
+    // For 'deposit' products, calculate remainder
+    const remainderAmount = depositProduct.type === 'full' ? 0 : totalAmount - depositAmount;
+
     const { data: booking, error: bookingError } = await supabase
       .from('bookings')
       .insert({
@@ -164,7 +168,7 @@ export async function POST(request: NextRequest) {
         duration,
         deposit_amount: depositAmount,
         total_amount: totalAmount,
-        remainder_amount: duration === 1 ? 0 : totalAmount - depositAmount,
+        remainder_amount: remainderAmount,
         same_day_fee: fees.sameDayFee,
         after_hours_fee: fees.afterHoursFee,
         status: 'pending_deposit',
@@ -190,38 +194,8 @@ export async function POST(request: NextRequest) {
     console.log('💳 Stripe Checkout URL:', session.url);
     console.log('⏳ Waiting for Stripe webhook to confirm payment and send emails...');
 
-    // Send alert to admin about pending booking (for manual confirmation if webhook fails)
-    try {
-      const formattedDate = format(bookingStartTime, 'EEEE, MMMM d, yyyy');
-      const formattedStartTime = format(bookingStartTime, 'h:mm a');
-      const formattedEndTime = format(bookingEndTime, 'h:mm a');
-
-      console.log('📧 Sending pending booking alert to admin:', ADMIN_EMAIL);
-
-      await resend.emails.send({
-        from: FROM_EMAIL,
-        to: ADMIN_EMAIL,
-        subject: `⚠️ New Booking Needs Confirmation - ${artistName} on ${formattedDate}`,
-        react: PendingBookingAlert({
-          firstName,
-          lastName,
-          artistName,
-          email: customerEmail,
-          phone: customerPhone || '',
-          date: formattedDate,
-          startTime: formattedStartTime,
-          endTime: formattedEndTime,
-          duration,
-          depositAmount,
-          totalAmount,
-        }) as React.ReactElement,
-      });
-
-      console.log('✅ Admin alert sent successfully');
-    } catch (emailError) {
-      console.error('❌ Failed to send admin alert:', emailError);
-      // Don't fail the booking if email fails
-    }
+    // NOTE: Admin notification is now sent ONLY after successful payment via webhook
+    // This prevents notifying admin about bookings where customers abandon the checkout page
 
     return NextResponse.json({
       checkoutUrl: session.url,

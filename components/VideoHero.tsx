@@ -146,10 +146,10 @@ export default function VideoHero() {
 
             {/* Center Title - Absolute Positioned */}
             <div className={styles.centerTitle}>
-              <div>
+              <h1>
                 <div className={`${styles.titleText} title-line`}>YOUR VISION,</div>
                 <div className={`${styles.titleText} title-line`}>AMPLIFIED</div>
-              </div>
+              </h1>
             </div>
 
             {/* Bottom Row */}

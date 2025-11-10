@@ -217,6 +217,16 @@ export const websiteSchema = {
   }
 };
 
+// Consolidated schema using @graph (reduces HTTP requests)
+export const consolidatedSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    localBusinessSchema,
+    organizationSchema,
+    websiteSchema
+  ]
+};
+
 // Helper function to generate VideoObject schema for portfolio projects
 export const createVideoSchema = (params: {
   name: string;

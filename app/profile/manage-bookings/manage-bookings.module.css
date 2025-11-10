@@ -14,14 +14,14 @@
   font-size: 2.5rem;
   text-transform: uppercase;
   margin-bottom: 0.5rem;
-  color: #fff;
+  color: #000;
   letter-spacing: 0.05em;
 }
 
 .subtitle {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 1rem;
-  color: rgba(255, 255, 255, 0.6);
+  color: #000;
 }
 
 .filterControls {
@@ -35,7 +35,7 @@
   padding: 0.6rem 1.25rem;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  color: #fff;
+  color: #000;
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.85rem;
   font-weight: 600;
@@ -56,7 +56,7 @@
   font-size: 1.5rem;
   text-transform: uppercase;
   margin: 2rem 0 1rem 0;
-  color: #fff;
+  color: #000;
   letter-spacing: 0.05em;
 }
 

@@ -12,21 +12,21 @@ import MusicContactForm from "@/components/music/MusicContactForm";
 
 export const metadata: Metadata = {
   title: "Studio Recording & Booking | Sweet Dreams Fort Wayne - $50/HR",
-  description: "Professional recording studio in Fort Wayne, IN. Book your session starting at $50/hour. Music production, mixing, and mastering services. Get 40% off your first session with code FIRSTTIME40!",
+  description: "Professional recording studio in Fort Wayne, IN. Book your session starting at $50/hour. Music production, mixing, and mastering services. Holiday Special: 3 Hours for $100 (regularly $150)!",
   keywords: "Fort Wayne recording studio, book studio session, music production Fort Wayne, studio rental, professional recording, recording studio near me, mixing and mastering, studio booking Fort Wayne",
   alternates: {
     canonical: 'https://sweetdreamsmusic.com/music',
   },
   openGraph: {
     title: "Studio Booking | Sweet Dreams Fort Wayne",
-    description: "Book your recording session at Fort Wayne's premier music studio. $50/hour starting rate. First-time special: 40% off with code FIRSTTIME40.",
+    description: "Book your recording session at Fort Wayne's premier music studio. $50/hour starting rate. Holiday Special: 3 Hours for $100 (regularly $150).",
     url: "https://sweetdreamsmusic.com/music",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "Studio Booking | Sweet Dreams Fort Wayne",
-    description: "Book your recording session. $50/hour. 40% off first session!",
+    description: "Book your recording session. $50/hour. Holiday Special: 3 Hours for $100!",
   },
   other: {
     'geo.region': 'US-IN',
@@ -40,7 +40,7 @@ export default function MusicPage() {
       {/* Promo Banner */}
       <div className={styles.promoBanner}>
         <span className={styles.promoText}>
-          <strong>Welcome to Dream Suite! </strong>New Account Special: Get 40% off your first session with code: <strong>FIRSTTIME40</strong> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Welcome to Dream Suite! </strong>New Account Special: Get 40% off your first session with code: <strong>FIRSTTIME40</strong> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Welcome to Dream Suite! </strong>New Account Special: Get 40% off your first session with code: <strong>FIRSTTIME40</strong> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Welcome to Dream Suite! </strong>New Account Special: Get 40% off your first session with code: <strong>FIRSTTIME40</strong> &nbsp;&nbsp;|&nbsp;&nbsp;
+          <strong>Holiday Special! </strong>Book 3 Hours for $100 (regularly $150) - Limited Time! &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Holiday Special! </strong>Book 3 Hours for $100 (regularly $150) - Limited Time! &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Holiday Special! </strong>Book 3 Hours for $100 (regularly $150) - Limited Time! &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Holiday Special! </strong>Book 3 Hours for $100 (regularly $150) - Limited Time! &nbsp;&nbsp;|&nbsp;&nbsp;
         </span>
       </div>
 
@@ -103,7 +103,7 @@ export default function MusicPage() {
 
             <div className={styles.pricingImage}>
               <img
-                src="https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/general/studio/DSC00040%20(1).jpg"
+                src="https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/general/studio/DSC00040%20(1).webp"
                 alt="Sweet Dreams Studio"
                 className={styles.studioImage}
               />
@@ -122,7 +122,7 @@ export default function MusicPage() {
           <BookingCalendar />
 
           <p className={styles.note}>
-            <strong>First time booking?</strong> Use code <strong>FIRSTTIME40</strong> at checkout for 40% off your first session!
+            <strong>Holiday Special!</strong> Book <strong>3 Hours for $100</strong> (regularly $150) - Limited Time Offer!
           </p>
         </div>
       </section>
