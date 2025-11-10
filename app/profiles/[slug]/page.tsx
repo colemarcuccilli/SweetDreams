@@ -137,7 +137,7 @@ export default async function PublicProfilePage({
     profile.gallery_photo_1_url,
     profile.gallery_photo_2_url,
     profile.gallery_photo_3_url
-  ].filter(Boolean);
+  ].filter((url): url is string => Boolean(url));
 
   const socialLinks = profile.social_links || {};
   const hasSocialLinks = Object.values(socialLinks).some(link => link);
