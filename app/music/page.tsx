@@ -7,7 +7,7 @@ import PackagesAnimated from "@/components/music/PackagesAnimated";
 import TestimonialsAnimated from "@/components/music/TestimonialsAnimated";
 import LocationInfoAnimated from "@/components/music/LocationInfoAnimated";
 import PricingListAnimated from "@/components/music/PricingListAnimated";
-import BookingCalendar from "@/components/music/BookingCalendar";
+import BookingCalendarWrapper from "@/components/music/BookingCalendarWrapper";
 import MusicContactForm from "@/components/music/MusicContactForm";
 
 export const metadata: Metadata = {
@@ -119,7 +119,7 @@ export default function MusicPage() {
           <h2 className={styles.sectionTitle}>BOOK YOUR SESSION</h2>
           <p className={styles.sectionSubtitle}>Select your date, time, and session duration to get started</p>
 
-          <BookingCalendar />
+          <BookingCalendarWrapper />
 
           <p className={styles.note}>
             <strong>Holiday Special!</strong> Book <strong>3 Hours for $100</strong> (regularly $150) - Limited Time Offer!

@@ -156,7 +156,7 @@
   font-style: italic;
 }
 
-/* Gift Box Animation for 3-Hour Holiday Special - GSAP Powered */
+/* Gift Box Animation - GSAP Toggle (Following Guide) */
 .giftButton {
   position: relative;
   overflow: visible;
@@ -164,12 +164,11 @@
   background: transparent !important;
   border: none !important;
   min-height: 70px;
-  perspective: 1000px;
-  will-change: transform;
+  cursor: pointer;
+  perspective: 1200px; /* Enable 3D transforms */
 }
 
 .giftButton:hover {
-  transform: scale(1.02);
   background: transparent !important;
   border: none !important;
 }
@@ -177,115 +176,103 @@
 .giftBox {
   position: relative;
   width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #c2185b 0%, #d81b60 100%);
-  border: 2px solid #fff;
-  box-shadow: 0 4px 20px rgba(194, 24, 91, 0.4);
-  border-radius: 8px;
-  padding: 0.5rem 1rem;
-  will-change: transform, box-shadow;
+  height: 70px;
+  transform-style: preserve-3d; /* Enable 3D for children */
 }
 
+/* Top lid - rotates backward on open */
 .giftLid {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 50%;
+  height: 100%;
   background: linear-gradient(135deg, #c2185b 0%, #d81b60 100%);
   border: 2px solid #fff;
-  border-radius: 8px 8px 0 0;
-  transform-origin: bottom center;
-  z-index: 3;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  pointer-events: none;
-  will-change: transform, opacity;
+  z-index: 3;
+  opacity: 1; /* Start fully visible */
+
+  /* Key: rotate from top center edge */
+  transform-origin: top center;
+  transform-style: preserve-3d;
 }
 
 .giftIcon {
-  font-size: 1.5rem;
+  font-size: 2rem;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-  z-index: 5;
-  position: relative;
-  will-change: transform;
 }
 
-.giftRibbon {
+/* Bottom box with content */
+.giftBottom {
   position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  transform-origin: top center;
-  width: 15px;
+  bottom: 0;
+  left: 0;
+  right: 0;
   height: 100%;
-  background: linear-gradient(90deg, #ffd700 0%, #ffed4e 100%);
-  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  background: linear-gradient(135deg, #d81b60 0%, #e91e63 100%);
+  border: 2px solid #ffd700;
+  border-radius: 8px;
   z-index: 2;
-  will-change: transform, opacity;
-}
-
-.giftBow {
-  position: absolute;
-  top: -5px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 1.1rem;
-  z-index: 4;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-  will-change: transform, opacity;
 }
 
 .giftContent {
+  /* Hidden initially */
   opacity: 0;
-  transform: scale(0.5);
-  z-index: 1;
-  will-change: transform, opacity;
-}
+  visibility: hidden;
 
-.giftText {
+  /* Fill entire box */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.1rem;
+  justify-content: center;
+  gap: 0.2rem;
   color: #fff;
   font-family: 'Anton', sans-serif;
   text-transform: uppercase;
+  z-index: 1;
+  padding: 0.5rem;
 }
 
 .giftHours {
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   letter-spacing: 0.05em;
+  line-height: 1;
 }
 
 .giftPrice {
-  font-size: 1rem;
+  font-size: 1.2rem;
   letter-spacing: 0.05em;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  line-height: 1;
 }
 
 .giftSavings {
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   color: #ffd700;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  line-height: 1;
 }
 
-/* Active state - override default button active styles */
+/* Active state */
 .giftButton.active {
   background: transparent !important;
-  color: #fff !important;
   border: none !important;
 }
 
-.giftButton.active .giftBox {
-  background: linear-gradient(135deg, #d81b60 0%, #e91e63 100%);
-  border-color: #ffd700;
+.giftButton.active .giftBottom {
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
 }
 
 /* Time Selection */

@@ -75,12 +75,9 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
   const [isGiftUnwrapped, setIsGiftUnwrapped] = useState(false);
 
   // GSAP refs for gift animation
-  const giftBoxRef = useRef<HTMLDivElement>(null);
   const giftLidRef = useRef<HTMLDivElement>(null);
-  const giftRibbonRef = useRef<HTMLDivElement>(null);
-  const giftBowRef = useRef<HTMLDivElement>(null);
-  const giftIconRef = useRef<HTMLDivElement>(null);
   const giftContentRef = useRef<HTMLDivElement>(null);
+  const timelineRef = useRef<gsap.core.Timeline | null>(null);
 
   const supabase = createClient();
 
@@ -228,106 +225,44 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
     };
   }, [supabase]);
 
-  // GSAP gift box animations
+  // Create GSAP timeline once on mount (client-side only)
   useEffect(() => {
+    // Ensure we're on the client side
+    if (typeof window === 'undefined') return;
+    if (!giftLidRef.current || !giftContentRef.current) return;
+
+    // Create the opening timeline (paused)
+    const tl = gsap.timeline({ paused: true });
+
+    tl.to(giftLidRef.current, {
+      yPercent: -200,
+      rotationX: 120,
+      opacity: 0,
+      duration: 0.7,
+      ease: 'power2.inOut'
+    })
+    .to(giftContentRef.current, {
+      opacity: 1,
+      visibility: 'visible',
+      duration: 0.5
+    }, '<0.2'); // Start 0.2s after timeline begins
+
+    // Store timeline in ref
+    timelineRef.current = tl;
+
+    return () => {
+      tl.kill();
+    };
+  }, []); // Only run once on mount
+
+  // Toggle animation when state changes
+  useEffect(() => {
+    if (!timelineRef.current) return;
+
     if (isGiftUnwrapped) {
-      // Unwrap animation
-      const tl = gsap.timeline();
-
-      tl.to(giftBowRef.current, {
-        y: -100,
-        rotation: 360,
-        opacity: 0,
-        duration: 0.6,
-        ease: 'back.in(2)'
-      })
-      .to(giftLidRef.current, {
-        rotationX: -120,
-        y: -60,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'back.in(1.7)'
-      }, '-=0.4')
-      .to(giftRibbonRef.current, {
-        scaleY: 0,
-        opacity: 0,
-        duration: 0.5,
-        ease: 'power2.in'
-      }, '-=0.6')
-      .to(giftContentRef.current, {
-        scale: 1,
-        opacity: 1,
-        duration: 0.7,
-        ease: 'elastic.out(1, 0.5)'
-      }, '-=0.2')
-      .to(giftBoxRef.current, {
-        scale: 1.05,
-        boxShadow: '0 8px 30px rgba(255, 215, 0, 0.6)',
-        duration: 0.3
-      }, '-=0.4');
-
+      timelineRef.current.play();
     } else {
-      // Re-wrap animation
-      const tl = gsap.timeline();
-
-      tl.to(giftContentRef.current, {
-        scale: 0.5,
-        opacity: 0,
-        duration: 0.3,
-        ease: 'back.in(2)'
-      })
-      .to(giftBoxRef.current, {
-        scale: 1,
-        boxShadow: '0 4px 20px rgba(194, 24, 91, 0.4)',
-        duration: 0.3
-      }, '-=0.2')
-      .set([giftLidRef.current, giftRibbonRef.current, giftBowRef.current], {
-        opacity: 1
-      })
-      .to(giftRibbonRef.current, {
-        scaleY: 1,
-        duration: 0.4,
-        ease: 'elastic.out(1, 0.3)'
-      })
-      .to(giftLidRef.current, {
-        rotationX: 0,
-        y: 0,
-        duration: 0.6,
-        ease: 'back.out(1.7)'
-      }, '-=0.3')
-      .to(giftBowRef.current, {
-        y: 0,
-        rotation: 0,
-        duration: 0.5,
-        ease: 'elastic.out(1, 0.5)'
-      }, '-=0.4');
-    }
-  }, [isGiftUnwrapped]);
-
-  // GSAP idle animations (bow bounce, icon wiggle)
-  useEffect(() => {
-    if (!isGiftUnwrapped) {
-      // Bow bounce
-      gsap.to(giftBowRef.current, {
-        y: -5,
-        scale: 1.1,
-        duration: 1,
-        repeat: -1,
-        yoyo: true,
-        ease: 'sine.inOut'
-      });
-
-      // Icon wiggle
-      gsap.to(giftIconRef.current, {
-        rotation: 5,
-        duration: 0.75,
-        repeat: -1,
-        yoyo: true,
-        ease: 'sine.inOut'
-      });
-    } else {
-      // Kill idle animations when unwrapped
-      gsap.killTweensOf([giftBowRef.current, giftIconRef.current]);
+      timelineRef.current.reverse();
     }
   }, [isGiftUnwrapped]);
 
@@ -616,14 +551,15 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
                     title={isDisabled ? `${hrs} hour session would exceed studio hours` : isThreeHour ? 'Holiday Special!' : ''}
                   >
                     {isThreeHour ? (
-                      <div ref={giftBoxRef} className={styles.giftBox}>
+                      <div className={styles.giftBox}>
+                        {/* Top lid - collapses up */}
                         <div ref={giftLidRef} className={styles.giftLid}>
-                          <div ref={giftIconRef} className={styles.giftIcon}>🎁</div>
+                          <span className={styles.giftIcon}>🎁</span>
                         </div>
-                        <div ref={giftRibbonRef} className={styles.giftRibbon}></div>
-                        <div ref={giftBowRef} className={styles.giftBow}>🎀</div>
-                        <div ref={giftContentRef} className={styles.giftContent}>
-                          <div className={styles.giftText}>
+
+                        {/* Bottom box with content */}
+                        <div className={styles.giftBottom}>
+                          <div ref={giftContentRef} className={styles.giftContent}>
                             <span className={styles.giftHours}>{hrs} Hours</span>
                             <span className={styles.giftPrice}>$100</span>
                             <span className={styles.giftSavings}>Save $50!</span>
