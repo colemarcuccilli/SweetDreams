@@ -96,7 +96,7 @@ export default function OnboardingPage() {
     if (isConnected) {
       // Disconnect platform
       const confirmDisconnect = window.confirm(
-        `Are you sure you want to disconnect ${PLATFORM_INFO[platformId]?.name || platformId}? This will remove your authentication and you'll need to reconnect to access this platform's data.`
+        `Are you sure you want to disconnect ${PLATFORM_INFO[platformId as keyof typeof PLATFORM_INFO]?.name || platformId}? This will remove your authentication and you'll need to reconnect to access this platform's data.`
       );
 
       if (!confirmDisconnect) return;
@@ -122,7 +122,7 @@ export default function OnboardingPage() {
 
         setNotification({
           type: 'success',
-          message: `Disconnected ${PLATFORM_INFO[platformId]?.name || platformId}`,
+          message: `Disconnected ${PLATFORM_INFO[platformId as keyof typeof PLATFORM_INFO]?.name || platformId}`,
         });
       } catch (error) {
         console.error('Failed to disconnect platform:', error);
