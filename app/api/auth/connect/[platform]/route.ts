@@ -16,9 +16,9 @@ import {
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { platform: string } }
+  { params }: { params: Promise<{ platform: string }> }
 ) {
-  const { platform } = params;
+  const { platform } = await params;
 
   try {
     // Verify user is authenticated
@@ -95,9 +95,9 @@ export async function GET(
 // Handle POST requests for programmatic OAuth initiation
 export async function POST(
   request: NextRequest,
-  { params }: { params: { platform: string } }
+  { params }: { params: Promise<{ platform: string }> }
 ) {
-  const { platform } = params;
+  const { platform } = await params;
 
   try {
     const supabase = createClient();
