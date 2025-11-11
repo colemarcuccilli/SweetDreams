@@ -3,6 +3,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
+import type { SupabaseClient } from '@supabase/supabase-js';
 import {
   OAUTH_CONFIGS,
   buildAuthorizationUrl,
@@ -22,7 +23,7 @@ export async function GET(
 
   try {
     // Verify user is authenticated
-    const supabase = await createClient();
+    const supabase: SupabaseClient = await createClient();
     const {
       data: { user },
       error: authError,
@@ -100,7 +101,7 @@ export async function POST(
   const { platform } = await params;
 
   try {
-    const supabase = await createClient();
+    const supabase: SupabaseClient = await createClient();
     const {
       data: { user },
       error: authError,

@@ -3,6 +3,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
+import type { SupabaseClient } from '@supabase/supabase-js';
 import {
   OAUTH_CONFIGS,
   getRedirectUri,
@@ -100,7 +101,7 @@ export async function GET(
       : null;
 
     // Store tokens in database
-    const supabase = await createClient();
+    const supabase: SupabaseClient = await createClient();
 
     // Upsert token record (insert or update if exists)
     const { error: dbError } = await supabase
