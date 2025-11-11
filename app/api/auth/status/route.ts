@@ -3,10 +3,11 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
 export async function GET(request: NextRequest) {
   try {
-    const supabase = createClient();
+    const supabase: SupabaseClient = await createClient();
     const {
       data: { user },
       error: authError,
