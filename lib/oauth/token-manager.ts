@@ -2,6 +2,7 @@
 // Used by data collection systems and API calls
 
 import { createClient } from '@/utils/supabase/server';
+import type { SupabaseClient } from '@supabase/supabase-js';
 import { OAUTH_CONFIGS } from './config';
 import { refreshOAuthToken, calculateExpiresAt, isTokenExpired } from './utils';
 
@@ -22,7 +23,7 @@ export async function getValidToken(
   userId: string,
   platform: string
 ): Promise<TokenData | null> {
-  const supabase = createClient();
+  const supabase: SupabaseClient = await createClient();
 
   // Fetch current token
   const { data: tokenRecord, error } = await supabase
@@ -109,7 +110,7 @@ export async function refreshToken(
     : null;
 
   // Update token in database
-  const supabase = createClient();
+  const supabase: SupabaseClient = await createClient();
   const { error } = await supabase
     .from('oauth_tokens')
     .update({
@@ -154,7 +155,7 @@ export async function hasValidConnection(
 export async function getConnectedPlatforms(
   userId: string
 ): Promise<string[]> {
-  const supabase = createClient();
+  const supabase: SupabaseClient = await createClient();
 
   const { data, error } = await supabase
     .from('oauth_tokens')
@@ -182,7 +183,7 @@ export async function getTokensNeedingRefresh(): Promise<
     expiresAt: Date;
   }>
 > {
-  const supabase = createClient();
+  const supabase: SupabaseClient = await createClient();
 
   // Get tokens expiring in the next 24 hours
   const expiryThreshold = new Date(Date.now() + 24 * 60 * 60 * 1000);
@@ -214,7 +215,7 @@ export async function disconnectPlatform(
   userId: string,
   platform: string
 ): Promise<boolean> {
-  const supabase = createClient();
+  const supabase: SupabaseClient = await createClient();
 
   // TODO: Call platform's revoke endpoint if available
   // For now, just delete from database
@@ -272,7 +273,7 @@ export async function makeAuthenticatedRequest(
   headers.set('Authorization', `Bearer ${token.accessToken}`);
 
   // Update last_used_at
-  const supabase = createClient();
+  const supabase: SupabaseClient = await createClient();
   await supabase
     .from('oauth_tokens')
     .update({ last_used_at: new Date().toISOString() })
