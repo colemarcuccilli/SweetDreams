@@ -47,7 +47,7 @@ export default function OnboardingPage() {
     if (connected) {
       setNotification({
         type: 'success',
-        message: `Successfully connected ${PLATFORM_INFO[connected]?.name || connected}!`,
+        message: `Successfully connected ${PLATFORM_INFO[connected as keyof typeof PLATFORM_INFO]?.name || connected}!`,
       });
       // Clear URL params after showing notification
       setTimeout(() => {
@@ -57,7 +57,7 @@ export default function OnboardingPage() {
       const errorMessage = searchParams.get('message') || error;
       setNotification({
         type: 'error',
-        message: `Failed to connect ${PLATFORM_INFO[platform]?.name || platform}: ${errorMessage}`,
+        message: `Failed to connect ${PLATFORM_INFO[platform as keyof typeof PLATFORM_INFO]?.name || platform}: ${errorMessage}`,
       });
       setTimeout(() => {
         window.history.replaceState({}, '', '/profile/onboarding');
