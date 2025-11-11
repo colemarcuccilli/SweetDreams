@@ -100,7 +100,7 @@ export async function GET(
       : null;
 
     // Store tokens in database
-    const supabase = createClient();
+    const supabase = await createClient();
 
     // Upsert token record (insert or update if exists)
     const { error: dbError } = await supabase

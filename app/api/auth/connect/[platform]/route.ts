@@ -22,7 +22,7 @@ export async function GET(
 
   try {
     // Verify user is authenticated
-    const supabase = createClient();
+    const supabase = await createClient();
     const {
       data: { user },
       error: authError,
@@ -100,7 +100,7 @@ export async function POST(
   const { platform } = await params;
 
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const {
       data: { user },
       error: authError,
