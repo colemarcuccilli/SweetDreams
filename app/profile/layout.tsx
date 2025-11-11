@@ -44,6 +44,7 @@ export default function ProfileLayout({
     return null;
   }
 
+
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
@@ -55,6 +56,31 @@ export default function ProfileLayout({
           </div>
 
           <nav className={styles.sidebarNav}>
+            {/* Dream Suite Dashboard Link */}
+            <Link
+              href="/profile/dream-suite"
+              className={`${styles.navItem} ${pathname === '/profile/dream-suite' ? styles.navItemActive : ''}`}
+              style={{
+                background: pathname === '/profile/dream-suite'
+                  ? 'linear-gradient(to right, rgb(147, 51, 234), rgb(236, 72, 153))'
+                  : 'transparent',
+                color: pathname === '/profile/dream-suite' ? 'white' : 'inherit'
+              }}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9 22 9 12 15 12 15 22"/>
+              </svg>
+              <span>Dream Suite Dashboard</span>
+            </Link>
+
+            <div style={{
+              height: '1px',
+              background: 'linear-gradient(to right, rgb(147, 51, 234), rgb(236, 72, 153))',
+              margin: '12px 0',
+              opacity: '0.2'
+            }} />
+
             <Link
               href="/profile"
               className={`${styles.navItem} ${pathname === '/profile' ? styles.navItemActive : ''}`}
