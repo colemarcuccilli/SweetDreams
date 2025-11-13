@@ -49,6 +49,8 @@ export default function OnboardingPage() {
         type: 'success',
         message: `Successfully connected ${PLATFORM_INFO[connected as keyof typeof PLATFORM_INFO]?.name || connected}!`,
       });
+      // Reload connected platforms to update UI
+      loadConnectedPlatforms();
       // Clear URL params after showing notification
       setTimeout(() => {
         window.history.replaceState({}, '', '/profile/onboarding');
