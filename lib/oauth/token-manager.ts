@@ -288,10 +288,20 @@ export async function makeAuthenticatedRequest(
 
   // If unauthorized, token might be invalid - mark for refresh
   if (response.status === 401) {
+    // Fetch current error count
+    const { data: currentToken } = await supabase
+      .from('oauth_tokens')
+      .select('error_count')
+      .eq('user_id', userId)
+      .eq('platform', platform)
+      .single();
+
+    const newErrorCount = (currentToken?.error_count || 0) + 1;
+
     await supabase
       .from('oauth_tokens')
       .update({
-        error_count: supabase.sql`error_count + 1`,
+        error_count: newErrorCount,
         last_error: 'Unauthorized API request',
         last_error_at: new Date().toISOString(),
       })
