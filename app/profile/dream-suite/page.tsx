@@ -1,11 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/useAuth';
 import { createClient } from '@/utils/supabase/client';
+import { PLATFORM_INFO } from '@/lib/oauth/config';
 
 export default function DreamSuitePage() {
   const { user } = useAuth();
+  const router = useRouter();
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const supabase = createClient();
@@ -42,227 +45,325 @@ export default function DreamSuitePage() {
     return <div style={{ padding: '48px', color: '#666' }}>Loading...</div>;
   }
 
-  const isAdmin = user?.email === 'cole@sweetdreamsmusic.com';
   const onboardingComplete = profile?.onboarding_completed || false;
-  const connectedCount = profile?.connected_platforms?.length || 0;
+  const connectedPlatforms = profile?.connected_platforms || [];
 
-  // Show "Profile Incomplete" if onboarding not done (NO BYPASS - even for admin)
+  // Show "Profile Incomplete" if onboarding not done
   if (!onboardingComplete) {
     return (
       <div style={{ padding: '0', textAlign: 'center', maxWidth: '600px', margin: '80px auto' }}>
-        <div style={{
-          fontSize: '80px',
-          marginBottom: '24px'
-        }}>
-          🎯
-        </div>
-        <h1 style={{
-          fontSize: '42px',
-          fontWeight: 'bold',
-          color: '#000',
-          marginBottom: '16px'
-        }}>
+        <div style={{ fontSize: '80px', marginBottom: '24px' }}>🎯</div>
+        <h1 style={{ fontSize: '42px', fontWeight: 'bold', color: '#000', marginBottom: '16px' }}>
           Profile Not Complete
         </h1>
-        <p style={{
-          fontSize: '18px',
-          color: '#666',
-          lineHeight: '1.8',
-          marginBottom: '32px'
-        }}>
+        <p style={{ fontSize: '18px', color: '#666', marginBottom: '32px' }}>
           To access Dream Suite, you need to connect your social media and streaming platforms.
-          This helps us analyze your audience and provide personalized insights to grow your music career.
         </p>
         <a
           href="/profile/onboarding"
           style={{
             display: 'inline-block',
-            padding: '16px 48px',
+            padding: '16px 32px',
             background: 'linear-gradient(to right, rgb(147, 51, 234), rgb(236, 72, 153))',
-            border: 'none',
-            borderRadius: '8px',
             color: 'white',
-            fontSize: '18px',
-            fontWeight: 'bold',
             textDecoration: 'none',
-            transition: 'all 0.3s'
+            borderRadius: '12px',
+            fontWeight: '600',
+            fontSize: '16px'
           }}
         >
           Complete Your Profile →
         </a>
-        <div style={{
-          marginTop: '48px',
-          padding: '24px',
-          background: '#f9f9f9',
-          borderRadius: '8px',
-          border: '2px solid #e5e5e5',
-          textAlign: 'left'
-        }}>
-          <h3 style={{
-            fontWeight: 'bold',
-            marginBottom: '16px',
-            color: '#000'
-          }}>
-            What you'll unlock:
-          </h3>
-          <ul style={{
-            listStyle: 'none',
-            padding: 0,
-            margin: 0,
-            color: '#666'
-          }}>
-            <li style={{ padding: '8px 0', display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <span>✅</span> AI-powered insights for your music career
-            </li>
-            <li style={{ padding: '8px 0', display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <span>✅</span> Cross-platform analytics dashboard
-            </li>
-            <li style={{ padding: '8px 0', display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <span>✅</span> Content calendar & scheduling tools
-            </li>
-            <li style={{ padding: '8px 0', display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <span>✅</span> Growth tools (playlists, sync licensing, etc.)
-            </li>
-            <li style={{ padding: '8px 0', display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <span>✅</span> XP & achievement system
-            </li>
-          </ul>
-        </div>
       </div>
     );
   }
 
-  const level = profile?.level || 0;
-  const xp = profile?.xp || 0;
-  const nextLevelXP = level === 0 ? 500 : (level + 1) * 500;
-  const xpProgress = (xp / nextLevelXP) * 100;
-
   return (
     <div style={{ padding: '0' }}>
-      {/* Welcome Header */}
-      <div style={{ marginBottom: '32px' }}>
-        <h1 style={{
-          fontSize: '36px',
-          fontWeight: 'bold',
-          color: '#000',
-          marginBottom: '8px'
-        }}>
-          Welcome to Dream Suite, {profile?.artist_name || 'Artist'}
+      {/* Header Section */}
+      <div style={{
+        marginBottom: '32px',
+        padding: '24px',
+        background: 'linear-gradient(135deg, rgb(147, 51, 234) 0%, rgb(236, 72, 153) 100%)',
+        borderRadius: '16px',
+        color: 'white'
+      }}>
+        <h1 style={{ fontSize: '32px', fontWeight: 'bold', marginBottom: '8px' }}>
+          Welcome to Dream Suite
         </h1>
-        <p style={{ color: '#666', fontSize: '16px' }}>
+        <p style={{ fontSize: '16px', opacity: 0.9 }}>
           Your AI-powered music career dashboard
         </p>
+
+        {/* XP and Level Display */}
+        <div style={{
+          display: 'flex',
+          gap: '24px',
+          marginTop: '24px',
+          flexWrap: 'wrap'
+        }}>
+          <div style={{
+            background: 'rgba(255,255,255,0.2)',
+            padding: '12px 24px',
+            borderRadius: '12px',
+            backdropFilter: 'blur(10px)'
+          }}>
+            <div style={{ fontSize: '12px', opacity: 0.8, marginBottom: '4px' }}>LEVEL</div>
+            <div style={{ fontSize: '28px', fontWeight: 'bold' }}>{profile.level}</div>
+          </div>
+          <div style={{
+            background: 'rgba(255,255,255,0.2)',
+            padding: '12px 24px',
+            borderRadius: '12px',
+            backdropFilter: 'blur(10px)'
+          }}>
+            <div style={{ fontSize: '12px', opacity: 0.8', marginBottom: '4px' }}>XP</div>
+            <div style={{ fontSize: '28px', fontWeight: 'bold' }}>{profile.xp}</div>
+          </div>
+          <div style={{
+            background: 'rgba(255,255,255,0.2)',
+            padding: '12px 24px',
+            borderRadius: '12px',
+            backdropFilter: 'blur(10px)'
+          }}>
+            <div style={{ fontSize: '12px', opacity: 0.8', marginBottom: '4px' }}>POSTING STREAK</div>
+            <div style={{ fontSize: '28px', fontWeight: 'bold' }}>{profile.posting_streak} days 🔥</div>
+          </div>
+        </div>
       </div>
 
-      {/* Admin Badge */}
-      {isAdmin && (
-        <div style={{
-          padding: '12px 24px',
-          background: 'linear-gradient(to right, rgb(251, 191, 36), rgb(245, 158, 11))',
-          borderRadius: '8px',
-          marginBottom: '24px',
-          display: 'inline-block'
-        }}>
-          <span style={{ color: '#000', fontWeight: '600' }}>🔑 Admin Access - All Features Unlocked</span>
-        </div>
-      )}
-
-      {/* Progress Card */}
+      {/* Main Dashboard Grid */}
       <div style={{
-        background: 'white',
-        border: '2px solid #ddd',
-        borderRadius: '8px',
-        padding: '32px',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+        gap: '24px',
         marginBottom: '32px'
       }}>
-        <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '24px', color: '#000' }}>
-          Your Progress
-        </h2>
-
-        <div style={{ marginBottom: '24px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-            <span style={{ fontSize: '32px', fontWeight: 'bold', color: '#000' }}>
-              Level {level}
-            </span>
-            <span style={{ color: '#666' }}>{xp} XP</span>
-          </div>
-
-          {/* XP Progress Bar */}
-          <div style={{
-            width: '100%',
-            height: '12px',
-            background: '#e5e5e5',
-            borderRadius: '999px',
-            overflow: 'hidden'
-          }}>
-            <div style={{
-              width: `${xpProgress}%`,
-              height: '100%',
-              background: 'linear-gradient(to right, rgb(147, 51, 234), rgb(236, 72, 153))',
-              transition: 'width 0.3s ease'
-            }} />
-          </div>
-
-          <p style={{ color: '#666', fontSize: '14px', marginTop: '8px' }}>
-            {(nextLevelXP - xp).toLocaleString()} XP until Level {level + 1}
+        {/* AI Agent Card */}
+        <div style={{
+          background: 'white',
+          border: '2px solid #e5e7eb',
+          borderRadius: '16px',
+          padding: '24px',
+          transition: 'all 0.2s',
+          cursor: 'pointer'
+        }}
+        onClick={() => router.push('/profile/dream-suite/agent')}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.borderColor = 'rgb(147, 51, 234)';
+          e.currentTarget.style.boxShadow = '0 8px 24px rgba(147, 51, 234, 0.15)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.borderColor = '#e5e7eb';
+          e.currentTarget.style.boxShadow = 'none';
+        }}>
+          <div style={{ fontSize: '48px', marginBottom: '16px' }}>🤖</div>
+          <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '8px', color: '#000' }}>
+            AI Career Agent
+          </h2>
+          <p style={{ color: '#666', marginBottom: '16px' }}>
+            Chat with your personal AI music career advisor. Never forgets your story, goals, or preferences.
           </p>
+          <div style={{
+            color: 'rgb(147, 51, 234)',
+            fontWeight: '600',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
+          }}>
+            Start Conversation →
+          </div>
         </div>
 
-        {/* Posting Streak */}
+        {/* Analytics Card */}
         <div style={{
-          borderTop: '2px solid #ddd',
-          paddingTop: '24px'
+          background: 'white',
+          border: '2px solid #e5e7eb',
+          borderRadius: '16px',
+          padding: '24px',
+          transition: 'all 0.2s',
+          cursor: 'pointer'
+        }}
+        onClick={() => router.push('/profile/dream-suite/analytics')}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.borderColor = 'rgb(147, 51, 234)';
+          e.currentTarget.style.boxShadow = '0 8px 24px rgba(147, 51, 234, 0.15)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.borderColor = '#e5e7eb';
+          e.currentTarget.style.boxShadow = 'none';
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <div style={{
-              padding: '16px',
-              background: 'linear-gradient(to bottom right, #fed7aa, #fca5a5)',
-              borderRadius: '8px'
-            }}>
-              <span style={{ fontSize: '32px' }}>🔥</span>
-            </div>
-            <div>
-              <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#000' }}>
-                {profile?.posting_streak || 0} Days
-              </div>
-              <div style={{ color: '#666', fontSize: '14px' }}>Posting Streak</div>
-            </div>
+          <div style={{ fontSize: '48px', marginBottom: '16px' }}>📊</div>
+          <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '8px', color: '#000' }}>
+            Analytics Dashboard
+          </h2>
+          <p style={{ color: '#666', marginBottom: '16px' }}>
+            View all your metrics from {connectedPlatforms.length} connected platform{connectedPlatforms.length !== 1 ? 's' : ''} in one place.
+          </p>
+          <div style={{
+            color: 'rgb(147, 51, 234)',
+            fontWeight: '600',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
+          }}>
+            View Analytics →
+          </div>
+        </div>
+
+        {/* Content Calendar Card */}
+        <div style={{
+          background: 'white',
+          border: '2px solid #e5e7eb',
+          borderRadius: '16px',
+          padding: '24px',
+          transition: 'all 0.2s',
+          cursor: 'pointer'
+        }}
+        onClick={() => router.push('/profile/dream-suite/calendar')}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.borderColor = 'rgb(147, 51, 234)';
+          e.currentTarget.style.boxShadow = '0 8px 24px rgba(147, 51, 234, 0.15)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.borderColor = '#e5e7eb';
+          e.currentTarget.style.boxShadow = 'none';
+        }}>
+          <div style={{ fontSize: '48px', marginBottom: '16px' }}>📅</div>
+          <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '8px', color: '#000' }}>
+            Content Calendar
+          </h2>
+          <p style={{ color: '#666', marginBottom: '16px' }}>
+            Track your posts across platforms and compare performance over time.
+          </p>
+          <div style={{
+            color: 'rgb(147, 51, 234)',
+            fontWeight: '600',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
+          }}>
+            View Calendar →
           </div>
         </div>
       </div>
 
-      {/* Coming Soon Features */}
+      {/* Connected Platforms Section */}
       <div style={{
         background: 'white',
-        border: '2px solid #ddd',
-        borderRadius: '8px',
-        padding: '32px'
+        border: '2px solid #e5e7eb',
+        borderRadius: '16px',
+        padding: '24px',
+        marginBottom: '32px'
       }}>
-        <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '24px', color: '#000' }}>
-          Coming Soon
+        <h2 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '16px', color: '#000' }}>
+          Connected Platforms ({connectedPlatforms.length})
         </h2>
+        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+          {connectedPlatforms.map((platform: string) => {
+            const info = PLATFORM_INFO[platform as keyof typeof PLATFORM_INFO];
+            return (
+              <div
+                key={platform}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '12px 16px',
+                  background: '#f3f4f6',
+                  borderRadius: '12px',
+                  border: '2px solid #e5e7eb'
+                }}
+              >
+                <span style={{ fontSize: '24px' }}>{info?.icon || '🔗'}</span>
+                <span style={{ fontWeight: '600', color: '#000' }}>{info?.name || platform}</span>
+                <span style={{
+                  width: '8px',
+                  height: '8px',
+                  background: '#10b981',
+                  borderRadius: '50%',
+                  marginLeft: '4px'
+                }} />
+              </div>
+            );
+          })}
+          <button
+            onClick={() => router.push('/profile/onboarding')}
+            style={{
+              padding: '12px 16px',
+              background: 'transparent',
+              border: '2px dashed rgb(147, 51, 234)',
+              borderRadius: '12px',
+              color: 'rgb(147, 51, 234)',
+              fontWeight: '600',
+              cursor: 'pointer',
+              transition: 'all 0.2s'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(147, 51, 234, 0.1)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent';
+            }}
+          >
+            + Add More Platforms
+          </button>
+        </div>
+      </div>
+
+      {/* Quick Stats Grid (Placeholder for future analytics) */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+        gap: '16px'
+      }}>
         <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-          gap: '16px'
+          background: 'white',
+          border: '2px solid #e5e7eb',
+          borderRadius: '12px',
+          padding: '20px',
+          textAlign: 'center'
         }}>
-          {[
-            { icon: '💡', title: 'AI Insights', desc: 'Personalized recommendations for your music career' },
-            { icon: '📊', title: 'Analytics', desc: 'Track your growth across all platforms' },
-            { icon: '📅', title: 'Content Calendar', desc: 'Plan and schedule your releases' },
-            { icon: '🚀', title: 'Growth Tools', desc: 'Playlist pitching, sync licensing & more' }
-          ].map((feature) => (
-            <div key={feature.title} style={{
-              padding: '24px',
-              background: '#f9f9f9',
-              borderRadius: '8px',
-              border: '2px solid #e5e5e5'
-            }}>
-              <div style={{ fontSize: '32px', marginBottom: '12px' }}>{feature.icon}</div>
-              <h3 style={{ fontWeight: 'bold', marginBottom: '8px', color: '#000' }}>{feature.title}</h3>
-              <p style={{ color: '#666', fontSize: '14px' }}>{feature.desc}</p>
-            </div>
-          ))}
+          <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#000', marginBottom: '8px' }}>
+            --
+          </div>
+          <div style={{ fontSize: '14px', color: '#666' }}>Total Followers</div>
+        </div>
+        <div style={{
+          background: 'white',
+          border: '2px solid #e5e7eb',
+          borderRadius: '12px',
+          padding: '20px',
+          textAlign: 'center'
+        }}>
+          <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#000', marginBottom: '8px' }}>
+            --
+          </div>
+          <div style={{ fontSize: '14px', color: '#666' }}>Monthly Streams</div>
+        </div>
+        <div style={{
+          background: 'white',
+          border: '2px solid #e5e7eb',
+          borderRadius: '12px',
+          padding: '20px',
+          textAlign: 'center'
+        }}>
+          <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#000', marginBottom: '8px' }}>
+            --
+          </div>
+          <div style={{ fontSize: '14px', color: '#666' }}>Engagement Rate</div>
+        </div>
+        <div style={{
+          background: 'white',
+          border: '2px solid #e5e7eb',
+          borderRadius: '12px',
+          padding: '20px',
+          textAlign: 'center'
+        }}>
+          <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#000', marginBottom: '8px' }}>
+            --
+          </div>
+          <div style={{ fontSize: '14px', color: '#666' }}>Posts This Month</div>
         </div>
       </div>
     </div>
