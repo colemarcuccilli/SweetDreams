@@ -37,24 +37,22 @@ export interface PlatformUserInfo {
 // OAuth platform configurations
 export const OAUTH_CONFIGS: Record<string, OAuthPlatformConfig> = {
   instagram: {
-    clientId: process.env.NEXT_PUBLIC_INSTAGRAM_CLIENT_ID!,
+    clientId: process.env.INSTAGRAM_CLIENT_ID!,
     clientSecret: process.env.INSTAGRAM_CLIENT_SECRET!,
-    authorizationUrl: 'https://api.instagram.com/oauth/authorize',
-    tokenUrl: 'https://api.instagram.com/oauth/access_token',
-    refreshUrl: 'https://graph.instagram.com/refresh_access_token',
+    // Instagram now uses Facebook OAuth with Instagram permissions
+    authorizationUrl: 'https://www.facebook.com/v18.0/dialog/oauth',
+    tokenUrl: 'https://graph.facebook.com/v18.0/oauth/access_token',
     scopes: [
-      'user_profile',
-      'user_media',
-      'instagram_graph_user_profile',
-      'instagram_graph_user_media',
-      'pages_show_list',
-      'pages_read_engagement',
       'instagram_basic',
       'instagram_manage_insights',
+      'pages_show_list',
+      'pages_read_engagement',
+      'public_profile',
+      'email',
     ],
-    userInfoUrl: 'https://graph.instagram.com/me',
+    userInfoUrl: 'https://graph.facebook.com/me/accounts',
     tokenExpiresIn: 60 * 24 * 60 * 60, // 60 days
-    supportsRefresh: true,
+    supportsRefresh: false, // Facebook uses token exchange
   },
 
   spotify: {
@@ -116,18 +114,17 @@ export const OAUTH_CONFIGS: Record<string, OAuthPlatformConfig> = {
   },
 
   facebook: {
-    clientId: process.env.NEXT_PUBLIC_FACEBOOK_APP_ID!,
-    clientSecret: process.env.FACEBOOK_APP_SECRET!,
+    clientId: process.env.FACEBOOK_CLIENT_ID!,
+    clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
     authorizationUrl: 'https://www.facebook.com/v18.0/dialog/oauth',
     tokenUrl: 'https://graph.facebook.com/v18.0/oauth/access_token',
     scopes: [
+      'public_profile',
+      'email',
       'pages_show_list',
       'pages_read_engagement',
       'pages_manage_metadata',
       'pages_read_user_content',
-      'instagram_basic',
-      'instagram_manage_insights',
-      'business_management',
     ],
     userInfoUrl: 'https://graph.facebook.com/me',
     tokenExpiresIn: 60 * 24 * 60 * 60, // 60 days for long-lived tokens
