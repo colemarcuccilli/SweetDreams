@@ -56,7 +56,7 @@ export default function ProfileLayout({
           </div>
 
           <nav className={styles.sidebarNav}>
-            {/* Dream Suite Dashboard Link */}
+            {/* Dream Suite Dashboard - AI-Powered Music Career Tools */}
             <Link
               href="/profile/dream-suite"
               className={`${styles.navItem} ${pathname === '/profile/dream-suite' ? styles.navItemActive : ''}`}
@@ -71,7 +71,7 @@ export default function ProfileLayout({
                 <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
                 <polyline points="9 22 9 12 15 12 15 22"/>
               </svg>
-              <span>Dream Suite Dashboard</span>
+              <span>Dream Suite</span>
             </Link>
 
             <div style={{
