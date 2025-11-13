@@ -170,7 +170,7 @@ export default function OnboardingPage() {
         xp: bonusXP,
         level: 1, // Level up from 0 to 1 on completion
       })
-      .eq('id', user?.id);
+      .eq('user_id', user?.id);
 
     if (error) {
       console.error('Error saving onboarding:', error);
