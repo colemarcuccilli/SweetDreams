@@ -117,7 +117,7 @@ export default function DreamSuitePage() {
             borderRadius: '12px',
             backdropFilter: 'blur(10px)'
           }}>
-            <div style={{ fontSize: '12px', opacity: 0.8', marginBottom: '4px' }}>XP</div>
+            <div style={{ fontSize: '12px', opacity: 0.8, marginBottom: '4px' }}>XP</div>
             <div style={{ fontSize: '28px', fontWeight: 'bold' }}>{profile.xp}</div>
           </div>
           <div style={{
@@ -126,7 +126,7 @@ export default function DreamSuitePage() {
             borderRadius: '12px',
             backdropFilter: 'blur(10px)'
           }}>
-            <div style={{ fontSize: '12px', opacity: 0.8', marginBottom: '4px' }}>POSTING STREAK</div>
+            <div style={{ fontSize: '12px', opacity: 0.8, marginBottom: '4px' }}>POSTING STREAK</div>
             <div style={{ fontSize: '28px', fontWeight: 'bold' }}>{profile.posting_streak} days 🔥</div>
           </div>
         </div>
