@@ -56,7 +56,7 @@ export const OAUTH_CONFIGS: Record<string, OAuthPlatformConfig> = {
   },
 
   spotify: {
-    clientId: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID!,
+    clientId: process.env.SPOTIFY_CLIENT_ID!,
     clientSecret: process.env.SPOTIFY_CLIENT_SECRET!,
     authorizationUrl: 'https://accounts.spotify.com/authorize',
     tokenUrl: 'https://accounts.spotify.com/api/token',
