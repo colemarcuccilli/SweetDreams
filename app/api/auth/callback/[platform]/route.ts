@@ -140,22 +140,31 @@ export async function GET(
     }
 
     // Update connected_platforms array in profiles table
-    const { data: profile } = await supabase
+    const { data: profile, error: profileError } = await supabase
       .from('profiles')
       .select('connected_platforms')
       .eq('user_id', stateData.userId)
       .single();
 
-    const currentPlatforms = profile?.connected_platforms || [];
-    if (!currentPlatforms.includes(platform)) {
-      const updatedPlatforms = [...currentPlatforms, platform];
+    if (profileError && profileError.code === 'PGRST116') {
+      // Profile doesn't exist - this shouldn't happen but handle gracefully
+      console.warn('Profile not found for user:', stateData.userId);
+    } else {
+      const currentPlatforms = profile?.connected_platforms || [];
+      if (!currentPlatforms.includes(platform)) {
+        const updatedPlatforms = [...currentPlatforms, platform];
 
-      await supabase
-        .from('profiles')
-        .update({
-          connected_platforms: updatedPlatforms,
-        })
-        .eq('user_id', stateData.userId);
+        const { error: updateError } = await supabase
+          .from('profiles')
+          .update({
+            connected_platforms: updatedPlatforms,
+          })
+          .eq('user_id', stateData.userId);
+
+        if (updateError) {
+          console.error('Failed to update connected_platforms:', updateError);
+        }
+      }
     }
 
     // Clear PKCE cookie if it was used
