@@ -33,6 +33,14 @@ export async function GET(request: NextRequest) {
     // Transform the data to match the frontend interface
     const transformedBookings = bookings.map((booking) => {
       const startTime = new Date(booking.start_time);
+
+      // Extract date and time in LOCAL timezone to avoid off-by-one day errors
+      const year = startTime.getFullYear();
+      const month = String(startTime.getMonth() + 1).padStart(2, '0');
+      const day = String(startTime.getDate()).padStart(2, '0');
+      const localDate = `${year}-${month}-${day}`;
+      const localHour = startTime.getHours();
+
       return {
         id: booking.id,
         firstName: booking.first_name,
@@ -40,8 +48,8 @@ export async function GET(request: NextRequest) {
         artistName: booking.artist_name,
         customerEmail: booking.customer_email,
         customerPhone: booking.customer_phone,
-        date: startTime.toISOString().split('T')[0],
-        startTime: startTime.getHours(),
+        date: localDate,
+        startTime: localHour,
         duration: booking.duration,
         depositAmount: booking.deposit_amount,
         totalAmount: booking.total_amount,

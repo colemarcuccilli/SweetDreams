@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import { getSessionProducts, BOOKING_PRODUCTS } from '@/lib/booking-config';
+import { getSessionProducts, BOOKING_PRODUCTS, calculateOvertimeHours } from '@/lib/booking-config';
 import { createServiceRoleClient } from '@/utils/supabase/service-role';
 import { resend, ADMIN_EMAIL, FROM_EMAIL } from '@/lib/emails/resend';
 import { PendingBookingAlert } from '@/lib/emails/pending-booking-alert';
@@ -28,6 +28,8 @@ export async function POST(request: NextRequest) {
       customerEmail,
       customerPhone
     } = body;
+
+    console.log('📋 Received booking request:', { date, startTime, duration, fees });
 
     // Validate required fields
     if (!date || startTime === undefined || !duration || !firstName || !lastName || !artistName || !customerEmail) {
@@ -69,21 +71,32 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Add after-hours fee if applicable (per hour)
+    // Add after-hours fee if applicable (only for hours after 9 PM)
     if (fees.afterHoursFee) {
+      const overtimeHours = calculateOvertimeHours(startTime, duration);
+      console.log(`⏰ After-hours calculation: ${overtimeHours} hours after 9 PM (start: ${startTime}, duration: ${duration})`);
+
       const afterHoursFeeProduct = BOOKING_PRODUCTS.after_hours_fee;
-      if (afterHoursFeeProduct.priceId && afterHoursFeeProduct.priceId !== 'price_XXX') {
+      if (afterHoursFeeProduct.priceId && afterHoursFeeProduct.priceId !== 'price_XXX' && overtimeHours > 0) {
         lineItems.push({
           price: afterHoursFeeProduct.priceId,
-          quantity: duration, // $10 per hour
+          quantity: overtimeHours, // $10 per hour AFTER 9 PM only
         });
       }
     }
 
     // Check for booking conflicts in Supabase
     const supabase = createServiceRoleClient();
-    const bookingStartTime = new Date(date);
-    bookingStartTime.setHours(startTime, 0, 0, 0);
+
+    // IMPORTANT: Parse date in local timezone to avoid off-by-one day errors
+    // When date comes as "2025-11-16", we need to treat it as local date, not UTC
+    const dateParts = date.split('T')[0].split('-'); // Get just the date part
+    const year = parseInt(dateParts[0]);
+    const month = parseInt(dateParts[1]) - 1; // Month is 0-indexed
+    const day = parseInt(dateParts[2]);
+
+    const bookingStartTime = new Date(year, month, day, startTime, 0, 0, 0);
+    console.log(`📅 Booking date: ${date} → Parsed as: ${bookingStartTime.toISOString()} (${bookingStartTime.toLocaleString()})`);
 
     const { data: existingBookings } = await supabase
       .from('bookings')
@@ -147,8 +160,7 @@ export async function POST(request: NextRequest) {
     });
 
     // Save booking to Supabase with status 'pending_deposit'
-    const bookingEndTime = new Date(date);
-    bookingEndTime.setHours(startTime + duration, 0, 0, 0);
+    const bookingEndTime = new Date(year, month, day, startTime + duration, 0, 0, 0);
 
     // For 'full' payment products (1-hour, 3-hour holiday), remainder is 0
     // For 'deposit' products, calculate remainder

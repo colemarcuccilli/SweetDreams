@@ -154,7 +154,9 @@ export default function AdminBookingsPage() {
   };
 
   const handleCancelBooking = async (booking: Booking) => {
-    const bookingDate = new Date(booking.date);
+    // Parse date in local timezone
+    const [year, month, day] = booking.date.split('-').map(Number);
+    const bookingDate = new Date(year, month - 1, day, booking.startTime);
     const isFuture = bookingDate > new Date();
 
     // Check if actual money was paid (not just deposit amount, which could be before coupon)
@@ -291,7 +293,10 @@ export default function AdminBookingsPage() {
   };
 
   const formatDate = (dateStr: string, startTime: number) => {
-    const date = new Date(dateStr);
+    // Parse date in local timezone to avoid off-by-one day errors
+    const [year, month, day] = dateStr.split('-').map(Number);
+    const date = new Date(year, month - 1, day); // month is 0-indexed
+
     const timeStr = new Date().setHours(startTime, 0);
     return `${date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })} at ${new Date(timeStr).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}`;
   };
