@@ -77,7 +77,7 @@ export const OAUTH_CONFIGS: Record<string, OAuthPlatformConfig> = {
   },
 
   youtube: {
-    clientId: process.env.NEXT_PUBLIC_YOUTUBE_CLIENT_ID!,
+    clientId: process.env.YOUTUBE_CLIENT_ID!,
     clientSecret: process.env.YOUTUBE_CLIENT_SECRET!,
     authorizationUrl: 'https://accounts.google.com/o/oauth2/v2/auth',
     tokenUrl: 'https://oauth2.googleapis.com/token',
