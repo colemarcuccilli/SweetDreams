@@ -139,16 +139,14 @@ export default function MusicPage() {
           <div className={styles.hoursContent}>
             <div className={styles.hoursBlock}>
               <h3 className={styles.hoursLabel}>REGULAR HOURS</h3>
-              <p className={styles.hoursText}>Monday - Thursday: 9:00 AM - 8:59 PM</p>
-              <p className={styles.hoursText}>Saturday: Closed</p>
-              <p className={styles.hoursText}>Sunday: Closed</p>
+              <p className={styles.hoursText}>Monday - Sunday: 9:00 AM - 9:00 PM</p>
+              <p className={styles.hoursText}>Open 7 Days a Week!</p>
             </div>
 
             <div className={`${styles.hoursBlock} ${styles.hoursBlockHighlight}`}>
               <h3 className={styles.hoursLabel}>AFTER HOURS <span className={styles.feeTag}>+$10/hr</span></h3>
-              <p className={styles.hoursText}>Monday - Friday: 9:00 PM - 2:00 AM</p>
-              <p className={styles.hoursText}>Saturday: 11:00 AM - 3:00 AM</p>
-              <p className={styles.hoursText}>Sunday: 11:00 AM - 3:00 AM</p>
+              <p className={styles.hoursText}>Available Daily: 9:00 PM - 3:00 AM</p>
+              <p className={styles.hoursText}>Late night sessions available every day!</p>
             </div>
           </div>
 

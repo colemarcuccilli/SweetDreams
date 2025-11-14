@@ -407,10 +407,9 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
 
   const availableTimeSlots = getAvailableTimeSlots();
 
-  // Disable past dates, Sundays, and fully blocked dates
+  // Disable past dates and fully blocked dates (Sundays now available!)
   const disabledDays = [
     { before: new Date() },
-    { dayOfWeek: [0] }, // Sunday
     isDateFullyBlocked  // Custom matcher function for fully blocked dates
   ];
 

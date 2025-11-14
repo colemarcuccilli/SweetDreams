@@ -146,7 +146,7 @@ export const STUDIO_HOURS = {
   thursday: { open: 9, close: 23, lateNightClose: 3 },
   friday: { open: 9, close: 23, lateNightClose: 3 },
   saturday: { open: 9, close: 23, lateNightClose: 3 },
-  sunday: null // Closed on Sundays
+  sunday: { open: 9, close: 23, lateNightClose: 3 } // Now open on Sundays!
 };
 
 // Helper function to get deposit and remainder products for a session duration
