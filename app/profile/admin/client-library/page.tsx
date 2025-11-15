@@ -134,15 +134,37 @@ export default function AdminClientLibraryPage() {
     setUploading(true);
 
     try {
-      const formData = new FormData();
-      formData.append('file', uploadFile);
-      formData.append('userId', selectedClient.id);
-      formData.append('displayName', displayName);
-      formData.append('description', description);
+      // Upload directly to Supabase Storage (bypasses Vercel 4.5MB limit)
+      const supabase = (await import('@/utils/supabase/client')).createClient();
 
-      const response = await fetch('/api/admin/library/upload', {
+      // Create unique filename
+      const timestamp = Date.now();
+      const sanitizedFileName = uploadFile.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+      const filePath = `${selectedClient.id}/${timestamp}_${sanitizedFileName}`;
+
+      // Upload to Supabase Storage
+      const { error: uploadError } = await supabase.storage
+        .from('profile-audio')
+        .upload(filePath, uploadFile, {
+          cacheControl: '3600',
+          upsert: false
+        });
+
+      if (uploadError) throw uploadError;
+
+      // Create database record via API
+      const response = await fetch('/api/admin/library/deliverables', {
         method: 'POST',
-        body: formData
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: selectedClient.id,
+          fileName: uploadFile.name,
+          displayName: displayName,
+          filePath: filePath,
+          fileSize: uploadFile.size,
+          fileType: uploadFile.type,
+          description: description
+        })
       });
 
       const data = await response.json();
@@ -158,9 +180,9 @@ export default function AdminClientLibraryPage() {
       } else {
         alert('Upload failed: ' + (data.error || 'Unknown error'));
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Upload error:', error);
-      alert('Upload failed');
+      alert('Upload failed: ' + (error.message || 'Unknown error'));
     } finally {
       setUploading(false);
     }

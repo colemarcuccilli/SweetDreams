@@ -4,5 +4,14 @@
       "path": "/api/cron/send-reminders",
       "schedule": "0 * * * *"
     }
-  ]
+  ],
+  "functions": {
+    "app/api/admin/library/upload/route.ts": {
+      "maxDuration": 300,
+      "memory": 3008
+    },
+    "app/api/profile/upload-image/route.ts": {
+      "maxDuration": 60
+    }
+  }
 }
