@@ -13,11 +13,9 @@ export default function ProfilePage() {
   const [artistName, setArtistName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [profilePhotoUrl, setProfilePhotoUrl] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [updating, setUpdating] = useState(false);
-  const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [emailVerified, setEmailVerified] = useState(false);
@@ -47,104 +45,8 @@ export default function ProfilePage() {
     setArtistName(user.user_metadata?.artist_name || '');
     setPhone(user.user_metadata?.phone || '');
     setEmailVerified(!!user.email_confirmed_at);
-
-    // Load profile photo from user_metadata OR public_profiles table
-    let photoUrl = user.user_metadata?.profile_photo_url || '';
-
-    // If no photo in user_metadata, check public_profiles table
-    if (!photoUrl) {
-      try {
-        const { data: profile } = await supabase
-          .from('public_profiles')
-          .select('profile_picture_url')
-          .eq('user_id', user.id)
-          .single();
-
-        if (profile?.profile_picture_url) {
-          photoUrl = profile.profile_picture_url;
-          console.log('📸 Loaded profile photo from public_profiles table');
-        }
-      } catch (err) {
-        console.error('Failed to load public profile photo:', err);
-      }
-    }
-
-    setProfilePhotoUrl(photoUrl);
     setDataLoaded(true);
     console.log('📧 Email verified:', !!user.email_confirmed_at);
-  };
-
-  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file || !user) return;
-
-    // Check file size (max 2MB)
-    if (file.size > 2 * 1024 * 1024) {
-      setError('Image must be less than 2MB');
-      return;
-    }
-
-    // Check file type
-    if (!file.type.startsWith('image/')) {
-      setError('File must be an image');
-      return;
-    }
-
-    setUploading(true);
-    setError('');
-
-    try {
-      // Create unique filename
-      const fileExt = file.name.split('.').pop();
-      const fileName = `profile_${Date.now()}.${fileExt}`;
-      const filePath = `${user.id}/${fileName}`;
-
-      // Upload to Supabase Storage
-      const { error: uploadError } = await supabase.storage
-        .from('profile-pictures')
-        .upload(filePath, file, {
-          cacheControl: '3600',
-          upsert: false
-        });
-
-      if (uploadError) throw uploadError;
-
-      // Get public URL
-      const { data } = supabase.storage
-        .from('profile-pictures')
-        .getPublicUrl(filePath);
-
-      const publicUrl = data.publicUrl;
-
-      // Update BOTH locations for consistency
-      // 1. Update user metadata (for account page)
-      const { error: updateError } = await supabase.auth.updateUser({
-        data: {
-          profile_photo_url: publicUrl,
-        },
-      });
-
-      if (updateError) throw updateError;
-
-      // 2. Update public_profiles table (for public profile page)
-      const { error: profileError } = await supabase
-        .from('public_profiles')
-        .update({ profile_picture_url: publicUrl })
-        .eq('user_id', user.id);
-
-      if (profileError) {
-        console.error('⚠️ Failed to update public profile:', profileError);
-        // Don't throw - partial success is ok
-      }
-
-      setProfilePhotoUrl(publicUrl);
-      setMessage('Profile photo updated successfully!');
-    } catch (err: any) {
-      console.error('Photo upload error:', err);
-      setError(err.message || 'Failed to upload photo');
-    } finally {
-      setUploading(false);
-    }
   };
 
   const handleUpdateProfile = async (e: React.FormEvent) => {
@@ -287,39 +189,6 @@ export default function ProfilePage() {
             {error && (
               <div className={styles.error}>{error}</div>
             )}
-
-            {/* Profile Photo */}
-            <div className={styles.photoSection}>
-              <label className={styles.label}>PROFILE PHOTO</label>
-              <div className={styles.photoUpload}>
-                <div className={styles.photoPreview}>
-                  {profilePhotoUrl ? (
-                    <img src={profilePhotoUrl} alt="Profile" className={styles.profileImage} />
-                  ) : (
-                    <div className={styles.photoPlaceholder}>
-                      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <circle cx="12" cy="8" r="4"/>
-                        <path d="M20 21a8 8 0 1 0-16 0"/>
-                      </svg>
-                    </div>
-                  )}
-                </div>
-                <div className={styles.photoActions}>
-                  <label htmlFor="photoUpload" className={styles.uploadButton}>
-                    {uploading ? 'UPLOADING...' : 'CHOOSE PHOTO'}
-                    <input
-                      type="file"
-                      id="photoUpload"
-                      accept="image/*"
-                      onChange={handlePhotoUpload}
-                      disabled={uploading}
-                      style={{ display: 'none' }}
-                    />
-                  </label>
-                  <p className={styles.photoHelperText}>Max size: 2MB. JPG, PNG, or GIF.</p>
-                </div>
-              </div>
-            </div>
 
             <div className={styles.inputGroup}>
               <label htmlFor="fullName" className={styles.label}>
