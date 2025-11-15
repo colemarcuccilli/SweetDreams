@@ -3,6 +3,10 @@ import { createClient } from '@/utils/supabase/server';
 import { verifyAdminAccess } from '@/lib/admin-auth';
 import { uploadAudioFile, isValidAudioFile, isValidFileSize } from '@/lib/supabase/storage';
 
+// Allow large file uploads (up to 1GB) and longer execution time
+export const runtime = 'nodejs';
+export const maxDuration = 300; // 5 minutes max execution time
+
 export async function POST(request: NextRequest) {
   try {
     const supabase = await createClient();

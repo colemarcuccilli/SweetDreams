@@ -35,16 +35,44 @@ export default function ProfilePage() {
 
     if (user) {
       console.log('🔐 Profile: Loading user data');
-      setEmail(user.email || '');
-      setFullName(user.user_metadata?.full_name || '');
-      setArtistName(user.user_metadata?.artist_name || '');
-      setPhone(user.user_metadata?.phone || '');
-      setProfilePhotoUrl(user.user_metadata?.profile_photo_url || '');
-      setEmailVerified(!!user.email_confirmed_at);
-      setDataLoaded(true);
-      console.log('📧 Email verified:', !!user.email_confirmed_at);
+      loadUserData();
     }
   }, [user, loading]);
+
+  const loadUserData = async () => {
+    if (!user) return;
+
+    setEmail(user.email || '');
+    setFullName(user.user_metadata?.full_name || '');
+    setArtistName(user.user_metadata?.artist_name || '');
+    setPhone(user.user_metadata?.phone || '');
+    setEmailVerified(!!user.email_confirmed_at);
+
+    // Load profile photo from user_metadata OR public_profiles table
+    let photoUrl = user.user_metadata?.profile_photo_url || '';
+
+    // If no photo in user_metadata, check public_profiles table
+    if (!photoUrl) {
+      try {
+        const { data: profile } = await supabase
+          .from('public_profiles')
+          .select('profile_picture_url')
+          .eq('user_id', user.id)
+          .single();
+
+        if (profile?.profile_picture_url) {
+          photoUrl = profile.profile_picture_url;
+          console.log('📸 Loaded profile photo from public_profiles table');
+        }
+      } catch (err) {
+        console.error('Failed to load public profile photo:', err);
+      }
+    }
+
+    setProfilePhotoUrl(photoUrl);
+    setDataLoaded(true);
+    console.log('📧 Email verified:', !!user.email_confirmed_at);
+  };
 
   const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
