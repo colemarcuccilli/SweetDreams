@@ -56,13 +56,12 @@ export default function ProfilePage() {
     setUpdating(true);
 
     try {
-      // Update user metadata (name, artist name, phone, photo)
+      // Update user metadata (name, artist name, phone)
       const { error: metadataError } = await supabase.auth.updateUser({
         data: {
           full_name: fullName,
           artist_name: artistName,
           phone: phone,
-          profile_photo_url: profilePhotoUrl,
         },
       });
 
