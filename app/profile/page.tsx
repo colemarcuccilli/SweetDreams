@@ -68,12 +68,12 @@ export default function ProfilePage() {
     try {
       // Create unique filename
       const fileExt = file.name.split('.').pop();
-      const fileName = `${user.id}-${Date.now()}.${fileExt}`;
-      const filePath = `profile-photos/${fileName}`;
+      const fileName = `profile_${Date.now()}.${fileExt}`;
+      const filePath = `${user.id}/${fileName}`;
 
       // Upload to Supabase Storage
       const { error: uploadError } = await supabase.storage
-        .from('profile-photos')
+        .from('profile-pictures')
         .upload(filePath, file, {
           cacheControl: '3600',
           upsert: false
@@ -83,7 +83,7 @@ export default function ProfilePage() {
 
       // Get public URL
       const { data } = supabase.storage
-        .from('profile-photos')
+        .from('profile-pictures')
         .getPublicUrl(filePath);
 
       const publicUrl = data.publicUrl;
