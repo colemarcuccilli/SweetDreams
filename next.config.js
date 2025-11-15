@@ -1,5 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '1000mb', // Allow large audio file uploads (up to 1GB)
+    },
+  },
   images: {
     domains: ['cloudflare.com', 'supabase.co'],
     formats: ['image/avif', 'image/webp'],

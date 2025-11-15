@@ -88,7 +88,8 @@ export default function ProfilePage() {
 
       const publicUrl = data.publicUrl;
 
-      // Update user metadata with photo URL
+      // Update BOTH locations for consistency
+      // 1. Update user metadata (for account page)
       const { error: updateError } = await supabase.auth.updateUser({
         data: {
           profile_photo_url: publicUrl,
@@ -96,6 +97,17 @@ export default function ProfilePage() {
       });
 
       if (updateError) throw updateError;
+
+      // 2. Update public_profiles table (for public profile page)
+      const { error: profileError } = await supabase
+        .from('public_profiles')
+        .update({ profile_picture_url: publicUrl })
+        .eq('user_id', user.id);
+
+      if (profileError) {
+        console.error('⚠️ Failed to update public profile:', profileError);
+        // Don't throw - partial success is ok
+      }
 
       setProfilePhotoUrl(publicUrl);
       setMessage('Profile photo updated successfully!');

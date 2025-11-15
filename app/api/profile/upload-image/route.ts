@@ -84,6 +84,36 @@ export async function POST(request: NextRequest) {
 
     console.log('✅ Image uploaded successfully:', publicUrl);
 
+    // If it's a profile picture, sync to BOTH locations for consistency
+    if (imageType === 'profile') {
+      console.log('🔄 Syncing profile picture to both account and public profile...');
+
+      // 1. Update user_metadata (for account page)
+      const { error: metadataError } = await supabase.auth.updateUser({
+        data: {
+          profile_photo_url: publicUrl,
+        },
+      });
+
+      if (metadataError) {
+        console.error('⚠️ Failed to update user_metadata:', metadataError);
+      } else {
+        console.log('✅ Updated user_metadata.profile_photo_url');
+      }
+
+      // 2. Update public_profiles table (for public profile page)
+      const { error: profileError } = await supabase
+        .from('public_profiles')
+        .update({ profile_picture_url: publicUrl })
+        .eq('user_id', user.id);
+
+      if (profileError) {
+        console.error('⚠️ Failed to update public_profiles:', profileError);
+      } else {
+        console.log('✅ Updated public_profiles.profile_picture_url');
+      }
+    }
+
     return NextResponse.json({
       success: true,
       url: publicUrl,
