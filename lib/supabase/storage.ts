@@ -5,7 +5,7 @@
 
 import { SupabaseClient } from '@supabase/supabase-js';
 
-const BUCKET_NAME = 'client-audio-files';
+const BUCKET_NAME = 'profile-audio';
 
 /**
  * Upload an audio file to Supabase Storage
