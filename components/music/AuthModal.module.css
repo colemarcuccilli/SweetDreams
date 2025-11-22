@@ -270,6 +270,98 @@
   margin-bottom: 16px;
 }
 
+/* Password Strength Indicator */
+.passwordStrengthContainer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.passwordStrengthBar {
+  flex: 1;
+  height: 6px;
+  background: #e0e0e0;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.passwordStrengthFill {
+  height: 100%;
+  transition: width 0.3s ease, background-color 0.3s ease;
+  border-radius: 3px;
+}
+
+.passwordStrengthLabel {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  min-width: 60px;
+  text-align: right;
+}
+
+/* Password Requirements */
+.passwordRequirements {
+  margin-top: 12px;
+  padding: 16px;
+  background: #f8f8f8;
+  border-radius: 8px;
+  border: 2px solid #e0e0e0;
+}
+
+.requirementsTitle {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #666;
+  margin: 0 0 12px 0;
+}
+
+.requirementsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.requirement {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.3s ease;
+}
+
+.requirementIcon {
+  font-size: 14px;
+  font-weight: bold;
+  min-width: 16px;
+  display: inline-block;
+}
+
+.requirementMet {
+  color: #00cc00;
+}
+
+.requirementMet .requirementIcon {
+  color: #00cc00;
+}
+
+.requirementUnmet {
+  color: #999;
+}
+
+.requirementUnmet .requirementIcon {
+  color: #ccc;
+}
+
 @media (max-width: 768px) {
   .modalContent {
     padding: 32px 24px;
@@ -282,5 +374,18 @@
   .formRow {
     flex-direction: column;
     gap: 0;
+  }
+
+  .passwordStrengthLabel {
+    font-size: 11px;
+    min-width: 50px;
+  }
+
+  .requirementsTitle {
+    font-size: 11px;
+  }
+
+  .requirement {
+    font-size: 12px;
   }
 }
