@@ -1039,7 +1039,7 @@ export default function AdminBookingsPage() {
 
                   <button
                     className={styles.cancelButton}
-                    onClick={() => handleCancelBooking(booking.id)}
+                    onClick={() => handleCancelBooking(booking)}
                     disabled={cancellingBookingId === booking.id}
                     title="Cancel booking and send cancellation email"
                   >
