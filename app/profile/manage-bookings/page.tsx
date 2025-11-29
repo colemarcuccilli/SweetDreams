@@ -24,6 +24,8 @@ interface Booking {
   actualDepositPaid?: number;
   createdAt?: string;
   // New fields for admin approval workflow
+  sameDayFee?: boolean;
+  afterHoursFee?: boolean;
   afterHoursFeeAmount?: number;
   sameDayFeeAmount?: number;
   approvedAt?: string;
