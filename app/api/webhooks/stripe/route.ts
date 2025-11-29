@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createServiceRoleClient } from '@/utils/supabase/service-role';
 import { resend, ADMIN_EMAIL, FROM_EMAIL } from '@/lib/emails/resend';
-import { AdminBookingNotification } from '@/lib/emails/admin-booking-notification';
-import { CustomerBookingConfirmation } from '@/lib/emails/customer-booking-confirmation';
 import { format } from 'date-fns';
 import * as React from 'react';
 
@@ -62,7 +60,8 @@ export async function POST(request: NextRequest) {
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object as Stripe.Checkout.Session;
 
-    console.log('Payment successful for session:', session.id);
+    console.log('💳 Checkout session completed:', session.id);
+    console.log('💳 Payment status:', session.payment_status);
 
     // Get the booking from Supabase using the session ID
     const supabase = createServiceRoleClient();
@@ -73,26 +72,36 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (fetchError || !booking) {
-      console.error('Error finding booking:', fetchError);
+      console.error('❌ Error finding booking:', fetchError);
       console.error('Looking for session ID:', session.id);
+
+      // Log to webhook failures
+      await supabase.from('webhook_failures').insert({
+        webhook_type: 'checkout_session_completed',
+        stripe_event_id: event.id,
+        stripe_session_id: session.id,
+        error_message: 'Booking not found for session',
+        error_details: { error: String(fetchError) }
+      });
+
       return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
     }
+
+    console.log('📋 Found booking:', booking.id, 'Status:', booking.status);
 
     // Extract coupon and discount information
     let couponCode = null;
     let discountAmount = 0;
-    let actualDepositPaid = session.amount_total || 0; // Amount actually paid after discount
 
     if (session.total_details?.amount_discount && session.total_details.amount_discount > 0) {
       discountAmount = session.total_details.amount_discount;
       console.log('💰 Discount applied:', discountAmount, 'cents');
     }
 
-    // Get coupon code if available (discounts is an array in Stripe Session)
+    // Get coupon code if available
     if (session.discounts && session.discounts.length > 0) {
       const discount = session.discounts[0];
       if (discount && typeof discount === 'object' && 'coupon' in discount && discount.coupon) {
-        // discount.coupon can be a string (coupon ID) or Coupon object
         if (typeof discount.coupon === 'string') {
           couponCode = discount.coupon;
         } else if (typeof discount.coupon === 'object') {
@@ -102,107 +111,95 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    console.log('📊 Payment details:', {
-      originalAmount: booking.deposit_amount,
-      discountAmount,
-      actualPaid: actualDepositPaid,
-      couponCode
-    });
-
-    // Update booking status to 'confirmed' and save payment info
+    // Update booking with payment intent ID and coupon info
+    // NOTE: We do NOT change status to 'confirmed' yet - stays in 'pending_approval'
+    // Payment is AUTHORIZED but NOT CAPTURED until admin approves
     const { error: updateError } = await supabase
       .from('bookings')
       .update({
-        status: 'confirmed',
         stripe_payment_intent_id: session.payment_intent as string,
         coupon_code: couponCode,
         discount_amount: discountAmount,
-        actual_deposit_paid: actualDepositPaid
       })
       .eq('id', booking.id);
 
     if (updateError) {
-      console.error('Error updating booking status:', updateError);
+      console.error('❌ Error updating booking with payment intent:', updateError);
+
+      // Log to webhook failures
+      await supabase.from('webhook_failures').insert({
+        webhook_type: 'checkout_session_completed',
+        stripe_event_id: event.id,
+        stripe_session_id: session.id,
+        booking_id: booking.id,
+        error_message: 'Failed to update booking with payment intent',
+        error_details: { error: String(updateError) }
+      });
+
       return NextResponse.json({ error: 'Failed to update booking' }, { status: 500 });
     }
 
-    // Format date and time strings for emails
-    const startTime = new Date(booking.start_time);
-    const endTime = new Date(booking.end_time);
-    const formattedDate = format(startTime, 'EEEE, MMMM d, yyyy');
-    const formattedStartTime = format(startTime, 'h:mm a');
-    const formattedEndTime = format(endTime, 'h:mm a');
+    // Log to audit trail
+    await supabase.rpc('log_booking_action', {
+      p_booking_id: booking.id,
+      p_action: 'payment_authorized',
+      p_performed_by: 'webhook',
+      p_details: {
+        stripe_session_id: session.id,
+        payment_intent_id: session.payment_intent as string,
+        coupon_code: couponCode,
+        discount_amount: discountAmount,
+        payment_status: session.payment_status
+      }
+    });
 
-    console.log('📧 Preparing to send booking confirmation emails...');
-    console.log('📧 FROM:', FROM_EMAIL);
-    console.log('📧 TO Admin:', ADMIN_EMAIL);
-    console.log('📧 TO Customer:', booking.customer_email);
-    console.log('📧 Resend API Key configured:', !!process.env.RESEND_API_KEY);
-
-    // Send admin notification email
+    // Send admin approval request email NOW (after checkout completes)
     try {
-      console.log('📧 Sending admin notification email...');
-      const adminResult = await resend.emails.send({
+      const startTime = new Date(booking.start_time);
+      const endTime = new Date(booking.end_time);
+      const formattedDate = format(startTime, 'EEEE, MMMM d, yyyy');
+      const formattedStartTime = format(startTime, 'h:mm a');
+      const formattedEndTime = format(endTime, 'h:mm a');
+
+      console.log('📧 Sending admin approval request email to:', ADMIN_EMAIL);
+
+      const { PendingBookingAlert } = await import('@/lib/emails/pending-booking-alert');
+
+      await resend.emails.send({
         from: FROM_EMAIL,
         to: ADMIN_EMAIL,
-        subject: `New Booking Confirmed: ${booking.artist_name} - ${formattedDate}`,
-        react: AdminBookingNotification({
+        subject: `⚠️ NEW BOOKING NEEDS APPROVAL - ${booking.artist_name} on ${formattedDate}`,
+        react: PendingBookingAlert({
           firstName: booking.first_name,
           lastName: booking.last_name,
           artistName: booking.artist_name,
           email: booking.customer_email,
-          phone: booking.customer_phone,
+          phone: booking.customer_phone || '',
           date: formattedDate,
           startTime: formattedStartTime,
           endTime: formattedEndTime,
           duration: booking.duration,
           depositAmount: booking.deposit_amount,
           totalAmount: booking.total_amount,
-          sameDayFee: booking.same_day_fee,
-          afterHoursFee: booking.after_hours_fee,
         }) as React.ReactElement,
       });
-      console.log('✅ Admin notification email sent successfully:', adminResult);
-    } catch (emailError) {
-      console.error('❌ Failed to send admin notification email:', emailError);
-      if (emailError instanceof Error) {
-        console.error('❌ Error message:', emailError.message);
-        console.error('❌ Error stack:', emailError.stack);
-      }
-      console.error('❌ Full error:', JSON.stringify(emailError, null, 2));
-    }
 
-    // Send customer confirmation email
-    try {
-      console.log('📧 Sending customer confirmation email...');
-      const customerResult = await resend.emails.send({
-        from: FROM_EMAIL,
-        to: booking.customer_email,
-        subject: `Booking Confirmed - Sweet Dreams Music Studio - ${formattedDate}`,
-        react: CustomerBookingConfirmation({
-          firstName: booking.first_name,
-          artistName: booking.artist_name,
-          date: formattedDate,
-          startTime: formattedStartTime,
-          endTime: formattedEndTime,
-          duration: booking.duration,
-          depositAmount: booking.deposit_amount,
-          totalAmount: booking.total_amount,
-          sameDayFee: booking.same_day_fee,
-          afterHoursFee: booking.after_hours_fee,
-        }) as React.ReactElement,
+      console.log('✅ Admin approval request email sent successfully');
+    } catch (emailError) {
+      console.error('❌ Failed to send admin approval email:', emailError);
+      // Log but don't fail the webhook
+      await supabase.from('webhook_failures').insert({
+        webhook_type: 'admin_approval_email',
+        booking_id: booking.id,
+        stripe_session_id: session.id,
+        error_message: emailError instanceof Error ? emailError.message : 'Unknown error',
+        error_details: { error: String(emailError) }
       });
-      console.log('✅ Customer confirmation email sent successfully:', customerResult);
-    } catch (emailError) {
-      console.error('❌ Failed to send customer confirmation email:', emailError);
-      if (emailError instanceof Error) {
-        console.error('❌ Error message:', emailError.message);
-        console.error('❌ Error stack:', emailError.stack);
-      }
-      console.error('❌ Full error:', JSON.stringify(emailError, null, 2));
     }
 
-    console.log('✅ Webhook processing complete for session:', session.id);
+    console.log('✅ Webhook processing complete');
+    console.log('💳 Payment AUTHORIZED (not captured yet)');
+    console.log('⏳ Waiting for admin approval to capture funds');
   }
 
   return NextResponse.json({ received: true });

@@ -1,7 +1,139 @@
 import Link from 'next/link';
 import styles from './booking-success.module.css';
+import { createServiceRoleClient } from '@/utils/supabase/service-role';
+import { resend, ADMIN_EMAIL, FROM_EMAIL } from '@/lib/emails/resend';
+import { format } from 'date-fns';
+import { PendingBookingAlert } from '@/lib/emails/pending-booking-alert';
+import Stripe from 'stripe';
 
-export default function BookingSuccessPage() {
+interface PageProps {
+  searchParams: Promise<{ session_id?: string }>;
+}
+
+export default async function BookingSuccessPage({ searchParams }: PageProps) {
+  const params = await searchParams;
+  const sessionId = params.session_id;
+
+  // Send admin approval email after Stripe checkout completes
+  if (sessionId) {
+    try {
+      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+        apiVersion: '2025-08-27.basil',
+      });
+
+      const supabase = createServiceRoleClient();
+
+      const { data: booking, error: fetchError } = await supabase
+        .from('bookings')
+        .select('*')
+        .eq('stripe_session_id', sessionId)
+        .single();
+
+      if (!fetchError && booking) {
+        // Fetch the Stripe session to get payment intent and discount info
+        const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+        console.log('💳 Retrieved Stripe session:', session.id);
+        console.log('💳 Payment intent:', session.payment_intent);
+        console.log('💳 Payment status:', session.payment_status);
+
+        // Extract coupon and discount information
+        let couponCode = null;
+        let discountAmount = 0;
+
+        if (session.total_details?.amount_discount && session.total_details.amount_discount > 0) {
+          discountAmount = session.total_details.amount_discount;
+          console.log('💰 Discount applied:', discountAmount, 'cents');
+        }
+
+        // Get coupon code if available
+        if (session.discounts && session.discounts.length > 0) {
+          const discount = session.discounts[0];
+          if (discount && typeof discount === 'object' && 'coupon' in discount && discount.coupon) {
+            if (typeof discount.coupon === 'string') {
+              couponCode = discount.coupon;
+            } else if (typeof discount.coupon === 'object') {
+              couponCode = discount.coupon.name || discount.coupon.id;
+            }
+            console.log('🎟️ Coupon used:', couponCode);
+          }
+        }
+
+        // Update booking with payment intent ID and coupon info
+        const { error: updateError } = await supabase
+          .from('bookings')
+          .update({
+            stripe_payment_intent_id: session.payment_intent as string,
+            coupon_code: couponCode,
+            discount_amount: discountAmount,
+          })
+          .eq('id', booking.id);
+
+        if (updateError) {
+          console.error('❌ Error updating booking with payment intent:', updateError);
+        } else {
+          console.log('✅ Updated booking with payment intent and discount info');
+        }
+
+        // Log to audit trail
+        await supabase.rpc('log_booking_action', {
+          p_booking_id: booking.id,
+          p_action: 'payment_authorized',
+          p_performed_by: 'system',
+          p_details: {
+            stripe_session_id: session.id,
+            payment_intent_id: session.payment_intent as string,
+            coupon_code: couponCode,
+            discount_amount: discountAmount,
+            payment_status: session.payment_status
+          }
+        });
+        const startTime = new Date(booking.start_time);
+        const endTime = new Date(booking.end_time);
+        const formattedDate = format(startTime, 'EEEE, MMMM d, yyyy');
+        const formattedStartTime = format(startTime, 'h:mm a');
+        const formattedEndTime = format(endTime, 'h:mm a');
+
+        console.log('📧 Sending admin approval request email to:', ADMIN_EMAIL);
+
+        await resend.emails.send({
+          from: FROM_EMAIL,
+          to: ADMIN_EMAIL,
+          subject: `⚠️ NEW BOOKING NEEDS APPROVAL - ${booking.artist_name} on ${formattedDate}`,
+          react: PendingBookingAlert({
+            firstName: booking.first_name,
+            lastName: booking.last_name,
+            artistName: booking.artist_name,
+            email: booking.customer_email,
+            phone: booking.customer_phone || '',
+            date: formattedDate,
+            startTime: formattedStartTime,
+            endTime: formattedEndTime,
+            duration: booking.duration,
+            depositAmount: booking.deposit_amount,
+            totalAmount: booking.total_amount,
+          }),
+        });
+
+        console.log('✅ Admin approval request email sent successfully');
+
+        // Log to audit trail
+        await supabase.rpc('log_booking_action', {
+          p_booking_id: booking.id,
+          p_action: 'admin_notified',
+          p_performed_by: 'system',
+          p_details: {
+            email_sent_to: ADMIN_EMAIL,
+            triggered_from: 'booking_success_page',
+            timestamp: new Date().toISOString()
+          }
+        });
+      }
+    } catch (error) {
+      console.error('❌ Error sending admin email:', error);
+    }
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.successCard}>
@@ -21,19 +153,20 @@ export default function BookingSuccessPage() {
           </svg>
         </div>
 
-        <h1 className={styles.title}>Booking Confirmed!</h1>
+        <h1 className={styles.title}>Booking Request Submitted!</h1>
 
         <p className={styles.message}>
-          Your studio session has been successfully booked. You should receive a confirmation email shortly with all the details.
+          Your studio session request has been received and is pending approval. We've placed a temporary hold on your card for the deposit amount, but no charge has been made yet.
         </p>
 
         <div className={styles.infoBox}>
           <h3>What's Next?</h3>
           <ul>
-            <li>Check your email for booking confirmation</li>
-            <li>You'll receive a reminder 24 hours before your session</li>
+            <li>We'll review your booking request within 24 hours</li>
+            <li>Once approved, you'll receive a confirmation email with all the details</li>
+            <li>Your card will only be charged after we approve the booking</li>
             <li>The remaining balance will be charged after your session</li>
-            <li>Arrive 5-10 minutes early for setup</li>
+            <li>If your booking is not approved, the hold will be released automatically</li>
           </ul>
         </div>
 
@@ -44,7 +177,10 @@ export default function BookingSuccessPage() {
         </div>
 
         <div className={styles.actions}>
-          <Link href="/music" className={styles.primaryButton}>
+          <Link href="/profile" className={styles.primaryButton}>
+            View My Profile
+          </Link>
+          <Link href="/music" className={styles.secondaryButton}>
             Back to Music Page
           </Link>
           <Link href="/" className={styles.secondaryButton}>

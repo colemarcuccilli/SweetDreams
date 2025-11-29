@@ -61,6 +61,15 @@ export async function GET(request: NextRequest) {
         discountAmount: booking.discount_amount,
         actualDepositPaid: booking.actual_deposit_paid,
         createdAt: booking.created_at,
+        // New fields for admin approval workflow
+        afterHoursFeeAmount: booking.after_hours_fee_amount,
+        sameDayFeeAmount: booking.same_day_fee_amount,
+        approvedAt: booking.approved_at,
+        rejectedAt: booking.rejected_at,
+        rejectedReason: booking.rejected_reason,
+        deletedAt: booking.deleted_at,
+        adminNotes: booking.admin_notes,
+        cancellationEmailSentAt: booking.cancellation_email_sent_at,
       };
     });
 

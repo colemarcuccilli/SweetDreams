@@ -70,50 +70,62 @@ export async function POST(request: NextRequest) {
     const formattedDate = format(bookingStartTime, 'EEEE, MMMM d, yyyy');
     const formattedTime = format(bookingStartTime, 'h:mm a');
 
-    // Send cancellation notification to admin
-    try {
-      await resend.emails.send({
-        from: FROM_EMAIL,
-        to: ADMIN_EMAIL,
-        subject: `Booking Cancelled: ${booking.artist_name} - ${formattedDate}`,
-        html: `
-          <h2>Booking Cancellation</h2>
-          <p><strong>Artist:</strong> ${booking.artist_name}</p>
-          <p><strong>Customer:</strong> ${booking.first_name} ${booking.last_name}</p>
-          <p><strong>Email:</strong> ${booking.customer_email}</p>
-          <p><strong>Date:</strong> ${formattedDate}</p>
-          <p><strong>Time:</strong> ${formattedTime}</p>
-          <p><strong>Duration:</strong> ${booking.duration} hours</p>
-          <p><strong>Cancelled on:</strong> ${format(now, 'MMMM d, yyyy h:mm a')}</p>
-        `,
-      });
-      console.log('✅ Admin cancellation notification sent');
-    } catch (emailError) {
-      console.error('❌ Failed to send admin cancellation email:', emailError);
-    }
+    // Send emails only if not already sent (prevent duplicates)
+    if (!booking.cancellation_email_sent_at) {
+      // Send cancellation notification to admin
+      try {
+        await resend.emails.send({
+          from: FROM_EMAIL,
+          to: ADMIN_EMAIL,
+          subject: `Booking Cancelled: ${booking.artist_name} - ${formattedDate}`,
+          html: `
+            <h2>Booking Cancellation</h2>
+            <p><strong>Artist:</strong> ${booking.artist_name}</p>
+            <p><strong>Customer:</strong> ${booking.first_name} ${booking.last_name}</p>
+            <p><strong>Email:</strong> ${booking.customer_email}</p>
+            <p><strong>Date:</strong> ${formattedDate}</p>
+            <p><strong>Time:</strong> ${formattedTime}</p>
+            <p><strong>Duration:</strong> ${booking.duration} hours</p>
+            <p><strong>Cancelled on:</strong> ${format(now, 'MMMM d, yyyy h:mm a')}</p>
+          `,
+        });
+        console.log('✅ Admin cancellation notification sent');
+      } catch (emailError) {
+        console.error('❌ Failed to send admin cancellation email:', emailError);
+      }
 
-    // Send cancellation confirmation to customer
-    try {
-      await resend.emails.send({
-        from: FROM_EMAIL,
-        to: booking.customer_email,
-        subject: `Booking Cancelled - Sweet Dreams Music Studio`,
-        html: `
-          <h2>Booking Cancellation Confirmed</h2>
-          <p>Hi ${booking.first_name},</p>
-          <p>Your booking has been successfully cancelled:</p>
-          <ul>
-            <li><strong>Date:</strong> ${formattedDate}</li>
-            <li><strong>Time:</strong> ${formattedTime}</li>
-            <li><strong>Duration:</strong> ${booking.duration} hours</li>
-          </ul>
-          <p>If you have any questions, please contact us at ${ADMIN_EMAIL}.</p>
-          <p>Thank you,<br>Sweet Dreams Music Team</p>
-        `,
-      });
-      console.log('✅ Customer cancellation confirmation sent');
-    } catch (emailError) {
-      console.error('❌ Failed to send customer cancellation email:', emailError);
+      // Send cancellation confirmation to customer
+      try {
+        await resend.emails.send({
+          from: FROM_EMAIL,
+          to: booking.customer_email,
+          subject: `Booking Cancelled - Sweet Dreams Music Studio`,
+          html: `
+            <h2>Booking Cancellation Confirmed</h2>
+            <p>Hi ${booking.first_name},</p>
+            <p>Your booking has been successfully cancelled:</p>
+            <ul>
+              <li><strong>Date:</strong> ${formattedDate}</li>
+              <li><strong>Time:</strong> ${formattedTime}</li>
+              <li><strong>Duration:</strong> ${booking.duration} hours</li>
+            </ul>
+            <p>If you have any questions, please contact us at ${ADMIN_EMAIL}.</p>
+            <p>Thank you,<br>Sweet Dreams Music Team</p>
+          `,
+        });
+        console.log('✅ Customer cancellation confirmation sent');
+
+        // Mark that cancellation email was sent to prevent duplicates
+        await supabase
+          .from('bookings')
+          .update({ cancellation_email_sent_at: new Date().toISOString() })
+          .eq('id', bookingId);
+
+      } catch (emailError) {
+        console.error('❌ Failed to send customer cancellation email:', emailError);
+      }
+    } else {
+      console.log('⚠️ Cancellation email already sent at:', booking.cancellation_email_sent_at, '- skipping duplicate');
     }
 
     return NextResponse.json({

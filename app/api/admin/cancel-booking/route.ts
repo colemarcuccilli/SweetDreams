@@ -107,36 +107,48 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Send cancellation email to customer
-    try {
-      const startTime = new Date(booking.start_time);
-      const endTime = new Date(booking.end_time);
-      const formattedDate = format(startTime, 'EEEE, MMMM d, yyyy');
-      const formattedStartTime = format(startTime, 'h:mm a');
-      const formattedEndTime = format(endTime, 'h:mm a');
+    // Send cancellation email to customer (only if not already sent)
+    if (!booking.cancellation_email_sent_at) {
+      try {
+        // Parse the stored time in UTC and format in local timezone
+        const startTime = new Date(booking.start_time);
+        const endTime = new Date(booking.end_time);
+        const formattedDate = format(startTime, 'EEEE, MMMM d, yyyy');
+        const formattedStartTime = format(startTime, 'h:mm a');
+        const formattedEndTime = format(endTime, 'h:mm a');
 
-      console.log('📧 Sending cancellation email to:', booking.customer_email);
+        console.log('📧 Sending cancellation email to:', booking.customer_email);
+        console.log('📧 Formatted time range:', formattedStartTime, '-', formattedEndTime);
 
-      await resend.emails.send({
-        from: FROM_EMAIL,
-        to: booking.customer_email,
-        subject: 'Booking Cancelled - Sweet Dreams Music Studio',
-        react: BookingCancellation({
-          firstName: booking.first_name,
-          artistName: booking.artist_name,
-          date: formattedDate,
-          startTime: formattedStartTime,
-          endTime: formattedEndTime,
-          duration: booking.duration,
-          refunded,
-          refundAmount: refunded ? actualAmountRefunded : undefined,
-        }) as React.ReactElement,
-      });
+        await resend.emails.send({
+          from: FROM_EMAIL,
+          to: booking.customer_email,
+          subject: 'Booking Cancelled - Sweet Dreams Music Studio',
+          react: BookingCancellation({
+            firstName: booking.first_name,
+            artistName: booking.artist_name,
+            date: formattedDate,
+            startTime: formattedStartTime,
+            endTime: formattedEndTime,
+            duration: booking.duration,
+            refunded,
+            refundAmount: refunded ? actualAmountRefunded : undefined,
+          }) as React.ReactElement,
+        });
 
-      console.log('✅ Cancellation email sent');
-    } catch (emailError) {
-      console.error('❌ Failed to send cancellation email:', emailError);
-      // Don't fail the cancellation if email fails
+        // Mark that cancellation email was sent to prevent duplicates
+        await supabase
+          .from('bookings')
+          .update({ cancellation_email_sent_at: new Date().toISOString() })
+          .eq('id', bookingId);
+
+        console.log('✅ Cancellation email sent');
+      } catch (emailError) {
+        console.error('❌ Failed to send cancellation email:', emailError);
+        // Don't fail the cancellation if email fails
+      }
+    } else {
+      console.log('⚠️ Cancellation email already sent at:', booking.cancellation_email_sent_at, '- skipping duplicate');
     }
 
     return NextResponse.json({

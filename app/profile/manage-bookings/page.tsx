@@ -16,12 +16,22 @@ interface Booking {
   depositAmount: number;
   totalAmount: number;
   remainderAmount: number;
-  status: 'pending_deposit' | 'confirmed' | 'completed' | 'cancelled';
+  status: 'pending_approval' | 'pending_deposit' | 'approved' | 'confirmed' | 'completed' | 'cancelled' | 'rejected' | 'deleted';
   stripeCustomerId: string;
   stripePaymentIntentId: string;
   couponCode?: string;
   discountAmount?: number;
   actualDepositPaid?: number;
+  createdAt?: string;
+  // New fields for admin approval workflow
+  afterHoursFeeAmount?: number;
+  sameDayFeeAmount?: number;
+  approvedAt?: string;
+  rejectedAt?: string;
+  rejectedReason?: string;
+  deletedAt?: string;
+  adminNotes?: string;
+  cancellationEmailSentAt?: string;
 }
 
 export default function AdminBookingsPage() {
@@ -38,6 +48,10 @@ export default function AdminBookingsPage() {
   const [editingRemainderBookingId, setEditingRemainderBookingId] = useState<string | null>(null);
   const [customRemainderAmount, setCustomRemainderAmount] = useState<string>('');
   const [showCompleted, setShowCompleted] = useState(true);
+  const [approvingBookingId, setApprovingBookingId] = useState<string | null>(null);
+  const [rejectingBookingId, setRejectingBookingId] = useState<string | null>(null);
+  const [softDeletingBookingId, setSoftDeletingBookingId] = useState<string | null>(null);
+  const [expandedDebugBookingId, setExpandedDebugBookingId] = useState<string | null>(null);
 
   const fetchBookings = async () => {
     try {
@@ -151,6 +165,105 @@ export default function AdminBookingsPage() {
       return;
     }
     handleChargeRemainder(booking, amountInCents);
+  };
+
+  const handleApproveBooking = async (booking: Booking) => {
+    // Calculate actual amount to capture (deposit minus any discount)
+    const discountAmount = booking.discountAmount || 0;
+    const amountToCapture = booking.depositAmount - discountAmount;
+
+    if (!confirm(`APPROVE booking for ${booking.firstName} ${booking.lastName}?\n\nThis will CAPTURE the authorized payment of $${(amountToCapture / 100).toFixed(2)}${discountAmount > 0 ? ` (${booking.couponCode} applied: -$${(discountAmount / 100).toFixed(2)})` : ''} and send confirmation email to customer.`)) {
+      return;
+    }
+
+    setApprovingBookingId(booking.id);
+
+    try {
+      const response = await fetch('/api/admin/approve-booking', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ bookingId: booking.id })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert(`Booking approved! Payment of $${(data.amountCaptured / 100).toFixed(2)} captured successfully.`);
+        await fetchBookings();
+      } else {
+        alert('Error approving booking: ' + (data.error || 'Unknown error'));
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Failed to approve booking');
+    } finally {
+      setApprovingBookingId(null);
+    }
+  };
+
+  const handleRejectBooking = async (booking: Booking) => {
+    const reason = prompt(`REJECT booking for ${booking.firstName} ${booking.lastName}?\n\nThis will CANCEL the authorization and notify the customer.\n\nOptional reason for rejection:`);
+
+    if (reason === null) {
+      return; // User clicked cancel
+    }
+
+    setRejectingBookingId(booking.id);
+
+    try {
+      const response = await fetch('/api/admin/reject-booking', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          bookingId: booking.id,
+          reason: reason || undefined
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert('Booking rejected and customer notified.');
+        await fetchBookings();
+      } else {
+        alert('Error rejecting booking: ' + (data.error || 'Unknown error'));
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Failed to reject booking');
+    } finally {
+      setRejectingBookingId(null);
+    }
+  };
+
+  const handleSoftDelete = async (booking: Booking) => {
+    if (!confirm(`SOFT DELETE booking for ${booking.firstName} ${booking.lastName}?\n\n⚠️ This will:\n- Mark booking as deleted\n- NOT send cancellation email\n- Keep record in database for audit\n\nUse this for duplicate bookings or test bookings.`)) {
+      return;
+    }
+
+    setSoftDeletingBookingId(booking.id);
+
+    try {
+      const response = await fetch('/api/admin/soft-delete-booking', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ bookingId: booking.id })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert('Booking soft-deleted (no email sent).');
+        await fetchBookings();
+      } else {
+        alert('Error soft-deleting booking: ' + (data.error || 'Unknown error'));
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Failed to soft-delete booking');
+    } finally {
+      setSoftDeletingBookingId(null);
+    }
   };
 
   const handleCancelBooking = async (booking: Booking) => {
@@ -302,11 +415,15 @@ export default function AdminBookingsPage() {
   };
 
   const getStatusBadge = (status: Booking['status']) => {
-    const statusConfig = {
-      pending_deposit: { label: 'Pending', color: '#ff9800' },  // Orange
+    const statusConfig: Record<Booking['status'], { label: string; color: string }> = {
+      pending_approval: { label: 'Needs Approval', color: '#ff9800' },  // Orange
+      pending_deposit: { label: 'Pending Deposit', color: '#ffa726' },  // Light Orange
+      approved: { label: 'Approved', color: '#66bb6a' },  // Light Green
       confirmed: { label: 'Confirmed', color: '#4caf50' },  // Green
       completed: { label: 'Completed', color: '#2196f3' },   // Blue
-      cancelled: { label: 'Cancelled', color: '#f44336' }    // Red
+      cancelled: { label: 'Cancelled', color: '#f44336' },    // Red
+      rejected: { label: 'Rejected', color: '#e91e63' },      // Pink
+      deleted: { label: 'Deleted', color: '#9e9e9e' }         // Gray
     };
 
     const config = statusConfig[status];
@@ -321,8 +438,9 @@ export default function AdminBookingsPage() {
     return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
   };
 
-  // Separate active and completed bookings
-  const activeBookings = bookings.filter(b => b.status !== 'completed');
+  // Separate bookings into three categories
+  const pendingApprovalBookings = bookings.filter(b => b.status === 'pending_approval' || b.status === 'pending_deposit');
+  const confirmedBookings = bookings.filter(b => b.status === 'confirmed' || b.status === 'approved');
   const completedBookings = bookings.filter(b => b.status === 'completed');
 
   if (loading) {
@@ -357,11 +475,11 @@ export default function AdminBookingsPage() {
         </div>
       ) : (
         <>
-          {activeBookings.length > 0 && (
+          {pendingApprovalBookings.length > 0 && (
             <>
-              <h2 className={styles.sectionTitle}>Active Bookings</h2>
+              <h2 className={styles.sectionTitle}>Pending Approval</h2>
               <div className={styles.bookingsList}>
-                {activeBookings.map((booking) => (
+                {pendingApprovalBookings.map((booking) => (
             <div key={booking.id} className={styles.bookingRow}>
               <div className={styles.bookingInfo}>
                 <div className={styles.profilePhoto}>
@@ -428,6 +546,14 @@ export default function AdminBookingsPage() {
                       {booking.depositAmount === 0 && <span className={styles.freeTag}> FREE</span>}
                     </span>
                   </div>
+                  {booking.couponCode && booking.discountAmount && booking.discountAmount > 0 && (
+                    <div className={styles.moneyRow}>
+                      <span className={styles.moneyLabel}>Coupon ({booking.couponCode}):</span>
+                      <span className={`${styles.moneyValue} ${styles.discountAmount}`}>
+                        -${(booking.discountAmount / 100).toFixed(2)}
+                      </span>
+                    </div>
+                  )}
                   {booking.status !== 'pending_deposit' && (
                     <div className={styles.moneyRow}>
                       <span className={styles.moneyLabel}>Paid:</span>
@@ -464,6 +590,27 @@ export default function AdminBookingsPage() {
                 {getStatusBadge(booking.status)}
 
                 <div className={styles.actionButtons}>
+                  {booking.status === 'pending_approval' && (
+                    <>
+                      <button
+                        className={styles.approveButton}
+                        onClick={() => handleApproveBooking(booking)}
+                        disabled={approvingBookingId === booking.id}
+                        title="Approve booking and capture payment"
+                      >
+                        {approvingBookingId === booking.id ? 'Approving...' : 'Approve'}
+                      </button>
+                      <button
+                        className={styles.rejectButton}
+                        onClick={() => handleRejectBooking(booking)}
+                        disabled={rejectingBookingId === booking.id}
+                        title="Reject booking and release payment hold"
+                      >
+                        {rejectingBookingId === booking.id ? 'Rejecting...' : 'Reject'}
+                      </button>
+                    </>
+                  )}
+
                   {booking.status === 'pending_deposit' && (
                     <button
                       className={styles.confirmButton}
@@ -552,8 +699,468 @@ export default function AdminBookingsPage() {
                   >
                     {cancellingBookingId === booking.id ? 'Cancelling...' : 'Cancel'}
                   </button>
+
+                  {booking.status !== 'completed' && booking.status !== 'cancelled' && booking.status !== 'deleted' && (
+                    <button
+                      className={styles.softDeleteButton}
+                      onClick={() => handleSoftDelete(booking)}
+                      disabled={softDeletingBookingId === booking.id}
+                      title="Soft delete (mark as deleted without sending cancellation email)"
+                    >
+                      {softDeletingBookingId === booking.id ? 'Deleting...' : 'Soft Delete'}
+                    </button>
+                  )}
                 </div>
               </div>
+
+              {/* Admin Debug/Monitoring Panel */}
+              <div className={styles.debugPanel}>
+                <button
+                  className={styles.debugToggle}
+                  onClick={() => setExpandedDebugBookingId(expandedDebugBookingId === booking.id ? null : booking.id)}
+                >
+                  {expandedDebugBookingId === booking.id ? '▼' : '▶'} Debug Info & Flow Events
+                </button>
+
+                {expandedDebugBookingId === booking.id && (
+                  <div className={styles.debugContent}>
+                    <div className={styles.debugSection}>
+                      <h4>Booking Flow Timeline</h4>
+                      <div className={styles.timeline}>
+                        {booking.createdAt && (
+                          <div className={styles.timelineItem}>
+                            <span className={styles.timelineIcon}>✓</span>
+                            <div>
+                              <strong>Created:</strong> {new Date(booking.createdAt).toLocaleString()}
+                            </div>
+                          </div>
+                        )}
+                        {booking.approvedAt && (
+                          <div className={styles.timelineItem}>
+                            <span className={styles.timelineIcon}>✓</span>
+                            <div>
+                              <strong>Approved & Captured:</strong> {new Date(booking.approvedAt).toLocaleString()}
+                            </div>
+                          </div>
+                        )}
+                        {booking.rejectedAt && (
+                          <div className={styles.timelineItem}>
+                            <span className={styles.timelineIcon}>✗</span>
+                            <div>
+                              <strong>Rejected:</strong> {new Date(booking.rejectedAt).toLocaleString()}
+                              {booking.rejectedReason && (
+                                <div style={{ marginTop: '0.25rem', opacity: 0.8 }}>
+                                  Reason: {booking.rejectedReason}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )}
+                        {booking.deletedAt && (
+                          <div className={styles.timelineItem}>
+                            <span className={styles.timelineIcon}>🗑</span>
+                            <div>
+                              <strong>Soft Deleted:</strong> {new Date(booking.deletedAt).toLocaleString()}
+                            </div>
+                          </div>
+                        )}
+                        {booking.cancellationEmailSentAt && (
+                          <div className={styles.timelineItem}>
+                            <span className={styles.timelineIcon}>📧</span>
+                            <div>
+                              <strong>Cancellation Email Sent:</strong> {new Date(booking.cancellationEmailSentAt).toLocaleString()}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className={styles.debugSection}>
+                      <h4>Fee Breakdown</h4>
+                      <div className={styles.debugGrid}>
+                        <div className={styles.debugItem}>
+                          <span className={styles.debugLabel}>Base Total:</span>
+                          <span>${(booking.totalAmount / 100).toFixed(2)}</span>
+                        </div>
+                        {booking.afterHoursFeeAmount !== undefined && booking.afterHoursFeeAmount > 0 && (
+                          <div className={styles.debugItem}>
+                            <span className={styles.debugLabel}>After-Hours Fee:</span>
+                            <span className={styles.warningText}>${(booking.afterHoursFeeAmount / 100).toFixed(2)}</span>
+                          </div>
+                        )}
+                        {booking.sameDayFeeAmount !== undefined && booking.sameDayFeeAmount > 0 && (
+                          <div className={styles.debugItem}>
+                            <span className={styles.debugLabel}>Same-Day Fee:</span>
+                            <span className={styles.warningText}>${(booking.sameDayFeeAmount / 100).toFixed(2)}</span>
+                          </div>
+                        )}
+                        {booking.discountAmount !== undefined && booking.discountAmount > 0 && (
+                          <div className={styles.debugItem}>
+                            <span className={styles.debugLabel}>Discount Applied:</span>
+                            <span className={styles.successText}>-${(booking.discountAmount / 100).toFixed(2)}</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className={styles.debugSection}>
+                      <h4>Payment Information</h4>
+                      <div className={styles.debugGrid}>
+                        <div className={styles.debugItem}>
+                          <span className={styles.debugLabel}>Stripe Customer ID:</span>
+                          <code className={styles.debugCode}>{booking.stripeCustomerId || 'N/A'}</code>
+                        </div>
+                        <div className={styles.debugItem}>
+                          <span className={styles.debugLabel}>Payment Intent ID:</span>
+                          <code className={styles.debugCode}>{booking.stripePaymentIntentId || 'N/A'}</code>
+                        </div>
+                        <div className={styles.debugItem}>
+                          <span className={styles.debugLabel}>Deposit Expected:</span>
+                          <span>${(booking.depositAmount / 100).toFixed(2)}</span>
+                        </div>
+                        <div className={styles.debugItem}>
+                          <span className={styles.debugLabel}>Deposit Actually Paid:</span>
+                          <span className={booking.actualDepositPaid !== booking.depositAmount ? styles.warningText : styles.successText}>
+                            ${booking.actualDepositPaid !== undefined && booking.actualDepositPaid !== null ? (booking.actualDepositPaid / 100).toFixed(2) : 'N/A'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {booking.adminNotes && (
+                      <div className={styles.debugSection}>
+                        <h4>Admin Notes</h4>
+                        <div className={styles.adminNotesBox}>
+                          {booking.adminNotes}
+                        </div>
+                      </div>
+                    )}
+
+                    <div className={styles.debugSection}>
+                      <h4>Contact Information</h4>
+                      <div className={styles.debugGrid}>
+                        <div className={styles.debugItem}>
+                          <span className={styles.debugLabel}>Email:</span>
+                          <a href={`mailto:${booking.customerEmail}`}>{booking.customerEmail}</a>
+                        </div>
+                        <div className={styles.debugItem}>
+                          <span className={styles.debugLabel}>Phone:</span>
+                          <a href={`tel:${booking.customerPhone}`}>{booking.customerPhone}</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+                ))}
+              </div>
+            </>
+          )}
+
+          {confirmedBookings.length > 0 && (
+            <>
+              <h2 className={styles.sectionTitle}>Confirmed (Deposit Paid)</h2>
+              <div className={styles.bookingsList}>
+                {confirmedBookings.map((booking) => (
+            <div key={booking.id} className={styles.bookingRow}>
+              <div className={styles.bookingInfo}>
+                <div className={styles.profilePhoto}>
+                  {getInitials(booking.firstName, booking.lastName)}
+                </div>
+                <div className={styles.bookingText}>
+                  <div className={styles.bookingName}>
+                    {booking.firstName} {booking.lastName}
+                  </div>
+                  <div className={styles.bookingArtist}>{booking.artistName}</div>
+
+                  {editingBookingId === booking.id ? (
+                    <div className={styles.editForm}>
+                      <input
+                        type="date"
+                        value={editDate}
+                        onChange={(e) => setEditDate(e.target.value)}
+                        className={styles.editInput}
+                      />
+                      <input
+                        type="time"
+                        value={editTime}
+                        onChange={(e) => setEditTime(e.target.value)}
+                        className={styles.editInput}
+                      />
+                      <button
+                        onClick={() => handleSaveEdit(booking.id)}
+                        disabled={savingEdit}
+                        className={styles.saveEditButton}
+                      >
+                        {savingEdit ? 'Saving...' : 'Save'}
+                      </button>
+                      <button
+                        onClick={handleCancelEdit}
+                        className={styles.cancelEditButton}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  ) : (
+                    <div className={styles.bookingDateTime}>
+                      📅 {formatDate(booking.date, booking.startTime)} • ⏱️ {booking.duration}h
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className={styles.bookingDetails}>
+                <div className={styles.bookingMoney}>
+                  {booking.sameDayFee && booking.sameDayFeeAmount !== undefined && booking.sameDayFeeAmount > 0 && (
+                    <div className={styles.moneyRow}>
+                      <span className={styles.moneyLabel}>Same-Day Fee:</span>
+                      <span className={styles.moneyValue}>
+                        ${(booking.sameDayFeeAmount / 100).toFixed(2)}
+                      </span>
+                    </div>
+                  )}
+                  {booking.afterHoursFee && booking.afterHoursFeeAmount !== undefined && booking.afterHoursFeeAmount > 0 && (
+                    <div className={styles.moneyRow}>
+                      <span className={styles.moneyLabel}>After-Hours Fee:</span>
+                      <span className={styles.moneyValue}>
+                        ${(booking.afterHoursFeeAmount / 100).toFixed(2)}
+                      </span>
+                    </div>
+                  )}
+                  <div className={styles.moneyRow}>
+                    <span className={styles.moneyLabel}>Deposit:</span>
+                    <span className={styles.moneyValue}>
+                      ${(booking.depositAmount / 100).toFixed(2)}
+                      {booking.depositAmount === 0 && <span className={styles.freeTag}> FREE</span>}
+                    </span>
+                  </div>
+                  {booking.couponCode && booking.discountAmount && booking.discountAmount > 0 && (
+                    <div className={styles.moneyRow}>
+                      <span className={styles.moneyLabel}>Coupon ({booking.couponCode}):</span>
+                      <span className={`${styles.moneyValue} ${styles.discountAmount}`}>
+                        -${(booking.discountAmount / 100).toFixed(2)}
+                      </span>
+                    </div>
+                  )}
+                  {booking.status !== 'pending_deposit' && (
+                    <div className={styles.moneyRow}>
+                      <span className={styles.moneyLabel}>Paid:</span>
+                      <span className={`${styles.moneyValue} ${styles.paidAmount}`}>
+                        {booking.actualDepositPaid !== undefined && booking.actualDepositPaid !== null ? (
+                          <>
+                            ${(booking.actualDepositPaid / 100).toFixed(2)}
+                            {booking.actualDepositPaid === 0 && <span className={styles.freeTag}> FREE</span>}
+                          </>
+                        ) : (
+                          <span style={{ opacity: 0.6 }}>Pending...</span>
+                        )}
+                      </span>
+                    </div>
+                  )}
+                  <div className={styles.moneyRow}>
+                    <span className={styles.moneyLabel}>Total:</span>
+                    <span className={styles.moneyValue}>
+                      ${(booking.totalAmount / 100).toFixed(2)}
+                      {booking.totalAmount === 0 && <span className={styles.freeTag}> FREE</span>}
+                    </span>
+                  </div>
+                  {booking.remainderAmount > 0 && (
+                    <div className={styles.moneyRow}>
+                      <span className={styles.moneyLabel}>Due:</span>
+                      <span className={`${styles.moneyValue} ${styles.dueAmount}`}>
+                        ${(booking.remainderAmount / 100).toFixed(2)}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                <div className={styles.bookingActions}>
+                  {getStatusBadge(booking.status)}
+
+                  {booking.status === 'confirmed' && booking.remainderAmount > 0 && (
+                    <>
+                      {editingRemainderBookingId === booking.id ? (
+                        <div className={styles.remainderEditForm}>
+                          <span className={styles.dollarSign}>$</span>
+                          <input
+                            type="number"
+                            step="0.01"
+                            min="0"
+                            value={customRemainderAmount}
+                            onChange={(e) => setCustomRemainderAmount(e.target.value)}
+                            className={styles.remainderInput}
+                            placeholder="Amount"
+                          />
+                          <button
+                            onClick={() => handleSaveRemainderAmount(booking)}
+                            disabled={chargingBookingId === booking.id}
+                            className={styles.chargeButton}
+                          >
+                            {chargingBookingId === booking.id ? 'Processing...' : 'Charge'}
+                          </button>
+                          <button
+                            onClick={handleCancelRemainderEdit}
+                            className={styles.cancelEditButton}
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          className={styles.chargeButton}
+                          onClick={() => handleEditRemainderClick(booking)}
+                          disabled={chargingBookingId === booking.id || editingRemainderBookingId !== null}
+                        >
+                          Charge Remainder
+                        </button>
+                      )}
+                    </>
+                  )}
+
+                  <button
+                    className={styles.editButton}
+                    onClick={() => handleEditClick(booking)}
+                    disabled={editingBookingId !== null}
+                    title="Edit booking time"
+                  >
+                    Edit
+                  </button>
+
+                  <button
+                    className={styles.notifyButton}
+                    onClick={() => alert('Notify feature coming soon')}
+                    title="Send notification to customer"
+                  >
+                    Notify
+                  </button>
+
+                  <button
+                    className={styles.cancelButton}
+                    onClick={() => handleCancelBooking(booking.id)}
+                    disabled={cancellingBookingId === booking.id}
+                    title="Cancel booking and send cancellation email"
+                  >
+                    {cancellingBookingId === booking.id ? 'Cancelling...' : 'Cancel'}
+                  </button>
+
+                  <button
+                    className={styles.softDeleteButton}
+                    onClick={() => handleSoftDeleteBooking(booking.id)}
+                    disabled={deletingBookingId === booking.id}
+                    title="Soft delete (no email sent)"
+                  >
+                    {deletingBookingId === booking.id ? 'Deleting...' : 'Soft Delete'}
+                  </button>
+                </div>
+              </div>
+
+              {showDebugInfo[booking.id] && (
+                <div className={styles.debugPanel}>
+                  <div className={styles.debugHeader}>
+                    <h4>Debug Info & Flow Events</h4>
+                  </div>
+                  <div className={styles.debugContent}>
+                    <div className={styles.debugSection}>
+                      <h5>Booking Flow Timeline</h5>
+                      <div className={styles.timeline}>
+                        <div className={styles.timelineItem}>
+                          <span className={styles.timelineIcon}>✓</span>
+                          <span className={styles.timelineText}>
+                            Created: {new Date(booking.createdAt!).toLocaleString()}
+                          </span>
+                        </div>
+                        {booking.approvedAt && (
+                          <div className={styles.timelineItem}>
+                            <span className={styles.timelineIcon}>✓</span>
+                            <span className={styles.timelineText}>
+                              Approved & Captured: {new Date(booking.approvedAt).toLocaleString()}
+                            </span>
+                          </div>
+                        )}
+                        {booking.rejectedAt && (
+                          <div className={styles.timelineItem}>
+                            <span className={styles.timelineIcon}>✗</span>
+                            <span className={styles.timelineText}>
+                              Rejected: {new Date(booking.rejectedAt).toLocaleString()}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className={styles.debugSection}>
+                      <h5>Fee Breakdown</h5>
+                      <div className={styles.debugItem}>
+                        <span className={styles.debugLabel}>Base Total:</span>
+                        <span>${(booking.totalAmount / 100).toFixed(2)}</span>
+                      </div>
+                      {booking.sameDayFeeAmount !== undefined && booking.sameDayFeeAmount > 0 && (
+                        <div className={styles.debugItem}>
+                          <span className={styles.debugLabel}>Same-Day Fee:</span>
+                          <span className={styles.warningText}>+${(booking.sameDayFeeAmount / 100).toFixed(2)}</span>
+                        </div>
+                      )}
+                      {booking.afterHoursFeeAmount !== undefined && booking.afterHoursFeeAmount > 0 && (
+                        <div className={styles.debugItem}>
+                          <span className={styles.debugLabel}>After-Hours Fee:</span>
+                          <span className={styles.warningText}>+${(booking.afterHoursFeeAmount / 100).toFixed(2)}</span>
+                        </div>
+                      )}
+                      {booking.discountAmount !== undefined && booking.discountAmount > 0 && (
+                        <div className={styles.debugItem}>
+                          <span className={styles.debugLabel}>Discount Applied:</span>
+                          <span className={styles.successText}>-${(booking.discountAmount / 100).toFixed(2)}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className={styles.debugSection}>
+                      <h5>Payment Information</h5>
+                      <div className={styles.debugItem}>
+                        <span className={styles.debugLabel}>Stripe Customer ID:</span>
+                        <span className={styles.debugValue}>{booking.stripeCustomerId || 'N/A'}</span>
+                      </div>
+                      <div className={styles.debugItem}>
+                        <span className={styles.debugLabel}>Payment Intent ID:</span>
+                        <span className={styles.debugValue}>{booking.stripePaymentIntentId || 'N/A'}</span>
+                      </div>
+                      <div className={styles.debugItem}>
+                        <span className={styles.debugLabel}>Deposit Expected:</span>
+                        <span>${(booking.depositAmount / 100).toFixed(2)}</span>
+                      </div>
+                      <div className={styles.debugItem}>
+                        <span className={styles.debugLabel}>Deposit Actually Paid:</span>
+                        <span className={booking.actualDepositPaid !== booking.depositAmount ? styles.warningText : styles.successText}>
+                          ${booking.actualDepositPaid !== undefined && booking.actualDepositPaid !== null ? (booking.actualDepositPaid / 100).toFixed(2) : 'N/A'}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className={styles.debugSection}>
+                      <h5>Contact Information</h5>
+                      <div className={styles.debugItem}>
+                        <span className={styles.debugLabel}>Email:</span>
+                        <span className={styles.debugValue}>{booking.customerEmail}</span>
+                      </div>
+                      <div className={styles.debugItem}>
+                        <span className={styles.debugLabel}>Phone:</span>
+                        <span className={styles.debugValue}>{booking.customerPhone || 'N/A'}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <button
+                className={styles.debugToggle}
+                onClick={() => setShowDebugInfo(prev => ({
+                  ...prev,
+                  [booking.id]: !prev[booking.id]
+                }))}
+              >
+                {showDebugInfo[booking.id] ? '▲ Hide' : '▼ Debug Info'}
+              </button>
             </div>
                 ))}
               </div>

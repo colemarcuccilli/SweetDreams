@@ -2,10 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { getSessionProducts, BOOKING_PRODUCTS, calculateOvertimeHours } from '@/lib/booking-config';
 import { createServiceRoleClient } from '@/utils/supabase/service-role';
-import { resend, ADMIN_EMAIL, FROM_EMAIL } from '@/lib/emails/resend';
-import { PendingBookingAlert } from '@/lib/emails/pending-booking-alert';
-import { format } from 'date-fns';
-import * as React from 'react';
 
 export async function POST(request: NextRequest) {
   // Initialize Stripe inside the function to avoid build-time errors
@@ -52,7 +48,23 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Build line items for checkout
+    // Calculate after-hours fee amount (DO NOT add to checkout - only to remainder)
+    let afterHoursFeeAmount = 0;
+    let overtimeHours = 0;
+    if (fees.afterHoursFee) {
+      overtimeHours = calculateOvertimeHours(startTime, duration);
+      afterHoursFeeAmount = overtimeHours * BOOKING_PRODUCTS.after_hours_fee.amount;
+      console.log(`⏰ After-hours fee: ${overtimeHours} hours × $10 = $${afterHoursFeeAmount / 100} (will be added to remainder, NOT deposit)`);
+    }
+
+    // Calculate same-day fee amount
+    let sameDayFeeAmount = 0;
+    if (fees.sameDayFee) {
+      sameDayFeeAmount = duration * BOOKING_PRODUCTS.same_day_fee.amount;
+      console.log(`📅 Same-day fee: ${duration} hours × $10 = $${sameDayFeeAmount / 100}`);
+    }
+
+    // Build line items for checkout - DEPOSIT ONLY (no after-hours fee)
     const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = [
       {
         price: depositProduct.priceId,
@@ -60,8 +72,8 @@ export async function POST(request: NextRequest) {
       }
     ];
 
-    // Add same-day fee if applicable (per hour)
-    if (fees.sameDayFee) {
+    // Add same-day fee to checkout (this is part of deposit)
+    if (fees.sameDayFee && sameDayFeeAmount > 0) {
       const sameDayFeeProduct = BOOKING_PRODUCTS.same_day_fee;
       if (sameDayFeeProduct.priceId && sameDayFeeProduct.priceId !== 'price_XXX') {
         lineItems.push({
@@ -71,19 +83,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Add after-hours fee if applicable (only for hours after 9 PM)
-    if (fees.afterHoursFee) {
-      const overtimeHours = calculateOvertimeHours(startTime, duration);
-      console.log(`⏰ After-hours calculation: ${overtimeHours} hours after 9 PM (start: ${startTime}, duration: ${duration})`);
-
-      const afterHoursFeeProduct = BOOKING_PRODUCTS.after_hours_fee;
-      if (afterHoursFeeProduct.priceId && afterHoursFeeProduct.priceId !== 'price_XXX' && overtimeHours > 0) {
-        lineItems.push({
-          price: afterHoursFeeProduct.priceId,
-          quantity: overtimeHours, // $10 per hour AFTER 9 PM only
-        });
-      }
-    }
+    // NOTE: After-hours fee is NOT added to checkout - it will be charged with remainder
 
     // Check for booking conflicts in Supabase
     const supabase = createServiceRoleClient();
@@ -131,7 +131,8 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Create Stripe Checkout Session
+    // Create Stripe Checkout Session with MANUAL CAPTURE
+    // This authorizes the payment but DOES NOT charge until admin approves
     const session = await stripe.checkout.sessions.create({
       customer: customer.id,
       line_items: lineItems,
@@ -140,6 +141,7 @@ export async function POST(request: NextRequest) {
       success_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/music/booking-success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/music#booking`,
       payment_intent_data: {
+        capture_method: 'manual', // ✅ CRITICAL: Authorize but don't capture until admin approves
         setup_future_usage: 'off_session', // Save payment method for future charges
         metadata: {
           booking_date: date,
@@ -147,6 +149,8 @@ export async function POST(request: NextRequest) {
           booking_duration: duration.toString(),
           deposit_amount: depositAmount.toString(),
           total_amount: totalAmount.toString(),
+          after_hours_fee_amount: afterHoursFeeAmount.toString(),
+          same_day_fee_amount: sameDayFeeAmount.toString(),
         }
       },
       metadata: {
@@ -159,14 +163,14 @@ export async function POST(request: NextRequest) {
       }
     });
 
-    // Save booking to Supabase with status 'pending_deposit'
+    // Save booking to Supabase with status 'pending_approval'
     const bookingEndTime = new Date(year, month, day, startTime + duration, 0, 0, 0);
 
     // For 'full' payment products (1-hour, 3-hour holiday), remainder is 0
-    // For 'deposit' products, calculate remainder
-    const remainderAmount = depositProduct.type === 'full' ? 0 : totalAmount - depositAmount;
+    // For 'deposit' products, calculate remainder INCLUDING after-hours fee
+    const remainderAmount = depositProduct.type === 'full' ? 0 : (totalAmount - depositAmount) + afterHoursFeeAmount;
 
-    const { data: booking, error: bookingError } = await supabase
+    const { data: booking, error: bookingError} = await supabase
       .from('bookings')
       .insert({
         first_name: firstName,
@@ -179,11 +183,13 @@ export async function POST(request: NextRequest) {
         end_time: bookingEndTime.toISOString(),
         duration,
         deposit_amount: depositAmount,
-        total_amount: totalAmount,
+        total_amount: totalAmount + afterHoursFeeAmount, // Include after-hours fee in total
         remainder_amount: remainderAmount,
         same_day_fee: fees.sameDayFee,
         after_hours_fee: fees.afterHoursFee,
-        status: 'pending_deposit',
+        same_day_fee_amount: sameDayFeeAmount,
+        after_hours_fee_amount: afterHoursFeeAmount,
+        status: 'pending_approval', // ✅ CRITICAL: Awaiting admin approval, payment authorized but NOT captured
         stripe_session_id: session.id, // Save session ID (available immediately)
         stripe_customer_id: customer.id,
       })
@@ -195,19 +201,14 @@ export async function POST(request: NextRequest) {
       // Continue anyway - the booking can be manually created if needed
     }
 
-    // Note: Confirmation emails will be sent AFTER successful payment via Stripe webhook
-    // See /api/webhooks/stripe/route.ts for confirmation email logic
-
     console.log('✅ BOOKING CREATED SUCCESSFULLY');
     console.log('📋 Booking ID:', booking?.id);
     console.log('📋 Session ID:', session.id);
     console.log('📋 Customer Email:', customerEmail);
-    console.log('📋 Status:', 'pending_deposit');
+    console.log('📋 Status:', 'pending_approval');
     console.log('💳 Stripe Checkout URL:', session.url);
-    console.log('⏳ Waiting for Stripe webhook to confirm payment and send emails...');
-
-    // NOTE: Admin notification is now sent ONLY after successful payment via webhook
-    // This prevents notifying admin about bookings where customers abandon the checkout page
+    console.log('⏳ Redirecting to Stripe Checkout...');
+    console.log('📧 Admin approval email will be sent AFTER checkout completes (via webhook)');
 
     return NextResponse.json({
       checkoutUrl: session.url,
