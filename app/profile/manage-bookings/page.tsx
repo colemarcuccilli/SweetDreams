@@ -54,6 +54,7 @@ export default function AdminBookingsPage() {
   const [rejectingBookingId, setRejectingBookingId] = useState<string | null>(null);
   const [softDeletingBookingId, setSoftDeletingBookingId] = useState<string | null>(null);
   const [expandedDebugBookingId, setExpandedDebugBookingId] = useState<string | null>(null);
+  const [showDebugInfo, setShowDebugInfo] = useState<Record<string, boolean>>({});
 
   const fetchBookings = async () => {
     try {
