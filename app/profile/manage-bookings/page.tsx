@@ -1048,11 +1048,11 @@ export default function AdminBookingsPage() {
 
                   <button
                     className={styles.softDeleteButton}
-                    onClick={() => handleSoftDeleteBooking(booking.id)}
-                    disabled={deletingBookingId === booking.id}
+                    onClick={() => handleSoftDelete(booking)}
+                    disabled={softDeletingBookingId === booking.id}
                     title="Soft delete (no email sent)"
                   >
-                    {deletingBookingId === booking.id ? 'Deleting...' : 'Soft Delete'}
+                    {softDeletingBookingId === booking.id ? 'Deleting...' : 'Soft Delete'}
                   </button>
                 </div>
               </div>
