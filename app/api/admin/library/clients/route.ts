@@ -56,6 +56,13 @@ export async function GET(request: NextRequest) {
 
       const booking = bookings?.[0];
 
+      // Get profile photo from public_profiles table
+      const { data: profile } = await serviceRoleClient
+        .from('public_profiles')
+        .select('profile_picture_url')
+        .eq('user_id', user.id)
+        .single();
+
       // Count deliverables for this user (use service role to see all data)
       const { count: filesCount } = await serviceRoleClient
         .from('deliverables')
@@ -68,23 +75,49 @@ export async function GET(request: NextRequest) {
         .select('*', { count: 'exact', head: true })
         .eq('user_id', user.id);
 
-      // Try to get name from user metadata, then booking, then email
-      const firstName = user.user_metadata?.first_name ||
-                       booking?.first_name ||
-                       user.email?.split('@')[0] ||
-                       'User';
+      // DEBUG: Log what we have
+      console.log(`🔍 DEBUG for ${user.email}:`, {
+        user_metadata: user.user_metadata,
+        profile: profile,
+        booking: booking
+      });
 
-      const lastName = user.user_metadata?.last_name ||
-                      booking?.last_name ||
-                      '';
+      // Get name from account settings (user_metadata.full_name), then profile, then booking, then email
+      let firstName = 'User';
+      let lastName = '';
 
-      console.log(`✅ User: ${user.email} (${firstName} ${lastName}) - ${filesCount} files, ${notesCount} notes`);
+      if (user.user_metadata?.full_name) {
+        // Split full name from account settings
+        const parts = user.user_metadata.full_name.trim().split(' ');
+        firstName = parts[0] || 'User';
+        lastName = parts.slice(1).join(' ') || '';
+      } else if (profile?.full_name) {
+        // Split full name from public profile
+        const parts = profile.full_name.trim().split(' ');
+        firstName = parts[0] || 'User';
+        lastName = parts.slice(1).join(' ') || '';
+      } else if (user.user_metadata?.first_name) {
+        // Fallback to first_name/last_name if they exist
+        firstName = user.user_metadata.first_name;
+        lastName = user.user_metadata.last_name || '';
+      } else if (booking?.first_name) {
+        // Last resort: use booking data
+        firstName = booking.first_name;
+        lastName = booking.last_name || '';
+      } else {
+        // Ultimate fallback: use email
+        firstName = user.email?.split('@')[0] || 'User';
+      }
+
+      console.log(`✅ User: ${user.email} (${firstName} ${lastName}) - ${filesCount} files, ${notesCount} notes - Photo: ${profile?.profile_picture_url ? 'YES' : 'NO'}`);
 
       return {
         id: user.id,
         email: user.email || '',
         firstName,
         lastName,
+        // Use user_metadata.profile_photo_url first (from account upload), then public_profiles
+        profilePhotoUrl: user.user_metadata?.profile_photo_url || profile?.profile_picture_url || null,
         filesCount: filesCount || 0,
         notesCount: notesCount || 0
       };

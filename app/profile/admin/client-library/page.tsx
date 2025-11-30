@@ -13,6 +13,7 @@ interface Client {
   email: string;
   firstName: string;
   lastName: string;
+  profilePhotoUrl: string | null;
   filesCount: number;
   notesCount: number;
 }
@@ -323,9 +324,17 @@ export default function AdminClientLibraryPage() {
                   className={`${styles.clientItem} ${selectedClient?.id === client.id ? styles.clientItemActive : ''}`}
                   onClick={() => handleSelectClient(client)}
                 >
-                  <div className={styles.clientInitial}>
-                    {client.firstName?.[0]}{client.lastName?.[0]}
-                  </div>
+                  {client.profilePhotoUrl ? (
+                    <img
+                      src={client.profilePhotoUrl}
+                      alt={`${client.firstName} ${client.lastName}`}
+                      className={styles.clientPhoto}
+                    />
+                  ) : (
+                    <div className={styles.clientInitial}>
+                      {client.firstName?.[0]}{client.lastName?.[0]}
+                    </div>
+                  )}
                   <div className={styles.clientInfo}>
                     <div className={styles.clientName}>
                       {client.firstName} {client.lastName}

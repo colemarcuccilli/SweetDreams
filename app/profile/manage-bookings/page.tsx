@@ -1021,40 +1021,42 @@ export default function AdminBookingsPage() {
                     </>
                   )}
 
-                  <button
-                    className={styles.editButton}
-                    onClick={() => handleEditClick(booking)}
-                    disabled={editingBookingId !== null}
-                    title="Edit booking time"
-                  >
-                    Edit
-                  </button>
+                  <div className={styles.actionButtons}>
+                    <button
+                      className={styles.editButton}
+                      onClick={() => handleEditClick(booking)}
+                      disabled={editingBookingId !== null}
+                      title="Edit booking time"
+                    >
+                      Edit
+                    </button>
 
-                  <button
-                    className={styles.notifyButton}
-                    onClick={() => alert('Notify feature coming soon')}
-                    title="Send notification to customer"
-                  >
-                    Notify
-                  </button>
+                    <button
+                      className={styles.notifyButton}
+                      onClick={() => alert('Notify feature coming soon')}
+                      title="Send notification to customer"
+                    >
+                      Notify
+                    </button>
 
-                  <button
-                    className={styles.cancelButton}
-                    onClick={() => handleCancelBooking(booking)}
-                    disabled={cancellingBookingId === booking.id}
-                    title="Cancel booking and send cancellation email"
-                  >
-                    {cancellingBookingId === booking.id ? 'Cancelling...' : 'Cancel'}
-                  </button>
+                    <button
+                      className={styles.cancelButton}
+                      onClick={() => handleCancelBooking(booking)}
+                      disabled={cancellingBookingId === booking.id}
+                      title="Cancel booking and send cancellation email"
+                    >
+                      {cancellingBookingId === booking.id ? 'Cancelling...' : 'Cancel'}
+                    </button>
 
-                  <button
-                    className={styles.softDeleteButton}
-                    onClick={() => handleSoftDelete(booking)}
-                    disabled={softDeletingBookingId === booking.id}
-                    title="Soft delete (no email sent)"
-                  >
-                    {softDeletingBookingId === booking.id ? 'Deleting...' : 'Soft Delete'}
-                  </button>
+                    <button
+                      className={styles.softDeleteButton}
+                      onClick={() => handleSoftDelete(booking)}
+                      disabled={softDeletingBookingId === booking.id}
+                      title="Soft delete (no email sent)"
+                    >
+                      {softDeletingBookingId === booking.id ? 'Deleting...' : 'Soft Delete'}
+                    </button>
+                  </div>
                 </div>
               </div>
 

@@ -14,14 +14,14 @@
   font-size: 2.5rem;
   text-transform: uppercase;
   margin-bottom: 0.5rem;
-  color: #000;
+  color: var(--foreground, #000);
   letter-spacing: 0.05em;
 }
 
 .subtitle {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 1rem;
-  color: #000;
+  color: var(--foreground, #000);
 }
 
 .filterControls {
@@ -35,7 +35,7 @@
   padding: 0.6rem 1.25rem;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  color: #000;
+  color: var(--foreground, #000);
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.85rem;
   font-weight: 600;
@@ -56,7 +56,7 @@
   font-size: 1.5rem;
   text-transform: uppercase;
   margin: 2rem 0 1rem 0;
-  color: #000;
+  color: var(--foreground, #000);
   letter-spacing: 0.05em;
 }
 
@@ -219,18 +219,21 @@
 
 .bookingActions {
   display: flex;
-  flex-direction: column;
+  flex-direction: row; /* Horizontal layout on desktop */
   gap: 0.75rem;
-  align-items: flex-start;
+  align-items: center; /* Vertically center items */
+  justify-content: flex-end; /* Align everything to the right */
   width: 100%;
   padding-top: 1rem;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
+  flex-wrap: wrap; /* Allow wrapping if needed */
 }
 
 .actionButtons {
   display: flex;
   gap: 0.5rem;
-  flex-wrap: wrap;
+  flex-wrap: nowrap; /* Keep buttons side-by-side on desktop */
+  overflow-x: auto; /* Allow horizontal scroll if buttons are too wide */
 }
 
 .statusBadge {
@@ -489,11 +492,13 @@
   .bookingActions {
     width: 100%;
     align-items: stretch;
+    flex-direction: column; /* Stack vertically on mobile */
   }
 
   .actionButtons {
     width: 100%;
     justify-content: flex-end;
+    flex-wrap: wrap; /* Allow buttons to wrap on mobile */
   }
 
   .chargeButton,
@@ -580,7 +585,8 @@
   margin-bottom: 0;
 }
 
-.debugSection h4 {
+.debugSection h4,
+.debugSection h5 {
   font-family: 'Anton', sans-serif;
   font-size: 0.9rem;
   text-transform: uppercase;
@@ -601,7 +607,7 @@
   align-items: flex-start;
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.9);
+  color: #fff; /* Always white in debug panel */
 }
 
 .timelineIcon {
@@ -626,10 +632,11 @@
   padding: 0.5rem;
   background: rgba(255, 255, 255, 0.03);
   border-radius: 4px;
+  color: #fff; /* Ensure text is visible */
 }
 
 .debugLabel {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.7); /* Slightly brighter for better visibility */
   margin-right: 0.5rem;
 }
 
@@ -662,7 +669,7 @@
   background: rgba(255, 255, 255, 0.05);
   padding: 1rem;
   border-radius: 4px;
-  color: rgba(255, 255, 255, 0.9);
+  color: #fff; /* Always white for readability */
   white-space: pre-wrap;
   line-height: 1.5;
 }

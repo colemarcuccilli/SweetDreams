@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createServiceRoleClient } from '@/utils/supabase/service-role';
 import { resend, ADMIN_EMAIL, FROM_EMAIL } from '@/lib/emails/resend';
 import { format } from 'date-fns';
+import { toZonedTime } from 'date-fns-tz';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 300; // 5 minutes max execution time
@@ -30,14 +31,15 @@ export async function GET(request: NextRequest) {
   try {
     const supabase = createServiceRoleClient();
 
-    // Get the current time and 1 hour from now
+    // Get the current time and 1 hour from now (in local timezone, not UTC)
     const now = new Date();
     const oneHourFromNow = new Date(now.getTime() + (60 * 60 * 1000));
     const twoHoursFromNow = new Date(now.getTime() + (2 * 60 * 60 * 1000));
 
-    console.log('🕐 Looking for bookings between:', oneHourFromNow.toISOString(), 'and', twoHoursFromNow.toISOString());
+    console.log('🕐 Looking for bookings between:', oneHourFromNow, 'and', twoHoursFromNow);
 
     // Query bookings that start in approximately 1 hour (between 1-2 hours from now)
+    // NOTE: Database stores timestamps without timezone (local time), so compare directly
     const { data: upcomingBookings, error } = await supabase
       .from('bookings')
       .select('*')
@@ -67,8 +69,13 @@ export async function GET(request: NextRequest) {
 
     for (const booking of upcomingBookings) {
       try {
-        const startTime = new Date(booking.start_time);
-        const endTime = new Date(booking.end_time);
+        // Convert UTC times from database to Eastern Time
+        const timezone = 'America/New_York';
+        const startTimeUTC = new Date(booking.start_time);
+        const endTimeUTC = new Date(booking.end_time);
+        const startTime = toZonedTime(startTimeUTC, timezone);
+        const endTime = toZonedTime(endTimeUTC, timezone);
+
         const formattedDate = format(startTime, 'EEEE, MMMM d, yyyy');
         const formattedStartTime = format(startTime, 'h:mm a');
         const formattedEndTime = format(endTime, 'h:mm a');
