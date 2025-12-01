@@ -56,10 +56,10 @@ export async function GET(request: NextRequest) {
 
       const booking = bookings?.[0];
 
-      // Get profile photo from public_profiles table
+      // Get profile data from profiles table
       const { data: profile } = await serviceRoleClient
-        .from('public_profiles')
-        .select('profile_picture_url')
+        .from('profiles')
+        .select('profile_picture_url, display_name')
         .eq('user_id', user.id)
         .single();
 
@@ -91,9 +91,9 @@ export async function GET(request: NextRequest) {
         const parts = user.user_metadata.full_name.trim().split(' ');
         firstName = parts[0] || 'User';
         lastName = parts.slice(1).join(' ') || '';
-      } else if (profile?.full_name) {
-        // Split full name from public profile
-        const parts = profile.full_name.trim().split(' ');
+      } else if (profile?.display_name) {
+        // Split display name from public profile
+        const parts = profile.display_name.trim().split(' ');
         firstName = parts[0] || 'User';
         lastName = parts.slice(1).join(' ') || '';
       } else if (user.user_metadata?.first_name) {
