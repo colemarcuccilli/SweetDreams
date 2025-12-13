@@ -952,12 +952,24 @@ export default function AdminBookingsPage() {
 
                     {/* Admin Debug/Monitoring Panel */}
                     <div className={styles.debugPanel}>
-                      <button
-                        className={styles.debugToggle}
-                        onClick={() => setExpandedDebugBookingId(expandedDebugBookingId === booking.id ? null : booking.id)}
-                      >
-                        {expandedDebugBookingId === booking.id ? '▼' : '▶'} Debug Info & Flow Events
-                      </button>
+                      <div className={styles.debugHeader}>
+                        <button
+                          className={styles.debugToggle}
+                          onClick={() => setExpandedDebugBookingId(expandedDebugBookingId === booking.id ? null : booking.id)}
+                        >
+                          {expandedDebugBookingId === booking.id ? '▼' : '▶'} Debug Info & Flow Events
+                        </button>
+                        {expandedDebugBookingId === booking.id && (
+                          <button
+                            className={styles.investigateButton}
+                            onClick={() => handleInvestigateBooking(booking)}
+                            disabled={investigatingBookingId === booking.id}
+                            title="Query Stripe for detailed payment information"
+                          >
+                            {investigatingBookingId === booking.id ? 'Investigating...' : '🔍 Investigate Payment'}
+                          </button>
+                        )}
+                      </div>
 
                       {expandedDebugBookingId === booking.id && (
                         <div className={styles.debugContent}>
