@@ -292,6 +292,61 @@ export async function POST(request: NextRequest) {
         }
       });
 
+      // Send customer confirmation email
+      console.log('📧 Sending customer confirmation email to:', booking.customer_email);
+
+      const customerEmailResult = await resend.emails.send({
+        from: FROM_EMAIL,
+        to: booking.customer_email,
+        subject: 'Booking Request Received - Sweet Dreams Music Studio',
+        html: `
+          <h2>Thank You for Your Booking Request!</h2>
+          <p>Hi ${booking.first_name},</p>
+
+          <p>We've received your studio booking request and our team is reviewing the details.</p>
+
+          <h3>Booking Details:</h3>
+          <ul>
+            <li><strong>Artist Name:</strong> ${booking.artist_name}</li>
+            <li><strong>Date:</strong> ${formattedDate}</li>
+            <li><strong>Time:</strong> ${formattedStartTime} - ${formattedEndTime}</li>
+            <li><strong>Duration:</strong> ${booking.duration} hours</li>
+          </ul>
+
+          <h3>Payment Information:</h3>
+          <p>Your payment card has been <strong>authorized but not charged yet</strong>. Here's how our payment process works:</p>
+          <ul>
+            <li><strong>Step 1:</strong> We've authorized $${(booking.deposit_amount / 100).toFixed(2)} (50% deposit) on your card</li>
+            <li><strong>Step 2:</strong> Our engineer will review and confirm your session within 24-48 hours</li>
+            <li><strong>Step 3:</strong> Once approved, the deposit will be captured (charged)</li>
+            <li><strong>Step 4:</strong> The remaining balance of $${(booking.remainder_amount / 100).toFixed(2)} is due after your session</li>
+          </ul>
+
+          <h3>What Happens Next?</h3>
+          <p>You'll receive another email once your booking is confirmed by our engineer. If you need to make any changes or have questions, please contact us immediately.</p>
+
+          <p>We're excited to work with you!</p>
+
+          <p>Best regards,<br>
+          Sweet Dreams Music Studio<br>
+          <a href="mailto:jayvalleo@sweetdreamsmusic.com">jayvalleo@sweetdreamsmusic.com</a></p>
+        `
+      });
+
+      console.log('✅ Customer confirmation email sent:', customerEmailResult.data?.id);
+
+      // Log customer email send
+      await supabase.rpc('log_booking_action', {
+        p_booking_id: booking.id,
+        p_action: 'customer_confirmation_sent',
+        p_performed_by: 'webhook',
+        p_details: {
+          email_to: booking.customer_email,
+          email_id: customerEmailResult.data?.id || null,
+          timestamp: new Date().toISOString()
+        }
+      });
+
     } catch (emailError) {
       console.error('❌❌❌ CRITICAL: Failed to send admin approval email ❌❌❌');
       console.error('❌ Error:', emailError);
