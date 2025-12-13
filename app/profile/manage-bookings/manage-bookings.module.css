@@ -508,9 +508,12 @@
   .softDeleteButton,
   .editButton,
   .notifyButton,
-  .cancelButton {
+  .cancelButton,
+  .debugToggle {
     font-size: 0.7rem;
     padding: 0.5rem 0.75rem;
+    width: 100%; /* Make buttons full width on mobile */
+    margin-bottom: 0.5rem; /* Add spacing between stacked buttons */
   }
 
   .profilePhoto {

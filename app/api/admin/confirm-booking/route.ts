@@ -60,13 +60,20 @@ export async function POST(request: NextRequest) {
       current_actual_deposit_paid: booking.actual_deposit_paid
     });
 
-    // Allow re-confirming if status is confirmed but missing payment data
+    // Allow confirming/recapturing for:
+    // 1. pending_approval (webhook fired, waiting for admin)
+    // 2. pending_deposit (legacy status)
+    // 3. confirmed but missing payment data (fallback for webhook failures)
     const needsPaymentData = booking.status === 'confirmed' &&
-                            (booking.actual_deposit_paid === null || booking.actual_deposit_paid === undefined);
+      (booking.actual_deposit_paid === null || booking.actual_deposit_paid === undefined);
 
-    if (booking.status !== 'pending_deposit' && !needsPaymentData) {
+    const isValidStatus = booking.status === 'pending_approval' ||
+                           booking.status === 'pending_deposit' ||
+                           needsPaymentData;
+
+    if (!isValidStatus) {
       return NextResponse.json(
-        { error: 'Booking is not pending confirmation' },
+        { error: `Booking cannot be confirmed - current status: ${booking.status}. Use this for pending_approval or to refresh payment data.` },
         { status: 400 }
       );
     }
@@ -115,12 +122,19 @@ export async function POST(request: NextRequest) {
     }
 
     // Fallback: Try payment intent if session didn't work or isn't available
-    if (!couponCode && booking.stripe_payment_intent_id) {
+    if (booking.stripe_payment_intent_id) {
       try {
-        const paymentIntent = await stripe.paymentIntents.retrieve(
+        let paymentIntent = await stripe.paymentIntents.retrieve(
           booking.stripe_payment_intent_id,
           { expand: ['charges'] }
         );
+
+        // CHECK IF NEEDS CAPTURE (Auth-and-Capture flow)
+        if (paymentIntent.status === 'requires_capture') {
+          console.log('💳 Payment authorization found. Capturing now...');
+          paymentIntent = await stripe.paymentIntents.capture(booking.stripe_payment_intent_id);
+          console.log('✅ Captured successfully:', paymentIntent.amount_received);
+        }
 
         // Get the actual amount charged
         if (paymentIntent.amount_received !== null && paymentIntent.amount_received !== undefined) {
@@ -131,10 +145,15 @@ export async function POST(request: NextRequest) {
           paymentIntentId: booking.stripe_payment_intent_id,
           actualPaid: actualDepositPaid,
           discount: discountAmount,
-          coupon: couponCode
+          coupon: couponCode,
+          status: paymentIntent.status
         });
       } catch (piError) {
-        console.error('⚠️ Could not retrieve PaymentIntent:', piError);
+        console.error('⚠️ Could not retrieve/capture PaymentIntent:', piError);
+        return NextResponse.json(
+          { error: 'Failed to capture payment', details: piError instanceof Error ? piError.message : 'Unknown error' },
+          { status: 500 }
+        );
       }
     }
 
@@ -165,6 +184,29 @@ export async function POST(request: NextRequest) {
     }
 
     console.log('✅ DATABASE UPDATED SUCCESSFULLY');
+
+    // Log confirmation action to audit log
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      await supabase.rpc('log_booking_action', {
+        p_booking_id: bookingId,
+        p_action: 'confirmed_manually',
+        p_performed_by: user?.email || 'admin',
+        p_details: {
+          payment_intent_id: booking.stripe_payment_intent_id || null,
+          session_id: booking.stripe_session_id || null,
+          amount_captured: actualDepositPaid,
+          coupon_code: couponCode,
+          discount_amount: discountAmount,
+          method: 'manual_confirm_button',
+          timestamp: new Date().toISOString()
+        }
+      });
+      console.log('✅ Audit log entry created');
+    } catch (logError) {
+      console.error('⚠️ Failed to create audit log:', logError);
+      // Don't fail the request if logging fails
+    }
 
     // Send confirmation emails
     const startTime = new Date(booking.start_time);
