@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Fetch ALL bookings - admin needs to see everything to manage and debug
-    const { data: bookings, error } = await supabase
+    const { data: allBookings, error } = await supabase
       .from('bookings')
       .select('*')
       .order('created_at', { ascending: false });
@@ -28,6 +28,25 @@ export async function GET(request: NextRequest) {
         { status: 500 }
       );
     }
+
+    // Filter out abandoned checkouts - bookings with no payment intent
+    // These are sessions where customer opened Stripe checkout but never entered payment info
+    const bookings = allBookings.filter(booking => {
+      // Keep all bookings that have a payment intent
+      if (booking.stripe_payment_intent_id) return true;
+
+      // Keep cancelled/rejected/deleted bookings (for history)
+      if (['cancelled', 'rejected', 'deleted'].includes(booking.status)) return true;
+
+      // Filter out pending_approval with no payment intent (abandoned checkout)
+      if (booking.status === 'pending_approval' && !booking.stripe_payment_intent_id) {
+        console.log('⚠️ Filtering out abandoned checkout:', booking.id, booking.customer_email);
+        return false;
+      }
+
+      // Keep everything else
+      return true;
+    });
 
     // Transform the data to match the frontend interface
     const transformedBookings = bookings.map((booking) => {

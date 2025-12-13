@@ -2,8 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createServiceRoleClient } from '@/utils/supabase/service-role';
 import { resend, ADMIN_EMAIL, FROM_EMAIL } from '@/lib/emails/resend';
 import { format } from 'date-fns';
+import Stripe from 'stripe';
 
 export async function POST(request: NextRequest) {
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+    apiVersion: '2025-08-27.basil',
+  });
   try {
     const { bookingId, userEmail } = await request.json();
 
@@ -50,6 +54,18 @@ export async function POST(request: NextRequest) {
         { error: 'Cannot cancel bookings less than 24 hours before the session' },
         { status: 400 }
       );
+    }
+
+    // Cancel the Stripe payment intent if it exists
+    if (booking.stripe_payment_intent_id) {
+      try {
+        console.log('💳 Cancelling payment intent:', booking.stripe_payment_intent_id);
+        await stripe.paymentIntents.cancel(booking.stripe_payment_intent_id);
+        console.log('✅ Payment intent cancelled - hold released');
+      } catch (stripeError) {
+        console.error('❌ Stripe cancel error:', stripeError);
+        // Continue with cancellation even if Stripe fails
+      }
     }
 
     // Update booking status to cancelled
