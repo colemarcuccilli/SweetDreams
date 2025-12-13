@@ -196,9 +196,24 @@ export async function POST(request: NextRequest) {
       .select()
       .single();
 
-    if (bookingError) {
-      console.error('Error creating booking in database:', bookingError);
-      // Continue anyway - the booking can be manually created if needed
+    if (bookingError || !booking) {
+      console.error('❌ CRITICAL: Error creating booking in database:', bookingError);
+      console.error('❌ Cannot proceed to checkout without booking record');
+
+      // Cancel the Stripe session since we can't create the booking
+      try {
+        await stripe.checkout.sessions.expire(session.id);
+      } catch (expireError) {
+        console.error('Failed to expire Stripe session:', expireError);
+      }
+
+      return NextResponse.json(
+        {
+          error: 'Failed to create booking record',
+          details: bookingError ? (bookingError as any).message || String(bookingError) : 'Booking record is null'
+        },
+        { status: 500 }
+      );
     }
 
     console.log('✅ BOOKING CREATED SUCCESSFULLY');
