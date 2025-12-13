@@ -170,7 +170,7 @@ export async function POST(request: NextRequest) {
     // For 'deposit' products, calculate remainder INCLUDING after-hours fee
     const remainderAmount = depositProduct.type === 'full' ? 0 : (totalAmount - depositAmount) + afterHoursFeeAmount;
 
-    const { data: booking, error: bookingError} = await supabase
+    const { data: booking, error: bookingError } = await supabase
       .from('bookings')
       .insert({
         first_name: firstName,
@@ -189,7 +189,7 @@ export async function POST(request: NextRequest) {
         after_hours_fee: fees.afterHoursFee,
         same_day_fee_amount: sameDayFeeAmount,
         after_hours_fee_amount: afterHoursFeeAmount,
-        status: 'pending_approval', // ✅ CRITICAL: Awaiting admin approval, payment authorized but NOT captured
+        status: 'pending_payment', // ✅ CRITICAL: Initially pending payment. Will be updated to 'pending_approval' via webhook after successful checkout.
         stripe_session_id: session.id, // Save session ID (available immediately)
         stripe_customer_id: customer.id,
       })
@@ -205,7 +205,7 @@ export async function POST(request: NextRequest) {
     console.log('📋 Booking ID:', booking?.id);
     console.log('📋 Session ID:', session.id);
     console.log('📋 Customer Email:', customerEmail);
-    console.log('📋 Status:', 'pending_approval');
+    console.log('📋 Status:', 'pending_payment');
     console.log('💳 Stripe Checkout URL:', session.url);
     console.log('⏳ Redirecting to Stripe Checkout...');
     console.log('📧 Admin approval email will be sent AFTER checkout completes (via webhook)');

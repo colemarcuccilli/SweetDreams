@@ -25,10 +25,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Fetch booking to get duration
+    // Fetch booking to get duration and current times (for audit log)
     const { data: booking, error: fetchError } = await supabase
       .from('bookings')
-      .select('duration')
+      .select('duration, start_time, end_time, first_name, last_name')
       .eq('id', bookingId)
       .single();
 
@@ -38,6 +38,10 @@ export async function POST(request: NextRequest) {
         { status: 404 }
       );
     }
+
+    // Store old values for audit log
+    const oldStartTime = new Date(booking.start_time);
+    const oldEndTime = new Date(booking.end_time);
 
     // Calculate new start_time and end_time
     const startDateTime = new Date(date);
@@ -63,10 +67,30 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log('✅ Booking time updated:', {
+    // Log the booking time change to audit log
+    const { data: { user } } = await supabase.auth.getUser();
+    await supabase.rpc('log_booking_action', {
+      p_booking_id: bookingId,
+      p_action: 'booking_time_edited',
+      p_performed_by: user?.email || 'admin',
+      p_details: {
+        customer_name: `${booking.first_name} ${booking.last_name}`,
+        old_start_time: oldStartTime.toISOString(),
+        old_end_time: oldEndTime.toISOString(),
+        new_start_time: startDateTime.toISOString(),
+        new_end_time: endDateTime.toISOString(),
+        old_start_time_local: oldStartTime.toLocaleString('en-US', { timeZone: 'America/New_York' }),
+        new_start_time_local: startDateTime.toLocaleString('en-US', { timeZone: 'America/New_York' }),
+        duration: booking.duration,
+        timestamp: new Date().toISOString()
+      }
+    });
+
+    console.log('✅ Booking time updated and logged:', {
       bookingId,
+      oldStartTime: oldStartTime.toISOString(),
       newStartTime: startDateTime.toISOString(),
-      newEndTime: endDateTime.toISOString()
+      changed_by: user?.email || 'admin'
     });
 
     return NextResponse.json({

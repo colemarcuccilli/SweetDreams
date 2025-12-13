@@ -66,6 +66,48 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // ========================================================================
+    // VALIDATION - Verify amount being charged is correct
+    // ========================================================================
+    const expectedRemainder = booking.remainder_amount;
+    const requestedAmount = amount;
+
+    console.log('📊 REMAINDER CHARGE VALIDATION:');
+    console.log('  Expected Remainder:', expectedRemainder, 'cents ($' + (expectedRemainder/100).toFixed(2) + ')');
+    console.log('  Requested Amount:', requestedAmount, 'cents ($' + (requestedAmount/100).toFixed(2) + ')');
+
+    // Allow admin to charge custom amount, but warn
+    if (requestedAmount !== expectedRemainder) {
+      console.warn('⚠️ WARNING: Charging different amount than expected remainder');
+      console.warn('  Expected:', expectedRemainder, 'cents');
+      console.warn('  Charging:', requestedAmount, 'cents');
+      console.warn('  Difference:', requestedAmount - expectedRemainder, 'cents');
+
+      // Log custom amount charge
+      await supabase.from('webhook_failures').insert({
+        webhook_type: 'custom_remainder_charge',
+        booking_id: bookingId,
+        error_message: 'Admin charged custom remainder amount',
+        error_details: {
+          expected_remainder: expectedRemainder,
+          actual_charge: requestedAmount,
+          difference: requestedAmount - expectedRemainder,
+          admin_note: 'This is informational only - not an error'
+        }
+      });
+    }
+
+    // Validate amount is positive
+    if (requestedAmount <= 0) {
+      console.error('❌ MATH ERROR: Remainder amount must be positive!');
+      return NextResponse.json(
+        { error: 'Invalid remainder amount', details: 'Amount must be greater than zero' },
+        { status: 400 }
+      );
+    }
+
+    console.log('✅ Validation passed - proceeding with charge');
+
     // Get the remainder product for this session duration
     const { remainder: remainderProduct } = getSessionProducts(duration);
 

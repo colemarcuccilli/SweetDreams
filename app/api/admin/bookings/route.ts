@@ -15,11 +15,10 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Fetch all bookings except cancelled (including pending_deposit for debugging)
+    // Fetch ALL bookings - admin needs to see everything to manage and debug
     const { data: bookings, error } = await supabase
       .from('bookings')
       .select('*')
-      .neq('status', 'cancelled')
       .order('created_at', { ascending: false });
 
     if (error) {

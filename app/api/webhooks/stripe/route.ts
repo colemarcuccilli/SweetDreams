@@ -120,6 +120,7 @@ export async function POST(request: NextRequest) {
         stripe_payment_intent_id: session.payment_intent as string,
         coupon_code: couponCode,
         discount_amount: discountAmount,
+        status: 'pending_approval', // ✅ Payment authorized, now ready for admin approval
       })
       .eq('id', booking.id);
 
@@ -161,11 +162,21 @@ export async function POST(request: NextRequest) {
       const formattedStartTime = format(startTime, 'h:mm a');
       const formattedEndTime = format(endTime, 'h:mm a');
 
-      console.log('📧 Sending admin approval request email to:', ADMIN_EMAIL);
+      console.log('📧 ATTEMPTING TO SEND ADMIN EMAIL');
+      console.log('📧 From:', FROM_EMAIL);
+      console.log('📧 To:', ADMIN_EMAIL);
+      console.log('📧 Resend API Key exists:', !!process.env.RESEND_API_KEY);
+      console.log('📧 Booking details:', {
+        id: booking.id,
+        artist: booking.artist_name,
+        email: booking.customer_email,
+        date: formattedDate,
+        time: `${formattedStartTime} - ${formattedEndTime}`
+      });
 
       const { PendingBookingAlert } = await import('@/lib/emails/pending-booking-alert');
 
-      await resend.emails.send({
+      const emailResult = await resend.emails.send({
         from: FROM_EMAIL,
         to: ADMIN_EMAIL,
         subject: `⚠️ NEW BOOKING NEEDS APPROVAL - ${booking.artist_name} on ${formattedDate}`,
@@ -184,17 +195,46 @@ export async function POST(request: NextRequest) {
         }) as React.ReactElement,
       });
 
-      console.log('✅ Admin approval request email sent successfully');
+      console.log('✅ Admin approval email SENT SUCCESSFULLY');
+      console.log('✅ Resend response:', JSON.stringify(emailResult, null, 2));
+
+      // Log successful email send
+      await supabase.rpc('log_booking_action', {
+        p_booking_id: booking.id,
+        p_action: 'admin_email_sent',
+        p_performed_by: 'webhook',
+        p_details: {
+          email_to: ADMIN_EMAIL,
+          email_id: emailResult.data?.id || null,
+          timestamp: new Date().toISOString()
+        }
+      });
+
     } catch (emailError) {
-      console.error('❌ Failed to send admin approval email:', emailError);
-      // Log but don't fail the webhook
+      console.error('❌❌❌ CRITICAL: Failed to send admin approval email ❌❌❌');
+      console.error('❌ Error:', emailError);
+      console.error('❌ Error message:', emailError instanceof Error ? emailError.message : 'Unknown');
+      console.error('❌ Error stack:', emailError instanceof Error ? emailError.stack : 'N/A');
+
+      // Log to webhook failures with full details
       await supabase.from('webhook_failures').insert({
         webhook_type: 'admin_approval_email',
         booking_id: booking.id,
         stripe_session_id: session.id,
         error_message: emailError instanceof Error ? emailError.message : 'Unknown error',
-        error_details: { error: String(emailError) }
+        error_details: {
+          error: String(emailError),
+          stack: emailError instanceof Error ? emailError.stack : null,
+          from_email: FROM_EMAIL,
+          to_email: ADMIN_EMAIL,
+          resend_key_exists: !!process.env.RESEND_API_KEY,
+          booking_id: booking.id,
+          artist_name: booking.artist_name
+        }
       });
+
+      // CRITICAL: Don't fail the webhook - booking is still valid even if email fails
+      console.log('⚠️ Webhook will continue despite email failure');
     }
 
     console.log('✅ Webhook processing complete');
