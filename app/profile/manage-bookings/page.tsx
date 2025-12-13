@@ -56,6 +56,7 @@ export default function AdminBookingsPage() {
   const [reschedulingBookingId, setReschedulingBookingId] = useState<string | null>(null);
   const [expandedDebugBookingId, setExpandedDebugBookingId] = useState<string | null>(null);
   const [showDebugInfo, setShowDebugInfo] = useState<Record<string, boolean>>({});
+  const [refreshingPaymentId, setRefreshingPaymentId] = useState<string | null>(null);
 
   const fetchBookings = async () => {
     try {
@@ -343,6 +344,36 @@ export default function AdminBookingsPage() {
       alert('Failed to reschedule booking');
     } finally {
       setReschedulingBookingId(null);
+    }
+  };
+
+  const handleRefreshPaymentData = async (booking: Booking) => {
+    const message = `REFRESH payment data for ${booking.firstName} ${booking.lastName}?\n\nThis will:\n- Query Stripe for the actual payment status\n- Update payment intent ID if missing\n- Update amount captured\n\nUse this if payment shows incorrectly after manual actions in Stripe Dashboard.`;
+
+    if (!confirm(message)) return;
+
+    setRefreshingPaymentId(booking.id);
+
+    try {
+      const response = await fetch('/api/admin/refresh-payment-data', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ bookingId: booking.id })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert(`Payment data refreshed successfully!\n\nPayment Intent ID: ${data.data.payment_intent_id || 'None ($0 booking)'}\nAmount Captured: $${(data.data.amount_captured / 100).toFixed(2)}`);
+        await fetchBookings();
+      } else {
+        alert('Error refreshing payment data: ' + (data.error || 'Unknown error'));
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Failed to refresh payment data');
+    } finally {
+      setRefreshingPaymentId(null);
     }
   };
 
@@ -646,7 +677,7 @@ export default function AdminBookingsPage() {
                               {booking.actualDepositPaid !== undefined && booking.actualDepositPaid !== null ? (
                                 <>
                                   ${(booking.actualDepositPaid / 100).toFixed(2)}
-                                  {booking.actualDepositPaid === 0 && <span className={styles.freeTag}> FREE</span>}
+                                  {booking.actualDepositPaid === 0 && booking.depositAmount === 0 && <span className={styles.freeTag}> FREE</span>}
                                 </>
                               ) : (
                                 <span style={{ opacity: 0.6 }}>Pending...</span>
@@ -1035,7 +1066,7 @@ export default function AdminBookingsPage() {
                               {booking.actualDepositPaid !== undefined && booking.actualDepositPaid !== null ? (
                                 <>
                                   ${(booking.actualDepositPaid / 100).toFixed(2)}
-                                  {booking.actualDepositPaid === 0 && <span className={styles.freeTag}> FREE</span>}
+                                  {booking.actualDepositPaid === 0 && booking.depositAmount === 0 && <span className={styles.freeTag}> FREE</span>}
                                 </>
                               ) : (
                                 <span style={{ opacity: 0.6 }}>Pending...</span>
@@ -1138,6 +1169,18 @@ export default function AdminBookingsPage() {
                           >
                             {reschedulingBookingId === booking.id ? 'Rescheduling...' : 'Reschedule to TBD'}
                           </button>
+
+                          {/* Show Refresh Payment Data button if payment info is missing or incorrect */}
+                          {(!booking.stripePaymentIntentId || (booking.actualDepositPaid === 0 && booking.depositAmount > 0)) && (
+                            <button
+                              className={styles.notifyButton}
+                              onClick={() => handleRefreshPaymentData(booking)}
+                              disabled={refreshingPaymentId === booking.id}
+                              title="Sync payment data from Stripe (use after manual capture)"
+                            >
+                              {refreshingPaymentId === booking.id ? 'Refreshing...' : 'Refresh Payment Data'}
+                            </button>
+                          )}
 
                           <button
                             className={styles.softDeleteButton}

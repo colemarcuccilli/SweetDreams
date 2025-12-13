@@ -407,9 +407,15 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
 
   const availableTimeSlots = getAvailableTimeSlots();
 
-  // Disable past dates and fully blocked dates (Sundays now available!)
+  // Disable same-day bookings - customers must book at least 1 day in advance
+  // This protects staff from last-minute booking stress
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+
   const disabledDays = [
-    { before: new Date() },
+    { before: tomorrow },  // Disable today and all past dates
     isDateFullyBlocked  // Custom matcher function for fully blocked dates
   ];
 
