@@ -236,25 +236,18 @@ export async function POST(request: NextRequest) {
       }
     });
 
-    // Send admin approval request email NOW (after checkout completes)
-    try {
-      const startTime = new Date(booking.start_time);
-      const endTime = new Date(booking.end_time);
-      const formattedDate = format(startTime, 'EEEE, MMMM d, yyyy');
-      const formattedStartTime = format(startTime, 'h:mm a');
-      const formattedEndTime = format(endTime, 'h:mm a');
+    // Format dates for emails
+    const startTime = new Date(booking.start_time);
+    const endTime = new Date(booking.end_time);
+    const formattedDate = format(startTime, 'EEEE, MMMM d, yyyy');
+    const formattedStartTime = format(startTime, 'h:mm a');
+    const formattedEndTime = format(endTime, 'h:mm a');
 
+    // Send admin approval request email
+    try {
       console.log('📧 ATTEMPTING TO SEND ADMIN EMAIL');
       console.log('📧 From:', FROM_EMAIL);
       console.log('📧 To:', ADMIN_EMAIL);
-      console.log('📧 Resend API Key exists:', !!process.env.RESEND_API_KEY);
-      console.log('📧 Booking details:', {
-        id: booking.id,
-        artist: booking.artist_name,
-        email: booking.customer_email,
-        date: formattedDate,
-        time: `${formattedStartTime} - ${formattedEndTime}`
-      });
 
       const { PendingBookingAlert } = await import('@/lib/emails/pending-booking-alert');
 
@@ -278,9 +271,7 @@ export async function POST(request: NextRequest) {
       });
 
       console.log('✅ Admin approval email SENT SUCCESSFULLY');
-      console.log('✅ Resend response:', JSON.stringify(emailResult, null, 2));
 
-      // Log successful email send
       await supabase.rpc('log_booking_action', {
         p_booking_id: booking.id,
         p_action: 'admin_email_sent',
@@ -291,9 +282,21 @@ export async function POST(request: NextRequest) {
           timestamp: new Date().toISOString()
         }
       });
+    } catch (emailError) {
+      console.error('❌ Failed to send admin email:', emailError);
+      await supabase.from('webhook_failures').insert({
+        webhook_type: 'admin_approval_email',
+        booking_id: booking.id,
+        stripe_session_id: session.id,
+        error_message: emailError instanceof Error ? emailError.message : 'Unknown error',
+        error_details: { error: String(emailError) }
+      });
+    }
 
-      // Send customer confirmation email
-      console.log('📧 Sending customer confirmation email to:', booking.customer_email);
+    // Send customer confirmation email
+    try {
+      console.log('📧 ATTEMPTING TO SEND CUSTOMER CONFIRMATION EMAIL');
+      console.log('📧 To:', booking.customer_email);
 
       const customerEmailResult = await resend.emails.send({
         from: FROM_EMAIL,
@@ -333,9 +336,9 @@ export async function POST(request: NextRequest) {
         `
       });
 
-      console.log('✅ Customer confirmation email sent:', customerEmailResult.data?.id);
+      console.log('✅ Customer confirmation email SENT SUCCESSFULLY');
+      console.log('✅ Email ID:', customerEmailResult.data?.id);
 
-      // Log customer email send
       await supabase.rpc('log_booking_action', {
         p_booking_id: booking.id,
         p_action: 'customer_confirmation_sent',
@@ -346,32 +349,18 @@ export async function POST(request: NextRequest) {
           timestamp: new Date().toISOString()
         }
       });
-
     } catch (emailError) {
-      console.error('❌❌❌ CRITICAL: Failed to send admin approval email ❌❌❌');
-      console.error('❌ Error:', emailError);
-      console.error('❌ Error message:', emailError instanceof Error ? emailError.message : 'Unknown');
-      console.error('❌ Error stack:', emailError instanceof Error ? emailError.stack : 'N/A');
-
-      // Log to webhook failures with full details
+      console.error('❌ Failed to send customer confirmation email:', emailError);
       await supabase.from('webhook_failures').insert({
-        webhook_type: 'admin_approval_email',
+        webhook_type: 'customer_confirmation_email',
         booking_id: booking.id,
         stripe_session_id: session.id,
         error_message: emailError instanceof Error ? emailError.message : 'Unknown error',
         error_details: {
           error: String(emailError),
-          stack: emailError instanceof Error ? emailError.stack : null,
-          from_email: FROM_EMAIL,
-          to_email: ADMIN_EMAIL,
-          resend_key_exists: !!process.env.RESEND_API_KEY,
-          booking_id: booking.id,
-          artist_name: booking.artist_name
+          to_email: booking.customer_email
         }
       });
-
-      // CRITICAL: Don't fail the webhook - booking is still valid even if email fails
-      console.log('⚠️ Webhook will continue despite email failure');
     }
 
     console.log('✅ Webhook processing complete');
