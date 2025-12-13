@@ -57,6 +57,7 @@ export default function AdminBookingsPage() {
   const [expandedDebugBookingId, setExpandedDebugBookingId] = useState<string | null>(null);
   const [showDebugInfo, setShowDebugInfo] = useState<Record<string, boolean>>({});
   const [refreshingPaymentId, setRefreshingPaymentId] = useState<string | null>(null);
+  const [refreshingAll, setRefreshingAll] = useState(false);
 
   const fetchBookings = async () => {
     try {
@@ -377,6 +378,62 @@ export default function AdminBookingsPage() {
     }
   };
 
+  const handleRefreshAllPaymentData = async () => {
+    const confirmedAndCompletedBookings = bookings.filter(b =>
+      b.status === 'confirmed' || b.status === 'completed'
+    );
+
+    if (confirmedAndCompletedBookings.length === 0) {
+      alert('No confirmed or completed bookings to refresh.');
+      return;
+    }
+
+    const message = `Refresh payment data for ALL ${confirmedAndCompletedBookings.length} confirmed/completed bookings?\n\nThis will query Stripe for each booking and update:\n- Payment Intent IDs\n- Actual amounts captured\n\nUse this to sync all payment data after manual actions in Stripe Dashboard.`;
+
+    if (!confirm(message)) return;
+
+    setRefreshingAll(true);
+
+    let successCount = 0;
+    let errorCount = 0;
+    const errors: string[] = [];
+
+    for (const booking of confirmedAndCompletedBookings) {
+      try {
+        const response = await fetch('/api/admin/refresh-payment-data', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ bookingId: booking.id })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          successCount++;
+          console.log(`✅ Refreshed: ${booking.firstName} ${booking.lastName}`);
+        } else {
+          errorCount++;
+          errors.push(`${booking.firstName} ${booking.lastName}: ${data.error || 'Unknown error'}`);
+        }
+      } catch (error) {
+        errorCount++;
+        errors.push(`${booking.firstName} ${booking.lastName}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      }
+    }
+
+    setRefreshingAll(false);
+
+    // Refresh the bookings list to show updated data
+    await fetchBookings();
+
+    let summaryMessage = `Refresh Complete!\n\n✅ Success: ${successCount}\n❌ Errors: ${errorCount}`;
+    if (errors.length > 0) {
+      summaryMessage += `\n\nError Details:\n${errors.join('\n')}`;
+    }
+
+    alert(summaryMessage);
+  };
+
   const handleCancelBooking = async (booking: Booking) => {
     // Parse date in local timezone
     const [year, month, day] = booking.date.split('-').map(Number);
@@ -573,16 +630,25 @@ export default function AdminBookingsPage() {
         <h1 className={styles.title}>Studio Bookings</h1>
         <p className={styles.subtitle}>Manage bookings and charge remainder payments</p>
 
-        {completedBookings.length > 0 && (
-          <div className={styles.filterControls}>
+        <div className={styles.filterControls}>
+          <button
+            className={styles.refreshAllButton}
+            onClick={handleRefreshAllPaymentData}
+            disabled={refreshingAll || bookings.length === 0}
+            title="Refresh payment data from Stripe for all confirmed/completed bookings"
+          >
+            {refreshingAll ? 'Refreshing All...' : 'Refresh All Payment Data'}
+          </button>
+
+          {completedBookings.length > 0 && (
             <button
               className={styles.toggleButton}
               onClick={() => setShowCompleted(!showCompleted)}
             >
               {showCompleted ? 'Hide' : 'Show'} Completed ({completedBookings.length})
             </button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       {bookings.length === 0 ? (
@@ -1168,16 +1234,6 @@ export default function AdminBookingsPage() {
                             title="Reschedule to future TBD date (keeps payment credited)"
                           >
                             {reschedulingBookingId === booking.id ? 'Rescheduling...' : 'Reschedule to TBD'}
-                          </button>
-
-                          {/* Refresh Payment Data button - always available for troubleshooting */}
-                          <button
-                            className={styles.notifyButton}
-                            onClick={() => handleRefreshPaymentData(booking)}
-                            disabled={refreshingPaymentId === booking.id}
-                            title="Sync payment data from Stripe (use if payment shows incorrectly)"
-                          >
-                            {refreshingPaymentId === booking.id ? 'Refreshing...' : 'Refresh Payment'}
                           </button>
 
                           <button
