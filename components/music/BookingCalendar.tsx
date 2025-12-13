@@ -572,7 +572,9 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
         // Redirect to Stripe Checkout
         window.location.href = data.checkoutUrl;
       } else {
-        alert('Error creating booking: ' + (data.error || 'Unknown error'));
+        const errorMsg = data.error || 'Unknown error';
+        const details = data.details ? `\n\nDetails: ${data.details}` : '';
+        alert('Error creating booking: ' + errorMsg + details);
       }
     } catch (error) {
       console.error('Booking error:', error);
