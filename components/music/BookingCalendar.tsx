@@ -72,6 +72,10 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
     end_time: number | null;
     block_entire_day: boolean;
   }>>([]);
+  const [existingBookings, setExistingBookings] = useState<Array<{
+    start_time: string;
+    end_time: string;
+  }>>([]);
   const [isGiftUnwrapped, setIsGiftUnwrapped] = useState(false);
 
   // GSAP refs for gift animation
@@ -98,6 +102,45 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
 
     fetchBlockedSlots();
   }, []);
+
+  // Fetch existing bookings when date is selected
+  useEffect(() => {
+    if (!selectedDate) {
+      setExistingBookings([]);
+      return;
+    }
+
+    const fetchExistingBookings = async () => {
+      try {
+        const dateStr = format(selectedDate, 'yyyy-MM-dd');
+        const response = await fetch(`/api/admin/bookings?date=${dateStr}`);
+        const data = await response.json();
+
+        if (data.bookings) {
+          // Filter to only confirmed/completed bookings for this date
+          const bookedTimes = data.bookings
+            .filter((b: any) => {
+              const bookingDate = b.start_time ? new Date(b.start_time) : null;
+              if (!bookingDate) return false;
+              const bookingDateStr = format(bookingDate, 'yyyy-MM-dd');
+              return bookingDateStr === dateStr && (b.status === 'confirmed' || b.status === 'completed');
+            })
+            .map((b: any) => ({
+              start_time: b.start_time,
+              end_time: b.end_time
+            }));
+
+          setExistingBookings(bookedTimes);
+          console.log(`📅 Found ${bookedTimes.length} existing bookings for ${dateStr}`);
+        }
+      } catch (error) {
+        console.error('Error fetching existing bookings:', error);
+        setExistingBookings([]);
+      }
+    };
+
+    fetchExistingBookings();
+  }, [selectedDate]);
 
   // Check authentication status and load user data
   useEffect(() => {
@@ -384,7 +427,8 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
     const requestedStart = hour + (minute / 60); // Convert to decimal (e.g., 9:30 = 9.5)
     const requestedEnd = requestedStart + duration;
 
-    return blockedSlots.some(slot => {
+    // Check admin-blocked slots
+    const isAdminBlocked = blockedSlots.some(slot => {
       if (slot.blocked_date !== dateStr) return false;
       if (slot.block_entire_day) return true;
       if (slot.start_time === null || slot.end_time === null) return false;
@@ -392,6 +436,21 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
       // Check for time overlap
       return requestedStart < slot.end_time && requestedEnd > slot.start_time;
     });
+
+    if (isAdminBlocked) return true;
+
+    // Check existing bookings (confirmed/completed)
+    const isBookingConflict = existingBookings.some(booking => {
+      const bookingStart = new Date(booking.start_time);
+      const bookingEnd = new Date(booking.end_time);
+      const bookingStartHour = bookingStart.getHours() + (bookingStart.getMinutes() / 60);
+      const bookingEndHour = bookingEnd.getHours() + (bookingEnd.getMinutes() / 60);
+
+      // Check for time overlap
+      return requestedStart < bookingEndHour && requestedEnd > bookingStartHour;
+    });
+
+    return isBookingConflict;
   };
 
   // Get available time slots for the selected date
@@ -414,8 +473,16 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
   const tomorrow = new Date(today);
   tomorrow.setDate(tomorrow.getDate() + 1);
 
+  // Custom matcher to disable today specifically
+  const isToday = (date: Date): boolean => {
+    const checkDate = new Date(date);
+    checkDate.setHours(0, 0, 0, 0);
+    return checkDate.getTime() === today.getTime();
+  };
+
   const disabledDays = [
-    { before: tomorrow },  // Disable today and all past dates
+    { before: tomorrow },  // Disable all past dates
+    isToday,  // Explicitly disable today
     isDateFullyBlocked  // Custom matcher function for fully blocked dates
   ];
 

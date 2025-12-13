@@ -1170,17 +1170,15 @@ export default function AdminBookingsPage() {
                             {reschedulingBookingId === booking.id ? 'Rescheduling...' : 'Reschedule to TBD'}
                           </button>
 
-                          {/* Show Refresh Payment Data button if payment info is missing or incorrect */}
-                          {(!booking.stripePaymentIntentId || (booking.actualDepositPaid === 0 && booking.depositAmount > 0)) && (
-                            <button
-                              className={styles.notifyButton}
-                              onClick={() => handleRefreshPaymentData(booking)}
-                              disabled={refreshingPaymentId === booking.id}
-                              title="Sync payment data from Stripe (use after manual capture)"
-                            >
-                              {refreshingPaymentId === booking.id ? 'Refreshing...' : 'Refresh Payment Data'}
-                            </button>
-                          )}
+                          {/* Refresh Payment Data button - always available for troubleshooting */}
+                          <button
+                            className={styles.notifyButton}
+                            onClick={() => handleRefreshPaymentData(booking)}
+                            disabled={refreshingPaymentId === booking.id}
+                            title="Sync payment data from Stripe (use if payment shows incorrectly)"
+                          >
+                            {refreshingPaymentId === booking.id ? 'Refreshing...' : 'Refresh Payment'}
+                          </button>
 
                           <button
                             className={styles.softDeleteButton}
