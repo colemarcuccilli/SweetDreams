@@ -294,19 +294,18 @@ export async function POST(request: NextRequest) {
     }
 
     // Send customer confirmation email
-    try {
-      console.log('📧 ATTEMPTING TO SEND CUSTOMER CONFIRMATION EMAIL');
-      console.log('📧 To:', booking.customer_email);
+    console.log('📧 Sending booking request confirmation email to customer:', booking.customer_email);
 
-      const customerEmailResult = await resend.emails.send({
+    try {
+      await resend.emails.send({
         from: FROM_EMAIL,
         to: booking.customer_email,
-        subject: 'Booking Request Received - Sweet Dreams Music Studio',
+        subject: `Booking Request Received - Awaiting Approval`,
         html: `
           <h2>Thank You for Your Booking Request!</h2>
           <p>Hi ${booking.first_name},</p>
 
-          <p>We've received your studio booking request and our team is reviewing the details.</p>
+          <p>We've received your studio booking request and our engineer will review it within 24-48 hours.</p>
 
           <h3>Booking Details:</h3>
           <ul>
@@ -316,51 +315,32 @@ export async function POST(request: NextRequest) {
             <li><strong>Duration:</strong> ${booking.duration} hours</li>
           </ul>
 
-          <h3>Payment Information:</h3>
-          <p>Your payment card has been <strong>authorized but not charged yet</strong>. Here's how our payment process works:</p>
+          <h3>Invoice Summary:</h3>
           <ul>
-            <li><strong>Step 1:</strong> We've authorized $${(booking.deposit_amount / 100).toFixed(2)} (50% deposit) on your card</li>
-            <li><strong>Step 2:</strong> Our engineer will review and confirm your session within 24-48 hours</li>
-            <li><strong>Step 3:</strong> Once approved, the deposit will be captured (charged)</li>
-            <li><strong>Step 4:</strong> The remaining balance of $${(booking.remainder_amount / 100).toFixed(2)} is due after your session</li>
+            <li><strong>Deposit (50%):</strong> $${(booking.deposit_amount / 100).toFixed(2)}</li>
+            <li><strong>Total Session Cost:</strong> $${(booking.total_amount / 100).toFixed(2)}</li>
+            <li><strong>Balance Due After Session:</strong> $${(booking.remainder_amount / 100).toFixed(2)}</li>
           </ul>
 
-          <h3>What Happens Next?</h3>
-          <p>You'll receive another email once your booking is confirmed by our engineer. If you need to make any changes or have questions, please contact us immediately.</p>
+          <h3>Payment Status:</h3>
+          <p><strong>Your card has been AUTHORIZED but NOT charged yet.</strong></p>
+          <p>Here's what happens next:</p>
+          <ol>
+            <li>Our engineer reviews your booking request (24-48 hours)</li>
+            <li>If approved, we'll capture the $${(booking.deposit_amount / 100).toFixed(2)} deposit</li>
+            <li>You'll receive a confirmation email once approved</li>
+            <li>The remaining $${(booking.remainder_amount / 100).toFixed(2)} is due after your session</li>
+          </ol>
 
-          <p>We're excited to work with you!</p>
+          <p>If you need to make any changes or have questions, please contact us immediately at <a href="mailto:jayvalleo@sweetdreamsmusic.com">jayvalleo@sweetdreamsmusic.com</a>.</p>
 
-          <p>Best regards,<br>
-          Sweet Dreams Music Studio<br>
-          <a href="mailto:jayvalleo@sweetdreamsmusic.com">jayvalleo@sweetdreamsmusic.com</a></p>
-        `
+          <p>Thank you,<br>Sweet Dreams Music Studio</p>
+        `,
       });
 
-      console.log('✅ Customer confirmation email SENT SUCCESSFULLY');
-      console.log('✅ Email ID:', customerEmailResult.data?.id);
-
-      await supabase.rpc('log_booking_action', {
-        p_booking_id: booking.id,
-        p_action: 'customer_confirmation_sent',
-        p_performed_by: 'webhook',
-        p_details: {
-          email_to: booking.customer_email,
-          email_id: customerEmailResult.data?.id || null,
-          timestamp: new Date().toISOString()
-        }
-      });
+      console.log('✅ Customer confirmation email sent to:', booking.customer_email);
     } catch (emailError) {
-      console.error('❌ Failed to send customer confirmation email:', emailError);
-      await supabase.from('webhook_failures').insert({
-        webhook_type: 'customer_confirmation_email',
-        booking_id: booking.id,
-        stripe_session_id: session.id,
-        error_message: emailError instanceof Error ? emailError.message : 'Unknown error',
-        error_details: {
-          error: String(emailError),
-          to_email: booking.customer_email
-        }
-      });
+      console.error('❌ Customer confirmation email failed:', emailError);
     }
 
     console.log('✅ Webhook processing complete');
