@@ -3,7 +3,7 @@ import Stripe from 'stripe';
 import { createClient } from '@/utils/supabase/server';
 import { createServiceRoleClient } from '@/utils/supabase/service-role';
 import { verifyAdminAccess } from '@/lib/admin-auth';
-import { resend, FROM_EMAIL } from '@/lib/emails/resend';
+import { resend, FROM_EMAIL, ADMIN_EMAIL } from '@/lib/emails/resend';
 import { CustomerBookingConfirmation } from '@/lib/emails/customer-booking-confirmation';
 import { format } from 'date-fns';
 import * as React from 'react';
@@ -293,6 +293,68 @@ export async function POST(request: NextRequest) {
       });
 
       console.log('⚠️ Approval succeeded but customer email failed - logged to webhook_failures');
+    }
+
+    // Send admin notification of successful capture
+    try {
+      const startTime = new Date(booking.start_time);
+      const formattedDate = format(startTime, 'EEEE, MMMM d, yyyy');
+      const formattedTime = format(startTime, 'h:mm a');
+
+      console.log('📧 SENDING ADMIN CAPTURE SUCCESS EMAIL');
+
+      await resend.emails.send({
+        from: FROM_EMAIL,
+        to: ADMIN_EMAIL,
+        subject: `✅ Payment Captured - ${booking.artist_name} - $${(amountCaptured / 100).toFixed(2)}`,
+        html: `
+          <h2>Payment Successfully Captured</h2>
+          <p><strong>A booking has been approved and payment captured.</strong></p>
+
+          <h3>Customer Details:</h3>
+          <ul>
+            <li><strong>Name:</strong> ${booking.first_name} ${booking.last_name}</li>
+            <li><strong>Artist Name:</strong> ${booking.artist_name}</li>
+            <li><strong>Email:</strong> ${booking.customer_email}</li>
+            <li><strong>Phone:</strong> ${booking.customer_phone || 'N/A'}</li>
+          </ul>
+
+          <h3>Booking Details:</h3>
+          <ul>
+            <li><strong>Date:</strong> ${formattedDate}</li>
+            <li><strong>Time:</strong> ${formattedTime}</li>
+            <li><strong>Duration:</strong> ${booking.duration} hours</li>
+          </ul>
+
+          <h3>Payment Details:</h3>
+          <ul>
+            <li><strong>Amount Captured:</strong> $${(amountCaptured / 100).toFixed(2)}</li>
+            <li><strong>Total Booking Value:</strong> $${(booking.total_amount / 100).toFixed(2)}</li>
+            <li><strong>Remainder Due:</strong> $${(booking.remainder_amount / 100).toFixed(2)}</li>
+            ${booking.discount_amount && booking.discount_amount > 0 ? `<li><strong>Discount Applied:</strong> $${(booking.discount_amount / 100).toFixed(2)}</li>` : ''}
+          </ul>
+
+          <p><strong>Status:</strong> Booking confirmed - customer has been notified.</p>
+        `
+      });
+
+      console.log('✅ Admin capture success email sent');
+
+      // Log email send
+      await serviceSupabase.rpc('log_booking_action', {
+        p_booking_id: bookingId,
+        p_action: 'admin_capture_email_sent',
+        p_performed_by: 'approve_api',
+        p_details: {
+          email_to: ADMIN_EMAIL,
+          amount_captured: amountCaptured,
+          timestamp: new Date().toISOString()
+        }
+      });
+
+    } catch (emailError) {
+      console.error('❌ Failed to send admin capture email:', emailError);
+      // Don't fail the request - booking is still approved
     }
 
     return NextResponse.json({

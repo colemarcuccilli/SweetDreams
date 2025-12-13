@@ -56,7 +56,89 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  // Handle the checkout.session.completed event
+  // ============================================================================
+  // Handle payment_intent.payment_failed - Notify admin of payment failures
+  // ============================================================================
+  if (event.type === 'payment_intent.payment_failed') {
+    const paymentIntent = event.data.object as Stripe.PaymentIntent;
+
+    console.log('❌ Payment failed:', paymentIntent.id);
+    console.log('❌ Failure code:', paymentIntent.last_payment_error?.code);
+    console.log('❌ Failure message:', paymentIntent.last_payment_error?.message);
+
+    const supabase = createServiceRoleClient();
+
+    // Find booking by payment intent ID
+    const { data: booking } = await supabase
+      .from('bookings')
+      .select('*')
+      .eq('stripe_payment_intent_id', paymentIntent.id)
+      .single();
+
+    if (booking) {
+      // Log the failure
+      await supabase.rpc('log_booking_action', {
+        p_booking_id: booking.id,
+        p_action: 'payment_failed',
+        p_performed_by: 'webhook',
+        p_details: {
+          payment_intent_id: paymentIntent.id,
+          error_code: paymentIntent.last_payment_error?.code || 'unknown',
+          error_message: paymentIntent.last_payment_error?.message || 'Unknown error',
+          timestamp: new Date().toISOString()
+        }
+      });
+
+      // Send admin alert email
+      try {
+        const startTime = new Date(booking.start_time);
+        const formattedDate = format(startTime, 'EEEE, MMMM d, yyyy');
+        const formattedTime = format(startTime, 'h:mm a');
+
+        await resend.emails.send({
+          from: FROM_EMAIL,
+          to: ADMIN_EMAIL,
+          subject: `🚨 PAYMENT FAILED - ${booking.artist_name} - ${formattedDate}`,
+          html: `
+            <h2>Payment Failure Alert</h2>
+            <p><strong>A payment has failed for an existing booking.</strong></p>
+
+            <h3>Customer Details:</h3>
+            <ul>
+              <li><strong>Name:</strong> ${booking.first_name} ${booking.last_name}</li>
+              <li><strong>Artist Name:</strong> ${booking.artist_name}</li>
+              <li><strong>Email:</strong> ${booking.customer_email}</li>
+              <li><strong>Phone:</strong> ${booking.customer_phone || 'N/A'}</li>
+            </ul>
+
+            <h3>Booking Details:</h3>
+            <ul>
+              <li><strong>Date:</strong> ${formattedDate}</li>
+              <li><strong>Time:</strong> ${formattedTime}</li>
+              <li><strong>Duration:</strong> ${booking.duration} hours</li>
+              <li><strong>Amount:</strong> $${(booking.deposit_amount / 100).toFixed(2)}</li>
+            </ul>
+
+            <h3>Failure Details:</h3>
+            <ul>
+              <li><strong>Error Code:</strong> ${paymentIntent.last_payment_error?.code || 'unknown'}</li>
+              <li><strong>Error Message:</strong> ${paymentIntent.last_payment_error?.message || 'Unknown error'}</li>
+            </ul>
+
+            <p><strong>Action Required:</strong> Contact the customer to resolve the payment issue.</p>
+          `
+        });
+
+        console.log('✅ Admin payment failure email sent');
+      } catch (emailError) {
+        console.error('❌ Failed to send payment failure email:', emailError);
+      }
+    }
+  }
+
+  // ============================================================================
+  // Handle checkout.session.completed - Customer completed checkout (authorized)
+  // ============================================================================
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object as Stripe.Checkout.Session;
 

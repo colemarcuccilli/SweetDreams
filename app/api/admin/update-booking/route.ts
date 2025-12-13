@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { verifyAdminAccess } from '@/lib/admin-auth';
+import { resend, FROM_EMAIL, ADMIN_EMAIL } from '@/lib/emails/resend';
+import { format } from 'date-fns';
 
 export async function POST(request: NextRequest) {
   try {
@@ -28,7 +30,7 @@ export async function POST(request: NextRequest) {
     // Fetch booking to get duration and current times (for audit log)
     const { data: booking, error: fetchError } = await supabase
       .from('bookings')
-      .select('duration, start_time, end_time, first_name, last_name')
+      .select('duration, start_time, end_time, first_name, last_name, artist_name, customer_email')
       .eq('id', bookingId)
       .single();
 
@@ -92,6 +94,86 @@ export async function POST(request: NextRequest) {
       newStartTime: startDateTime.toISOString(),
       changed_by: user?.email || 'admin'
     });
+
+    // Send email notifications to customer and admin
+    try {
+      const oldDateFormatted = format(oldStartTime, 'EEEE, MMMM d, yyyy');
+      const oldTimeFormatted = format(oldStartTime, 'h:mm a');
+      const newDateFormatted = format(startDateTime, 'EEEE, MMMM d, yyyy');
+      const newTimeFormatted = format(startDateTime, 'h:mm a');
+
+      // Email to customer
+      console.log('📧 Sending booking change email to customer:', booking.customer_email);
+
+      await resend.emails.send({
+        from: FROM_EMAIL,
+        to: booking.customer_email,
+        subject: `Booking Time Changed - Sweet Dreams Music Studio`,
+        html: `
+          <h2>Your Booking Time Has Been Changed</h2>
+          <p>Hi ${booking.first_name},</p>
+          <p>Your booking at Sweet Dreams Music Studio has been rescheduled.</p>
+
+          <h3>Previous Time:</h3>
+          <ul>
+            <li><strong>Date:</strong> ${oldDateFormatted}</li>
+            <li><strong>Time:</strong> ${oldTimeFormatted}</li>
+          </ul>
+
+          <h3>New Time:</h3>
+          <ul>
+            <li><strong>Date:</strong> ${newDateFormatted}</li>
+            <li><strong>Time:</strong> ${newTimeFormatted}</li>
+            <li><strong>Duration:</strong> ${booking.duration} hours</li>
+          </ul>
+
+          <p>If you have any questions or concerns about this change, please contact us immediately.</p>
+          <p>Thank you,<br>Sweet Dreams Music Studio</p>
+        `
+      });
+
+      console.log('✅ Customer notification email sent');
+
+      // Email to admin
+      await resend.emails.send({
+        from: FROM_EMAIL,
+        to: ADMIN_EMAIL,
+        subject: `Booking Time Changed - ${booking.artist_name}`,
+        html: `
+          <h2>Booking Rescheduled</h2>
+          <p><strong>You changed a booking time.</strong></p>
+
+          <h3>Customer:</h3>
+          <ul>
+            <li><strong>Name:</strong> ${booking.first_name} ${booking.last_name}</li>
+            <li><strong>Artist Name:</strong> ${booking.artist_name}</li>
+            <li><strong>Email:</strong> ${booking.customer_email}</li>
+          </ul>
+
+          <h3>Previous Time:</h3>
+          <ul>
+            <li><strong>Date:</strong> ${oldDateFormatted}</li>
+            <li><strong>Time:</strong> ${oldTimeFormatted}</li>
+          </ul>
+
+          <h3>New Time:</h3>
+          <ul>
+            <li><strong>Date:</strong> ${newDateFormatted}</li>
+            <li><strong>Time:</strong> ${newTimeFormatted}</li>
+            <li><strong>Duration:</strong> ${booking.duration} hours</li>
+          </ul>
+
+          <p><strong>Changed by:</strong> ${user?.email || 'admin'}</p>
+          <p><strong>Customer has been notified</strong> of this change.</p>
+        `
+      });
+
+      console.log('✅ Admin notification email sent');
+
+    } catch (emailError) {
+      console.error('❌ Failed to send booking change emails:', emailError);
+      // Don't fail the request - booking was still updated
+    }
 
     return NextResponse.json({
       success: true,
