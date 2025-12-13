@@ -58,6 +58,7 @@ export default function AdminBookingsPage() {
   const [showDebugInfo, setShowDebugInfo] = useState<Record<string, boolean>>({});
   const [refreshingPaymentId, setRefreshingPaymentId] = useState<string | null>(null);
   const [refreshingAll, setRefreshingAll] = useState(false);
+  const [investigatingBookingId, setInvestigatingBookingId] = useState<string | null>(null);
 
   const fetchBookings = async () => {
     try {
@@ -434,6 +435,91 @@ export default function AdminBookingsPage() {
     alert(summaryMessage);
   };
 
+  const handleInvestigateBooking = async (booking: Booking) => {
+    setInvestigatingBookingId(booking.id);
+
+    try {
+      const response = await fetch('/api/admin/investigate-booking', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ bookingId: booking.id })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        const inv = data.investigation;
+
+        let message = `🔍 BOOKING INVESTIGATION\n\n`;
+        message += `Status: ${inv.status}\n`;
+        message += `Session ID: ${inv.stripe_session_id || 'N/A'}\n`;
+        message += `Payment Intent ID: ${inv.stripe_payment_intent_id || 'N/A'}\n\n`;
+
+        if (inv.stripe_session_data) {
+          message += `📊 STRIPE SESSION:\n`;
+          message += `  Status: ${inv.stripe_session_data.status}\n`;
+          message += `  Payment Status: ${inv.stripe_session_data.payment_status}\n`;
+          message += `  Amount Total: $${(inv.stripe_session_data.amount_total / 100).toFixed(2)}\n`;
+          message += `  Payment Intent: ${inv.stripe_session_data.payment_intent_id || 'NONE'}\n\n`;
+        }
+
+        if (inv.payment_intent_data) {
+          message += `💳 PAYMENT INTENT:\n`;
+          message += `  Status: ${inv.payment_intent_data.status}\n`;
+          message += `  Amount: $${(inv.payment_intent_data.amount / 100).toFixed(2)}\n`;
+          message += `  Capturable: $${(inv.payment_intent_data.amount_capturable / 100).toFixed(2)}\n`;
+          message += `  Received: $${(inv.payment_intent_data.amount_received / 100).toFixed(2)}\n\n`;
+        }
+
+        if (inv.webhook_failures && inv.webhook_failures.length > 0) {
+          message += `⚠️ WEBHOOK FAILURES (${inv.webhook_failures.length}):\n`;
+          inv.webhook_failures.forEach((f: any, i: number) => {
+            message += `  ${i + 1}. ${f.webhook_type}: ${f.error_message}\n`;
+          });
+        }
+
+        console.log('Investigation results:', inv);
+        alert(message);
+      } else {
+        alert('Error investigating booking: ' + (data.error || 'Unknown error'));
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Failed to investigate booking');
+    } finally {
+      setInvestigatingBookingId(null);
+    }
+  };
+
+  const handleNotifyCustomer = async (booking: Booking) => {
+    const message = `Send reminder email to ${booking.firstName} ${booking.lastName}?\n\nThis will send a booking reminder email to ${booking.customerEmail}.`;
+
+    if (!confirm(message)) return;
+
+    setNotifyingBookingId(booking.id);
+
+    try {
+      const response = await fetch('/api/admin/notify-booking', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ bookingId: booking.id })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert('Reminder email sent successfully!');
+      } else {
+        alert('Error sending email: ' + (data.error || 'Unknown error'));
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Failed to send notification');
+    } finally {
+      setNotifyingBookingId(null);
+    }
+  };
+
   const handleCancelBooking = async (booking: Booking) => {
     // Parse date in local timezone
     const [year, month, day] = booking.date.split('-').map(Number);
@@ -486,37 +572,6 @@ export default function AdminBookingsPage() {
       alert('Failed to cancel booking');
     } finally {
       setCancellingBookingId(null);
-    }
-  };
-
-  const handleNotifyCustomer = async (booking: Booking) => {
-    if (!confirm(`Send reminder email to ${booking.customerEmail}?`)) {
-      return;
-    }
-
-    setNotifyingBookingId(booking.id);
-
-    try {
-      const response = await fetch('/api/admin/notify-booking', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          bookingId: booking.id
-        })
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        alert('Reminder email sent successfully!');
-      } else {
-        alert('Error sending email: ' + (data.error || 'Unknown error'));
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Failed to send reminder email');
-    } finally {
-      setNotifyingBookingId(null);
     }
   };
 
@@ -1212,10 +1267,11 @@ export default function AdminBookingsPage() {
 
                           <button
                             className={styles.notifyButton}
-                            onClick={() => alert('Notify feature coming soon')}
-                            title="Send notification to customer"
+                            onClick={() => handleNotifyCustomer(booking)}
+                            disabled={notifyingBookingId === booking.id}
+                            title="Send reminder email to customer"
                           >
-                            Notify
+                            {notifyingBookingId === booking.id ? 'Sending...' : 'Notify'}
                           </button>
 
                           <button
@@ -1252,6 +1308,14 @@ export default function AdminBookingsPage() {
                       <div className={styles.debugPanel}>
                         <div className={styles.debugHeader}>
                           <h4>Debug Info & Flow Events</h4>
+                          <button
+                            className={styles.investigateButton}
+                            onClick={() => handleInvestigateBooking(booking)}
+                            disabled={investigatingBookingId === booking.id}
+                            title="Query Stripe for detailed payment information"
+                          >
+                            {investigatingBookingId === booking.id ? 'Investigating...' : '🔍 Investigate Payment'}
+                          </button>
                         </div>
                         <div className={styles.debugContent}>
                           <div className={styles.debugSection}>
