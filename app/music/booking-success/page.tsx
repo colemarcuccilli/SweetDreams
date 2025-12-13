@@ -128,6 +128,63 @@ export default async function BookingSuccessPage({ searchParams }: PageProps) {
             timestamp: new Date().toISOString()
           }
         });
+
+        // Send customer confirmation email
+        console.log('📧 Sending customer confirmation email to:', booking.customer_email);
+
+        await resend.emails.send({
+          from: FROM_EMAIL,
+          to: booking.customer_email,
+          subject: `Booking Request Received - Awaiting Approval`,
+          html: `
+            <h2>Thank You for Your Booking Request!</h2>
+            <p>Hi ${booking.first_name},</p>
+
+            <p>We've received your studio booking request and our engineer will review it within 24-48 hours.</p>
+
+            <h3>Booking Details:</h3>
+            <ul>
+              <li><strong>Artist Name:</strong> ${booking.artist_name}</li>
+              <li><strong>Date:</strong> ${formattedDate}</li>
+              <li><strong>Time:</strong> ${formattedStartTime} - ${formattedEndTime}</li>
+              <li><strong>Duration:</strong> ${booking.duration} hours</li>
+            </ul>
+
+            <h3>Invoice Summary:</h3>
+            <ul>
+              <li><strong>Deposit (50%):</strong> $${(booking.deposit_amount / 100).toFixed(2)}</li>
+              <li><strong>Total Session Cost:</strong> $${(booking.total_amount / 100).toFixed(2)}</li>
+              <li><strong>Balance Due After Session:</strong> $${(booking.remainder_amount / 100).toFixed(2)}</li>
+            </ul>
+
+            <h3>Payment Status:</h3>
+            <p><strong>Your card has been AUTHORIZED but NOT charged yet.</strong></p>
+            <p>Here's what happens next:</p>
+            <ol>
+              <li>Our engineer reviews your booking request (24-48 hours)</li>
+              <li>If approved, we'll capture the $${(booking.deposit_amount / 100).toFixed(2)} deposit</li>
+              <li>You'll receive a confirmation email once approved</li>
+              <li>The remaining $${(booking.remainder_amount / 100).toFixed(2)} is due after your session</li>
+            </ol>
+
+            <p>If you need to make any changes or have questions, please contact us immediately at <a href="mailto:jayvalleo@sweetdreamsmusic.com">jayvalleo@sweetdreamsmusic.com</a>.</p>
+
+            <p>Thank you,<br>Sweet Dreams Music Studio</p>
+          `,
+        });
+
+        console.log('✅ Customer confirmation email sent successfully');
+
+        await supabase.rpc('log_booking_action', {
+          p_booking_id: booking.id,
+          p_action: 'customer_confirmation_sent',
+          p_performed_by: 'system',
+          p_details: {
+            email_sent_to: booking.customer_email,
+            triggered_from: 'booking_success_page',
+            timestamp: new Date().toISOString()
+          }
+        });
       }
     } catch (error) {
       console.error('❌ Error sending admin email:', error);
