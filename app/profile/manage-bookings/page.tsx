@@ -59,6 +59,7 @@ export default function AdminBookingsPage() {
   const [refreshingPaymentId, setRefreshingPaymentId] = useState<string | null>(null);
   const [refreshingAll, setRefreshingAll] = useState(false);
   const [investigatingBookingId, setInvestigatingBookingId] = useState<string | null>(null);
+  const [viewingProfileEmail, setViewingProfileEmail] = useState<string | null>(null);
 
   const fetchBookings = async () => {
     try {
@@ -491,6 +492,67 @@ export default function AdminBookingsPage() {
     }
   };
 
+  const handleViewProfile = async (email: string) => {
+    setViewingProfileEmail(email);
+
+    try {
+      const response = await fetch('/api/admin/get-user-profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        const profile = data.profile;
+
+        let message = `👤 USER PROFILE\n\n`;
+        message += `Name: ${profile.displayName}\n`;
+        message += `Email: ${profile.email}\n`;
+        message += `User ID: ${profile.userId}\n\n`;
+
+        message += `📊 ACCOUNT INFO:\n`;
+        message += `Created: ${new Date(profile.createdAt).toLocaleDateString()}\n`;
+        if (profile.lastSignInAt) {
+          message += `Last Sign In: ${new Date(profile.lastSignInAt).toLocaleDateString()}\n`;
+        }
+        if (profile.emailConfirmedAt) {
+          message += `Email Confirmed: ${new Date(profile.emailConfirmedAt).toLocaleDateString()}\n`;
+        } else {
+          message += `Email Confirmed: ❌ NOT CONFIRMED\n`;
+        }
+        message += `\n`;
+
+        message += `📁 LIBRARY:\n`;
+        message += `Bookings: ${profile.bookingsCount}\n`;
+        message += `Files: ${profile.filesCount}\n`;
+        message += `Notes: ${profile.notesCount}\n\n`;
+
+        if (profile.bookings && profile.bookings.length > 0) {
+          message += `📅 BOOKING HISTORY (${profile.bookings.length}):\n`;
+          profile.bookings.slice(0, 5).forEach((booking: any, i: number) => {
+            const date = new Date(booking.start_time || booking.created_at);
+            message += `  ${i + 1}. ${booking.status} - ${booking.artist_name || 'N/A'} - ${date.toLocaleDateString()}\n`;
+          });
+          if (profile.bookings.length > 5) {
+            message += `  ... and ${profile.bookings.length - 5} more\n`;
+          }
+        }
+
+        console.log('User profile:', profile);
+        alert(message);
+      } else {
+        alert('Error fetching profile: ' + (data.error || 'Unknown error'));
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Failed to fetch user profile');
+    } finally {
+      setViewingProfileEmail(null);
+    }
+  };
+
   const handleNotifyCustomer = async (booking: Booking) => {
     const message = `Send reminder email to ${booking.firstName} ${booking.lastName}?\n\nThis will send a booking reminder email to ${booking.customerEmail}.`;
 
@@ -725,6 +787,14 @@ export default function AdminBookingsPage() {
                       <div className={styles.bookingText}>
                         <div className={styles.bookingName}>
                           {booking.firstName} {booking.lastName}
+                          <button
+                            className={styles.viewProfileButton}
+                            onClick={() => handleViewProfile(booking.customerEmail)}
+                            disabled={viewingProfileEmail === booking.customerEmail}
+                            title="View full user profile"
+                          >
+                            {viewingProfileEmail === booking.customerEmail ? '...' : '👤'}
+                          </button>
                         </div>
                         <div className={styles.bookingArtist}>{booking.artistName}</div>
 
@@ -1120,6 +1190,14 @@ export default function AdminBookingsPage() {
                       <div className={styles.bookingText}>
                         <div className={styles.bookingName}>
                           {booking.firstName} {booking.lastName}
+                          <button
+                            className={styles.viewProfileButton}
+                            onClick={() => handleViewProfile(booking.customerEmail)}
+                            disabled={viewingProfileEmail === booking.customerEmail}
+                            title="View full user profile"
+                          >
+                            {viewingProfileEmail === booking.customerEmail ? '...' : '👤'}
+                          </button>
                         </div>
                         <div className={styles.bookingArtist}>{booking.artistName}</div>
 
@@ -1449,6 +1527,14 @@ export default function AdminBookingsPage() {
                       <div className={styles.bookingText}>
                         <div className={styles.bookingName}>
                           {booking.firstName} {booking.lastName}
+                          <button
+                            className={styles.viewProfileButton}
+                            onClick={() => handleViewProfile(booking.customerEmail)}
+                            disabled={viewingProfileEmail === booking.customerEmail}
+                            title="View full user profile"
+                          >
+                            {viewingProfileEmail === booking.customerEmail ? '...' : '👤'}
+                          </button>
                         </div>
                         <div className={styles.bookingArtist}>{booking.artistName}</div>
                         <div className={styles.bookingDateTime}>
@@ -1498,7 +1584,17 @@ export default function AdminBookingsPage() {
                         {getInitials(booking.firstName, booking.lastName)}
                       </div>
                       <div className={styles.bookingText}>
-                        <div className={styles.bookingName}>{booking.firstName} {booking.lastName}</div>
+                        <div className={styles.bookingName}>
+                          {booking.firstName} {booking.lastName}
+                          <button
+                            className={styles.viewProfileButton}
+                            onClick={() => handleViewProfile(booking.customerEmail)}
+                            disabled={viewingProfileEmail === booking.customerEmail}
+                            title="View full user profile"
+                          >
+                            {viewingProfileEmail === booking.customerEmail ? '...' : '👤'}
+                          </button>
+                        </div>
                         <div className={styles.bookingArtist}>{booking.artistName}</div>
                         <div className={styles.bookingDateTime}>
                           📅 {formatDate(booking.date, booking.startTime)} • ⏱️ {booking.duration}h
@@ -1543,7 +1639,17 @@ export default function AdminBookingsPage() {
                         {getInitials(booking.firstName, booking.lastName)}
                       </div>
                       <div className={styles.bookingText}>
-                        <div className={styles.bookingName}>{booking.firstName} {booking.lastName}</div>
+                        <div className={styles.bookingName}>
+                          {booking.firstName} {booking.lastName}
+                          <button
+                            className={styles.viewProfileButton}
+                            onClick={() => handleViewProfile(booking.customerEmail)}
+                            disabled={viewingProfileEmail === booking.customerEmail}
+                            title="View full user profile"
+                          >
+                            {viewingProfileEmail === booking.customerEmail ? '...' : '👤'}
+                          </button>
+                        </div>
                         <div className={styles.bookingArtist}>{booking.artistName}</div>
                         <div className={styles.bookingDateTime}>
                           📅 {formatDate(booking.date, booking.startTime)} • ⏱️ {booking.duration}h
@@ -1571,7 +1677,17 @@ export default function AdminBookingsPage() {
                         {getInitials(booking.firstName, booking.lastName)}
                       </div>
                       <div className={styles.bookingText}>
-                        <div className={styles.bookingName}>{booking.firstName} {booking.lastName}</div>
+                        <div className={styles.bookingName}>
+                          {booking.firstName} {booking.lastName}
+                          <button
+                            className={styles.viewProfileButton}
+                            onClick={() => handleViewProfile(booking.customerEmail)}
+                            disabled={viewingProfileEmail === booking.customerEmail}
+                            title="View full user profile"
+                          >
+                            {viewingProfileEmail === booking.customerEmail ? '...' : '👤'}
+                          </button>
+                        </div>
                         <div className={styles.bookingArtist}>{booking.artistName}</div>
                         <div className={styles.bookingDateTime}>
                           📅 {formatDate(booking.date, booking.startTime)} • ⏱️ {booking.duration}h
@@ -1602,7 +1718,17 @@ export default function AdminBookingsPage() {
                         {getInitials(booking.firstName, booking.lastName)}
                       </div>
                       <div className={styles.bookingText}>
-                        <div className={styles.bookingName}>{booking.firstName} {booking.lastName}</div>
+                        <div className={styles.bookingName}>
+                          {booking.firstName} {booking.lastName}
+                          <button
+                            className={styles.viewProfileButton}
+                            onClick={() => handleViewProfile(booking.customerEmail)}
+                            disabled={viewingProfileEmail === booking.customerEmail}
+                            title="View full user profile"
+                          >
+                            {viewingProfileEmail === booking.customerEmail ? '...' : '👤'}
+                          </button>
+                        </div>
                         <div className={styles.bookingArtist}>{booking.artistName}</div>
                         <div className={styles.bookingDateTime}>
                           📅 {formatDate(booking.date, booking.startTime)} • ⏱️ {booking.duration}h
