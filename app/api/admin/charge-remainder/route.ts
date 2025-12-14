@@ -118,28 +118,39 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Retrieve customer's payment methods
-    const paymentMethods = await stripe.paymentMethods.list({
-      customer: customerId,
-      type: 'card',
-      limit: 1
-    });
-
-    if (paymentMethods.data.length === 0) {
+    // Get the payment method from the ORIGINAL deposit payment intent
+    if (!booking.stripe_payment_intent_id) {
       return NextResponse.json(
-        { error: 'No saved payment method found for this customer' },
+        { error: 'No original payment intent found for this booking' },
         { status: 400 }
       );
     }
 
-    const paymentMethod = paymentMethods.data[0];
+    console.log('💳 Retrieving payment method from original payment intent:', booking.stripe_payment_intent_id);
 
-    // Create a Payment Intent for the remainder amount
+    const originalPaymentIntent = await stripe.paymentIntents.retrieve(booking.stripe_payment_intent_id);
+
+    if (!originalPaymentIntent.payment_method) {
+      return NextResponse.json(
+        { error: 'No payment method found on original payment intent' },
+        { status: 400 }
+      );
+    }
+
+    const paymentMethodId = typeof originalPaymentIntent.payment_method === 'string'
+      ? originalPaymentIntent.payment_method
+      : originalPaymentIntent.payment_method.id;
+
+    console.log('✅ Found payment method from original payment:', paymentMethodId);
+
+    // Create a Payment Intent for the remainder amount using the same payment method
+    console.log('💳 Creating payment intent for remainder charge...');
+
     const paymentIntent = await stripe.paymentIntents.create({
       amount: amount,
       currency: 'usd',
       customer: customerId,
-      payment_method: paymentMethod.id,
+      payment_method: paymentMethodId,
       off_session: true,
       confirm: true,
       description: `Studio Session Remainder - ${duration}hr`,
@@ -149,6 +160,8 @@ export async function POST(request: NextRequest) {
         duration: duration.toString()
       }
     });
+
+    console.log('✅ Payment intent created:', paymentIntent.id, '- Status:', paymentIntent.status);
 
     // Check if payment was successful
     if (paymentIntent.status === 'succeeded') {
