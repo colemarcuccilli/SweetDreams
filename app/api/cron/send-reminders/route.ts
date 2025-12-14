@@ -31,21 +31,37 @@ export async function GET(request: NextRequest) {
   try {
     const supabase = createServiceRoleClient();
 
-    // Get the current time and 1 hour from now (in local timezone, not UTC)
-    const now = new Date();
-    const oneHourFromNow = new Date(now.getTime() + (60 * 60 * 1000));
-    const twoHoursFromNow = new Date(now.getTime() + (2 * 60 * 60 * 1000));
+    // CRITICAL: Vercel runs in UTC, but our bookings are in Eastern Time
+    // Get current time in Eastern Time
+    const timezone = 'America/New_York';
+    const nowUTC = new Date();
+    const nowEastern = toZonedTime(nowUTC, timezone);
 
-    console.log('🕐 Looking for bookings between:', oneHourFromNow, 'and', twoHoursFromNow);
+    console.log('🕐 Current time (UTC):', nowUTC.toISOString());
+    console.log('🕐 Current time (Eastern):', format(nowEastern, 'yyyy-MM-dd HH:mm:ss zzz'));
 
-    // Query bookings that start in approximately 1 hour (between 1-2 hours from now)
-    // NOTE: Database stores timestamps without timezone (local time), so compare directly
+    // Calculate 1 hour from now in Eastern Time
+    const oneHourFromNowEastern = new Date(nowEastern.getTime() + (60 * 60 * 1000));
+
+    // We want a 15-minute window (55-70 minutes from now) to catch the session
+    // This ensures we send exactly once, approximately 1 hour before
+    const fiftyFiveMinutesFromNowEastern = new Date(nowEastern.getTime() + (55 * 60 * 1000));
+    const seventyMinutesFromNowEastern = new Date(nowEastern.getTime() + (70 * 60 * 1000));
+
+    console.log('🕐 Looking for bookings between:',
+      format(fiftyFiveMinutesFromNowEastern, 'yyyy-MM-dd HH:mm:ss zzz'),
+      'and',
+      format(seventyMinutesFromNowEastern, 'yyyy-MM-dd HH:mm:ss zzz')
+    );
+
+    // Query bookings that start in approximately 1 hour
+    // Database stores timestamps in UTC, so compare UTC to UTC
     const { data: upcomingBookings, error } = await supabase
       .from('bookings')
       .select('*')
       .eq('status', 'confirmed')
-      .gte('start_time', oneHourFromNow.toISOString())
-      .lt('start_time', twoHoursFromNow.toISOString());
+      .gte('start_time', fiftyFiveMinutesFromNowEastern.toISOString())
+      .lt('start_time', seventyMinutesFromNowEastern.toISOString());
 
     if (error) {
       console.error('❌ Error fetching upcoming bookings:', error);
