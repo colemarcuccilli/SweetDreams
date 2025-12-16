@@ -86,6 +86,14 @@
   margin: 0 auto;
 }
 
+.calendar :global(.rdp-cell) {
+  padding: 0;
+}
+
+.calendar :global(.rdp-day) {
+  margin: 0;
+}
+
 .calendar :global(.rdp-months) {
   max-width: 100%;
 }
@@ -352,17 +360,22 @@
     font-size: 12px;
   }
 
+  .calendar :global(.rdp-cell) {
+    padding: 0 !important;
+  }
+
+  .calendar :global(.rdp-day) {
+    margin: 0 !important;
+    font-size: 0.6rem;
+  }
+
   .calendar :global(.rdp-caption_label) {
     font-size: 0.7rem;
   }
 
   .calendar :global(.rdp-head_cell) {
     font-size: 0.55rem;
-    padding: 0.15rem 0;
-  }
-
-  .calendar :global(.rdp-day) {
-    font-size: 0.6rem;
+    padding: 0.1rem 0;
   }
 
   .calendar :global(.rdp-nav) {
@@ -385,7 +398,7 @@
   }
 
   .calendar {
-    padding: 3px;
+    padding: 2px;
   }
 
   .calendar :global(.rdp) {
@@ -393,13 +406,18 @@
     font-size: 11px;
   }
 
+  .calendar :global(.rdp-cell) {
+    padding: 0 !important;
+  }
+
   .calendar :global(.rdp-day) {
+    margin: 0 !important;
     font-size: 0.58rem;
   }
 
   .calendar :global(.rdp-head_cell) {
     font-size: 0.5rem;
-    padding: 0.1rem 0;
+    padding: 0.08rem 0;
   }
 
   .calendar :global(.rdp-nav) {
@@ -422,7 +440,7 @@
   }
 
   .calendar {
-    padding: 2px;
+    padding: 1px;
   }
 
   .calendar :global(.rdp) {
@@ -430,13 +448,18 @@
     font-size: 11px;
   }
 
+  .calendar :global(.rdp-cell) {
+    padding: 0 !important;
+  }
+
   .calendar :global(.rdp-day) {
+    margin: 0 !important;
     font-size: 0.55rem;
   }
 
   .calendar :global(.rdp-head_cell) {
     font-size: 0.48rem;
-    padding: 0.1rem 0;
+    padding: 0.08rem 0;
   }
 
   .calendar :global(.rdp-nav) {
@@ -459,7 +482,7 @@
   }
 
   .calendar {
-    padding: 2px;
+    padding: 1px;
   }
 
   .calendar :global(.rdp) {
@@ -467,13 +490,18 @@
     font-size: 10px;
   }
 
+  .calendar :global(.rdp-cell) {
+    padding: 0 !important;
+  }
+
   .calendar :global(.rdp-day) {
+    margin: 0 !important;
     font-size: 0.5rem;
   }
 
   .calendar :global(.rdp-head_cell) {
     font-size: 0.45rem;
-    padding: 0.08rem 0;
+    padding: 0.05rem 0;
   }
 
   .calendar :global(.rdp-nav) {
