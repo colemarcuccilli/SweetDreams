@@ -562,11 +562,19 @@
 
   .calendar {
     padding: 0.15rem;
+    max-width: 100%;
+    overflow: hidden;
   }
 
   .calendar :global(.rdp) {
-    --rdp-cell-size: 32px;
-    font-size: 12px;
+    --rdp-cell-size: clamp(24px, 6.5vw, 32px);
+    font-size: clamp(10px, 2.5vw, 12px);
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .calendar :global(.rdp-table) {
+    width: 100% !important;
   }
 
   .calendar :global(.rdp-cell) {
@@ -575,19 +583,16 @@
 
   .calendar :global(.rdp-day) {
     margin: 0 !important;
+    font-size: clamp(0.5rem, 2vw, 0.6rem);
   }
 
   .calendar :global(.rdp-caption_label) {
-    font-size: 0.7rem;
+    font-size: clamp(0.6rem, 2.2vw, 0.7rem);
   }
 
   .calendar :global(.rdp-head_cell) {
-    font-size: 0.55rem;
+    font-size: clamp(0.45rem, 1.8vw, 0.55rem);
     padding: 0.1rem 0;
-  }
-
-  .calendar :global(.rdp-day) {
-    font-size: 0.6rem;
   }
 
   .calendar :global(.rdp-nav) {
@@ -599,131 +604,7 @@
   }
 }
 
-@media (max-width: 430px) {
-  .bookingContainer {
-    padding: 1.5rem 0.25rem;
-  }
-
-  .calendarSection,
-  .detailsSection {
-    padding: 0.75rem 0.25rem;
-  }
-
-  .calendar {
-    padding: 0.1rem;
-  }
-
-  .calendar :global(.rdp) {
-    --rdp-cell-size: 30px;
-    font-size: 11px;
-  }
-
-  .calendar :global(.rdp-cell) {
-    padding: 0 !important;
-  }
-
-  .calendar :global(.rdp-day) {
-    margin: 0 !important;
-    font-size: 0.58rem;
-  }
-
-  .calendar :global(.rdp-head_cell) {
-    font-size: 0.5rem;
-    padding: 0.08rem 0;
-  }
-
-  .calendar :global(.rdp-nav) {
-    scale: 0.7;
-  }
-
-  .calendar :global(.rdp-caption_label) {
-    font-size: 0.68rem;
-  }
-}
-
-@media (max-width: 390px) {
-  .bookingContainer {
-    padding: 1.5rem 0.2rem;
-  }
-
-  .calendarSection,
-  .detailsSection {
-    padding: 0.75rem 0.2rem;
-  }
-
-  .calendar {
-    padding: 0.05rem;
-  }
-
-  .calendar :global(.rdp) {
-    --rdp-cell-size: 28px;
-    font-size: 11px;
-  }
-
-  .calendar :global(.rdp-cell) {
-    padding: 0 !important;
-  }
-
-  .calendar :global(.rdp-day) {
-    margin: 0 !important;
-    font-size: 0.55rem;
-  }
-
-  .calendar :global(.rdp-head_cell) {
-    font-size: 0.48rem;
-    padding: 0.08rem 0;
-  }
-
-  .calendar :global(.rdp-nav) {
-    scale: 0.65;
-  }
-
-  .calendar :global(.rdp-caption_label) {
-    font-size: 0.65rem;
-  }
-}
-
-@media (max-width: 360px) {
-  .bookingContainer {
-    padding: 1rem 0.15rem;
-  }
-
-  .calendarSection,
-  .detailsSection {
-    padding: 0.75rem 0.15rem;
-  }
-
-  .calendar {
-    padding: 0.05rem;
-  }
-
-  .calendar :global(.rdp) {
-    --rdp-cell-size: 26px;
-    font-size: 10px;
-  }
-
-  .calendar :global(.rdp-cell) {
-    padding: 0 !important;
-  }
-
-  .calendar :global(.rdp-day) {
-    margin: 0 !important;
-    font-size: 0.5rem;
-  }
-
-  .calendar :global(.rdp-head_cell) {
-    font-size: 0.45rem;
-    padding: 0.05rem 0;
-  }
-
-  .calendar :global(.rdp-nav) {
-    scale: 0.6;
-  }
-
-  .calendar :global(.rdp-caption_label) {
-    font-size: 0.6rem;
-  }
-}
+/* Removed fixed breakpoints - clamp() now handles all screen sizes dynamically */
 
 /* Discount Hint Styles */
 .discountHint {
