@@ -32,7 +32,7 @@
 /* Calendar Styling */
 .calendar {
   width: 100%;
-  overflow-x: auto; /* Allow horizontal scroll on small screens if needed */
+  overflow-x: visible; /* Remove horizontal scroll */
 }
 
 .calendar :global(.rdp) {
@@ -43,6 +43,7 @@
   color: #000;
   margin: 0 auto; /* Center the calendar */
   max-width: 100%; /* Ensure it doesn't exceed container */
+  width: 100%; /* Force full width */
 }
 
 .calendar :global(.rdp-months) {
@@ -493,16 +494,16 @@
 
 @media (max-width: 768px) {
   .bookingContainer {
-    padding: 2rem 1rem;
+    padding: 2rem 0.75rem;
   }
 
   .calendarSection,
   .detailsSection {
-    padding: 1.5rem 1rem;
+    padding: 1.5rem 0.75rem;
   }
 
   .calendar :global(.rdp) {
-    --rdp-cell-size: 38px;
+    --rdp-cell-size: 36px;
   }
 
   .calendar :global(.rdp-caption_label) {
@@ -540,17 +541,21 @@
 }
 
 @media (max-width: 480px) {
+  .bookingContainer {
+    padding: 1.5rem 0.5rem;
+  }
+
   .calendarSection,
   .detailsSection {
-    padding: 1rem 0.75rem;
+    padding: 1rem 0.5rem;
   }
 
   .calendar :global(.rdp) {
-    --rdp-cell-size: 32px;
+    --rdp-cell-size: 28px;
   }
 
   .calendar :global(.rdp-caption_label) {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
   }
 
   .calendar :global(.rdp-head_cell) {
@@ -558,34 +563,46 @@
   }
 
   .calendar :global(.rdp-day) {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
   }
 
   .calendar :global(.rdp-nav) {
-    scale: 0.9;
+    scale: 0.85;
+  }
+
+  .timeGrid {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
   }
 }
 
 @media (max-width: 375px) {
+  .bookingContainer {
+    padding: 1.5rem 0.35rem;
+  }
+
   .calendarSection,
   .detailsSection {
-    padding: 1rem 0.5rem;
+    padding: 1rem 0.35rem;
   }
 
   .calendar :global(.rdp) {
-    --rdp-cell-size: 30px;
+    --rdp-cell-size: 26px;
   }
 
   .calendar :global(.rdp-day) {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
   }
 
   .calendar :global(.rdp-head_cell) {
-    font-size: 0.6rem;
+    font-size: 0.55rem;
   }
 
   .calendar :global(.rdp-nav) {
-    scale: 0.8;
+    scale: 0.75;
+  }
+
+  .calendar :global(.rdp-caption_label) {
+    font-size: 0.75rem;
   }
 }
 

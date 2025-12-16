@@ -76,6 +76,23 @@
   padding: 16px;
   border-radius: 8px;
   border: 1px solid #ddd;
+  overflow-x: visible; /* Remove horizontal scroll */
+}
+
+.calendar :global(.rdp) {
+  --rdp-cell-size: 50px;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.calendar :global(.rdp-months) {
+  max-width: 100%;
+}
+
+.calendar :global(.rdp-table) {
+  max-width: 100%;
+  margin: 0 auto;
 }
 
 .calendar :global(.rdp-day) {
@@ -280,4 +297,110 @@
 .unblockButton:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* Mobile Responsiveness for Calendar */
+@media (max-width: 768px) {
+  .container {
+    padding: 20px 12px;
+  }
+
+  .formSection,
+  .listSection {
+    padding: 20px 12px;
+  }
+
+  .calendar {
+    padding: 12px;
+  }
+
+  .calendar :global(.rdp) {
+    --rdp-cell-size: 36px;
+  }
+
+  .calendar :global(.rdp-caption_label) {
+    font-size: 0.9rem;
+  }
+
+  .calendar :global(.rdp-head_cell) {
+    font-size: 0.7rem;
+  }
+
+  .calendar :global(.rdp-day) {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 16px 8px;
+  }
+
+  .formSection,
+  .listSection {
+    padding: 16px 8px;
+  }
+
+  .calendar {
+    padding: 8px;
+  }
+
+  .calendar :global(.rdp) {
+    --rdp-cell-size: 28px;
+  }
+
+  .calendar :global(.rdp-caption_label) {
+    font-size: 0.8rem;
+  }
+
+  .calendar :global(.rdp-head_cell) {
+    font-size: 0.65rem;
+  }
+
+  .calendar :global(.rdp-day) {
+    font-size: 0.7rem;
+  }
+
+  .calendar :global(.rdp-nav) {
+    scale: 0.85;
+  }
+
+  .timeInputs {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 375px) {
+  .container {
+    padding: 12px 6px;
+  }
+
+  .formSection,
+  .listSection {
+    padding: 12px 6px;
+  }
+
+  .calendar {
+    padding: 6px;
+  }
+
+  .calendar :global(.rdp) {
+    --rdp-cell-size: 26px;
+  }
+
+  .calendar :global(.rdp-day) {
+    font-size: 0.65rem;
+  }
+
+  .calendar :global(.rdp-head_cell) {
+    font-size: 0.55rem;
+  }
+
+  .calendar :global(.rdp-nav) {
+    scale: 0.75;
+  }
+
+  .calendar :global(.rdp-caption_label) {
+    font-size: 0.75rem;
+  }
 }
