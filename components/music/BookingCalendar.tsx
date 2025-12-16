@@ -612,39 +612,13 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
                 return (
                   <button
                     key={hrs}
-                    className={`${styles.durationButton} ${isThreeHour ? styles.giftButton : ''} ${duration === hrs ? styles.active : ''} ${isThreeHour && isGiftUnwrapped ? styles.unwrapped : ''}`}
-                    onClick={() => {
-                      if (isThreeHour) {
-                        setIsGiftUnwrapped(true);
-                      } else {
-                        setIsGiftUnwrapped(false); // Re-wrap the gift when clicking other buttons
-                      }
-                      setDuration(hrs);
-                    }}
+                    className={`${styles.durationButton} ${isThreeHour ? styles.holidaySpecial : ''} ${duration === hrs ? styles.active : ''}`}
+                    onClick={() => setDuration(hrs)}
                     disabled={isDisabled}
-                    title={isDisabled ? `${hrs} hour session would exceed studio hours` : isThreeHour ? 'Holiday Special!' : ''}
+                    title={isDisabled ? `${hrs} hour session would exceed studio hours` : isThreeHour ? 'Holiday Special: 3 Hours for $100! (Save $50)' : ''}
                   >
-                    {isThreeHour ? (
-                      <div className={styles.giftBox}>
-                        {/* Top lid - collapses up */}
-                        <div ref={giftLidRef} className={styles.giftLid}>
-                          <span className={styles.giftIcon}>🎁</span>
-                        </div>
-
-                        {/* Bottom box with content */}
-                        <div className={styles.giftBottom}>
-                          <div ref={giftContentRef} className={styles.giftContent}>
-                            <span className={styles.giftHours}>{hrs} Hours</span>
-                            <span className={styles.giftPrice}>$100</span>
-                            <span className={styles.giftSavings}>Save $50!</span>
-                          </div>
-                        </div>
-                      </div>
-                    ) : (
-                      <>
-                        {hrs} {hrs === 1 ? 'Hour' : 'Hours'}
-                      </>
-                    )}
+                    {hrs} {hrs === 1 ? 'Hour' : 'Hours'}
+                    {isThreeHour && <span className={styles.specialBadge}>🎄 Holiday Special</span>}
                   </button>
                 );
               })}
