@@ -344,29 +344,29 @@
   }
 
   .calendar {
-    padding: 4px;
+    padding: 3px;
   }
 
   .calendar :global(.rdp) {
-    --rdp-cell-size: 36px;
-    font-size: 13px;
+    --rdp-cell-size: 32px;
+    font-size: 12px;
   }
 
   .calendar :global(.rdp-caption_label) {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
   }
 
   .calendar :global(.rdp-head_cell) {
-    font-size: 0.6rem;
-    padding: 0.2rem 0;
+    font-size: 0.55rem;
+    padding: 0.15rem 0;
   }
 
   .calendar :global(.rdp-day) {
-    font-size: 0.65rem;
+    font-size: 0.6rem;
   }
 
   .calendar :global(.rdp-nav) {
-    scale: 0.8;
+    scale: 0.75;
   }
 
   .timeInputs {
@@ -374,7 +374,7 @@
   }
 }
 
-@media (max-width: 390px) {
+@media (max-width: 430px) {
   .container {
     padding: 12px 4px;
   }
@@ -382,43 +382,6 @@
   .formSection,
   .listSection {
     padding: 12px 4px;
-  }
-
-  .calendar {
-    padding: 4px;
-  }
-
-  .calendar :global(.rdp) {
-    --rdp-cell-size: 34px;
-    font-size: 12px;
-  }
-
-  .calendar :global(.rdp-day) {
-    font-size: 0.6rem;
-  }
-
-  .calendar :global(.rdp-head_cell) {
-    font-size: 0.5rem;
-    padding: 0.15rem 0;
-  }
-
-  .calendar :global(.rdp-nav) {
-    scale: 0.7;
-  }
-
-  .calendar :global(.rdp-caption_label) {
-    font-size: 0.7rem;
-  }
-}
-
-@media (max-width: 360px) {
-  .container {
-    padding: 12px 3px;
-  }
-
-  .formSection,
-  .listSection {
-    padding: 12px 3px;
   }
 
   .calendar {
@@ -426,7 +389,44 @@
   }
 
   .calendar :global(.rdp) {
-    --rdp-cell-size: 32px;
+    --rdp-cell-size: 30px;
+    font-size: 11px;
+  }
+
+  .calendar :global(.rdp-day) {
+    font-size: 0.58rem;
+  }
+
+  .calendar :global(.rdp-head_cell) {
+    font-size: 0.5rem;
+    padding: 0.1rem 0;
+  }
+
+  .calendar :global(.rdp-nav) {
+    scale: 0.7;
+  }
+
+  .calendar :global(.rdp-caption_label) {
+    font-size: 0.68rem;
+  }
+}
+
+@media (max-width: 390px) {
+  .container {
+    padding: 12px 3px;
+  }
+
+  .formSection,
+  .listSection {
+    padding: 12px 3px;
+  }
+
+  .calendar {
+    padding: 2px;
+  }
+
+  .calendar :global(.rdp) {
+    --rdp-cell-size: 28px;
     font-size: 11px;
   }
 
@@ -435,7 +435,7 @@
   }
 
   .calendar :global(.rdp-head_cell) {
-    font-size: 0.45rem;
+    font-size: 0.48rem;
     padding: 0.1rem 0;
   }
 
@@ -445,5 +445,42 @@
 
   .calendar :global(.rdp-caption_label) {
     font-size: 0.65rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .container {
+    padding: 12px 2px;
+  }
+
+  .formSection,
+  .listSection {
+    padding: 12px 2px;
+  }
+
+  .calendar {
+    padding: 2px;
+  }
+
+  .calendar :global(.rdp) {
+    --rdp-cell-size: 26px;
+    font-size: 10px;
+  }
+
+  .calendar :global(.rdp-day) {
+    font-size: 0.5rem;
+  }
+
+  .calendar :global(.rdp-head_cell) {
+    font-size: 0.45rem;
+    padding: 0.08rem 0;
+  }
+
+  .calendar :global(.rdp-nav) {
+    scale: 0.6;
+  }
+
+  .calendar :global(.rdp-caption_label) {
+    font-size: 0.6rem;
   }
 }
