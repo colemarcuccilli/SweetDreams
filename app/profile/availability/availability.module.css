@@ -358,8 +358,8 @@
   }
 
   .calendar :global(.rdp) {
-    --rdp-cell-size: clamp(24px, 6.5vw, 32px);
-    font-size: clamp(10px, 2.5vw, 12px);
+    --rdp-cell-size: clamp(22px, 5vw, 32px);
+    font-size: clamp(9px, 2vw, 12px);
     width: 100% !important;
     max-width: 100% !important;
   }
@@ -374,16 +374,16 @@
 
   .calendar :global(.rdp-day) {
     margin: 0 !important;
-    font-size: clamp(0.5rem, 2vw, 0.6rem);
+    font-size: clamp(0.48rem, 1.6vw, 0.6rem);
   }
 
   .calendar :global(.rdp-caption_label) {
-    font-size: clamp(0.6rem, 2.2vw, 0.7rem);
+    font-size: clamp(0.58rem, 1.8vw, 0.7rem);
   }
 
   .calendar :global(.rdp-head_cell) {
-    font-size: clamp(0.45rem, 1.8vw, 0.55rem);
-    padding: 0.1rem 0;
+    font-size: clamp(0.42rem, 1.4vw, 0.55rem);
+    padding: 0.08rem 0;
   }
 
   .calendar :global(.rdp-nav) {
