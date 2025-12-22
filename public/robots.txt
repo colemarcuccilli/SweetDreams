@@ -6,7 +6,7 @@ Disallow: /api
 Disallow: /(auth)
 
 # Host
-Host: https://sweetdreamsmusic.com
+Host: https://sweetdreams.us
 
 # Sitemaps
-Sitemap: https://sweetdreamsmusic.com/sitemap.xml
+Sitemap: https://sweetdreams.us/sitemap.xml

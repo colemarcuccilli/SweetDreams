@@ -1,19 +1,28 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import styles from "./blog.module.css";
+import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Blog | Sweet Dreams Music - Music Production Tips & Industry Insights",
-  description: "Explore music production tips, recording techniques, and industry insights from Sweet Dreams Music. Learn from Fort Wayne's premier recording studio.",
-  keywords: "music production blog, recording tips, mixing tutorials, mastering guide, music industry, Fort Wayne music, studio tips",
+  title: "Blog | Sweet Dreams - Creative Media Tips & Industry Insights",
+  description: "Expert insights on music production, videography, web development, and social media growth. Tips and tutorials from Fort Wayne's premier creative media agency.",
+  keywords: "music production blog, recording tips, video production tutorials, social media marketing tips, web development blog, Fort Wayne creative agency, videography tips, content creation guide, digital marketing insights",
   alternates: {
-    canonical: 'https://sweetdreamsmusic.com/blog',
+    canonical: `${SITE_URL}/blog`,
   },
   openGraph: {
-    title: "Blog | Sweet Dreams Music",
-    description: "Music production tips, recording techniques, and industry insights from Fort Wayne's premier recording studio.",
-    url: "https://sweetdreamsmusic.com/blog",
+    title: "Blog | Sweet Dreams Creative Media",
+    description: "Tips and insights on music production, videography, web development, and social media growth from Fort Wayne's creative experts.",
+    url: `${SITE_URL}/blog`,
     type: "website",
+    images: [
+      {
+        url: 'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SweetDreamsLogo/SweetDreams3StackBlackLogo.png',
+        width: 1200,
+        height: 630,
+        alt: 'Sweet Dreams Creative Media Blog',
+      },
+    ],
   },
 };
 

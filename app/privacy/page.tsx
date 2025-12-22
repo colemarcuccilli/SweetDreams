@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import styles from "./legal.module.css";
+import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Sweet Dreams Studio",
-  description: "Privacy Policy for Sweet Dreams Music Studio. Learn how we collect, use, and protect your personal information.",
+  title: "Privacy Policy | Sweet Dreams",
+  description: "Privacy Policy for Sweet Dreams Music LLC. Learn how we collect, use, and protect your personal information.",
+  alternates: {
+    canonical: `${SITE_URL}/privacy`,
+  },
   robots: {
     index: false,
     follow: false,
@@ -22,7 +26,7 @@ export default function PrivacyPage() {
           <section className={styles.section}>
             <h2>1. Introduction</h2>
             <p>
-              Welcome to Sweet Dreams Music LLC ("we," "our," or "us"). We respect your privacy and are committed to protecting your personal data. This privacy policy explains how we collect, use, disclose, and safeguard your information when you visit our website sweetdreamsmusic.com and use our services.
+              Welcome to Sweet Dreams Music LLC ("we," "our," or "us"). We respect your privacy and are committed to protecting your personal data. This privacy policy explains how we collect, use, disclose, and safeguard your information when you visit our website sweetdreams.us and use our services.
             </p>
           </section>
 

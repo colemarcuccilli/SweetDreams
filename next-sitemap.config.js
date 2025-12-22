@@ -1,6 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 export default {
-  siteUrl: 'https://sweetdreamsmusic.com',
+  siteUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://sweetdreams.us',
   generateRobotsTxt: true,
   generateIndexSitemap: false,
 
@@ -24,7 +24,7 @@ export default {
       },
     ],
     additionalSitemaps: [
-      'https://sweetdreamsmusic.com/sitemap.xml',
+      `${process.env.NEXT_PUBLIC_SITE_URL || 'https://sweetdreams.us'}/sitemap.xml`,
     ],
   },
 
@@ -33,9 +33,9 @@ export default {
     // Priority levels based on importance
     const priorities = {
       '/': 1.0,              // Homepage - highest priority
-      '/music': 0.9,         // Main booking page - very high
-      '/solutions': 0.8,     // Services page - high
-      '/media': 0.8,         // Media page - high
+      '/music': 0.9,         // Music production - very high
+      '/media': 0.9,         // Video production - very high (core service)
+      '/solutions': 0.8,     // Web dev & social media - high
     }
 
     const priority = priorities[path] || 0.5

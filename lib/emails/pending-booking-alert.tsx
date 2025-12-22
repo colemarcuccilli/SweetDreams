@@ -57,7 +57,7 @@ export const PendingBookingAlert = ({
             <Text style={text}>
               Please log in to the admin dashboard and manually confirm this booking:
             </Text>
-            <Link href="https://sweetdreamsmusic.com/profile/manage-bookings" style={button}>
+            <Link href="https://sweetdreams.us/profile/manage-bookings" style={button}>
               Go to Manage Bookings
             </Link>
           </Section>

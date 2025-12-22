@@ -1,7 +1,8 @@
 import { MetadataRoute } from 'next'
+import { SITE_URL } from '@/lib/constants'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://sweetdreamsmusic.com'
+  const baseUrl = SITE_URL
   const currentDate = new Date()
 
   // All work/portfolio project pages
@@ -52,7 +53,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${baseUrl}/media`,
       lastModified: currentDate,
       changeFrequency: 'weekly',
-      priority: 0.8,
+      priority: 0.9, // Increased priority - media is core service
+    },
+    {
+      url: `${baseUrl}/blog`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.6,
     },
     {
       url: `${baseUrl}/login`,

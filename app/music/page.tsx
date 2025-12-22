@@ -9,19 +9,28 @@ import LocationInfoAnimated from "@/components/music/LocationInfoAnimated";
 import PricingListAnimated from "@/components/music/PricingListAnimated";
 import BookingCalendarWrapper from "@/components/music/BookingCalendarWrapper";
 import MusicContactForm from "@/components/music/MusicContactForm";
+import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Studio Recording & Booking | Sweet Dreams Fort Wayne - $50/HR",
   description: "Professional recording studio in Fort Wayne, IN. Book your session starting at $50/hour. Music production, mixing, and mastering services. Holiday Special: 3 Hours for $100 (regularly $150)!",
   keywords: "Fort Wayne recording studio, book studio session, music production Fort Wayne, studio rental, professional recording, recording studio near me, mixing and mastering, studio booking Fort Wayne",
   alternates: {
-    canonical: 'https://sweetdreamsmusic.com/music',
+    canonical: `${SITE_URL}/music`,
   },
   openGraph: {
     title: "Studio Booking | Sweet Dreams Fort Wayne",
     description: "Book your recording session at Fort Wayne's premier music studio. $50/hour starting rate. Holiday Special: 3 Hours for $100 (regularly $150).",
-    url: "https://sweetdreamsmusic.com/music",
+    url: `${SITE_URL}/music`,
     type: "website",
+    images: [
+      {
+        url: 'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SweetDreamsLogo/SweetDreams3StackBlackLogo.png',
+        width: 1200,
+        height: 630,
+        alt: 'Sweet Dreams Recording Studio',
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",

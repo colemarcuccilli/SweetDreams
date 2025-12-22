@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import styles from "./blog-post.module.css";
+import { SITE_URL } from "@/lib/constants";
 
 // Blog post data - In the future, this could come from a CMS or database
 const blogPosts: Record<string, {
@@ -821,16 +822,16 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${post.title} | Sweet Dreams Music Blog`,
+    title: `${post.title} | Sweet Dreams Creative Media Blog`,
     description: post.excerpt,
-    keywords: `${post.category}, music production, recording studio, Fort Wayne`,
+    keywords: `${post.category}, creative media, Fort Wayne`,
     alternates: {
-      canonical: `https://sweetdreamsmusic.com/blog/${slug}`,
+      canonical: `${SITE_URL}/blog/${slug}`,
     },
     openGraph: {
       title: post.title,
       description: post.excerpt,
-      url: `https://sweetdreamsmusic.com/blog/${slug}`,
+      url: `${SITE_URL}/blog/${slug}`,
       type: "article",
       publishedTime: post.date,
     },
@@ -981,7 +982,7 @@ export default async function BlogPostPage({
             <h3 className={styles.shareTitle}>Share This Article</h3>
             <div className={styles.shareButtons}>
               <a
-                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(`https://sweetdreamsmusic.com/blog/${slug}`)}`}
+                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(`${SITE_URL}/blog/${slug}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.shareButton}
@@ -989,7 +990,7 @@ export default async function BlogPostPage({
                 Twitter
               </a>
               <a
-                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://sweetdreamsmusic.com/blog/${slug}`)}`}
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${SITE_URL}/blog/${slug}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.shareButton}

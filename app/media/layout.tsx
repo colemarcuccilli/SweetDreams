@@ -1,17 +1,26 @@
 import type { Metadata } from "next";
+import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Media Production | Sweet Dreams Studio Fort Wayne",
-  description: "Professional media production services in Fort Wayne: music videos, social media content, photography, and videography. Creative media solutions for artists and brands.",
-  keywords: "media production Fort Wayne, music videos, videography Fort Wayne, social media content, photography, video production Indiana, creative media services",
+  title: "Videography & Media Production | Sweet Dreams Fort Wayne",
+  description: "Professional videography and media production in Fort Wayne: music videos, commercial video production, event videography, social media content. High-quality video services for businesses and artists.",
+  keywords: "Fort Wayne videographer, videography services Fort Wayne, music video production, commercial video production, event videography, video production Fort Wayne, media production Indiana, professional videographer, Fort Wayne video services, social media video content, business video production",
   alternates: {
-    canonical: 'https://sweetdreamsmusic.com/media',
+    canonical: `${SITE_URL}/media`,
   },
   openGraph: {
-    title: "Media Production | Sweet Dreams Fort Wayne",
-    description: "Music videos, photography, and creative media production services in Fort Wayne, Indiana.",
-    url: "https://sweetdreamsmusic.com/media",
+    title: "Professional Videography | Sweet Dreams Fort Wayne",
+    description: "High-quality videography services: music videos, commercials, events, and social media content. Fort Wayne's premier video production agency.",
+    url: `${SITE_URL}/media`,
     type: "website",
+    images: [
+      {
+        url: 'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SweetDreamsLogo/SweetDreams3StackBlackLogo.png',
+        width: 1200,
+        height: 630,
+        alt: 'Sweet Dreams Media Production',
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",

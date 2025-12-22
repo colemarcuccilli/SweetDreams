@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import styles from "../privacy/legal.module.css";
+import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Terms of Service | Sweet Dreams Studio",
-  description: "Terms of Service for Sweet Dreams Music Studio. Read our booking policies, cancellation terms, and studio guidelines.",
+  title: "Terms of Service | Sweet Dreams",
+  description: "Terms of Service for Sweet Dreams Music LLC. Read our booking policies, cancellation terms, and studio guidelines.",
+  alternates: {
+    canonical: `${SITE_URL}/terms`,
+  },
   robots: {
     index: false,
     follow: false,
@@ -22,7 +26,7 @@ export default function TermsPage() {
           <section className={styles.section}>
             <h2>1. Acceptance of Terms</h2>
             <p>
-              Welcome to Sweet Dreams Music LLC ("Sweet Dreams," "we," "us," or "our"). By accessing our website at sweetdreamsmusic.com or booking our services, you agree to be bound by these Terms of Service and our Privacy Policy. If you do not agree to these terms, please do not use our services.
+              Welcome to Sweet Dreams Music LLC ("Sweet Dreams," "we," "us," or "our"). By accessing our website at sweetdreams.us or booking our services, you agree to be bound by these Terms of Service and our Privacy Policy. If you do not agree to these terms, please do not use our services.
             </p>
           </section>
 

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { getSessionProducts, BOOKING_PRODUCTS, calculateOvertimeHours } from '@/lib/booking-config';
 import { createServiceRoleClient } from '@/utils/supabase/service-role';
+import { STRIPE } from '@/lib/constants';
 
 export async function POST(request: NextRequest) {
   // Initialize Stripe inside the function to avoid build-time errors
@@ -138,8 +139,8 @@ export async function POST(request: NextRequest) {
       line_items: lineItems,
       mode: 'payment',
       allow_promotion_codes: true, // Enable promo codes at checkout
-      success_url: `https://sweetdreamsmusic.com/music/booking-success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `https://sweetdreamsmusic.com/music#booking`,
+      success_url: `${STRIPE.successUrl}?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: STRIPE.cancelUrl,
       payment_intent_data: {
         capture_method: 'manual', // ✅ CRITICAL: Authorize but don't capture until admin approves
         setup_future_usage: 'off_session', // Save payment method for future charges

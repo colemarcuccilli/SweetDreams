@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import { formatFileSize } from '@/lib/supabase/storage';
+import { Instagram, Music2, Twitter, Youtube, Cloud, Globe, Music, Apple, Package, Waves } from 'lucide-react';
 import styles from './public-profile.module.css';
 
 interface Profile {
@@ -131,9 +132,8 @@ export default async function PublicProfilePage({
 
   const { profile, showcase, projects } = data;
 
+  // Separate photo types for different sections
   const galleryPhotos = [
-    profile.square_photo_url,
-    profile.tall_photo_url,
     profile.gallery_photo_1_url,
     profile.gallery_photo_2_url,
     profile.gallery_photo_3_url
@@ -144,13 +144,13 @@ export default async function PublicProfilePage({
 
   return (
     <div className={styles.container}>
-      {/* COVER PHOTO */}
+      {/* BANNER PHOTO */}
       {profile.cover_photo_url && (
-        <div className={styles.coverPhoto}>
+        <div className={styles.bannerPhoto}>
           <img
             src={profile.cover_photo_url}
-            alt={`${profile.display_name} cover`}
-            className={styles.coverImage}
+            alt={`${profile.display_name} banner`}
+            className={styles.bannerImage}
           />
         </div>
       )}
@@ -182,7 +182,8 @@ export default async function PublicProfilePage({
                   className={styles.socialLink}
                   title="Instagram"
                 >
-                  📷 Instagram
+                  <Instagram size={18} />
+                  <span>Instagram</span>
                 </a>
               )}
               {socialLinks.spotify && (
@@ -193,7 +194,8 @@ export default async function PublicProfilePage({
                   className={styles.socialLink}
                   title="Spotify"
                 >
-                  🎵 Spotify
+                  <Music2 size={18} />
+                  <span>Spotify</span>
                 </a>
               )}
               {socialLinks.twitter && (
@@ -204,7 +206,8 @@ export default async function PublicProfilePage({
                   className={styles.socialLink}
                   title="Twitter"
                 >
-                  🐦 Twitter
+                  <Twitter size={18} />
+                  <span>Twitter</span>
                 </a>
               )}
               {socialLinks.youtube && (
@@ -215,7 +218,8 @@ export default async function PublicProfilePage({
                   className={styles.socialLink}
                   title="YouTube"
                 >
-                  ▶️ YouTube
+                  <Youtube size={18} />
+                  <span>YouTube</span>
                 </a>
               )}
               {socialLinks.soundcloud && (
@@ -226,7 +230,8 @@ export default async function PublicProfilePage({
                   className={styles.socialLink}
                   title="SoundCloud"
                 >
-                  ☁️ SoundCloud
+                  <Cloud size={18} />
+                  <span>SoundCloud</span>
                 </a>
               )}
               {socialLinks.website && (
@@ -237,13 +242,42 @@ export default async function PublicProfilePage({
                   className={styles.socialLink}
                   title="Website"
                 >
-                  🌐 Website
+                  <Globe size={18} />
+                  <span>Website</span>
                 </a>
               )}
             </div>
           )}
         </div>
       </header>
+
+      {/* FEATURED TALL PHOTO */}
+      {profile.tall_photo_url && (
+        <section className={styles.featuredTallSection}>
+          <h2 className={styles.sectionTitle}>Featured</h2>
+          <div className={styles.tallPhotoContainer}>
+            <img
+              src={profile.tall_photo_url}
+              alt={`${profile.display_name} featured`}
+              className={styles.tallPhoto}
+            />
+          </div>
+        </section>
+      )}
+
+      {/* FEATURED SQUARE PHOTO */}
+      {profile.square_photo_url && (
+        <section className={styles.featuredSquareSection}>
+          <h2 className={styles.sectionTitle}>Spotlight</h2>
+          <div className={styles.squarePhotoContainer}>
+            <img
+              src={profile.square_photo_url}
+              alt={`${profile.display_name} spotlight`}
+              className={styles.squarePhoto}
+            />
+          </div>
+        </section>
+      )}
 
       {/* PHOTO GALLERY */}
       {galleryPhotos.length > 0 && (
@@ -306,14 +340,14 @@ export default async function PublicProfilePage({
           <div className={styles.audioList}>
             {projects.map((project) => {
               const platformLinks = [
-                { name: 'Spotify', url: project.spotify_link, icon: '🎵' },
-                { name: 'Apple Music', url: project.apple_music_link, icon: '🍎' },
-                { name: 'YouTube', url: project.youtube_link, icon: '▶️' },
-                { name: 'SoundCloud', url: project.soundcloud_link, icon: '☁️' },
-                { name: 'Bandcamp', url: project.bandcamp_link, icon: '🎸' },
-                { name: 'Tidal', url: project.tidal_link, icon: '🌊' },
-                { name: 'Amazon Music', url: project.amazon_music_link, icon: '📦' },
-                { name: 'Deezer', url: project.deezer_link, icon: '🎶' }
+                { name: 'Spotify', url: project.spotify_link, Icon: Music2 },
+                { name: 'Apple Music', url: project.apple_music_link, Icon: Apple },
+                { name: 'YouTube', url: project.youtube_link, Icon: Youtube },
+                { name: 'SoundCloud', url: project.soundcloud_link, Icon: Cloud },
+                { name: 'Bandcamp', url: project.bandcamp_link, Icon: Music },
+                { name: 'Tidal', url: project.tidal_link, Icon: Waves },
+                { name: 'Amazon Music', url: project.amazon_music_link, Icon: Package },
+                { name: 'Deezer', url: project.deezer_link, Icon: Music }
               ].filter(link => link.url);
 
               return (
@@ -355,19 +389,23 @@ export default async function PublicProfilePage({
                       gap: '0.75rem',
                       marginTop: '1.5rem'
                     }}>
-                      {platformLinks.map((link) => (
-                        <a
-                          key={link.name}
-                          href={link.url!}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={styles.socialLink}
-                          title={link.name}
-                          style={{ fontSize: '0.95rem', padding: '0.6rem 1.2rem' }}
-                        >
-                          {link.icon} {link.name}
-                        </a>
-                      ))}
+                      {platformLinks.map((link) => {
+                        const IconComponent = link.Icon;
+                        return (
+                          <a
+                            key={link.name}
+                            href={link.url!}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={styles.socialLink}
+                            title={link.name}
+                            style={{ fontSize: '0.95rem', padding: '0.6rem 1.2rem' }}
+                          >
+                            <IconComponent size={16} />
+                            <span>{link.name}</span>
+                          </a>
+                        );
+                      })}
                     </div>
                   )}
                 </div>

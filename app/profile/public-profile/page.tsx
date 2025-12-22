@@ -453,7 +453,7 @@ export default function ProfileEditorPage() {
 
   const generatedSlug = displayName ? generateSlug(displayName) : '';
   const publicUrl = generatedSlug
-    ? `sweetdreamsmusic.com/profiles/${generatedSlug}`
+    ? `sweetdreams.us/profiles/${generatedSlug}`
     : 'Enter your artist name above to generate your profile URL';
 
   const showcaseDeliverableIds = showcaseItems.map(item => item.deliverable_id);
