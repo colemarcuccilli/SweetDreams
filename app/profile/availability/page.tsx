@@ -185,14 +185,21 @@ export default function AdminAvailabilityPage() {
     return `${displayHour}:${minute.toString().padStart(2, '0')} ${period}`;
   };
 
-  const groupedSlots = blockedSlots.reduce((acc, slot) => {
-    const date = slot.blocked_date;
-    if (!acc[date]) {
-      acc[date] = [];
-    }
-    acc[date].push(slot);
-    return acc;
-  }, {} as Record<string, BlockedSlot[]>);
+  // Filter out past dates and group by date
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const todayStr = format(today, 'yyyy-MM-dd');
+
+  const groupedSlots = blockedSlots
+    .filter(slot => slot.blocked_date >= todayStr) // Only show today and future
+    .reduce((acc, slot) => {
+      const date = slot.blocked_date;
+      if (!acc[date]) {
+        acc[date] = [];
+      }
+      acc[date].push(slot);
+      return acc;
+    }, {} as Record<string, BlockedSlot[]>);
 
   if (loading) {
     return (
@@ -295,9 +302,11 @@ export default function AdminAvailabilityPage() {
 
         {/* Blocked Slots List */}
         <div className={styles.listSection}>
-          <h2 className={styles.sectionTitle}>Blocked Slots ({blockedSlots.length})</h2>
+          <h2 className={styles.sectionTitle}>
+            Upcoming Blocked Slots ({Object.values(groupedSlots).flat().length})
+          </h2>
 
-          {blockedSlots.length === 0 ? (
+          {Object.keys(groupedSlots).length === 0 ? (
             <div className={styles.emptyState}>
               <p>No blocked slots yet</p>
               <p className={styles.emptyStateHint}>Use the form to block dates/times</p>

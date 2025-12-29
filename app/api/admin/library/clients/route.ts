@@ -3,9 +3,30 @@ import { createClient } from '@/utils/supabase/server';
 import { createServiceRoleClient } from '@/utils/supabase/service-role';
 import { verifyAdminAccess } from '@/lib/admin-auth';
 
+// Helper to detect spam/gibberish names
+function isLikelySpam(name: string): boolean {
+  if (!name || name.length < 2) return true;
+
+  // Random string pattern: mostly consonants, no vowels, or random case mixing
+  const vowelRatio = (name.match(/[aeiouAEIOU]/g) || []).length / name.length;
+  const hasNormalVowelRatio = vowelRatio > 0.15 && vowelRatio < 0.6;
+
+  // Check for random character patterns (long strings without spaces, unusual patterns)
+  const hasRandomPattern = /^[a-zA-Z]{15,}$/.test(name) || // Long random string
+                           /[A-Z]{3,}/.test(name) || // Multiple caps in a row
+                           /\d{3,}/.test(name); // Numbers in name
+
+  // Names should have reasonable length and pattern
+  const isReasonableLength = name.length >= 2 && name.length <= 50;
+  const hasSpaces = name.includes(' '); // Real names often have spaces
+
+  return !isReasonableLength || (!hasNormalVowelRatio && name.length > 8) || hasRandomPattern;
+}
+
 /**
  * GET /api/admin/library/clients
- * Get list of ALL registered users for library management
+ * Get list of VERIFIED registered users for library management
+ * Filters out spam/bot accounts
  */
 export async function GET(request: NextRequest) {
   try {
@@ -20,7 +41,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    console.log('👥 Fetching ALL registered users for library management');
+    console.log('👥 Fetching verified registered users for library management');
 
     // Use service role client to list users (requires admin privileges)
     const serviceRoleClient = createServiceRoleClient();
@@ -44,8 +65,42 @@ export async function GET(request: NextRequest) {
       });
     }
 
+    // Filter out spam accounts BEFORE processing
+    const verifiedUsers = users.filter(user => {
+      // Must have confirmed email
+      if (!user.email_confirmed_at) {
+        console.log(`⚠️ Skipping unconfirmed: ${user.email}`);
+        return false;
+      }
+
+      // Check if they have a real name set
+      const fullName = user.user_metadata?.full_name || '';
+      const firstName = user.user_metadata?.first_name || '';
+
+      // If they have a proper full_name, check if it's spam
+      if (fullName && !isLikelySpam(fullName)) {
+        return true;
+      }
+
+      // If they have first_name set, check if it's spam
+      if (firstName && !isLikelySpam(firstName)) {
+        return true;
+      }
+
+      // Check email prefix as last resort - but filter obvious spam
+      const emailPrefix = user.email?.split('@')[0] || '';
+      if (emailPrefix.length > 15 && isLikelySpam(emailPrefix)) {
+        console.log(`⚠️ Skipping spam account: ${user.email}`);
+        return false;
+      }
+
+      return true;
+    });
+
+    console.log(`✅ ${verifiedUsers.length} verified users after filtering`);
+
     // Get all users' data in parallel
-    const clientsPromises = users.map(async (user) => {
+    const clientsPromises = verifiedUsers.map(async (user) => {
       // Try to get name from bookings first (use service role to see all bookings)
       const { data: bookings } = await serviceRoleClient
         .from('bookings')

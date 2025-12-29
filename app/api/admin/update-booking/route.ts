@@ -45,12 +45,14 @@ export async function POST(request: NextRequest) {
     const oldStartTime = new Date(booking.start_time);
     const oldEndTime = new Date(booking.end_time);
 
-    // Calculate new start_time and end_time
-    const startDateTime = new Date(date);
-    startDateTime.setHours(startTime, 0, 0, 0);
+    // Parse date the same way as create-booking route
+    const dateParts = date.split('-');
+    const year = parseInt(dateParts[0]);
+    const month = parseInt(dateParts[1]) - 1;
+    const day = parseInt(dateParts[2]);
 
-    const endDateTime = new Date(startDateTime);
-    endDateTime.setHours(startDateTime.getHours() + booking.duration);
+    const startDateTime = new Date(year, month, day, startTime, 0, 0, 0);
+    const endDateTime = new Date(year, month, day, startTime + booking.duration, 0, 0, 0);
 
     // Update booking in database
     const { error: updateError } = await supabase
@@ -81,8 +83,8 @@ export async function POST(request: NextRequest) {
         old_end_time: oldEndTime.toISOString(),
         new_start_time: startDateTime.toISOString(),
         new_end_time: endDateTime.toISOString(),
-        old_start_time_local: oldStartTime.toLocaleString('en-US', { timeZone: 'America/New_York' }),
-        new_start_time_local: startDateTime.toLocaleString('en-US', { timeZone: 'America/New_York' }),
+        old_start_time_local: format(oldStartTime, 'EEEE, MMMM d, yyyy h:mm a'),
+        new_start_time_local: format(startDateTime, 'EEEE, MMMM d, yyyy h:mm a'),
         duration: booking.duration,
         timestamp: new Date().toISOString()
       }

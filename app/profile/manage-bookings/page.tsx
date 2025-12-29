@@ -53,13 +53,24 @@ export default function AdminBookingsPage() {
   const [approvingBookingId, setApprovingBookingId] = useState<string | null>(null);
   const [rejectingBookingId, setRejectingBookingId] = useState<string | null>(null);
   const [softDeletingBookingId, setSoftDeletingBookingId] = useState<string | null>(null);
-  const [reschedulingBookingId, setReschedulingBookingId] = useState<string | null>(null);
   const [expandedDebugBookingId, setExpandedDebugBookingId] = useState<string | null>(null);
   const [showDebugInfo, setShowDebugInfo] = useState<Record<string, boolean>>({});
   const [refreshingPaymentId, setRefreshingPaymentId] = useState<string | null>(null);
   const [refreshingAll, setRefreshingAll] = useState(false);
   const [investigatingBookingId, setInvestigatingBookingId] = useState<string | null>(null);
   const [viewingProfileEmail, setViewingProfileEmail] = useState<string | null>(null);
+
+  // Create Session Modal States
+  const [showCreateSession, setShowCreateSession] = useState(false);
+  const [clients, setClients] = useState<Array<{id: string; email: string; firstName: string; lastName: string}>>([]);
+  const [selectedClient, setSelectedClient] = useState<string>('');
+  const [clientSearch, setClientSearch] = useState('');
+  const [newSessionDate, setNewSessionDate] = useState('');
+  const [newSessionTime, setNewSessionTime] = useState('11');
+  const [newSessionDuration, setNewSessionDuration] = useState('1');
+  const [newSessionNotes, setNewSessionNotes] = useState('');
+  const [creatingSession, setCreatingSession] = useState(false);
+  const [loadingClients, setLoadingClients] = useState(false);
 
   const fetchBookings = async () => {
     try {
@@ -80,6 +91,102 @@ export default function AdminBookingsPage() {
   useEffect(() => {
     fetchBookings();
   }, []);
+
+  // Fetch clients for the Create Session modal
+  const fetchClients = async () => {
+    setLoadingClients(true);
+    try {
+      const response = await fetch('/api/admin/library/clients');
+      const data = await response.json();
+      if (data.success && data.clients) {
+        setClients(data.clients);
+      }
+    } catch (error) {
+      console.error('Error fetching clients:', error);
+      alert('Failed to load clients');
+    } finally {
+      setLoadingClients(false);
+    }
+  };
+
+  const handleOpenCreateSession = () => {
+    setShowCreateSession(true);
+    if (clients.length === 0) {
+      fetchClients();
+    }
+    // Set default date to today
+    const today = new Date();
+    setNewSessionDate(today.toISOString().split('T')[0]);
+  };
+
+  const handleCloseCreateSession = () => {
+    setShowCreateSession(false);
+    setSelectedClient('');
+    setClientSearch('');
+    setNewSessionDate('');
+    setNewSessionTime('11');
+    setNewSessionDuration('1');
+    setNewSessionNotes('');
+  };
+
+  // Filter clients based on search
+  const filteredClients = clients.filter(client => {
+    if (!clientSearch.trim()) return true;
+    const search = clientSearch.toLowerCase();
+    const fullName = `${client.firstName} ${client.lastName}`.toLowerCase();
+    return fullName.includes(search) || client.email.toLowerCase().includes(search);
+  });
+
+  const handleCreateSession = async () => {
+    if (!selectedClient) {
+      alert('Please select a client');
+      return;
+    }
+    if (!newSessionDate) {
+      alert('Please select a date');
+      return;
+    }
+
+    const client = clients.find(c => c.id === selectedClient);
+    if (!client) {
+      alert('Client not found');
+      return;
+    }
+
+    setCreatingSession(true);
+
+    try {
+      const response = await fetch('/api/admin/create-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: selectedClient,
+          email: client.email,
+          firstName: client.firstName,
+          lastName: client.lastName,
+          date: newSessionDate,
+          startTime: parseInt(newSessionTime),
+          duration: parseInt(newSessionDuration),
+          notes: newSessionNotes
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert(`Session created successfully for ${client.firstName} ${client.lastName}!`);
+        handleCloseCreateSession();
+        await fetchBookings();
+      } else {
+        alert('Error creating session: ' + (data.error || 'Unknown error'));
+      }
+    } catch (error) {
+      console.error('Error creating session:', error);
+      alert('Failed to create session');
+    } finally {
+      setCreatingSession(false);
+    }
+  };
 
   const handleConfirmBooking = async (booking: Booking) => {
     if (!confirm(`Manually confirm this booking for ${booking.firstName} ${booking.lastName}? If payment is authorized but uncaptured, this will attempt to CAPTURE it.`)) {
@@ -312,41 +419,6 @@ export default function AdminBookingsPage() {
       alert('Failed to soft-delete booking');
     } finally {
       setSoftDeletingBookingId(null);
-    }
-  };
-
-  const handleRescheduleToFuture = async (booking: Booking) => {
-    const reason = prompt(`RESCHEDULE booking for ${booking.firstName} ${booking.lastName}?\n\nThis will:\n- Move session to future "TBD" date\n- Keep payment credited\n- Notify customer they need to call to reschedule\n\nReason for rescheduling (optional):`);
-
-    if (reason === null) {
-      return; // User clicked cancel
-    }
-
-    setReschedulingBookingId(booking.id);
-
-    try {
-      const response = await fetch('/api/admin/reschedule-to-future', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          bookingId: booking.id,
-          reason: reason || undefined
-        })
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        alert('Booking rescheduled to TBD. Customer has been notified via email.');
-        await fetchBookings();
-      } else {
-        alert('Error rescheduling booking: ' + (data.error || 'Unknown error'));
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Failed to reschedule booking');
-    } finally {
-      setReschedulingBookingId(null);
     }
   };
 
@@ -749,6 +821,14 @@ export default function AdminBookingsPage() {
 
         <div className={styles.filterControls}>
           <button
+            className={styles.createSessionButton}
+            onClick={handleOpenCreateSession}
+            title="Create a new session for a client"
+          >
+            + Create Session
+          </button>
+
+          <button
             className={styles.refreshAllButton}
             onClick={handleRefreshAllPaymentData}
             disabled={refreshingAll || bookings.length === 0}
@@ -767,6 +847,111 @@ export default function AdminBookingsPage() {
           )}
         </div>
       </div>
+
+      {/* Create Session Modal */}
+      {showCreateSession && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modal}>
+            <div className={styles.modalHeader}>
+              <h2>Create New Session</h2>
+              <button onClick={handleCloseCreateSession} className={styles.modalClose}>×</button>
+            </div>
+
+            <div className={styles.modalBody}>
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Search & Select Client</label>
+                {loadingClients ? (
+                  <p>Loading clients...</p>
+                ) : (
+                  <>
+                    <input
+                      type="text"
+                      value={clientSearch}
+                      onChange={(e) => setClientSearch(e.target.value)}
+                      placeholder="Type to search by name or email..."
+                      className={styles.editInput}
+                    />
+                    <select
+                      value={selectedClient}
+                      onChange={(e) => setSelectedClient(e.target.value)}
+                      className={styles.clientSelect}
+                    >
+                      <option value="">-- Select a client ({filteredClients.length} found) --</option>
+                      {filteredClients.map(client => (
+                        <option key={client.id} value={client.id}>
+                          {client.firstName} {client.lastName} ({client.email})
+                        </option>
+                      ))}
+                    </select>
+                  </>
+                )}
+              </div>
+
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Date</label>
+                <input
+                  type="date"
+                  value={newSessionDate}
+                  onChange={(e) => setNewSessionDate(e.target.value)}
+                  className={styles.editInput}
+                />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Start Time</label>
+                <select
+                  value={newSessionTime}
+                  onChange={(e) => setNewSessionTime(e.target.value)}
+                  className={styles.select}
+                >
+                  {Array.from({ length: 17 }, (_, i) => i + 9).map(hour => (
+                    <option key={hour} value={hour}>
+                      {hour > 12 ? `${hour - 12}:00 PM` : hour === 12 ? '12:00 PM' : `${hour}:00 AM`}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Duration (hours)</label>
+                <select
+                  value={newSessionDuration}
+                  onChange={(e) => setNewSessionDuration(e.target.value)}
+                  className={styles.select}
+                >
+                  {[1, 2, 3, 4, 5, 6, 7, 8].map(hours => (
+                    <option key={hours} value={hours}>{hours} hour{hours > 1 ? 's' : ''}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Admin Notes (optional)</label>
+                <input
+                  type="text"
+                  value={newSessionNotes}
+                  onChange={(e) => setNewSessionNotes(e.target.value)}
+                  placeholder="e.g., Rescheduled from Dec 20"
+                  className={styles.editInput}
+                />
+              </div>
+            </div>
+
+            <div className={styles.modalFooter}>
+              <button onClick={handleCloseCreateSession} className={styles.cancelEditButton}>
+                Cancel
+              </button>
+              <button
+                onClick={handleCreateSession}
+                disabled={creatingSession || !selectedClient || !newSessionDate}
+                className={styles.approveButton}
+              >
+                {creatingSession ? 'Creating...' : 'Create Session'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {bookings.length === 0 ? (
         <div className={styles.emptyState}>
@@ -1371,15 +1556,6 @@ export default function AdminBookingsPage() {
                             title="Cancel booking and send cancellation email"
                           >
                             {cancellingBookingId === booking.id ? 'Cancelling...' : 'Cancel'}
-                          </button>
-
-                          <button
-                            className={styles.editButton}
-                            onClick={() => handleRescheduleToFuture(booking)}
-                            disabled={reschedulingBookingId === booking.id}
-                            title="Reschedule to future TBD date (keeps payment credited)"
-                          >
-                            {reschedulingBookingId === booking.id ? 'Rescheduling...' : 'Reschedule to TBD'}
                           </button>
 
                           <button
