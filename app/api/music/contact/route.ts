@@ -12,6 +12,11 @@ const SOURCE_LABELS: Record<string, string> = {
 };
 
 async function verifyTurnstileToken(token: string, remoteip?: string): Promise<boolean> {
+  if (!TURNSTILE_SECRET_KEY) {
+    console.error('TURNSTILE_SECRET_KEY is not configured');
+    return false;
+  }
+
   try {
     const formData = new FormData();
     formData.append('secret', TURNSTILE_SECRET_KEY);
