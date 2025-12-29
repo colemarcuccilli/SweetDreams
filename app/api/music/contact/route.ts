@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { resend, ADMIN_EMAIL, FROM_EMAIL } from '@/lib/emails/resend';
 
-// Turnstile secret key - should be in environment variables
-const TURNSTILE_SECRET_KEY = process.env.TURNSTILE_SECRET_KEY || '0x4AAAAAACJodA6KPvgvIZS9IQ8ksWHhJG4';
+// Turnstile secret key from environment variables (required)
+const TURNSTILE_SECRET_KEY = process.env.TURNSTILE_SECRET_KEY;
 
 // Map source to human-readable label
 const SOURCE_LABELS: Record<string, string> = {
