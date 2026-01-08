@@ -151,19 +151,13 @@ export const STUDIO_HOURS = {
 
 // Helper function to get deposit and remainder products for a session duration
 export function getSessionProducts(hours: number) {
-  // Special handling for 3-hour holiday deal - full payment upfront
-  if (hours === 3) {
-    const holidayProduct = BOOKING_PRODUCTS['3hr_holiday_full'];
-    return { deposit: holidayProduct, remainder: null };
-  }
-
   // 1-hour sessions are full payment
   if (hours === 1) {
     const fullPayment = BOOKING_PRODUCTS['1hr_full'];
     return { deposit: fullPayment, remainder: null };
   }
 
-  // All other sessions use deposit + remainder
+  // All other sessions (including 3-hour) use deposit + remainder
   const depositKey = `${hours}hr_deposit`;
   const deposit = BOOKING_PRODUCTS[depositKey];
   const remainderKey = `${hours}hr_remainder`;

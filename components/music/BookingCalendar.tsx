@@ -1,10 +1,9 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { DayPicker } from 'react-day-picker';
-import { format, addDays, isSameDay as isSameDayFns } from 'date-fns';
+import { format } from 'date-fns';
 import 'react-day-picker/dist/style.css';
-import gsap from 'gsap';
 import styles from './BookingCalendar.module.css';
 import {
   getSessionProducts,
@@ -63,8 +62,6 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
   const [customerPhone, setCustomerPhone] = useState('');
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isFirstTimeBooker, setIsFirstTimeBooker] = useState(false);
-  const [showDiscountHint, setShowDiscountHint] = useState(false);
   const [authCheckComplete, setAuthCheckComplete] = useState(false);
   const [blockedSlots, setBlockedSlots] = useState<Array<{
     blocked_date: string;
@@ -76,12 +73,6 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
     start_time: string;
     end_time: string;
   }>>([]);
-  const [isGiftUnwrapped, setIsGiftUnwrapped] = useState(false);
-
-  // GSAP refs for gift animation
-  const giftLidRef = useRef<HTMLDivElement>(null);
-  const giftContentRef = useRef<HTMLDivElement>(null);
-  const timelineRef = useRef<gsap.core.Timeline | null>(null);
 
   const supabase = createClient();
 
@@ -173,15 +164,12 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
           .limit(1);
 
         if (previousBookings && previousBookings.length > 0) {
-          // Not first time - use data from last booking if metadata is empty
+          // Use data from last booking if metadata is empty
           const lastBooking = previousBookings[0];
           if (!firstName) firstName = lastBooking.first_name || '';
           if (!lastName) lastName = lastBooking.last_name || '';
           if (!artistName) artistName = lastBooking.artist_name || '';
           if (!phone) phone = lastBooking.customer_phone || '';
-          setIsFirstTimeBooker(false);
-        } else {
-          setIsFirstTimeBooker(true);
         }
 
         setFirstName(firstName);
@@ -190,7 +178,6 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
         setCustomerPhone(phone);
 
         console.log('✅ User authenticated:', user.email);
-        console.log('📋 First time booker:', !previousBookings || previousBookings.length === 0);
       } else {
         // IMPORTANT: Clear all user data when not authenticated
         console.log('❌ No user - clearing all fields');
@@ -200,7 +187,6 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
         setLastName('');
         setArtistName('');
         setCustomerPhone('');
-        setIsFirstTimeBooker(false);
       }
 
       // Mark auth check as complete
@@ -233,15 +219,12 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
           .limit(1);
 
         if (previousBookings && previousBookings.length > 0) {
-          // Not first time - use data from last booking if metadata is empty
+          // Use data from last booking if metadata is empty
           const lastBooking = previousBookings[0];
           if (!firstName) firstName = lastBooking.first_name || '';
           if (!lastName) lastName = lastBooking.last_name || '';
           if (!artistName) artistName = lastBooking.artist_name || '';
           if (!phone) phone = lastBooking.customer_phone || '';
-          setIsFirstTimeBooker(false);
-        } else {
-          setIsFirstTimeBooker(true);
         }
 
         setFirstName(firstName);
@@ -259,7 +242,6 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
         setLastName('');
         setArtistName('');
         setCustomerPhone('');
-        setIsFirstTimeBooker(false);
       }
     });
 
@@ -267,47 +249,6 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
       subscription.unsubscribe();
     };
   }, [supabase]);
-
-  // Create GSAP timeline once on mount (client-side only)
-  useEffect(() => {
-    // Ensure we're on the client side
-    if (typeof window === 'undefined') return;
-    if (!giftLidRef.current || !giftContentRef.current) return;
-
-    // Create the opening timeline (paused)
-    const tl = gsap.timeline({ paused: true });
-
-    tl.to(giftLidRef.current, {
-      yPercent: -200,
-      rotationX: 120,
-      opacity: 0,
-      duration: 0.7,
-      ease: 'power2.inOut'
-    })
-    .to(giftContentRef.current, {
-      opacity: 1,
-      visibility: 'visible',
-      duration: 0.5
-    }, '<0.2'); // Start 0.2s after timeline begins
-
-    // Store timeline in ref
-    timelineRef.current = tl;
-
-    return () => {
-      tl.kill();
-    };
-  }, []); // Only run once on mount
-
-  // Toggle animation when state changes
-  useEffect(() => {
-    if (!timelineRef.current) return;
-
-    if (isGiftUnwrapped) {
-      timelineRef.current.play();
-    } else {
-      timelineRef.current.reverse();
-    }
-  }, [isGiftUnwrapped]);
 
   // Adjust duration if it becomes invalid when time changes
   const handleTimeSelect = async (hour: number, minute: number) => {
@@ -607,18 +548,16 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
             <div className={styles.durationGrid}>
               {SESSION_DURATIONS.map((hrs) => {
                 const isDisabled = selectedTime !== undefined && !isValidBookingTime(selectedTime, hrs);
-                const isThreeHour = hrs === 3;
 
                 return (
                   <button
                     key={hrs}
-                    className={`${styles.durationButton} ${isThreeHour ? styles.holidaySpecial : ''} ${duration === hrs ? styles.active : ''}`}
+                    className={`${styles.durationButton} ${duration === hrs ? styles.active : ''}`}
                     onClick={() => setDuration(hrs)}
                     disabled={isDisabled}
-                    title={isDisabled ? `${hrs} hour session would exceed studio hours` : isThreeHour ? 'Holiday Special: 3 Hours for $100! (Save $50)' : ''}
+                    title={isDisabled ? `${hrs} hour session would exceed studio hours` : ''}
                   >
                     {hrs} {hrs === 1 ? 'Hour' : 'Hours'}
-                    {isThreeHour && <span className={styles.specialBadge}>🎄 Holiday Special</span>}
                   </button>
                 );
               })}
@@ -767,51 +706,20 @@ export default function BookingCalendar({ onBookingSubmit }: BookingCalendarProp
                   </div>
                 )}
                 <div className={styles.summaryDivider} />
-                {duration === 3 ? (
-                  // 3-hour holiday special - full payment
-                  <>
-                    <div className={styles.summaryRow}>
-                      <span className={styles.depositLabel}>Full Payment Due Today</span>
-                      <span className={styles.depositAmount}>${(pricing.total / 100).toFixed(2)}</span>
-                    </div>
-                    <p className={styles.remainderNote}>
-                      Holiday Special: 3 Hours for $100 - No additional charges after your session!
-                    </p>
-                  </>
-                ) : (
-                  // All other sessions
-                  <>
-                    <div className={styles.summaryRow}>
-                      <span className={styles.depositLabel}>Deposit Due Today</span>
-                      <span className={styles.depositAmount}>${(pricing.deposit / 100).toFixed(2)}</span>
-                    </div>
-                    <div className={styles.summaryRow}>
-                      <span className={styles.totalLabel}>Total Session Cost</span>
-                      <span className={styles.totalAmount}>${(pricing.total / 100).toFixed(2)}</span>
-                    </div>
-                    {duration > 1 && (
-                      <p className={styles.remainderNote}>
-                        Remainder of ${((pricing.total - pricing.deposit) / 100).toFixed(2)} will be charged after your session
-                      </p>
-                    )}
-                  </>
+                <div className={styles.summaryRow}>
+                  <span className={styles.depositLabel}>Deposit Due Today</span>
+                  <span className={styles.depositAmount}>${(pricing.deposit / 100).toFixed(2)}</span>
+                </div>
+                <div className={styles.summaryRow}>
+                  <span className={styles.totalLabel}>Total Session Cost</span>
+                  <span className={styles.totalAmount}>${(pricing.total / 100).toFixed(2)}</span>
+                </div>
+                {duration > 1 && (
+                  <p className={styles.remainderNote}>
+                    Remainder of ${((pricing.total - pricing.deposit) / 100).toFixed(2)} will be charged after your session
+                  </p>
                 )}
               </div>
-
-              {/* First-Timer Discount Hint */}
-              {isFirstTimeBooker && (
-                <div className={styles.discountHint}>
-                  <div className={styles.discountBadge}>
-                    <span className={styles.discountIcon}>🎉</span>
-                    <div>
-                      <p className={styles.discountTitle}>Holiday Special!</p>
-                      <p className={styles.discountText}>
-                        Book <strong>3 Hours for $100</strong> (regularly $150) - Limited Time Offer!
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              )}
 
               {/* Submit Button */}
               <button
