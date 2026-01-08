@@ -13,14 +13,14 @@ import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Studio Recording & Booking | Sweet Dreams Fort Wayne - $50/HR",
-  description: "Professional recording studio in Fort Wayne, IN. Book your session starting at $50/hour. Music production, mixing, and mastering services. Holiday Special: 3 Hours for $100 (regularly $150)!",
+  description: "Professional recording studio in Fort Wayne, IN. Book your session starting at $50/hour. Music production, mixing, and mastering services.",
   keywords: "Fort Wayne recording studio, book studio session, music production Fort Wayne, studio rental, professional recording, recording studio near me, mixing and mastering, studio booking Fort Wayne",
   alternates: {
     canonical: `${SITE_URL}/music`,
   },
   openGraph: {
     title: "Studio Booking | Sweet Dreams Fort Wayne",
-    description: "Book your recording session at Fort Wayne's premier music studio. $50/hour starting rate. Holiday Special: 3 Hours for $100 (regularly $150).",
+    description: "Book your recording session at Fort Wayne's premier music studio. $50/hour starting rate.",
     url: `${SITE_URL}/music`,
     type: "website",
     images: [
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Studio Booking | Sweet Dreams Fort Wayne",
-    description: "Book your recording session. $50/hour. Holiday Special: 3 Hours for $100!",
+    description: "Book your recording session at Fort Wayne's premier music studio. $50/hour starting rate.",
   },
   other: {
     'geo.region': 'US-IN',
@@ -49,7 +49,7 @@ export default function MusicPage() {
       {/* Promo Banner */}
       <div className={styles.promoBanner}>
         <span className={styles.promoText}>
-          <strong>Holiday Special! </strong>Book 3 Hours for $100 (regularly $150) - Limited Time! &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Holiday Special! </strong>Book 3 Hours for $100 (regularly $150) - Limited Time! &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Holiday Special! </strong>Book 3 Hours for $100 (regularly $150) - Limited Time! &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Holiday Special! </strong>Book 3 Hours for $100 (regularly $150) - Limited Time! &nbsp;&nbsp;|&nbsp;&nbsp;
+          <strong>Happy New Year!</strong>&nbsp;Get 6 Months FREE Hosting with any website purchase! &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Happy New Year!</strong>&nbsp;Get 6 Months FREE Hosting with any website purchase! &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Happy New Year!</strong>&nbsp;Get 6 Months FREE Hosting with any website purchase! &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Happy New Year!</strong>&nbsp;Get 6 Months FREE Hosting with any website purchase! &nbsp;&nbsp;|&nbsp;&nbsp;
         </span>
       </div>
 
@@ -131,7 +131,7 @@ export default function MusicPage() {
           <BookingCalendarWrapper />
 
           <p className={styles.note}>
-            <strong>Holiday Special!</strong> Book <strong>3 Hours for $100</strong> (regularly $150) - Limited Time Offer!
+            Book your session today! All sessions include professional mixing assistance.
           </p>
         </div>
       </section>

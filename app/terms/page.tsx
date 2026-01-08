@@ -68,7 +68,7 @@ export default function TermsPage() {
 
             <h3>3.4 Promotional Offers</h3>
             <p>
-              Promotional offers (e.g., Holiday Special: 3 Hours for $100) are valid for one-time use per customer and cannot be combined with other offers. Promotions must be applied at checkout and cannot be retroactively applied.
+              Promotional offers are valid for one-time use per customer and cannot be combined with other offers. Promotions must be applied at checkout and cannot be retroactively applied.
             </p>
           </section>
 
