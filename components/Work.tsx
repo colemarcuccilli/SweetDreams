@@ -74,6 +74,26 @@ const PROJECTS = [
     category: 'Music Video',
     year: '2025',
     services: 'Scripting, Cinematography, Editing'
+  },
+  {
+    id: 8,
+    title: 'FORT WAYNE TRAFFIC HYPERLAPSE',
+    slug: 'fort-wayne-traffic-hyperlapse',
+    thumbnail: 'https://customer-w6h9o08eg118alny.cloudflarestream.com/11ba969d7ad3bca18978a2c36580c51f/thumbnails/thumbnail.jpg?time=1s&height=600',
+    client: 'Sweet Dreams Media',
+    category: 'Hyperlapse',
+    year: '2025',
+    services: 'Aerial Cinematography, Hyperlapse, Editing'
+  },
+  {
+    id: 9,
+    title: 'CINEMA DRONE AD',
+    slug: 'cinema-drone-ad',
+    thumbnail: 'https://customer-w6h9o08eg118alny.cloudflarestream.com/7d5f758e9ad94d17703b2f7842ca309b/thumbnails/thumbnail.jpg?time=1s&height=600',
+    client: 'Sweet Dreams Media',
+    category: 'Equipment Showcase',
+    year: '2025',
+    services: 'Aerial Cinematography, Color Grading, Editing'
   }
 ];
 

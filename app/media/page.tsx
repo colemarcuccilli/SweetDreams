@@ -116,6 +116,22 @@ export default function MediaPage() {
       logo: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SummitCityVintageLogo.png",
     },
     {
+      href: "/work/fort-wayne-traffic-hyperlapse",
+      image: "https://customer-w6h9o08eg118alny.cloudflarestream.com/11ba969d7ad3bca18978a2c36580c51f/thumbnails/thumbnail.jpg?time=1s&height=600",
+      title: "FORT WAYNE TRAFFIC HYPERLAPSE",
+      client: "Sweet Dreams Media",
+      category: "Hyperlapse",
+      logo: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SWEETDREAMSLOGO_1.jpg",
+    },
+    {
+      href: "/work/cinema-drone-ad",
+      image: "https://customer-w6h9o08eg118alny.cloudflarestream.com/7d5f758e9ad94d17703b2f7842ca309b/thumbnails/thumbnail.jpg?time=1s&height=600",
+      title: "CINEMA DRONE AD",
+      client: "Sweet Dreams Media",
+      category: "Equipment Showcase",
+      logo: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SWEETDREAMSLOGO_1.jpg",
+    },
+    {
       href: "/work/fort-wayne-carnival-recap",
       image: "https://videodelivery.net/1a0f730d316664839064b8a88543d63a/thumbnails/thumbnail.jpg?time=1s&height=600",
       title: "FORT WAYNE CARNIVAL RECAP",

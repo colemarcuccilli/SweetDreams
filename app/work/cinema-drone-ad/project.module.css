@@ -1,0 +1,406 @@
+.container {
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 80px 208px 80px 208px;
+    background: white;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 64px;
+    gap: 64px;
+}
+
+.headerLeft {
+    flex: 1;
+}
+
+.title {
+    font-family: 'Anton', sans-serif;
+    font-size: 120px;
+    font-weight: 400;
+    text-transform: uppercase;
+    line-height: 0.9;
+    margin: 0 0 24px 0;
+    color: black;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+.description {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 18px;
+    line-height: 1.8;
+    color: #333;
+    margin: 0;
+}
+
+.clientInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 16px;
+}
+
+.clientLogo {
+    max-width: 200px;
+    max-height: 100px;
+    object-fit: contain;
+}
+
+.clientName {
+    font-family: 'Anton', sans-serif;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #e63636;
+}
+
+.videoSection {
+    margin-bottom: 80px;
+}
+
+.videoWrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 24px;
+    overflow: hidden;
+    background: black;
+    cursor: pointer;
+}
+
+.video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: none;
+}
+
+.playOverlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.playText {
+    font-family: 'Anton', sans-serif;
+    font-size: 120px;
+    font-weight: 700;
+    color: white;
+    text-transform: uppercase;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.videoWrapper:hover .playText {
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
+}
+
+.metadata {
+    margin-bottom: 80px;
+    padding: 48px 0;
+    border-top: 2px solid #e0e0e0;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.metadataGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 48px;
+}
+
+.metadataItem {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.metadataLabel {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #999;
+}
+
+.metadataValue {
+    font-family: 'Anton', sans-serif;
+    font-size: 24px;
+    text-transform: uppercase;
+    color: black;
+}
+
+.overview {
+    margin-bottom: 80px;
+}
+
+.sectionTitle {
+    font-family: 'Anton', sans-serif;
+    font-size: 48px;
+    font-weight: 400;
+    text-transform: uppercase;
+    margin: 0 0 32px 0;
+    color: black;
+}
+
+.overviewText {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 18px;
+    line-height: 1.8;
+    color: #333;
+    margin-bottom: 48px;
+}
+
+.servicesSection {
+    margin-top: 48px;
+}
+
+.servicesTitle {
+    font-family: 'Anton', sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    text-transform: uppercase;
+    margin: 0 0 24px 0;
+    color: black;
+}
+
+.servicesList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.serviceTag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    padding: 12px 24px;
+    background: black;
+    color: white;
+    border-radius: 999px;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+}
+
+.gallery {
+    margin-bottom: 80px;
+}
+
+.galleryGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+    row-gap: 16px;
+}
+
+.photoGalleryGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.galleryItem {
+    position: relative;
+    width: 100%;
+}
+
+.additionalVideoWrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 16px;
+    overflow: hidden;
+    background: black;
+    cursor: pointer;
+}
+
+.verticalVideoWrapper {
+    position: relative;
+    width: auto;
+    aspect-ratio: 9 / 16;
+    height: 600px;
+    margin: 0 auto;
+    border-radius: 16px;
+    overflow: hidden;
+    background: black;
+    cursor: pointer;
+}
+
+.playTextSmall {
+    font-size: 80px !important;
+}
+
+.galleryGrid .galleryItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 48px;
+}
+
+.galleryGrid .additionalVideoWrapper {
+    height: 100%;
+}
+
+.galleryGrid .verticalVideoWrapper {
+    height: 100%;
+    width: auto;
+}
+
+.videoTitle {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    text-transform: uppercase;
+    color: #666;
+    margin-top: 16px;
+    letter-spacing: 0.05em;
+}
+
+.galleryImageItem {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #f5f5f5;
+}
+
+.galleryImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.galleryImageItem:hover .galleryImage {
+    transform: scale(1.05);
+}
+
+.cta {
+    text-align: center;
+    padding: 80px 0;
+}
+
+.ctaTitle {
+    font-family: 'Anton', sans-serif;
+    font-size: 64px;
+    font-weight: 400;
+    text-transform: uppercase;
+    line-height: 1.2;
+    margin: 0 0 48px 0;
+    color: black;
+}
+
+.ctaButton {
+    display: inline-block;
+    background: black;
+    color: white;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 20px 60px;
+    border-radius: 999px;
+    font-size: 16px;
+    letter-spacing: 0.15em;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.ctaButton:hover {
+    background: #333;
+}
+
+@media (max-width: 1024px) {
+    .container {
+        padding: 48px 64px;
+    }
+    .header {
+        flex-direction: column;
+    }
+    .title {
+        font-size: 80px;
+    }
+    .metadataGrid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+    .galleryGrid {
+        grid-template-columns: 1fr;
+    }
+    .ctaTitle {
+        font-size: 48px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 32px 16px;
+        width: 100%;
+        max-width: 100vw;
+        overflow-x: hidden;
+        box-sizing: border-box;
+    }
+    .header {
+        gap: 32px;
+    }
+    .title {
+        font-size: 36px;
+        line-height: 1;
+        margin-bottom: 16px;
+        word-break: break-word;
+    }
+    .description {
+        font-size: 14px;
+        word-wrap: break-word;
+    }
+    .clientInfo {
+        align-items: flex-start;
+    }
+    .clientLogo {
+        max-width: 100px;
+        max-height: 50px;
+    }
+    .clientName {
+        font-size: 12px;
+    }
+    .videoWrapper,
+    .additionalVideoWrapper {
+        border-radius: 12px;
+    }
+    .sectionTitle {
+        font-size: 28px;
+        word-break: break-word;
+    }
+    .overviewText {
+        font-size: 14px;
+        word-wrap: break-word;
+    }
+    .metadataValue {
+        font-size: 16px;
+    }
+    .ctaTitle {
+        font-size: 28px;
+        padding: 0 16px;
+    }
+    .ctaButton {
+        padding: 14px 28px;
+        font-size: 12px;
+    }
+    .photoGalleryGrid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+}
