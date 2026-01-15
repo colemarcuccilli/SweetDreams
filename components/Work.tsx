@@ -7,6 +7,16 @@ import styles from './Work.module.css';
 const PROJECTS = [
   {
     id: 1,
+    title: 'THE COLEMAN PRIME STORY',
+    slug: 'the-coleman-prime-story',
+    thumbnail: 'https://customer-w6h9o08eg118alny.cloudflarestream.com/d08682649901944d9bbec1dcfb8bde88/thumbnails/thumbnail.jpg?time=89s&height=600',
+    client: 'Coleman Prime',
+    category: 'Brand Trailer',
+    year: '2025',
+    services: 'Brand Strategy, Cinematography, Editing, Color Grading'
+  },
+  {
+    id: 2,
     title: 'KISSEL ENTERTAINMENT COMMERCIAL & MORE',
     slug: 'knoxville-carnival-coverage',
     thumbnail: 'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/KnoxvilleCarnival/DJI_20250912212213_0133_D.jpg',
@@ -16,7 +26,7 @@ const PROJECTS = [
     services: 'Documentary Production, Event Coverage, Interview Production, Cinematic Trailers'
   },
   {
-    id: 2,
+    id: 3,
     title: 'NISSAN WARSAW DEALERSHIP COMMERCIAL',
     slug: 'nissan-warsaw-dealership',
     thumbnail: 'https://customer-w6h9o08eg118alny.cloudflarestream.com/700297c313e97262173f0c2107f3b8db/thumbnails/thumbnail.jpg?time=2s&height=600',
@@ -26,7 +36,7 @@ const PROJECTS = [
     services: 'Cinematography, Editing, Color Grading'
   },
   {
-    id: 3,
+    id: 4,
     title: 'INDIANAPOLIS CHILDREN\'S MUSEUM FERRIS WHEEL EXPERIENCE',
     slug: 'indianapolis-childrens-museum-ferris-wheel',
     thumbnail: 'https://videodelivery.net/7a243650c649bdcf4369622acd47abf6/thumbnails/thumbnail.jpg?time=1s&height=600',
@@ -36,7 +46,7 @@ const PROJECTS = [
     services: 'Scripting, Cinematography, Editing, Color Grading'
   },
   {
-    id: 4,
+    id: 5,
     title: 'BROOKFIELD ZOO FERRIS WHEEL COMMERCIAL',
     slug: 'brookfield-zoo-ferris-wheel',
     thumbnail: 'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/BrookfieldZoo/_DSC8445.jpg',
@@ -46,7 +56,7 @@ const PROJECTS = [
     services: 'Scripting, Cinematography, Editing, Color Grading'
   },
   {
-    id: 5,
+    id: 6,
     title: 'AEGIS DENTAL - TRUSTED DENTISTRY',
     slug: 'aegis-dental-trusted-dentistry',
     thumbnail: 'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/AegisDental/_DSC7982.jpg',
@@ -56,7 +66,7 @@ const PROJECTS = [
     services: 'Cinematography, Editing, Color Grading'
   },
   {
-    id: 6,
+    id: 7,
     title: 'SWEET DREAMS RECORDING STUDIO SHOWCASE',
     slug: 'sweet-dreams-recording-studio',
     thumbnail: 'https://customer-w6h9o08eg118alny.cloudflarestream.com/d912b8bd58831e95431db3c24791e44b/thumbnails/thumbnail.jpg?time=1s&height=600',
@@ -66,7 +76,7 @@ const PROJECTS = [
     services: 'Cinematography, Editing, Color Grading'
   },
   {
-    id: 7,
+    id: 8,
     title: 'DEAR LOVER - MUSIC VIDEO',
     slug: 'dear-lover-music-video',
     thumbnail: 'https://customer-w6h9o08eg118alny.cloudflarestream.com/beeb2ee6a9a30c655e79bdc1f4fb6d20/thumbnails/thumbnail.jpg?time=3s&height=600',
@@ -76,7 +86,7 @@ const PROJECTS = [
     services: 'Scripting, Cinematography, Editing'
   },
   {
-    id: 8,
+    id: 9,
     title: 'FORT WAYNE TRAFFIC HYPERLAPSE',
     slug: 'fort-wayne-traffic-hyperlapse',
     thumbnail: 'https://customer-w6h9o08eg118alny.cloudflarestream.com/11ba969d7ad3bca18978a2c36580c51f/thumbnails/thumbnail.jpg?time=1s&height=600',
@@ -86,7 +96,7 @@ const PROJECTS = [
     services: 'Aerial Cinematography, Hyperlapse, Editing'
   },
   {
-    id: 9,
+    id: 10,
     title: 'CINEMA DRONE AD',
     slug: 'cinema-drone-ad',
     thumbnail: 'https://customer-w6h9o08eg118alny.cloudflarestream.com/7d5f758e9ad94d17703b2f7842ca309b/thumbnails/thumbnail.jpg?time=1s&height=600',

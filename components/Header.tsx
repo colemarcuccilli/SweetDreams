@@ -30,7 +30,7 @@ export default function Header() {
             <div className={styles.navCenter}>
               <Link href="/" className={styles.navLogo}>
                 <img
-                  src="https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SWEETDREAMSLOGO_1.jpg"
+                  src="https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SweetDreamsLogo/SweetDreamsUSlogowide.png"
                   alt="Sweet Dreams"
                   className={styles.logoImage}
                 />

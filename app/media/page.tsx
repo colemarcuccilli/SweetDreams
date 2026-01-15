@@ -12,6 +12,14 @@ import MusicContactForm from "@/components/music/MusicContactForm";
 export default function MediaPage() {
   const portfolioItems = [
     {
+      href: "/work/the-coleman-prime-story",
+      image: "https://customer-w6h9o08eg118alny.cloudflarestream.com/d08682649901944d9bbec1dcfb8bde88/thumbnails/thumbnail.jpg?time=89s&height=600",
+      title: "THE COLEMAN PRIME STORY",
+      client: "Coleman Prime",
+      category: "Brand Trailer",
+      logo: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/ColemanLogo.png",
+    },
+    {
       href: "/work/knoxville-carnival-coverage",
       image: "https://customer-w6h9o08eg118alny.cloudflarestream.com/d554360a479b1380f96df7a4ef8f03a3/thumbnails/thumbnail.jpg?time=13s&height=600",
       title: "KISSEL ENTERTAINMENT",

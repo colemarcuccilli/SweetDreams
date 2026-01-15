@@ -21,16 +21,8 @@ export default function Nav() {
     }
   };
 
-  // Determine which logo to show based on current page
-  const isMusicPage = pathname?.startsWith('/music');
-  const isMediaPage = pathname?.startsWith('/media');
-
-  let logoSrc = "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SweetDreamsLogo/SweetDreams3StackBlackLogo.png";
-  if (isMusicPage) {
-    logoSrc = "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SweetDreamsLogo/SweetDreamsMusic3StackBlackLogo%20(1).png";
-  } else if (isMediaPage) {
-    logoSrc = "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SweetDreamsLogo/SweetDreamsMediaLogoBlack.png";
-  }
+  // Single wide logo for all pages
+  const logoSrc = "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/SweetDreamsLogo/SweetDreamsUSlogowide.png";
 
   return (
     <nav className={styles.nav}>
@@ -59,7 +51,7 @@ export default function Nav() {
               <img
                 src={logoSrc}
                 alt="Sweet Dreams"
-                className={`${styles.logoImage} ${isMusicPage ? styles.musicLogo : isMediaPage ? styles.mediaLogo : styles.baseLogo}`}
+                className={`${styles.logoImage} ${styles.baseLogo}`}
               />
             </Link>
           </div>
