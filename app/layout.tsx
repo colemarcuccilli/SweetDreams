@@ -135,6 +135,18 @@ export default function RootLayout({
           `}
         </Script>
 
+        {/* Metricool */}
+        <Script id="metricool" strategy="afterInteractive">
+          {`
+            (function(){
+              var b=document.getElementsByTagName("head")[0],c=document.createElement("script");
+              c.type="text/javascript";c.src="https://tracker.metricool.com/resources/be.js";
+              c.onload=function(){beTracker.t({hash:"e58732b17a6a586cbd3b4f425ca2829b"})};
+              b.appendChild(c);
+            })();
+          `}
+        </Script>
+
         {/* Schema.org Structured Data - CRITICAL for local SEO */}
         <script
           type="application/ld+json"
