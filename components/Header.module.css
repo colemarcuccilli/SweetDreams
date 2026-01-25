@@ -362,18 +362,46 @@
     0 16px 32px rgba(0, 0, 0, 0.08);
 }
 
-/* Shrink logo on smaller desktop to prevent overlap */
+/* Shrink logo and nav on smaller desktop to prevent overlap */
 @media (max-width: 1600px) {
   .logoImage,
   .baseLogo {
     height: 130px;
+  }
+
+  .navLeft,
+  .navRight {
+    gap: 60px;
+  }
+
+  .navLink {
+    font-size: 48px;
+  }
+
+  .navCenter {
+    margin-left: 50px;
+    margin-right: 50px;
   }
 }
 
 @media (max-width: 1500px) {
   .logoImage,
   .baseLogo {
-    height: 110px;
+    height: 105px;
+  }
+
+  .navLeft,
+  .navRight {
+    gap: 40px;
+  }
+
+  .navLink {
+    font-size: 40px;
+  }
+
+  .navCenter {
+    margin-left: 35px;
+    margin-right: 35px;
   }
 }
 
@@ -381,12 +409,27 @@
 @media (max-width: 1439px) {
   .logoImage,
   .baseLogo {
-    height: 95px;
+    height: 90px;
+  }
+
+  .navLeft,
+  .navRight {
+    gap: 30px;
+  }
+
+  .navLink {
+    font-size: 34px;
+    padding: 8px 16px;
+  }
+
+  .navCenter {
+    margin-left: 25px;
+    margin-right: 25px;
   }
 
   .navContainer {
-    padding-left: 56px;
-    padding-right: 56px;
+    padding-left: 40px;
+    padding-right: 40px;
   }
 
   .videoSection {

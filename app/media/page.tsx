@@ -12,12 +12,20 @@ import MusicContactForm from "@/components/music/MusicContactForm";
 export default function MediaPage() {
   const portfolioItems = [
     {
+      href: "/work/mc-sim-racing",
+      image: "https://customer-w6h9o08eg118alny.cloudflarestream.com/a279eed7ef4ceef1b3b257b0fb4dfc67/thumbnails/thumbnail.jpg?time=1s&height=600",
+      title: "MC SIM RACING",
+      client: "MC Sim Racing",
+      category: "Brand Video",
+      logo: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/logoMCSimRacing.png",
+    },
+    {
       href: "/work/the-coleman-prime-story",
       image: "https://customer-w6h9o08eg118alny.cloudflarestream.com/d08682649901944d9bbec1dcfb8bde88/thumbnails/thumbnail.jpg?time=89s&height=600",
       title: "THE COLEMAN PRIME STORY",
       client: "Coleman Prime",
       category: "Brand Trailer",
-      logo: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/ColemanLogo.png",
+      logo: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/Primedealerequityfundlogoblack.png",
     },
     {
       href: "/work/knoxville-carnival-coverage",

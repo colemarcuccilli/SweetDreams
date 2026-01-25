@@ -2,26 +2,19 @@ import Link from "next/link";
 import styles from "./project.module.css";
 import VideoPlayer from "./VideoPlayer";
 
-export default function TheColemanPrimeStoryPage() {
+export default function MCSimRacingPage() {
   const project = {
-    title: 'THE COLEMAN PRIME STORY',
-    client_name: 'Coleman Prime',
-    client_logos: [
-      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/Primedealerequityfundlogoblack.png',
-      'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/colemanautomotivegrouplogoblack.png'
-    ],
-    cloudflare_stream_id: 'b8e9c3a7d4f2e1a0c5b6d7e8f9a0b1c2',
-    description: 'A cinematic brand story capturing the essence of Coleman Prime.',
-    category: 'Brand Trailer',
-    location: 'Spirit Lake, Iowa',
+    title: 'MC SIM RACING',
+    client_name: 'MC Sim Racing',
+    client_logo_url: 'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/logoMCSimRacing.png',
+    cloudflare_stream_id: 'a279eed7ef4ceef1b3b257b0fb4dfc67',
+    description: 'A dynamic brand video showcasing the immersive sim racing experience.',
+    category: 'Brand Video',
+    location: 'Fort Wayne, IN',
     year: 2025,
-    services: ['Brand Strategy', 'Cinematography', 'Editing', 'Color Grading'],
-    full_description: 'The Coleman Prime Story is a compelling brand trailer that showcases the partnership and vision behind Coleman Prime. Through cinematic storytelling, we captured the essence of the brand and its commitment to excellence.',
-    mainVideo: 'd08682649901944d9bbec1dcfb8bde88',
-    additionalVideos: [
-      { id: 'c46eb869bbbeda7428508ee7dc053479', title: 'The Investor Advantage' },
-      { id: '51d9ae67e3bc5fd3fefd3a0729331064', title: '90 Day Playbook' }
-    ]
+    services: ['Cinematography', 'Editing', 'Color Grading', 'Sound Design'],
+    full_description: 'MC Sim Racing brings professional-grade racing simulation to Fort Wayne. This brand video captures the excitement and immersion of their state-of-the-art sim racing facility, showcasing the thrill of competitive racing in a controlled environment.',
+    additional_images: []
   };
 
   return (
@@ -33,23 +26,20 @@ export default function TheColemanPrimeStoryPage() {
           <p className={styles.description}>{project.description}</p>
         </div>
         <div className={styles.clientInfo}>
-          <div className={styles.clientLogos}>
-            {project.client_logos.map((logo, index) => (
-              <img
-                key={index}
-                src={logo}
-                alt={project.client_name}
-                className={styles.clientLogo}
-              />
-            ))}
-          </div>
+          {project.client_logo_url && (
+            <img
+              src={project.client_logo_url}
+              alt={project.client_name}
+              className={styles.clientLogo}
+            />
+          )}
           <span className={styles.clientName}>{project.client_name}</span>
         </div>
       </header>
 
       {/* Main Video */}
       <section className={styles.videoSection}>
-        <VideoPlayer videoId={project.mainVideo} className={styles.videoWrapper} playTextSize="large" thumbnailTime="89s" />
+        <VideoPlayer videoId={project.cloudflare_stream_id} className={styles.videoWrapper} playTextSize="large" />
       </section>
 
       {/* Project Metadata */}
@@ -84,25 +74,6 @@ export default function TheColemanPrimeStoryPage() {
           </div>
         </div>
       </section>
-
-      {/* Additional Videos */}
-      {project.additionalVideos.length > 0 && (
-        <section className={styles.gallery}>
-          <h2 className={styles.sectionTitle}>MORE VIDEOS</h2>
-          <div className={styles.galleryGrid}>
-            {project.additionalVideos.map((video, index) => (
-              <div key={index} className={styles.galleryItem}>
-                <VideoPlayer
-                  videoId={video.id}
-                  className={styles.additionalVideoWrapper}
-                  playTextSize="small"
-                />
-                <span className={styles.videoTitle}>{video.title}</span>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
 
       {/* CTA Section */}
       <section className={styles.cta}>
