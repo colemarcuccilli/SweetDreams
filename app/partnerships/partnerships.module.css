@@ -1,0 +1,159 @@
+.page {
+  min-height: 100vh;
+  background: white;
+  padding: 120px 48px 80px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 80px;
+}
+
+.label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #e63636;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.title {
+  font-family: 'Anton', sans-serif;
+  font-size: 100px;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 1;
+  margin: 0 0 32px 0;
+  color: black;
+}
+
+.subtitle {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 20px;
+  line-height: 1.6;
+  color: #666;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.section {
+  margin-bottom: 80px;
+}
+
+.sectionTitle {
+  font-family: 'Anton', sans-serif;
+  font-size: 48px;
+  font-weight: 400;
+  text-transform: uppercase;
+  margin: 0 0 48px 0;
+  color: black;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+}
+
+.card {
+  background: #f9f9f9;
+  padding: 48px;
+}
+
+.card h3 {
+  font-family: 'Anton', sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  text-transform: uppercase;
+  margin: 0 0 16px 0;
+  color: black;
+}
+
+.card p {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #666;
+  margin: 0;
+}
+
+.cta {
+  background: black;
+  color: white;
+  padding: 80px;
+  text-align: center;
+}
+
+.ctaTitle {
+  font-family: 'Anton', sans-serif;
+  font-size: 64px;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 1.1;
+  margin: 0 0 24px 0;
+}
+
+.ctaText {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #999;
+  max-width: 600px;
+  margin: 0 auto 48px;
+}
+
+.ctaButton {
+  display: inline-block;
+  background: white;
+  color: black;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  padding: 20px 48px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.ctaButton:hover {
+  background: #f0f0f0;
+}
+
+@media (max-width: 768px) {
+  .page {
+    padding: 100px 24px 60px;
+  }
+
+  .title {
+    font-size: 56px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 32px;
+  }
+
+  .cta {
+    padding: 48px 24px;
+  }
+
+  .ctaTitle {
+    font-size: 36px;
+  }
+}

@@ -1,0 +1,174 @@
+.page {
+  min-height: 100vh;
+  background: white;
+  padding: 120px 48px 80px;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 64px;
+}
+
+.title {
+  font-family: 'Anton', sans-serif;
+  font-size: 80px;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 1;
+  margin: 0 0 24px 0;
+  color: black;
+}
+
+.subtitle {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.form {
+  background: #f9f9f9;
+  padding: 48px;
+  border-radius: 0;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #333;
+}
+
+.input,
+.textarea {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 16px;
+  padding: 16px;
+  border: 2px solid #e0e0e0;
+  background: white;
+  color: black;
+  transition: border-color 0.3s ease;
+}
+
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: black;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.submitButton {
+  width: 100%;
+  background: black;
+  color: white;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  padding: 20px 40px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 24px;
+}
+
+.submitButton:hover:not(:disabled) {
+  background: #333;
+}
+
+.submitButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.successMessage {
+  text-align: center;
+  padding: 80px 48px;
+  background: #f9f9f9;
+}
+
+.successMessage h2 {
+  font-family: 'Anton', sans-serif;
+  font-size: 48px;
+  font-weight: 400;
+  text-transform: uppercase;
+  margin: 0 0 16px 0;
+  color: black;
+}
+
+.successMessage p {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 18px;
+  color: #666;
+}
+
+.errorMessage {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  color: #e63636;
+  text-align: center;
+  margin-top: 16px;
+}
+
+@media (max-width: 768px) {
+  .page {
+    padding: 100px 24px 60px;
+  }
+
+  .title {
+    font-size: 48px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+  }
+
+  .form {
+    padding: 32px 24px;
+  }
+
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 430px) {
+  .page {
+    padding: 80px 16px 40px;
+  }
+
+  .title {
+    font-size: 36px;
+  }
+
+  .form {
+    padding: 24px 16px;
+  }
+}

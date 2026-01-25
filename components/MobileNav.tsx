@@ -169,9 +169,11 @@ export default function MobileNav() {
 
   const baseNavLinks = [
     { href: '/', label: 'HOME' },
-    { href: '/music', label: 'MUSIC' },
-    { href: '/media', label: 'MEDIA' },
+    { href: '/work', label: 'WORK' },
     { href: '/solutions', label: 'SOLUTIONS' },
+    { href: '/music', label: 'MUSIC' },
+    { href: '/partnerships', label: 'PARTNERSHIPS' },
+    { href: '/about', label: 'ABOUT' },
   ];
 
   // Add auth link based on user state

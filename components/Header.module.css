@@ -187,6 +187,35 @@
   color: #666;
 }
 
+/* CTA Button */
+.ctaButton {
+  display: inline-block;
+  background: black;
+  color: white;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 16px 32px;
+  border-radius: 0;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.ctaButton:hover {
+  background: #333;
+  transform: scale(1.02);
+}
+
+/* Hamburger Wrapper - Always Visible */
+.hamburgerWrapper {
+  display: flex;
+  align-items: center;
+  margin-left: 40px;
+}
+
 /* Video Header Styles */
 .videoSection {
   width: 100%;
@@ -568,38 +597,20 @@
   line-height: 1;
 }
 
-/* Mobile Navigation Wrapper - Hidden on Desktop */
-.mobileNavWrapper {
-  display: none;
+/* Hamburger always visible */
+.hamburgerWrapper {
+  display: flex;
+  align-items: center;
+  margin-left: 40px;
 }
 
-/* Desktop: 1350px+ */
-@media (min-width: 1350px) {
-  .mobileNavWrapper {
-    display: none;
-  }
-
-  .navLeft,
-  .navRight {
-    display: flex;
-  }
-}
-
-/* Below 1350px: Hide desktop nav, show mobile nav */
-@media (max-width: 1349px) {
-  .mobileNavWrapper {
-    display: flex;
-    align-items: center;
-    margin-left: auto;
-  }
-
-  /* Hide desktop navigation links on mobile/tablet */
+/* Below 1100px: Simplify nav for smaller screens */
+@media (max-width: 1100px) {
   .navLeft,
   .navRight {
     display: none !important;
   }
 
-  /* Adjust navigation container */
   .navContainer {
     padding-left: 32px;
     padding-right: 32px;
@@ -609,7 +620,6 @@
     justify-content: space-between;
   }
 
-  /* Center logo becomes left-aligned on mobile */
   .navCenter {
     margin: 0;
     flex: 1;
@@ -621,6 +631,10 @@
 
   .navLogo {
     padding: 12px 16px;
+  }
+
+  .hamburgerWrapper {
+    margin-left: auto;
   }
 }
 
