@@ -12,10 +12,45 @@ export default function MCSimRacingPage() {
     category: 'Brand Video',
     location: 'Fort Wayne, IN',
     year: 2025,
-    services: ['Cinematography', 'Editing', 'Color Grading', 'Sound Design'],
+    services: ['Offer Restructure', 'Website Development', 'Pre Production Planning', 'Content Management', 'Cinematography', 'Editing', 'Color Grading', 'Sound Design'],
     full_description: 'MC Sim Racing brings professional-grade racing simulation to Fort Wayne. This brand video captures the excitement and immersion of their state-of-the-art sim racing facility, showcasing the thrill of competitive racing in a controlled environment.',
-    additional_images: []
   };
+
+  const baseUrl = 'https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/projects/MCSimRacing/';
+
+  const photos = [
+    { src: 'MCRacingSignBest.webp', orientation: 'horizontal' },
+    { src: 'SimRacer.webp', orientation: 'vertical' },
+    { src: 'FocusedDadRacing.webp', orientation: 'vertical' },
+    { src: 'WideTwoRacingBays.webp', orientation: 'horizontal' },
+    { src: 'CloseUpSteeringWheelRacerHands.webp', orientation: 'horizontal' },
+    { src: 'FocusedKidRacing.webp', orientation: 'vertical' },
+    { src: 'GroupParty.webp', orientation: 'horizontal' },
+    { src: 'CloseUpOnGearGauge.webp', orientation: 'horizontal' },
+    { src: 'FocusedYoungAdultRacing.webp', orientation: 'vertical' },
+    { src: 'FullRCTrackWide.webp', orientation: 'horizontal' },
+    { src: 'BigRCCarsLinedUp.webp', orientation: 'horizontal' },
+    { src: 'KidRacing.webp', orientation: 'vertical' },
+    { src: 'CloseUpRacerYoke.webp', orientation: 'horizontal' },
+    { src: 'MarkFocusedRacing.webp', orientation: 'vertical' },
+    { src: 'RedLitEmptySimStation.webp', orientation: 'horizontal' },
+    { src: 'RacerusingSimZoomedOut.webp', orientation: 'horizontal' },
+    { src: 'CloseUpYokewithRacer.webp', orientation: 'vertical' },
+    { src: 'MCRacingLogoOnMasterDesk.webp', orientation: 'horizontal' },
+    { src: 'SideAngleBigRCCars.webp', orientation: 'horizontal' },
+    { src: 'BackofAlpineRacingChair.webp', orientation: 'vertical' },
+    { src: 'FocusedOverShoulderRacer.webp', orientation: 'horizontal' },
+    { src: 'OverShoulderWheelandGearGauge.webp', orientation: 'horizontal' },
+    { src: 'RCCarsSmallLinedUp.webp', orientation: 'horizontal' },
+  ];
+
+  const verticalVideos = [
+    { id: 'b5b461c1a3791279f69b426b39558e1f', title: 'Car Intense Edit' },
+    { id: '776063bc562625a47dbd5f3f7764fd2f', title: "Dad's Excitement" },
+    { id: '85ca4a25e0d4f4ab71294112ce8f3413', title: 'RC Stack Race' },
+    { id: '10e5d054472cd5299baf26c0fe8817c2', title: 'Finally Indy 500' },
+    { id: '0d3d36ac3df0c739d425feebb833dc30', title: 'Hit The Gap' },
+  ];
 
   return (
     <div className={styles.container}>
@@ -72,6 +107,42 @@ export default function MCSimRacingPage() {
               <span key={index} className={styles.serviceTag}>{service}</span>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Vertical Videos Section */}
+      <section className={styles.gallery}>
+        <h2 className={styles.sectionTitle}>SHORT FORM CONTENT</h2>
+        <div className={styles.verticalVideosRow}>
+          {verticalVideos.map((video, index) => (
+            <div key={index} className={styles.verticalVideoItem}>
+              <VideoPlayer
+                videoId={video.id}
+                className={styles.verticalVideoWrapper}
+                playTextSize="small"
+              />
+              <span className={styles.videoTitle}>{video.title}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Photo Gallery */}
+      <section className={styles.gallery}>
+        <h2 className={styles.sectionTitle}>PHOTO GALLERY</h2>
+        <div className={styles.masonryGrid}>
+          {photos.map((photo, index) => (
+            <div
+              key={index}
+              className={`${styles.masonryItem} ${photo.orientation === 'vertical' ? styles.masonryVertical : styles.masonryHorizontal}`}
+            >
+              <img
+                src={`${baseUrl}${photo.src}`}
+                alt={photo.src.replace('.webp', '').replace(/([A-Z])/g, ' $1').trim()}
+                className={styles.masonryImage}
+              />
+            </div>
+          ))}
         </div>
       </section>
 

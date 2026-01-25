@@ -46,7 +46,7 @@
 
 .logosGrid {
   display: grid;
-  grid-template-columns: repeat(4, auto);
+  grid-template-columns: repeat(5, auto);
   row-gap: 8px;
   column-gap: 0px;
   align-items: center;

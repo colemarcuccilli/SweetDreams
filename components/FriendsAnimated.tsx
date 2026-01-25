@@ -6,6 +6,18 @@ import { gsap } from 'gsap';
 
 const CLIENT_LOGOS = [
   {
+    name: "MC Sim Racing",
+    url: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/logoMCSimRacing.png"
+  },
+  {
+    name: "Coleman Automotive Group",
+    url: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/colemanautomotivegrouplogoblack.png"
+  },
+  {
+    name: "Prime Dealer Equity Fund",
+    url: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/Primedealerequityfundlogoblack.png"
+  },
+  {
     name: "Brookfield Zoo",
     url: "https://fweeyjnqwxywmpmnqpts.supabase.co/storage/v1/object/public/media/logos/BrookfieldZooLogo.png"
   },
