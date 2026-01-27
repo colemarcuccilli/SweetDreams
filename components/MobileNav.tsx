@@ -154,6 +154,18 @@ export default function MobileNav() {
 
       {/* Mobile Menu */}
       <div className={`${styles.mobileMenu} ${isOpen ? styles.menuOpen : ''}`}>
+        {/* Close Button - Centered at top */}
+        <button
+          className={styles.closeButton}
+          onClick={() => setIsOpen(false)}
+          aria-label="Close menu"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <line x1="6" y1="6" x2="18" y2="18" />
+            <line x1="6" y1="18" x2="18" y2="6" />
+          </svg>
+        </button>
+
         <nav className={styles.mobileNav}>
           {navLinks.map((link) => (
             <Link

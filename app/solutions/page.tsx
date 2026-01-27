@@ -1204,6 +1204,17 @@ export default function SolutionsPage() {
     if (typeof window === 'undefined' || !containerRef.current) return;
 
     const container = containerRef.current;
+    const isMobile = window.innerWidth <= 768;
+
+    // Mobile-optimized start values - trigger animations earlier on mobile
+    const getStart = (desktopStart: string) => {
+      if (!isMobile) return desktopStart;
+      // On mobile, trigger animations much earlier
+      if (desktopStart.includes('80%') || desktopStart.includes('85%') || desktopStart.includes('75%') || desktopStart.includes('70%')) {
+        return 'top 100%';
+      }
+      return desktopStart;
+    };
 
     // Small delay to ensure DOM is ready
     const timer = setTimeout(() => {
@@ -1273,7 +1284,7 @@ export default function SolutionsPage() {
         ease: 'power3.out',
         scrollTrigger: {
           trigger: productionHeader,
-          start: 'top 80%',
+          start: getStart('top 80%'),
           toggleActions: 'play none none reverse',
         }
       });
@@ -1292,7 +1303,7 @@ export default function SolutionsPage() {
         ease: 'power3.out',
         scrollTrigger: {
           trigger: card,
-          start: 'top 85%',
+          start: getStart('top 85%'),
           toggleActions: 'play none none reverse',
         }
       });
@@ -1323,7 +1334,7 @@ export default function SolutionsPage() {
         ease: 'power4.out',
         scrollTrigger: {
           trigger: designNumber,
-          start: 'top 80%',
+          start: getStart('top 80%'),
           toggleActions: 'play none none reverse',
         }
       });
@@ -1338,7 +1349,7 @@ export default function SolutionsPage() {
         ease: 'power3.out',
         scrollTrigger: {
           trigger: designMiniTitle,
-          start: 'top 80%',
+          start: getStart('top 80%'),
           toggleActions: 'play none none reverse',
         }
       });
@@ -1353,7 +1364,7 @@ export default function SolutionsPage() {
         ease: 'power4.out',
         scrollTrigger: {
           trigger: designTitle,
-          start: 'top 80%',
+          start: getStart('top 80%'),
           toggleActions: 'play none none reverse',
         }
       });
@@ -1369,7 +1380,7 @@ export default function SolutionsPage() {
         ease: 'power3.out',
         scrollTrigger: {
           trigger: designIntro,
-          start: 'top 75%',
+          start: getStart('top 75%'),
           toggleActions: 'play none none reverse',
         }
       });
@@ -1419,7 +1430,7 @@ export default function SolutionsPage() {
         ease: 'power3.out',
         scrollTrigger: {
           trigger: postHeader,
-          start: 'top 80%',
+          start: getStart('top 80%'),
           toggleActions: 'play none none reverse',
         }
       });
@@ -1507,7 +1518,7 @@ export default function SolutionsPage() {
         ease: 'power3.out',
         scrollTrigger: {
           trigger: launchHeader,
-          start: 'top 80%',
+          start: getStart('top 80%'),
           toggleActions: 'play none none reverse',
         }
       });
@@ -1525,7 +1536,7 @@ export default function SolutionsPage() {
         ease: 'power4.out',
         scrollTrigger: {
           trigger: studioContent,
-          start: 'top 70%',
+          start: getStart('top 70%'),
           toggleActions: 'play none none reverse',
         }
       });

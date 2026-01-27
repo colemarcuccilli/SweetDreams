@@ -2904,6 +2904,10 @@
     font-size: 42px;
   }
 
+  .accordionTitleWhite {
+    font-size: 42px;
+  }
+
   .accordionContentOpen {
     max-height: 1200px;
   }
@@ -3218,16 +3222,29 @@
     font-size: 28px;
   }
 
+  .accordionTitleWhite {
+    font-size: 28px;
+  }
+
   .accordionHeader {
-    padding: 24px 0;
+    padding: 32px 0 28px 0;
+  }
+
+  .accordionHeaderWhite {
+    padding: 32px 0 28px 0;
   }
 
   .accordionCaret {
     font-size: 18px;
   }
 
+  .accordionCaretWhite {
+    font-size: 18px;
+  }
+
   .accordionSubtitle {
-    font-size: 11px;
+    font-size: 9px;
+    bottom: 6px;
   }
 
   .pricingCardTitleBlack {
@@ -3335,11 +3352,11 @@
   }
 
   .showcaseTitleText {
-    font-size: 40px;
+    font-size: 28px;
   }
 
   .showcaseSubtitle {
-    font-size: 16px;
+    font-size: 14px;
   }
 
   .showcaseViewButton {
@@ -3695,7 +3712,7 @@
   }
 
   .studioShowcaseTitleText {
-    font-size: 40px;
+    font-size: 28px;
   }
 
   .studioShowcaseViewButton {
@@ -3709,7 +3726,7 @@
   }
 
   .studioShowcaseSubtitle {
-    font-size: 16px;
+    font-size: 14px;
   }
 
   .studioButton,

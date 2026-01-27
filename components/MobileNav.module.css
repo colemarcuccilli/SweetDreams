@@ -82,7 +82,36 @@
   flex-direction: column;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding: max(80px, env(safe-area-inset-top, 80px)) 32px 32px 32px;
+  padding: max(120px, env(safe-area-inset-top, 120px)) 32px 32px 32px;
+}
+
+/* Close button at top center */
+.closeButton {
+  position: absolute;
+  top: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 60px;
+  background: transparent;
+  border: 2px solid white;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100002;
+  transition: all 0.3s ease;
+}
+
+.closeButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(-50%) scale(1.1);
+}
+
+.closeButton svg {
+  stroke: white;
+  stroke-width: 2.5;
 }
 
 .mobileMenu.menuOpen {

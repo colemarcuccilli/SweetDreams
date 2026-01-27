@@ -18,6 +18,7 @@ export default function WhoAreWeAnimated() {
     if (typeof window === 'undefined' || !mainTextRef.current) return;
 
     const textElement = mainTextRef.current;
+    const isMobile = window.innerWidth <= 768;
 
     const ctx = gsap.context(() => {
       if (!textElement) return;
@@ -31,7 +32,7 @@ export default function WhoAreWeAnimated() {
         opacity: 0
       });
 
-      // Animate lines sliding in
+      // Animate lines sliding in - trigger instantly on mobile
       gsap.to(lines, {
         x: 0,
         opacity: 1,
@@ -41,7 +42,7 @@ export default function WhoAreWeAnimated() {
         delay: 0.3,
         scrollTrigger: {
           trigger: textElement,
-          start: 'top 60%',
+          start: isMobile ? 'top 100%' : 'top 60%',
           toggleActions: 'play none none reverse',
         }
       });

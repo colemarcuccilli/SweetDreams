@@ -18,6 +18,7 @@ export default function ContentStrategyAnimated() {
   useEffect(() => {
     if (typeof window === 'undefined' || !titleRef.current || !rotatingWordRef.current) return;
 
+    const isMobile = window.innerWidth <= 768;
     const words = ['WATCHING', 'LISTENING', 'BUYING', 'TRUSTING'];
     const wordClasses: { [key: string]: string } = {
       'WATCHING': styles.wordWatching,
@@ -97,10 +98,10 @@ export default function ContentStrategyAnimated() {
 
     // Add delay to ensure proper layout after navigation
     const setupTimeout = setTimeout(() => {
-      // Start the animation when scrolled into view
+      // Start the animation when scrolled into view - trigger earlier on mobile
       const trigger = ScrollTrigger.create({
         trigger: titleRef.current,
-        start: 'top 80%',
+        start: isMobile ? 'top 100%' : 'top 80%',
         once: true,
         onEnter: () => {
           setTimeout(animateWord, 1000); // Start after 1 second
@@ -114,7 +115,7 @@ export default function ContentStrategyAnimated() {
         gsap.from(ratioCards, {
           scrollTrigger: {
             trigger: ratioCardsRef.current,
-            start: 'top 80%',
+            start: isMobile ? 'top 100%' : 'top 80%',
             toggleActions: 'play none none none',
           },
           x: -100,
