@@ -4,6 +4,9 @@ import { resend, FROM_EMAIL } from '@/lib/emails/resend';
 // Both team members receive booking requests
 const BOOKING_EMAILS = ['jayvalleo@sweetdreamsmusic.com', 'cole@sweetdreamsmusic.com'];
 
+// Google Sheets Web App URL
+const GOOGLE_SHEETS_URL = 'https://script.google.com/a/macros/sweetdreamsmusic.com/s/AKfycbyMxEPnirW3FVVTafQ8l3P_1udp-qYD1Zs5c8-KPat63AIJI0yv-N9iAXbtzlgMOV-reQ/exec';
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -108,6 +111,28 @@ export async function POST(request: NextRequest) {
     };
 
     await resend.emails.send(confirmationEmail);
+
+    // Send to Google Sheets
+    try {
+      await fetch(GOOGLE_SHEETS_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          phone: phone || '',
+          company: company || '',
+          preferredDate: preferredDate || '',
+          preferredTime: preferredTime || '',
+          message: message || '',
+        }),
+      });
+    } catch (sheetError) {
+      // Log but don't fail the request if Google Sheets fails
+      console.error('Google Sheets error:', sheetError);
+    }
 
     console.log(`Call booking request received from ${name} (${email})`);
 

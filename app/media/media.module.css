@@ -109,6 +109,7 @@
 .why .sectionTitle {
   color: white;
   margin-bottom: 64px;
+  text-align: center;
 }
 
 .whyGrid {
@@ -139,6 +140,36 @@
   font-size: 15px;
   line-height: 1.8;
   color: #aaa;
+}
+
+/* Why - Three Columns Layout */
+.whyThreeColumns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 64px;
+  text-align: center;
+}
+
+.whyColumn {
+  padding: 48px 32px;
+}
+
+.whyColumnTitle {
+  font-family: 'Anton', sans-serif;
+  font-size: 48px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: white;
+  margin: 0 0 24px 0;
+  line-height: 1;
+}
+
+.whyColumnText {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #888;
+  margin: 0 0 8px 0;
 }
 
 /* Container */
@@ -698,6 +729,18 @@
     grid-template-columns: 1fr;
   }
 
+  .whyThreeColumns {
+    gap: 48px;
+  }
+
+  .whyColumnTitle {
+    font-size: 40px;
+  }
+
+  .whyColumnText {
+    font-size: 16px;
+  }
+
   .servicesGrid {
     grid-template-columns: 1fr;
   }
@@ -744,6 +787,24 @@
 
   .whyCard {
     padding: 32px 24px;
+  }
+
+  .whyThreeColumns {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .whyColumn {
+    padding: 32px 24px;
+  }
+
+  .whyColumnTitle {
+    font-size: 36px;
+    margin-bottom: 16px;
+  }
+
+  .whyColumnText {
+    font-size: 15px;
   }
 
   .listItem {

@@ -3,6 +3,61 @@
   background: white;
   padding: 120px 48px 160px 48px;
   border-radius: 0 0 80px 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Paint Splats */
+.paintSplats {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.splat {
+  position: absolute;
+  opacity: 0.2;
+  object-fit: contain;
+  filter: blur(3px);
+}
+
+.splatRed1 {
+  width: 280px;
+  top: 5%;
+  right: -2%;
+  transform: rotate(25deg);
+}
+
+.splatRed2 {
+  width: 180px;
+  bottom: 15%;
+  left: 10%;
+  transform: rotate(-55deg);
+}
+
+.splatBlue1 {
+  width: 240px;
+  top: 30%;
+  left: -3%;
+  transform: rotate(-20deg);
+}
+
+.splatYellow1 {
+  width: 200px;
+  bottom: 5%;
+  right: 15%;
+  transform: rotate(80deg);
+}
+
+.splatYellow2 {
+  width: 150px;
+  top: 60%;
+  right: 5%;
+  transform: rotate(-40deg);
 }
 
 .container {

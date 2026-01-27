@@ -55,33 +55,23 @@ export default function WhyAnimated() {
   return (
     <section className={styles.why} ref={containerRef}>
       <div className={styles.container}>
-        <p className={`${styles.miniTitle} animate-title`}>WHY SWEET DREAMS</p>
-        <h2 className={`${styles.sectionTitle} animate-title`}>WHAT SETS US APART</h2>
+        <h2 className={`${styles.sectionTitle} animate-title`}>WHY CLIENTS COME BACK</h2>
 
-        <div className={styles.whyGrid}>
-          <div className={`${styles.whyCard} animate-card`}>
-            <h3 className={styles.whyTitle}>FAST TURNAROUND</h3>
-            <p className={styles.whyDescription}>
-              We respond to all inquiries within 24 hours and deliver projects on time, every time. No endless waiting.
-            </p>
+        <div className={styles.whyThreeColumns}>
+          <div className={`${styles.whyColumn} animate-card`}>
+            <h3 className={styles.whyColumnTitle}>FAST</h3>
+            <p className={styles.whyColumnText}>24hr response.</p>
+            <p className={styles.whyColumnText}>On-time delivery.</p>
           </div>
-          <div className={`${styles.whyCard} animate-card`}>
-            <h3 className={styles.whyTitle}>FULL-SERVICE PRODUCTION</h3>
-            <p className={styles.whyDescription}>
-              From concept to final edit, we handle everything. Music, videography, editing, color grading—all in-house.
-            </p>
+          <div className={`${styles.whyColumn} animate-card`}>
+            <h3 className={styles.whyColumnTitle}>FULL-SERVICE</h3>
+            <p className={styles.whyColumnText}>Concept to cut.</p>
+            <p className={styles.whyColumnText}>All in-house.</p>
           </div>
-          <div className={`${styles.whyCard} animate-card`}>
-            <h3 className={styles.whyTitle}>CLIENT-FOCUSED APPROACH</h3>
-            <p className={styles.whyDescription}>
-              Your vision matters. We work closely with you at every step to ensure the final product exceeds expectations.
-            </p>
-          </div>
-          <div className={`${styles.whyCard} animate-card`}>
-            <h3 className={styles.whyTitle}>PROFESSIONAL QUALITY</h3>
-            <p className={styles.whyDescription}>
-              Cinema-grade cameras, professional audio, expert color grading. We don't compromise on quality.
-            </p>
+          <div className={`${styles.whyColumn} animate-card`}>
+            <h3 className={styles.whyColumnTitle}>QUALITY</h3>
+            <p className={styles.whyColumnText}>Cinema-grade.</p>
+            <p className={styles.whyColumnText}>No compromises.</p>
           </div>
         </div>
       </div>

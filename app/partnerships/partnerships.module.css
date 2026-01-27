@@ -1,159 +1,2037 @@
+/* Base Page Styles */
 .page {
-  min-height: 100vh;
   background: white;
-  padding: 120px 48px 80px;
 }
 
 .container {
   max-width: 1200px;
   margin: 0 auto;
+  padding-left: 48px;
+  padding-right: 48px;
 }
 
-.header {
-  text-align: center;
-  margin-bottom: 80px;
-}
-
-.label {
+/* Section Label & Title (shared) */
+.sectionLabel {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
-  color: #e63636;
+  letter-spacing: 0.3em;
+  color: #666;
   display: block;
   margin-bottom: 16px;
 }
 
-.title {
+.sectionTitle {
   font-family: 'Anton', sans-serif;
-  font-size: 100px;
+  font-size: 80px;
   font-weight: 400;
   text-transform: uppercase;
   line-height: 1;
-  margin: 0 0 32px 0;
-  color: black;
+  margin: 0 0 60px 0;
 }
 
-.subtitle {
+/* ================================
+   HERO SECTION - Split Layout
+   ================================ */
+.heroSection {
+  width: 100%;
+  background: white;
+  padding: 0 48px 80px 48px;
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+}
+
+.heroContainer {
+  max-width: 1800px;
+  width: 100%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: center;
+}
+
+.heroLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.heroLabel {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: #666;
+}
+
+.heroTitle {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.heroTitleLine {
+  font-family: 'Anton', sans-serif;
+  font-size: 95px;
+  color: black;
+  text-transform: uppercase;
+  line-height: 0.95;
+  display: block;
+}
+
+.heroTitleAccent {
+  color: #059669;
+  position: relative;
+}
+
+.heroSubtext {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 20px;
   line-height: 1.6;
   color: #666;
-  max-width: 700px;
-  margin: 0 auto;
+  margin: 16px 0 8px 0;
+  max-width: 500px;
 }
 
-.section {
-  margin-bottom: 80px;
-}
-
-.sectionTitle {
-  font-family: 'Anton', sans-serif;
-  font-size: 48px;
-  font-weight: 400;
-  text-transform: uppercase;
-  margin: 0 0 48px 0;
-  color: black;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 32px;
-}
-
-.card {
-  background: #f9f9f9;
-  padding: 48px;
-}
-
-.card h3 {
-  font-family: 'Anton', sans-serif;
-  font-size: 24px;
-  font-weight: 400;
-  text-transform: uppercase;
-  margin: 0 0 16px 0;
-  color: black;
-}
-
-.card p {
+.heroCta {
+  display: inline-block;
+  width: fit-content;
+  background: black;
+  color: white;
   font-family: 'IBM Plex Mono', monospace;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 22px 56px;
+  border-radius: 999px;
   font-size: 16px;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  border: 2px solid black;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  z-index: 10;
+  margin-top: 8px;
+}
+
+.heroCta::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  background: #059669;
+  border-radius: 50%;
+  transition: width 0.8s ease, height 0.8s ease;
+  z-index: -1;
+}
+
+.heroCta:hover {
+  color: white;
+  border-color: #059669;
+  transform: scale(1.05);
+  box-shadow: 0 10px 40px rgba(5, 150, 105, 0.3);
+}
+
+.heroCta:hover::before {
+  width: 600px;
+  height: 600px;
+}
+
+/* Right Side - Chart */
+.heroRight {
+  position: relative;
+}
+
+.heroChartBox {
+  position: relative;
+  width: 100%;
+  padding: 0;
+}
+
+/* Line Charts Container */
+.lineChartsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lineChartWrapper {
+  width: 80%;
+  height: 500px;
+  position: relative;
+}
+
+.lineChartSvg {
+  width: 100%;
+  height: 100%;
+}
+
+.lineChartPath {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.marketingLine {
+  stroke: #4A90E2;
+}
+
+.revenueLine {
+  stroke: #059669;
+}
+
+/* Chart hover points */
+.chartPoints {
+  pointer-events: none;
+}
+
+.marketingPoint,
+.revenuePoint {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.marketingPoint {
+  fill: #4A90E2;
+}
+
+.revenuePoint {
+  fill: #059669;
+}
+
+.lineChartSvg:hover .marketingPoint,
+.lineChartSvg:hover .revenuePoint {
+  opacity: 1;
+}
+
+/* Chart Legend */
+.chartLegend {
+  display: flex;
+  justify-content: flex-start;
+  gap: 24px;
+}
+
+.chartLegendItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chartLegendLine {
+  width: 24px;
+  height: 3px;
+  border-radius: 2px;
+}
+
+.chartLegendLabel {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* Chart caption */
+.chartCaption {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  color: #666;
+  text-align: left;
+  margin: 16px 0 0 0;
+  font-style: italic;
+}
+
+/* ================================
+   MANIFESTO SECTION
+   ================================ */
+.manifestoSection {
+  background: linear-gradient(180deg, #0a0a0a 0%, #111 50%, #0a0a0a 100%);
+  padding: 80px 60px;
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.manifestoSection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 80px;
+  background: linear-gradient(180deg, transparent, #F4C430, transparent);
+}
+
+.manifestoSection::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 80px;
+  background: linear-gradient(180deg, transparent, #e63636, transparent);
+}
+
+.manifestoContainer {
+  max-width: 1100px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  width: 100%;
+}
+
+.manifestoLabel {
+  display: inline-block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: #F4C430;
+  text-transform: uppercase;
+  margin-bottom: 40px;
+  padding: 10px 20px;
+  border: 1px solid rgba(244, 196, 48, 0.4);
+  border-radius: 999px;
+  background: rgba(244, 196, 48, 0.08);
+  box-shadow: 0 0 30px rgba(244, 196, 48, 0.15);
+}
+
+/* Simple content container - no card */
+.manifestoContent {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+  z-index: 2;
+}
+
+.manifestoLine {
+  font-family: 'Anton', sans-serif;
+  font-size: 36px;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 1.15;
+  color: rgba(255, 255, 255, 0.15);
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 12px;
+  padding: 4px 0;
+  transition: all 0.3s ease;
+}
+
+/* Active line gets enhanced presence */
+.manifestoLine.manifestoLineActive {
+  transform: scale(1.02);
+  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.1));
+}
+
+.manifestoLineAccent {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+/* Base word styling - starts very dim */
+.manifestoWord {
+  display: inline-block;
+  cursor: default;
+  position: relative;
+  opacity: 0.1;
+  color: white !important;
+}
+
+/* Active/reading state - full opacity */
+.manifestoWordActive {
+  opacity: 1;
+}
+
+.manifestoHighlight {
+  color: #F4C430 !important;
+}
+
+.manifestoHighlightRed {
+  color: #e63636 !important;
+}
+
+.manifestoHighlightBlue {
+  color: #4A90E2 !important;
+}
+
+.manifestoHighlightGreen {
+  color: #059669 !important;
+}
+
+.manifestoDivider {
+  width: 120px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #F4C430 30%, #e63636 70%, transparent);
+  margin: 24px auto;
+  border-radius: 2px;
+  box-shadow: 0 0 20px rgba(244, 196, 48, 0.3);
+}
+
+.manifestoFinal {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 24px 32px;
+  background: linear-gradient(135deg, rgba(244, 196, 48, 0.03), rgba(5, 150, 105, 0.03));
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.manifestoFinalLine {
+  font-family: 'Anton', sans-serif;
+  font-size: 42px;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 1.15;
+  color: rgba(255, 255, 255, 0.15);
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 14px;
+  perspective: 1200px;
+  transform-style: preserve-3d;
+  padding: 2px 0;
+  transition: all 0.3s ease;
+}
+
+.manifestoFinalLine.manifestoLineActive {
+  transform: scale(1.03);
+}
+
+.manifestoSignature {
+  margin-top: 12px;
+}
+
+/* Final words - same simple approach */
+.manifestoFinalWord {
+  display: inline-block;
+  cursor: default;
+  position: relative;
+  opacity: 0.1;
+  color: white !important;
+}
+
+.manifestoFinalWordActive {
+  opacity: 1;
+}
+
+/* Partnership word gradient */
+.manifestoPartnershipWord {
+  background: linear-gradient(135deg, #F4C430, #059669, #4A90E2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ================================
+   PROBLEM SECTION
+   ================================ */
+.problemSection {
+  background: black;
+  padding: 120px 0;
+}
+
+.problemSection .container {
+  max-width: 900px;
+}
+
+.problemLine {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 22px;
+  line-height: 1.6;
+  color: #888;
+  margin: 0 0 24px 0;
+  text-align: center;
+}
+
+.problemHighlight {
+  color: white;
+  font-weight: 600;
+  font-size: 24px;
+}
+
+/* ================================
+   HOW IT WORKS SECTION
+   ================================ */
+.howSection {
+  background: white;
+  padding: 120px 0;
+}
+
+.howSection .sectionTitle {
+  color: black;
+  text-align: center;
+}
+
+.howSection .sectionLabel {
+  text-align: center;
+}
+
+.howGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+.howCard {
+  text-align: center;
+  padding: 48px 32px;
+  border: 2px solid #e0e0e0;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Gradient border glow that follows mouse - 25% of border */
+.howCard::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 18px;
+  background: conic-gradient(
+    from var(--gradient-angle, 0deg) at var(--gradient-x, 50%) var(--gradient-y, 50%),
+    #e63636 0deg,
+    #F4C430 30deg,
+    #4A90E2 60deg,
+    transparent 90deg,
+    transparent 360deg
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Inner background to create border effect */
+.howCard::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  background: white;
+  border-radius: 14px;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.howCard:hover {
+  border-color: transparent;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+}
+
+.howCard:hover::before {
+  opacity: 1;
+}
+
+.howStep {
+  font-family: 'Anton', sans-serif;
+  font-size: 64px;
+  color: #e0e0e0;
+  line-height: 1;
+  display: block;
+  margin-bottom: 24px;
+}
+
+.howCardTitle {
+  font-family: 'Anton', sans-serif;
+  font-size: 28px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: black;
+  margin: 0 0 16px 0;
+}
+
+.howCardText {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 15px;
   line-height: 1.6;
   color: #666;
   margin: 0;
 }
 
-.cta {
+/* ================================
+   WHAT'S INCLUDED SECTION
+   ================================ */
+.includedSection {
   background: black;
+  padding: 120px 0;
+}
+
+.includedSection .sectionLabel {
+  color: #666;
+}
+
+.includedSection .sectionTitle {
   color: white;
-  padding: 80px;
-  text-align: center;
 }
 
-.ctaTitle {
-  font-family: 'Anton', sans-serif;
-  font-size: 64px;
-  font-weight: 400;
-  text-transform: uppercase;
-  line-height: 1.1;
-  margin: 0 0 24px 0;
+.includedGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
 }
 
-.ctaText {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 18px;
-  line-height: 1.6;
-  color: #999;
-  max-width: 600px;
-  margin: 0 auto 48px;
-}
-
-.ctaButton {
-  display: inline-block;
-  background: white;
-  color: black;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 16px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  padding: 20px 48px;
-  text-decoration: none;
+.includedCard {
+  background: #111;
+  padding: 40px;
+  border-radius: 16px;
   transition: all 0.3s ease;
 }
 
-.ctaButton:hover {
-  background: #f0f0f0;
+.includedCard:hover {
+  background: #1a1a1a;
+  transform: translateY(-4px);
 }
 
-@media (max-width: 768px) {
-  .page {
-    padding: 100px 24px 60px;
+.includedIcon {
+  color: white;
+  margin-bottom: 24px;
+}
+
+.includedCardTitle {
+  font-family: 'Anton', sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: white;
+  margin: 0 0 12px 0;
+}
+
+.includedCardText {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #888;
+  margin: 0;
+}
+
+/* ================================
+   WHO THIS IS FOR SECTION
+   ================================ */
+.whoSection {
+  background: white;
+  padding: 120px 0;
+}
+
+.whoSection .sectionLabel {
+  text-align: center;
+}
+
+.whoSection .sectionTitle {
+  color: black;
+  text-align: center;
+}
+
+.whoGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 80px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.whoColumn {
+  padding: 48px;
+  border-radius: 16px;
+}
+
+.whoColumn:first-child {
+  background: #f9f9f9;
+}
+
+.whoColumn:last-child {
+  background: #1a1a1a;
+}
+
+.whoColumnTitle {
+  font-family: 'Anton', sans-serif;
+  font-size: 32px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: #059669;
+  margin: 0 0 32px 0;
+}
+
+.whoColumnTitleNot {
+  font-family: 'Anton', sans-serif;
+  font-size: 32px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: #e63636;
+  margin: 0 0 32px 0;
+}
+
+.whoList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.whoItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.whoColumn:first-child .whoItem {
+  color: #333;
+}
+
+.whoColumn:last-child .whoItem {
+  color: #ccc;
+}
+
+.whoCheck {
+  color: #059669;
+  font-size: 20px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.whoX {
+  color: #e63636;
+  font-size: 20px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ================================
+   INVESTMENT SECTION
+   ================================ */
+.investSection {
+  background: black;
+  padding: 120px 0;
+}
+
+.investSection .sectionLabel {
+  text-align: center;
+  color: #666;
+}
+
+.investSection .sectionTitle {
+  color: white;
+  text-align: center;
+}
+
+.investGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+  max-width: 900px;
+  margin: 0 auto 60px auto;
+}
+
+.investCard {
+  background: #111;
+  padding: 48px;
+  border-radius: 16px;
+  text-align: center;
+  border: 2px solid #222;
+  transition: all 0.3s ease;
+}
+
+.investCard:hover {
+  border-color: #444;
+}
+
+.investCardTitle {
+  font-family: 'Anton', sans-serif;
+  font-size: 28px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: white;
+  margin: 0 0 16px 0;
+}
+
+.investCardAmount {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 18px;
+  font-weight: 600;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 8px 0;
+}
+
+.investCardDetail {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 24px 0;
+}
+
+.investCardText {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #888;
+  margin: 0;
+}
+
+.investNote {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 16px;
+  line-height: 1.7;
+  color: #888;
+  text-align: center;
+  margin: 0 auto 48px auto;
+  max-width: 500px;
+}
+
+.investCta {
+  display: block;
+  width: fit-content;
+  margin: 0 auto;
+  background: white;
+  color: black;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 20px 60px;
+  border-radius: 999px;
+  font-size: 14px;
+  letter-spacing: 0.15em;
+  border: none;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.investCta::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  background: #333;
+  border-radius: 50%;
+  transition: width 0.8s ease, height 0.8s ease;
+  z-index: 0;
+}
+
+.investCta:hover {
+  color: white;
+  transform: scale(1.05);
+  box-shadow: 0 10px 40px rgba(255, 255, 255, 0.2);
+}
+
+.investCta:hover::before {
+  width: 500px;
+  height: 500px;
+}
+
+/* ================================
+   CASE STUDY SECTION
+   ================================ */
+.caseSection {
+  background: white;
+  padding: 120px 0;
+}
+
+.caseSection .sectionLabel {
+  text-align: center;
+}
+
+.caseSection .sectionTitle {
+  color: black;
+  text-align: center;
+}
+
+.caseContent {
+  max-width: 900px;
+  margin: 0 auto;
+  background: #f9f9f9;
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+.caseHeader {
+  background: black;
+  padding: 24px;
+  text-align: center;
+}
+
+.caseType {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: white;
+}
+
+.caseComparison {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 60px;
+}
+
+.caseBefore,
+.caseAfter {
+  flex: 1;
+  text-align: center;
+}
+
+.caseLabel {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #666;
+  margin: 0 0 16px 0;
+}
+
+.caseNumber {
+  font-family: 'Anton', sans-serif;
+  font-size: 56px;
+  font-weight: 400;
+  color: black;
+  margin: 0 0 24px 0;
+  line-height: 1;
+}
+
+.caseNumber span {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 18px;
+  color: #666;
+}
+
+.caseList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  color: #666;
+  line-height: 2;
+}
+
+.caseArrow {
+  font-size: 48px;
+  color: #ccc;
+  padding: 0 32px;
+}
+
+.caseBottom {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  padding: 40px;
+  background: black;
+}
+
+.caseStat {
+  text-align: center;
+}
+
+.caseStatLabel {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #666;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.caseStatValue {
+  font-family: 'Anton', sans-serif;
+  font-size: 32px;
+  font-weight: 400;
+  color: white;
+}
+
+.caseDisclaimer {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 16px;
+  color: #666;
+  text-align: center;
+  margin-top: 40px;
+  font-style: italic;
+}
+
+/* ================================
+   FAQ SECTION
+   ================================ */
+.faqSection {
+  background: black;
+  padding: 120px 0;
+}
+
+.faqSection .sectionLabel {
+  color: #666;
+}
+
+.faqSection .sectionTitle {
+  color: white;
+}
+
+.faqList {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.faqItem {
+  border-bottom: 1px solid #333;
+}
+
+.faqItem:first-child {
+  border-top: 1px solid #333;
+}
+
+.faqQuestion {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: 'Anton', sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: white;
+  transition: color 0.3s ease;
+}
+
+.faqQuestion:hover {
+  color: #ccc;
+}
+
+.faqArrow {
+  flex-shrink: 0;
+  color: #666;
+  transition: transform 0.3s ease;
+}
+
+.faqArrowOpen {
+  transform: rotate(180deg);
+}
+
+.faqAnswer {
+  padding: 0 0 28px 0;
+  animation: slideDown 0.3s ease;
+}
+
+.faqAnswer p {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 15px;
+  line-height: 1.8;
+  color: #888;
+  margin: 0;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ================================
+   APPLICATION FORM SECTION
+   ================================ */
+.formSection {
+  background: white;
+  padding: 120px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Paint Splats */
+.paintSplats {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.splat {
+  position: absolute;
+  opacity: 0.15;
+  max-width: 400px;
+}
+
+.splatRed1 {
+  top: 5%;
+  right: -100px;
+  transform: rotate(45deg);
+}
+
+.splatBlue1 {
+  bottom: 10%;
+  left: -150px;
+  transform: rotate(-30deg);
+}
+
+.splatYellow1 {
+  top: 40%;
+  right: -50px;
+  transform: rotate(15deg);
+  max-width: 300px;
+}
+
+.formSection .container {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.formHeader {
+  text-align: left;
+}
+
+.formTitle {
+  font-family: 'Anton', sans-serif;
+  font-size: 72px;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 1;
+  color: black;
+  margin: 0 0 24px 0;
+}
+
+.formSubtitle {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 16px;
+  line-height: 1.7;
+  color: #666;
+  max-width: 450px;
+  margin: 0 0 24px 0;
+}
+
+.formNote {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #059669;
+  background: #d1fae5;
+  padding: 16px 20px;
+  border-radius: 12px;
+  max-width: 450px;
+  margin: 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.input,
+.select,
+.textarea {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 15px;
+  padding: 18px 24px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  background: white;
+  transition: all 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  outline: none;
+  border-color: black;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 20px center;
+  padding-right: 48px;
+}
+
+.select option {
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.turnstileContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+}
+
+.turnstileWidget {
+  min-height: 65px;
+}
+
+.turnstileError {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  color: #e63636;
+  margin: 0;
+  text-align: center;
+}
+
+.successMessage {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  color: #059669;
+  background: #d1fae5;
+  padding: 16px 24px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.errorMessage {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  color: #dc2626;
+  background: #fee2e2;
+  padding: 16px 24px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.submitButton {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 20px 60px;
+  border-radius: 16px;
+  font-size: 14px;
+  letter-spacing: 0.15em;
+  background: black;
+  color: white;
+  border: 2px solid black;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.submitButton::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  background: white;
+  border-radius: 50%;
+  transition: width 0.8s ease, height 0.8s ease;
+  z-index: -1;
+}
+
+.submitButton:hover:not(:disabled) {
+  transform: scale(1.02);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  color: black;
+}
+
+.submitButton:hover:not(:disabled)::before {
+  width: 600px;
+  height: 600px;
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ================================
+   RESPONSIVE STYLES
+   ================================ */
+
+/* Large Tablets / Small Desktops */
+@media (max-width: 1200px) {
+  .sectionTitle {
+    font-size: 70px;
   }
 
-  .title {
+  .heroSection {
+    padding: 0 32px 32px 32px;
+  }
+
+  .lineChartWrapper {
+    height: 120px;
+  }
+
+  .heroTitleLine {
+    font-size: 85px;
+  }
+
+  .heroContent {
+    padding: 40px 48px;
+  }
+
+  .heroCta {
+    padding: 16px 48px;
+    font-size: 18px;
+  }
+
+  .howGrid {
+    gap: 32px;
+  }
+
+  .howCard {
+    padding: 40px 24px;
+  }
+
+  .howStep {
     font-size: 56px;
   }
 
-  .subtitle {
-    font-size: 16px;
+  .howCardTitle {
+    font-size: 24px;
   }
 
-  .grid {
-    grid-template-columns: 1fr;
+  .includedGrid {
+    gap: 24px;
   }
 
-  .card {
+  .includedCard {
     padding: 32px;
   }
 
-  .cta {
-    padding: 48px 24px;
+  .investGrid {
+    gap: 32px;
   }
 
-  .ctaTitle {
+  .investCard {
+    padding: 40px;
+  }
+
+  .caseNumber {
+    font-size: 48px;
+  }
+
+  .formSection .container {
+    gap: 60px;
+  }
+
+  .formTitle {
+    font-size: 60px;
+  }
+}
+
+/* Tablets */
+@media (max-width: 1024px) {
+  .container {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .sectionTitle {
+    font-size: 60px;
+    margin-bottom: 48px;
+  }
+
+  .heroSection {
+    padding: 0 24px 24px 24px;
+  }
+
+  .heroContainer {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .heroLeft {
+    text-align: center;
+    align-items: center;
+  }
+
+  .heroChartBox {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .lineChartWrapper {
+    height: 100px;
+  }
+
+  .chartLegendLabel {
+    font-size: 11px;
+  }
+
+  .heroTitleLine {
+    font-size: 60px;
+  }
+
+  .heroContent {
+    padding: 32px 40px;
+  }
+
+  .heroCta {
+    padding: 14px 40px;
+    font-size: 16px;
+  }
+
+  .heroTagline {
+    font-size: 12px;
+  }
+
+  .problemLine {
+    font-size: 20px;
+  }
+
+  .problemHighlight {
+    font-size: 22px;
+  }
+
+  .howGrid {
+    grid-template-columns: 1fr;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .howCard {
+    padding: 40px;
+  }
+
+  .includedGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .whoGrid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .whoColumn {
+    padding: 40px;
+  }
+
+  .investGrid {
+    grid-template-columns: 1fr;
+    max-width: 500px;
+  }
+
+  .caseComparison {
+    padding: 48px 32px;
+  }
+
+  .caseNumber {
+    font-size: 44px;
+  }
+
+  .caseBottom {
+    gap: 40px;
+    padding: 32px;
+  }
+
+  .faqQuestion {
+    font-size: 22px;
+    padding: 24px 0;
+  }
+
+  .formSection .container {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .formHeader {
+    text-align: center;
+  }
+
+  .formTitle {
+    font-size: 56px;
+  }
+
+  .formSubtitle {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .manifestoSection {
+    padding: 60px 32px;
+  }
+
+  .manifestoContent {
+    padding: 36px 40px;
+    gap: 6px;
+  }
+
+  .manifestoLine {
+    font-size: 30px;
+    gap: 0 10px;
+  }
+
+  .manifestoFinalLine {
     font-size: 36px;
+    gap: 0 12px;
+  }
+
+  .manifestoDivider {
+    margin: 20px auto;
+  }
+
+  .manifestoFinal {
+    padding: 20px 28px;
+    margin-top: 16px;
+  }
+}
+
+/* Small Tablets / Large Phones */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .sectionTitle {
+    font-size: 48px;
+    margin-bottom: 40px;
+  }
+
+  .sectionLabel {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+  }
+
+  .heroSection {
+    padding: 0 16px 16px 16px;
+  }
+
+  .lineChartsContainer {
+    gap: 12px;
+  }
+
+  .lineChartWrapper {
+    height: 80px;
+  }
+
+  .chartLegend {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .chartLegendLabel {
+    font-size: 10px;
+  }
+
+  .chartCaption {
+    font-size: 12px;
+    margin-top: 20px;
+  }
+
+  .heroContent {
+    padding: 24px;
+  }
+
+  .heroTopRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .heroLabel {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+  }
+
+  .heroTitleLine {
+    font-size: 42px;
+  }
+
+  .heroCta {
+    padding: 14px 32px;
+    font-size: 14px;
+  }
+
+  .heroTagline {
+    font-size: 11px;
+  }
+
+  .problemSection {
+    padding: 80px 0;
+  }
+
+  .problemLine {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+
+  .problemHighlight {
+    font-size: 20px;
+  }
+
+  .howSection,
+  .includedSection,
+  .whoSection,
+  .investSection,
+  .caseSection,
+  .faqSection,
+  .formSection {
+    padding: 80px 0;
+  }
+
+  .howStep {
+    font-size: 48px;
+  }
+
+  .howCardTitle {
+    font-size: 22px;
+  }
+
+  .includedGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .includedCard {
+    padding: 32px;
+  }
+
+  .includedCardTitle {
+    font-size: 22px;
+  }
+
+  .whoColumnTitle,
+  .whoColumnTitleNot {
+    font-size: 28px;
+  }
+
+  .whoItem {
+    font-size: 15px;
+  }
+
+  .investCardTitle {
+    font-size: 24px;
+  }
+
+  .caseComparison {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .caseArrow {
+    transform: rotate(90deg);
+    padding: 0;
+  }
+
+  .caseNumber {
+    font-size: 40px;
+  }
+
+  .caseBottom {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .faqQuestion {
+    font-size: 20px;
+    padding: 20px 0;
+  }
+
+  .faqAnswer p {
+    font-size: 14px;
+  }
+
+  .formTitle {
+    font-size: 44px;
+  }
+
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .input,
+  .select,
+  .textarea {
+    font-size: 16px;
+    padding: 16px 20px;
+  }
+
+  .submitButton {
+    padding: 18px 40px;
+    font-size: 13px;
+  }
+
+  .manifestoSection {
+    padding: 40px 16px;
+    min-height: auto;
+  }
+
+  .manifestoLabel {
+    font-size: 9px;
+    padding: 8px 16px;
+    margin-bottom: 24px;
+  }
+
+  .manifestoContent {
+    padding: 28px 24px;
+    gap: 5px;
+    border-radius: 24px;
+  }
+
+  .manifestoLine {
+    font-size: 22px;
+    gap: 0 8px;
+    padding: 3px 0;
+  }
+
+  .manifestoFinalLine {
+    font-size: 26px;
+    gap: 0 8px;
+  }
+
+  .manifestoDivider {
+    margin: 16px auto;
+    width: 80px;
+  }
+
+  .manifestoFinal {
+    padding: 16px 20px;
+    margin-top: 12px;
+    gap: 4px;
+  }
+}
+
+/* Small Phones */
+@media (max-width: 430px) {
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .sectionTitle {
+    font-size: 36px;
+    margin-bottom: 32px;
+  }
+
+  .sectionLabel {
+    font-size: 10px;
+    margin-bottom: 12px;
+  }
+
+  .heroSection {
+    padding: 0 12px 12px 12px;
+  }
+
+  .heroVideoBox {
+    border-radius: 16px;
+  }
+
+  .heroContent {
+    padding: 20px;
+  }
+
+  .heroTitleLine {
+    font-size: 32px;
+  }
+
+  .heroLabel {
+    font-size: 9px;
+  }
+
+  .heroCta {
+    padding: 12px 24px;
+    font-size: 12px;
+  }
+
+  .heroTagline {
+    font-size: 10px;
+  }
+
+  .problemSection,
+  .howSection,
+  .includedSection,
+  .whoSection,
+  .investSection,
+  .caseSection,
+  .faqSection,
+  .formSection {
+    padding: 60px 0;
+  }
+
+  .problemLine {
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+
+  .problemHighlight {
+    font-size: 17px;
+  }
+
+  .howCard {
+    padding: 32px 24px;
+  }
+
+  .howStep {
+    font-size: 40px;
+    margin-bottom: 16px;
+  }
+
+  .howCardTitle {
+    font-size: 20px;
+  }
+
+  .howCardText {
+    font-size: 14px;
+  }
+
+  .includedCard {
+    padding: 28px;
+  }
+
+  .includedCardTitle {
+    font-size: 20px;
+  }
+
+  .includedCardText {
+    font-size: 13px;
+  }
+
+  .whoColumn {
+    padding: 32px 24px;
+  }
+
+  .whoColumnTitle,
+  .whoColumnTitleNot {
+    font-size: 24px;
+    margin-bottom: 24px;
+  }
+
+  .whoItem {
+    font-size: 14px;
+    gap: 12px;
+  }
+
+  .whoList {
+    gap: 16px;
+  }
+
+  .investCard {
+    padding: 32px;
+  }
+
+  .investCardTitle {
+    font-size: 22px;
+  }
+
+  .investCardAmount {
+    font-size: 16px;
+  }
+
+  .investCardDetail,
+  .investCardText {
+    font-size: 13px;
+  }
+
+  .investCta {
+    padding: 16px 40px;
+    font-size: 12px;
+  }
+
+  .caseComparison {
+    padding: 32px 24px;
+  }
+
+  .caseNumber {
+    font-size: 36px;
+    margin-bottom: 16px;
+  }
+
+  .caseNumber span {
+    font-size: 14px;
+  }
+
+  .caseList {
+    font-size: 13px;
+  }
+
+  .caseBottom {
+    padding: 24px;
+  }
+
+  .caseStatLabel {
+    font-size: 10px;
+  }
+
+  .caseStatValue {
+    font-size: 26px;
+  }
+
+  .faqQuestion {
+    font-size: 18px;
+    padding: 18px 0;
+  }
+
+  .faqAnswer {
+    padding-bottom: 18px;
+  }
+
+  .faqAnswer p {
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .formTitle {
+    font-size: 36px;
+  }
+
+  .formSubtitle {
+    font-size: 14px;
+  }
+
+  .input,
+  .select,
+  .textarea {
+    padding: 14px 16px;
+    font-size: 16px;
+    border-radius: 10px;
+  }
+
+  .submitButton {
+    padding: 16px 32px;
+    font-size: 12px;
+    border-radius: 12px;
+  }
+
+  .splat {
+    max-width: 250px;
+    opacity: 0.1;
+  }
+
+  .manifestoSection {
+    padding: 32px 12px;
+    min-height: auto;
+  }
+
+  .manifestoLabel {
+    font-size: 8px;
+    padding: 6px 12px;
+    margin-bottom: 20px;
+  }
+
+  .manifestoContent {
+    padding: 20px 16px;
+    gap: 4px;
+    border-radius: 20px;
+  }
+
+  .manifestoLine {
+    font-size: 18px;
+    gap: 0 6px;
+    padding: 2px 0;
+  }
+
+  .manifestoFinalLine {
+    font-size: 22px;
+    gap: 0 6px;
+  }
+
+  .manifestoDivider {
+    width: 60px;
+    margin: 12px auto;
+  }
+
+  .manifestoFinal {
+    padding: 14px 16px;
+    margin-top: 10px;
+    gap: 3px;
+    border-radius: 16px;
+  }
+}
+
+/* Extra Small Phones */
+@media (max-width: 374px) {
+  .heroVideoBox {
+    border-radius: 12px;
+  }
+
+  .heroContent {
+    padding: 16px;
+  }
+
+  .heroTitleLine {
+    font-size: 26px;
+  }
+
+  .heroCta {
+    padding: 10px 20px;
+    font-size: 11px;
+  }
+
+  .sectionTitle {
+    font-size: 32px;
+  }
+
+  .formTitle {
+    font-size: 32px;
+  }
+
+  .whoColumnTitle,
+  .whoColumnTitleNot {
+    font-size: 22px;
+  }
+
+  .caseNumber {
+    font-size: 32px;
+  }
+
+  .faqQuestion {
+    font-size: 16px;
   }
 }

@@ -1,553 +1,244 @@
 .section {
   position: relative;
-  height: auto;
-  min-height: auto;
-  padding: 80px 0 180px 0;
+  padding: 100px 0;
   background: #1a1a1a;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  overflow: visible;
 }
 
-/* Section header */
-.headerContainer {
-  max-width: 1800px;
+/* Paint Splat Background Effects */
+.paintSplats {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  margin: 0 auto 64px auto;
-  padding-left: 96px;
-  padding-right: 96px;
-  text-align: center;
+  height: calc(100% + 200px);
+  pointer-events: none;
+  z-index: 0;
+  overflow: visible;
 }
 
-.miniTitle {
-  font-family: 'Anton', sans-serif;
-  font-size: 18px;
-  text-transform: uppercase;
-  letter-spacing: 0.3em;
-  color: #666;
-  margin-bottom: 0px;
-  font-weight: 400;
+.splat {
+  position: absolute;
+  opacity: 0.25;
+  object-fit: contain;
 }
 
-.sectionTitle {
-  font-family: 'Anton', sans-serif;
-  font-size: 120px;
-  text-transform: uppercase;
-  line-height: 1;
-  font-weight: 400;
-  color: white;
-  margin-top: 0px;
-  margin-bottom: 0px;
+/* Red splats */
+.splatRed1 {
+  width: 280px;
+  top: 10%;
+  left: -2%;
+  transform: rotate(-15deg);
+}
+
+.splatRed2 {
+  width: 180px;
+  bottom: -80px;
+  right: 25%;
+  transform: rotate(70deg);
+}
+
+/* Blue splats */
+.splatBlue1 {
+  width: 250px;
+  top: 5%;
+  right: -1%;
+  transform: rotate(25deg);
+}
+
+.splatBlue2 {
+  width: 200px;
+  bottom: -100px;
+  left: 15%;
+  transform: rotate(-45deg);
+}
+
+/* Yellow splats */
+.splatYellow1 {
+  width: 220px;
+  top: 40%;
+  left: 5%;
+  transform: rotate(50deg);
+}
+
+.splatYellow2 {
+  width: 160px;
+  bottom: -60px;
+  right: 8%;
+  transform: rotate(-30deg);
 }
 
 .container {
   max-width: 1800px;
   width: 100%;
   margin: 0 auto;
-  padding-left: 96px;
-  padding-right: 96px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
+  padding-left: 48px;
+  padding-right: 48px;
+  display: flex;
   align-items: center;
-}
-
-/* "THE STRATEGY" label - first line of headline */
-.topLabel {
-  font-family: 'Anton', sans-serif;
-  font-size: 18px;
-  text-transform: uppercase;
-  letter-spacing: 0.3em;
-  color: #666;
-  font-weight: 400;
-  display: block;
-  margin-bottom: 8px;
-}
-
-/* Main headline - right aligned */
-.headline {
-  font-family: 'Anton', sans-serif;
-  text-transform: uppercase;
-  line-height: 1.1;
-  margin-top: 0px;
-  margin-bottom: 0;
-  font-weight: 400;
-  color: white;
-  text-align: right;
-}
-
-.headlineIntro {
-  font-size: 50px;
-  display: block;
-}
-
-.headlineLarge {
-  font-size: 140px;
-  display: block;
-}
-
-.headlineMedium {
-  font-size: 120px;
-  display: block;
-}
-
-.headlineNormal {
-  font-size: 100px;
-  display: block;
-}
-
-.headlineSmall {
-  font-size: 80px;
-  display: block;
-}
-
-/* Reactive CONTENT word */
-.contentWord {
-  color: #F4C430;
-  font-size: 140px;
-  display: inline-block;
-  cursor: pointer;
+  gap: 80px;
   position: relative;
   z-index: 1;
-  transition: color 0.3s ease;
-  animation: floatContent 3s ease-in-out infinite;
 }
 
-@keyframes floatContent {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-12px);
-  }
+.leftContent {
+  flex: 1;
 }
 
-/* Left column content wrapper */
-.leftColumn {
-  display: flex;
-  flex-direction: column;
-}
-
-/* Formula section with red accents */
-.formulaSection {
-  margin-bottom: 20px;
-}
-
-.formulaLine {
+.miniTitle {
   font-family: 'Anton', sans-serif;
-  font-size: 48px;
+  font-size: 24px;
   text-transform: uppercase;
-  line-height: 1.4;
-  margin-bottom: 16px;
+  letter-spacing: 0.3em;
+  color: #888;
+  margin-bottom: 32px;
   font-weight: 400;
-  color: #ffffff;
   text-align: left;
 }
 
-.redText {
-  color: #e63636;
-}
-
-/* Credibility section */
-.credibilitySection {
-  margin-bottom: 40px;
-}
-
-.credText {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 18px;
-  line-height: 1.8;
-  margin-bottom: 16px;
-  font-weight: 400;
-  color: #aaaaaa;
-  text-align: left;
-}
-
-/* CTA Button */
-.ctaButton {
-  display: inline-block;
-  background: white;
-  color: black;
-  font-family: 'IBM Plex Mono', monospace;
-  font-weight: bold;
+.mainHeadline {
+  font-family: 'Anton', sans-serif;
+  font-size: 100px;
   text-transform: uppercase;
-  padding: 16px 24px;
-  border-radius: 999px;
-  font-size: 14px;
-  letter-spacing: 0.15em;
-  text-decoration: none;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 2px solid white;
-  cursor: pointer;
-  margin-top: 0;
-  position: relative;
-  overflow: hidden;
-}
-
-.ctaButton::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 0;
-  height: 0;
-  background: black;
-  border-radius: 50%;
-  transition: width 1.2s ease, height 1.2s ease;
-  z-index: -1;
-}
-
-.ctaButton:hover {
-  transform: scale(1.05);
-  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
+  line-height: 1.1;
+  font-weight: 400;
   color: white;
+  margin: 0 0 40px 0;
+  text-align: left;
 }
 
-.ctaButton:hover::before {
-  width: 800px;
-  height: 800px;
+.subText {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 20px;
+  line-height: 1.8;
+  color: #aaa;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: left;
 }
 
-/* GSAP line animation styles */
-.lineWrapper {
-  overflow: visible;
+.teamPhotoWrapper {
+  flex-shrink: 0;
+  width: 500px;
+}
+
+.teamPhoto {
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  border: 4px solid white;
   display: block;
-}
-
-.line {
-  display: block;
-}
-
-.line span {
-  margin-right: 0.35em;
 }
 
 @media (max-width: 1439px) {
-  .headerContainer {
-    padding-left: 80px;
-    padding-right: 80px;
-  }
-
-  .container {
-    padding-left: 80px;
-    padding-right: 80px;
-  }
-
-  .sectionTitle {
-    font-size: 108px;
-  }
-
-  .headlineIntro {
-    font-size: 46px;
-  }
-
-  .headlineLarge {
-    font-size: 126px;
-  }
-
-  .headlineMedium {
-    font-size: 108px;
-  }
-
-  .contentWord {
-    font-size: 126px;
-  }
-
-  .headlineNormal {
+  .mainHeadline {
     font-size: 90px;
   }
 
-  .headlineSmall {
-    font-size: 72px;
+  .subText {
+    font-size: 19px;
   }
 
-  .formulaLine {
-    font-size: 44px;
-  }
-
-  .credText {
-    font-size: 17px;
-  }
-}
-
-@media (max-width: 1300px) {
-  .headerContainer {
-    padding-left: 70px;
-    padding-right: 70px;
-  }
-
-  .container {
-    padding-left: 70px;
-    padding-right: 70px;
-  }
-
-  .sectionTitle {
-    font-size: 100px;
-  }
-
-  .headlineIntro {
-    font-size: 42px;
-  }
-
-  .headlineLarge {
-    font-size: 115px;
-  }
-
-  .headlineMedium {
-    font-size: 100px;
-  }
-
-  .contentWord {
-    font-size: 115px;
-  }
-
-  .headlineNormal {
-    font-size: 82px;
-  }
-
-  .headlineSmall {
-    font-size: 65px;
-  }
-
-  .formulaLine {
-    font-size: 40px;
-  }
-
-  .credText {
-    font-size: 17px;
+  .teamPhotoWrapper {
+    width: 450px;
   }
 }
 
 @media (max-width: 1200px) {
-  .headerContainer {
-    padding-left: 60px;
-    padding-right: 60px;
+  .mainHeadline {
+    font-size: 80px;
+  }
+
+  .subText {
+    font-size: 18px;
+  }
+
+  .teamPhotoWrapper {
+    width: 400px;
   }
 
   .container {
-    padding-left: 60px;
-    padding-right: 60px;
-  }
-
-  .sectionTitle {
-    font-size: 90px;
-  }
-
-  .headlineIntro {
-    font-size: 38px;
-  }
-
-  .headlineLarge {
-    font-size: 105px;
-  }
-
-  .headlineMedium {
-    font-size: 90px;
-  }
-
-  .contentWord {
-    font-size: 105px;
-  }
-
-  .headlineNormal {
-    font-size: 75px;
-  }
-
-  .headlineSmall {
-    font-size: 60px;
-  }
-
-  .formulaLine {
-    font-size: 36px;
-  }
-
-  .credText {
-    font-size: 17px;
-  }
-}
-
-@media (max-width: 1100px) {
-  .headerContainer {
-    padding-left: 54px;
-    padding-right: 54px;
-  }
-
-  .container {
-    padding-left: 54px;
-    padding-right: 54px;
-  }
-
-  .sectionTitle {
-    font-size: 82px;
-  }
-
-  .headlineIntro {
-    font-size: 35px;
-  }
-
-  .headlineLarge {
-    font-size: 96px;
-  }
-
-  .headlineMedium {
-    font-size: 82px;
-  }
-
-  .contentWord {
-    font-size: 96px;
-  }
-
-  .headlineNormal {
-    font-size: 68px;
-  }
-
-  .headlineSmall {
-    font-size: 54px;
-  }
-
-  .formulaLine {
-    font-size: 33px;
-  }
-
-  .credText {
-    font-size: 17px;
+    gap: 60px;
   }
 }
 
 @media (max-width: 1024px) {
-  .headerContainer {
-    padding-left: 48px;
-    padding-right: 48px;
-  }
-
-  .container {
-    padding-left: 48px;
-    padding-right: 48px;
-    grid-template-columns: 1fr;
-    gap: 48px;
-  }
-
-  .headline {
-    text-align: center;
-  }
-
-  .topLabel {
-    font-size: 14px;
-  }
-
-  .headlineIntro {
-    font-size: 32px;
-  }
-
-  .headlineLarge {
-    font-size: 88px;
-  }
-
-  .headlineMedium {
-    font-size: 76px;
-  }
-
-  .contentWord {
-    font-size: 76px;
-  }
-
-  .headlineNormal {
-    font-size: 62px;
-  }
-
-  .headlineSmall {
-    font-size: 50px;
-  }
-
-  .formulaLine {
-    font-size: 30px;
-  }
-
-  .credText {
-    font-size: 16px;
-  }
-
-  .ctaButton {
-    font-size: 14px;
-    padding: 16px 48px;
-  }
-
-  .miniTitle {
-    letter-spacing: 0.2em;
-  }
-
-  .sectionTitle {
-    font-size: 72px;
-  }
-}
-
-@media (max-width: 768px) {
   .section {
-    padding: 100px 0;
+    padding: 80px 0;
   }
 
   .container {
     padding-left: 32px;
     padding-right: 32px;
+    flex-direction: column;
+    text-align: center;
   }
 
-  .topLabel {
-    font-size: 12px;
-  }
-
-  .headlineIntro {
-    font-size: 20px;
-  }
-
-  .headlineLarge {
-    font-size: 56px;
-  }
-
-  .headlineMedium {
-    font-size: 48px;
-  }
-
-  .contentWord {
-    font-size: 48px;
-  }
-
-  .headlineNormal {
-    font-size: 40px;
-  }
-
-  .headlineSmall {
-    font-size: 32px;
-  }
-
-  .formulaLine {
-    font-size: 22px;
-    white-space: normal;
-  }
-
-  .credText {
-    font-size: 14px;
-  }
-
-  .ctaButton {
-    font-size: 12px;
-    padding: 14px 40px;
+  .leftContent {
+    text-align: center;
   }
 
   .miniTitle {
-    letter-spacing: 0.15em;
+    font-size: 20px;
+    text-align: center;
   }
 
-  .sectionTitle {
-    font-size: 40px;
+  .mainHeadline {
+    font-size: 64px;
+    text-align: center;
+  }
+
+  .subText {
+    font-size: 17px;
+    text-align: center;
+  }
+
+  .teamPhotoWrapper {
+    width: 100%;
+    max-width: 450px;
+  }
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 60px 0;
+  }
+
+  .container {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .miniTitle {
+    font-size: 18px;
+    letter-spacing: 0.2em;
+    margin-bottom: 24px;
+  }
+
+  .mainHeadline {
+    font-size: 48px;
+    margin-bottom: 32px;
+  }
+
+  .subText {
+    font-size: 15px;
+  }
+
+  .teamPhotoWrapper {
+    max-width: 400px;
+  }
+
+  .teamPhoto {
+    border-width: 3px;
+    border-radius: 12px;
   }
 }
 
 /* Small phones */
 @media (max-width: 430px) {
   .section {
-    padding: 60px 0;
+    padding: 48px 0;
   }
 
   .container {
@@ -555,85 +246,39 @@
     padding-right: 16px;
   }
 
-  .headerContainer {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-
   .miniTitle {
-    letter-spacing: 0.1em;
-  }
-
-  .sectionTitle {
-    font-size: 36px;
-  }
-
-  .headlineIntro {
     font-size: 16px;
+    letter-spacing: 0.15em;
+    margin-bottom: 20px;
   }
 
-  .headlineLarge {
+  .mainHeadline {
     font-size: 36px;
+    margin-bottom: 24px;
   }
 
-  .headlineMedium {
-    font-size: 32px;
-  }
-
-  .contentWord {
-    font-size: 32px;
-  }
-
-  .headlineNormal {
-    font-size: 28px;
-  }
-
-  .headlineSmall {
-    font-size: 22px;
-  }
-
-  .formulaLine {
-    font-size: 16px;
-  }
-
-  .credText {
+  .subText {
     font-size: 13px;
     line-height: 1.6;
   }
 
-  .ctaButton {
-    font-size: 11px;
-    padding: 12px 32px;
+  .teamPhotoWrapper {
+    max-width: 100%;
   }
 }
 
 /* Very small phones */
 @media (max-width: 374px) {
   .miniTitle {
-    letter-spacing: 0.05em;
+    font-size: 14px;
+    letter-spacing: 0.1em;
   }
 
-  .sectionTitle {
-    font-size: 30px;
-  }
-
-  .headlineLarge {
+  .mainHeadline {
     font-size: 28px;
   }
 
-  .headlineMedium {
-    font-size: 24px;
-  }
-
-  .contentWord {
-    font-size: 24px;
-  }
-
-  .headlineNormal {
-    font-size: 20px;
-  }
-
-  .formulaLine {
-    font-size: 14px;
+  .subText {
+    font-size: 12px;
   }
 }

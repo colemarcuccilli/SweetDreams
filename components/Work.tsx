@@ -125,7 +125,7 @@ export default function Work() {
   };
 
   return (
-    <section className={styles.section}>
+    <section className={styles.section} data-cursor-hide>
       <div className={styles.container}>
         {/* Header */}
         <div className={styles.header}>

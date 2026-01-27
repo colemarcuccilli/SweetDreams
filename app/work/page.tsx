@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useEffect } from "react";
 import styles from "../media/media.module.css";
 import WhyAnimated from "@/components/media/WhyAnimated";
-import ServicesAnimated from "@/components/media/ServicesAnimated";
 import MediaHeroAnimated from "@/components/media/MediaHeroAnimated";
 import PortfolioHorizontalScroll from "@/components/media/PortfolioHorizontalScroll";
 import MusicContactForm from "@/components/music/MusicContactForm";
@@ -211,7 +210,7 @@ export default function WorkPage() {
       <WhyAnimated />
 
       {/* Value Proposition - White */}
-      <section className={styles.value} id="value-section">
+      <section className={styles.value} id="value-section" data-cursor-hide>
         <h2 className={styles.valueTitle} id="scrolling-title">
           WE BUILD VALUE, BEYOND VIDEO.
         </h2>
@@ -221,9 +220,6 @@ export default function WorkPage() {
           </p>
         </div>
       </section>
-
-      {/* Services - White */}
-      <ServicesAnimated />
 
       {/* Contact Form */}
       <div id="contact">

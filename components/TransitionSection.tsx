@@ -40,9 +40,15 @@ export default function TransitionSection() {
       <div className={styles.baseLayer}>
         <div className={styles.container}>
           <p className={styles.mainText}>
-            ALL YOUR VIDEO AND AUDIO NEEDS. WE STAY AHEAD OF THE CURVE. INNOVATING WITH 2025'S LATEST TRENDS, WE DON'T GET LEFT BEHIND.
+            AHEAD OF THE CURVE. 2026'S LATEST TRENDS. WE DON'T GET LEFT BEHIND.
           </p>
-          <Link href="/media" className={styles.button}>
+          <div className={styles.stepsList}>
+            <div className={styles.step}>01 LEARN YOUR BUSINESS</div>
+            <div className={styles.step}>02 BUILD THE ENGINE</div>
+            <div className={styles.step}>03 YOU GROW, WE EARN</div>
+          </div>
+          <p className={styles.tagline}>No retainers. No hourly billing. Just results.</p>
+          <Link href="/work" className={styles.button}>
             SEE MORE
           </Link>
         </div>
@@ -52,9 +58,15 @@ export default function TransitionSection() {
       <div className={styles.invertedLayer} id="inverted-layer-1">
         <div className={styles.container}>
           <p className={styles.mainText}>
-            ALL YOUR VIDEO AND AUDIO NEEDS. WE STAY AHEAD OF THE CURVE. INNOVATING WITH 2025'S LATEST TRENDS, WE DON'T GET LEFT BEHIND.
+            AHEAD OF THE CURVE. 2026'S LATEST TRENDS. WE DON'T GET LEFT BEHIND.
           </p>
-          <Link href="/media" className={styles.button}>
+          <div className={styles.stepsList}>
+            <div className={styles.step}>01 LEARN YOUR BUSINESS</div>
+            <div className={styles.step}>02 BUILD THE ENGINE</div>
+            <div className={styles.step}>03 YOU GROW, WE EARN</div>
+          </div>
+          <p className={styles.tagline}>No retainers. No hourly billing. Just results.</p>
+          <Link href="/work" className={styles.button}>
             SEE MORE
           </Link>
         </div>

@@ -2,6 +2,8 @@
   padding-top: 128px;
   padding-bottom: 128px;
   background: black;
+  position: relative;
+  overflow: hidden;
 }
 
 .container {
@@ -9,6 +11,8 @@
   margin: 0 auto;
   padding-left: 48px;
   padding-right: 48px;
+  position: relative;
+  z-index: 1;
 }
 
 .title {
@@ -32,6 +36,7 @@
   margin-bottom: 80px;
   word-wrap: break-word;
   overflow-wrap: break-word;
+  text-align: center;
 }
 
 .contentWrapper {
@@ -175,6 +180,115 @@
   height: 800px;
 }
 
+/* Two Ways to Work With Us - New Layout */
+.twoColumns {
+  display: flex;
+  gap: 120px;
+  justify-content: center;
+  margin-bottom: 0;
+}
+
+.column {
+  flex: 1;
+  max-width: 500px;
+  text-align: center;
+}
+
+.columnTitle {
+  font-family: 'Anton', sans-serif;
+  font-size: 56px;
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 2px white;
+  margin: 0 0 24px 0;
+  font-weight: 400;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.columnDivider {
+  width: 80px;
+  height: 3px;
+  background: white;
+  margin: 0 auto 32px auto;
+}
+
+.columnText {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 18px;
+  color: #888;
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.columnTextMuted {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 18px;
+  color: #444;
+  margin: 0 0 8px 0;
+}
+
+.columnTextHighlight {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 20px;
+  color: white;
+  margin: 24px 0 32px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.columnNote {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 24px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.columnButton {
+  display: inline-block;
+  background: white;
+  color: black;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 16px 48px;
+  border-radius: 999px;
+  font-size: 14px;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: 2px solid white;
+}
+
+.columnButton:hover {
+  background: black;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(255, 255, 255, 0.2);
+}
+
+/* Team Photo Corner */
+.teamPhotoCorner {
+  position: absolute;
+  bottom: 40px;
+  right: 48px;
+  width: 200px;
+  height: 200px;
+  perspective: 1000px;
+}
+
+.teamPhotoSmall {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 3px solid white;
+}
+
 @media (max-width: 1439px) {
   .section {
     padding-top: 110px;
@@ -197,6 +311,21 @@
   .rightContent {
     margin-top: -200px;
   }
+
+  .twoColumns {
+    gap: 100px;
+  }
+
+  .columnTitle {
+    font-size: 52px;
+  }
+
+  .teamPhotoCorner {
+    width: 180px;
+    height: 180px;
+    right: 44px;
+    bottom: 35px;
+  }
 }
 
 @media (max-width: 1400px) {
@@ -216,6 +345,21 @@
 
   .rightContent {
     margin-top: -180px;
+  }
+
+  .twoColumns {
+    gap: 80px;
+  }
+
+  .columnTitle {
+    font-size: 48px;
+  }
+
+  .teamPhotoCorner {
+    width: 160px;
+    height: 160px;
+    right: 42px;
+    bottom: 30px;
   }
 }
 
@@ -237,6 +381,29 @@
   .rightContent {
     margin-top: -170px;
   }
+
+  .twoColumns {
+    gap: 60px;
+  }
+
+  .columnTitle {
+    font-size: 44px;
+  }
+
+  .columnText {
+    font-size: 16px;
+  }
+
+  .columnTextHighlight {
+    font-size: 18px;
+  }
+
+  .teamPhotoCorner {
+    width: 150px;
+    height: 150px;
+    right: 40px;
+    bottom: 25px;
+  }
 }
 
 @media (max-width: 1200px) {
@@ -256,6 +423,21 @@
 
   .rightContent {
     margin-top: -160px;
+  }
+
+  .twoColumns {
+    gap: 50px;
+  }
+
+  .columnTitle {
+    font-size: 40px;
+  }
+
+  .teamPhotoCorner {
+    width: 140px;
+    height: 140px;
+    right: 38px;
+    bottom: 20px;
   }
 }
 
@@ -280,6 +462,34 @@
 
   .rightContent {
     margin-top: -155px;
+  }
+
+  .twoColumns {
+    gap: 40px;
+  }
+
+  .columnTitle {
+    font-size: 28px;
+  }
+
+  .columnText {
+    font-size: 15px;
+  }
+
+  .columnTextHighlight {
+    font-size: 16px;
+  }
+
+  .columnButton {
+    padding: 14px 36px;
+    font-size: 13px;
+  }
+
+  .teamPhotoCorner {
+    width: 120px;
+    height: 120px;
+    right: 36px;
+    bottom: 20px;
   }
 }
 
@@ -323,6 +533,43 @@
   .teamPhoto {
     max-width: 100%;
   }
+
+  .twoColumns {
+    flex-direction: column;
+    gap: 60px;
+    align-items: center;
+  }
+
+  .column {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .columnTitle {
+    font-size: 36px;
+  }
+
+  .columnText {
+    font-size: 16px;
+  }
+
+  .columnTextHighlight {
+    font-size: 18px;
+  }
+
+  .columnButton {
+    padding: 16px 48px;
+    font-size: 14px;
+  }
+
+  .teamPhotoCorner {
+    position: relative;
+    bottom: auto;
+    right: auto;
+    width: 180px;
+    height: 180px;
+    margin: 60px auto 0 auto;
+  }
 }
 
 @media (max-width: 768px) {
@@ -364,6 +611,43 @@
   .flipCard {
     max-width: 100%;
   }
+
+  .twoColumns {
+    gap: 48px;
+  }
+
+  .columnTitle {
+    font-size: 32px;
+  }
+
+  .columnDivider {
+    width: 60px;
+    margin-bottom: 24px;
+  }
+
+  .columnText {
+    font-size: 15px;
+  }
+
+  .columnTextHighlight {
+    font-size: 16px;
+    margin: 20px 0 24px 0;
+  }
+
+  .columnNote {
+    font-size: 12px;
+  }
+
+  .columnButton {
+    padding: 14px 36px;
+    font-size: 13px;
+  }
+
+  .teamPhotoCorner {
+    width: 150px;
+    height: 150px;
+    margin-top: 48px;
+  }
 }
 
 @media (max-width: 430px) {
@@ -402,6 +686,44 @@
     font-size: 12px;
     margin-top: 24px;
   }
+
+  .twoColumns {
+    gap: 40px;
+  }
+
+  .columnTitle {
+    font-size: 26px;
+  }
+
+  .columnDivider {
+    width: 50px;
+    margin-bottom: 20px;
+  }
+
+  .columnText {
+    font-size: 14px;
+  }
+
+  .columnTextHighlight {
+    font-size: 15px;
+    margin: 16px 0 20px 0;
+  }
+
+  .columnNote {
+    font-size: 11px;
+    margin-bottom: 20px;
+  }
+
+  .columnButton {
+    padding: 12px 28px;
+    font-size: 12px;
+  }
+
+  .teamPhotoCorner {
+    width: 120px;
+    height: 120px;
+    margin-top: 40px;
+  }
 }
 
 @media (max-width: 374px) {
@@ -416,5 +738,22 @@
   .solutionTag {
     font-size: 11px;
     padding: 8px 16px;
+  }
+
+  .columnTitle {
+    font-size: 22px;
+  }
+
+  .columnText {
+    font-size: 13px;
+  }
+
+  .columnTextHighlight {
+    font-size: 14px;
+  }
+
+  .teamPhotoCorner {
+    width: 100px;
+    height: 100px;
   }
 }

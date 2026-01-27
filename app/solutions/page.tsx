@@ -23,11 +23,10 @@ function LaunchSection() {
   return (
     <section className={styles.launchSection}>
       <div className={styles.launchContainer}>
-        <div className={`${styles.launchHeader} launch-header`}>
-          <div className={styles.launchNumber}>05</div>
-          <div className={styles.launchTitleWrapper}>
-            <p className={styles.launchMiniTitle}>STRATEGY</p>
-            <h2 className={styles.launchTitle}>LAUNCH & GROWTH</h2>
+        <div className={`${styles.launchHeaderCentered} launch-header`}>
+          <div className={styles.launchTitleWrapperCentered}>
+            <p className={styles.launchMiniTitleCentered}>STRATEGY</p>
+            <h2 className={styles.launchTitleCentered}>LAUNCH & GROWTH</h2>
           </div>
         </div>
       </div>
@@ -131,6 +130,12 @@ function LaunchSection() {
           </div>
         </div>
       </div>
+      {/* Platform Strategy Cards */}
+      <div className={styles.strategyCardsHeader}>
+        <p className={styles.strategyCardsIntro}>We don't just make content. We engineer it for the platform.</p>
+      </div>
+      <DesignCardsSectionBlack />
+
       <div className={styles.launchCta}>
         <Link href="/contact" className={styles.solutionButton}>
           LAUNCH WITH US
@@ -282,7 +287,354 @@ function LaunchSection() {
   );
 }
 
-function DesignSection() {
+function VideoProductionSection() {
+  const [openSection, setOpenSection] = useState<string | null>('brand');
+
+  const toggleSection = (section: string) => {
+    setOpenSection(openSection === section ? null : section);
+  };
+
+  return (
+    <section className={styles.videoProductionSection} data-cursor-hide>
+      <div className={styles.videoProductionContainer}>
+        {/* BRAND FILM Accordion */}
+        <div
+          className={`${styles.accordionHeaderWhite} ${openSection === 'brand' ? styles.accordionOpenWhite : ''}`}
+          onClick={() => toggleSection('brand')}
+        >
+          <h2 className={styles.accordionTitleWhite}>BRAND FILM</h2>
+          <span className={styles.accordionCaretWhite}>▼</span>
+        </div>
+
+        <div className={`${styles.accordionContentWhite} ${openSection === 'brand' ? styles.accordionContentOpenWhite : ''}`}>
+          <div className={styles.pricingGrid}>
+            <div className={styles.pricingCard}>
+              <h3 className={styles.pricingCardTitle}>Brand Identity</h3>
+              <div className={styles.pricingCardFeatures}>
+                <p>Mission & origin story</p>
+                <p>What you do & how</p>
+                <p>Case study ready</p>
+              </div>
+              <div className={styles.pricingCardPrice}>$2,000 - $7,000</div>
+              <Link href="/book" className={styles.pricingCardButton}>
+                DISCUSS PROJECT
+              </Link>
+            </div>
+
+            <div className={styles.pricingCard}>
+              <h3 className={styles.pricingCardTitle}>Campaign Package</h3>
+              <div className={styles.pricingCardFeatures}>
+                <p>Multi-platform delivery</p>
+                <p>Cohesive brand story</p>
+                <p>Social + web + ads</p>
+              </div>
+              <div className={styles.pricingCardPrice}>$4,000 - $15,000</div>
+              <Link href="/book" className={styles.pricingCardButton}>
+                DISCUSS PROJECT
+              </Link>
+            </div>
+
+            <div className={styles.pricingCard}>
+              <h3 className={styles.pricingCardTitle}>Multi-Day Production</h3>
+              <div className={styles.pricingCardFeatures}>
+                <p>Multiple locations</p>
+                <p>Full crew & equipment</p>
+                <p>Extended storytelling</p>
+              </div>
+              <div className={styles.pricingCardPrice}>Let's talk</div>
+              <Link href="/book" className={styles.pricingCardButton}>
+                BOOK A CALL
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* COMMERCIALS Accordion */}
+        <div
+          className={`${styles.accordionHeaderWhite} ${openSection === 'commercials' ? styles.accordionOpenWhite : ''}`}
+          onClick={() => toggleSection('commercials')}
+        >
+          <h2 className={styles.accordionTitleWhite}>COMMERCIALS</h2>
+          <span className={styles.accordionCaretWhite}>▼</span>
+        </div>
+
+        <div className={`${styles.accordionContentWhite} ${openSection === 'commercials' ? styles.accordionContentOpenWhite : ''}`}>
+          <div className={styles.pricingGrid}>
+            <div className={styles.pricingCard}>
+              <h3 className={styles.pricingCardTitle}>Single Spot</h3>
+              <div className={styles.pricingCardFeatures}>
+                <p>TV or digital ready</p>
+                <p>15-60 second format</p>
+                <p>One core message</p>
+              </div>
+              <div className={styles.pricingCardPrice}>$2,000 - $7,000</div>
+              <Link href="/book" className={styles.pricingCardButton}>
+                DISCUSS PROJECT
+              </Link>
+            </div>
+
+            <div className={styles.pricingCard}>
+              <h3 className={styles.pricingCardTitle}>Ad Campaign</h3>
+              <div className={styles.pricingCardFeatures}>
+                <p>Multi-spot package</p>
+                <p>Cohesive messaging</p>
+                <p>All platform formats</p>
+              </div>
+              <div className={styles.pricingCardPrice}>$4,000 - $15,000</div>
+              <Link href="/book" className={styles.pricingCardButton}>
+                DISCUSS PROJECT
+              </Link>
+            </div>
+
+            <div className={styles.pricingCard}>
+              <h3 className={styles.pricingCardTitle}>Multi-Day Production</h3>
+              <div className={styles.pricingCardFeatures}>
+                <p>Multiple locations</p>
+                <p>Full crew & equipment</p>
+                <p>Series or seasonal</p>
+              </div>
+              <div className={styles.pricingCardPrice}>Let's talk</div>
+              <Link href="/book" className={styles.pricingCardButton}>
+                BOOK A CALL
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* INTERNAL & RECRUITING Accordion */}
+        <div
+          className={`${styles.accordionHeaderWhite} ${openSection === 'internal' ? styles.accordionOpenWhite : ''}`}
+          onClick={() => toggleSection('internal')}
+        >
+          <h2 className={styles.accordionTitleWhite}>INTERNAL & RECRUITING</h2>
+          <span className={styles.accordionCaretWhite}>▼</span>
+        </div>
+
+        <div className={`${styles.accordionContentWhite} ${openSection === 'internal' ? styles.accordionContentOpenWhite : ''}`}>
+          <div className={styles.pricingGrid}>
+            <div className={styles.pricingCard}>
+              <h3 className={styles.pricingCardTitle}>Onboarding Video</h3>
+              <div className={styles.pricingCardFeatures}>
+                <p>Welcome to the team</p>
+                <p>Culture showcase</p>
+                <p>Set the tone</p>
+              </div>
+              <div className={styles.pricingCardPrice}>$1,000 - $4,000</div>
+              <Link href="/book" className={styles.pricingCardButton}>
+                DISCUSS PROJECT
+              </Link>
+            </div>
+
+            <div className={styles.pricingCard}>
+              <h3 className={styles.pricingCardTitle}>Recruiting Content</h3>
+              <div className={styles.pricingCardFeatures}>
+                <p>Why you should apply</p>
+                <p>What it's like here</p>
+                <p>Attract top talent</p>
+              </div>
+              <div className={styles.pricingCardPrice}>$2,000 - $6,000</div>
+              <Link href="/book" className={styles.pricingCardButton}>
+                DISCUSS PROJECT
+              </Link>
+            </div>
+
+            <div className={styles.pricingCard}>
+              <h3 className={styles.pricingCardTitle}>Training Videos</h3>
+              <div className={styles.pricingCardFeatures}>
+                <p>How we do things</p>
+                <p>Process documentation</p>
+                <p>Internal use</p>
+              </div>
+              <div className={styles.pricingCardPrice}>$1,500 - $5,000</div>
+              <Link href="/book" className={styles.pricingCardButton}>
+                DISCUSS PROJECT
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function BlackPricingSection() {
+  const [openSection, setOpenSection] = useState<string | null>(null);
+
+  const toggleSection = (section: string) => {
+    setOpenSection(openSection === section ? null : section);
+  };
+
+  return (
+    <section className={styles.blackPricingSection}>
+      <div className={styles.videoProductionContainer}>
+        {/* CONTENT PACKAGES Accordion */}
+        <div
+          className={`${styles.accordionHeader} ${openSection === 'content' ? styles.accordionOpen : ''}`}
+          onClick={() => toggleSection('content')}
+        >
+          <h2 className={styles.accordionTitle}>CONTENT PACKAGES</h2>
+          <span className={styles.accordionCaret}>▼</span>
+        </div>
+
+        <div className={`${styles.accordionContent} ${openSection === 'content' ? styles.accordionContentOpen : ''}`}>
+          <div className={styles.pricingGridBlack}>
+            <div className={styles.pricingCardBlack}>
+              <h3 className={styles.pricingCardTitleBlack}>Starter</h3>
+              <div className={styles.pricingCardFeaturesBlack}>
+                <p>4 videos per month</p>
+                <p>1x per week</p>
+                <p>Basic editing</p>
+              </div>
+              <div className={styles.pricingCardPriceBlack}>$1,000 - $2,500/mo</div>
+              <Link href="/book" className={styles.pricingCardButtonBlack}>
+                DISCUSS PROJECT
+              </Link>
+            </div>
+
+            <div className={styles.pricingCardBlack}>
+              <h3 className={styles.pricingCardTitleBlack}>Growth</h3>
+              <div className={styles.pricingCardFeaturesBlack}>
+                <p>8 videos per month</p>
+                <p>2x per week</p>
+                <p>Full production</p>
+              </div>
+              <div className={styles.pricingCardPriceBlack}>$2,000 - $8,000/mo</div>
+              <Link href="/book" className={styles.pricingCardButtonBlack}>
+                DISCUSS PROJECT
+              </Link>
+            </div>
+
+            <div className={styles.pricingCardBlack}>
+              <div className={styles.recommendedBadge}>RECOMMENDED</div>
+              <h3 className={styles.pricingCardTitleBlack}>Scale</h3>
+              <div className={styles.pricingCardFeaturesBlack}>
+                <p>7-14 posts per week</p>
+                <p>Daily content</p>
+                <p>Full service team</p>
+              </div>
+              <div className={styles.pricingCardPriceBlack}>Custom</div>
+              <Link href="/book" className={styles.pricingCardButtonBlack}>
+                BOOK A CALL
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* EVENT COVERAGE Accordion */}
+        <div
+          className={`${styles.accordionHeader} ${openSection === 'event' ? styles.accordionOpen : ''}`}
+          onClick={() => toggleSection('event')}
+        >
+          <h2 className={styles.accordionTitle}>EVENT COVERAGE</h2>
+          <span className={styles.accordionCaret}>▼</span>
+        </div>
+
+        <div className={`${styles.accordionContent} ${openSection === 'event' ? styles.accordionContentOpen : ''}`}>
+          <div className={styles.pricingGridBlack}>
+            <div className={styles.pricingCardBlack}>
+              <h3 className={styles.pricingCardTitleBlack}>1 Day</h3>
+              <div className={styles.pricingCardFeaturesBlack}>
+                <p>Single day coverage</p>
+                <p>Highlight reel</p>
+                <p>Social clips</p>
+              </div>
+              <div className={styles.pricingCardPriceBlack}>$600 - $4,000</div>
+              <Link href="/book" className={styles.pricingCardButtonBlack}>
+                BOOK
+              </Link>
+            </div>
+
+            <div className={styles.pricingCardBlack}>
+              <h3 className={styles.pricingCardTitleBlack}>2+ Days</h3>
+              <div className={styles.pricingCardFeaturesBlack}>
+                <p>Multi-day events</p>
+                <p>Full highlight + raw</p>
+                <p>Extended coverage</p>
+              </div>
+              <div className={styles.pricingCardPriceBlack}>$2,500 - $15,000</div>
+              <Link href="/book" className={styles.pricingCardButtonBlack}>
+                BOOK
+              </Link>
+            </div>
+
+            <div className={styles.pricingCardBlack}>
+              <h3 className={styles.pricingCardTitleBlack}>Full Package</h3>
+              <div className={styles.pricingCardFeaturesBlack}>
+                <p>Monthly event plan</p>
+                <p>Large-scale production</p>
+                <p>Multi-person crew</p>
+              </div>
+              <div className={styles.pricingCardPriceBlack}>Custom</div>
+              <Link href="/book" className={styles.pricingCardButtonBlack}>
+                GET QUOTE
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* WEBSITE Accordion */}
+        <div
+          className={`${styles.accordionHeader} ${openSection === 'website' ? styles.accordionOpen : ''}`}
+          onClick={() => toggleSection('website')}
+        >
+          <h2 className={styles.accordionTitle}>WEBSITE</h2>
+          <p className={styles.accordionSubtitle}>Every site hand-coded from scratch.</p>
+          <span className={styles.accordionCaret}>▼</span>
+        </div>
+
+        <div className={`${styles.accordionContent} ${openSection === 'website' ? styles.accordionContentOpen : ''}`}>
+          <div className={styles.pricingGridBlack}>
+            <div className={styles.pricingCardBlack}>
+              <h3 className={styles.pricingCardTitleBlack}>Starter</h3>
+              <div className={styles.pricingCardFeaturesBlack}>
+                <p>Clean & professional</p>
+                <p>3-5 pages</p>
+                <p>Mobile responsive</p>
+              </div>
+              <div className={styles.pricingCardPriceBlack}>$800 - $2,500</div>
+              <Link href="/book" className={styles.pricingCardButtonBlack}>
+                DISCUSS PROJECT
+              </Link>
+            </div>
+
+            <div className={styles.pricingCardBlack}>
+              <h3 className={styles.pricingCardTitleBlack}>Professional</h3>
+              <div className={styles.pricingCardFeaturesBlack}>
+                <p>Full brand experience</p>
+                <p>10+ pages</p>
+                <p>SEO optimized</p>
+              </div>
+              <div className={styles.pricingCardPriceBlack}>$2,500 - $12,000</div>
+              <Link href="/book" className={styles.pricingCardButtonBlack}>
+                DISCUSS PROJECT
+              </Link>
+            </div>
+
+            <div className={styles.pricingCardBlack}>
+              <h3 className={styles.pricingCardTitleBlack}>E-commerce & Apps</h3>
+              <div className={styles.pricingCardFeaturesBlack}>
+                <p>Full-stack applications</p>
+                <p>Booking / payments</p>
+                <p>Custom integrations</p>
+              </div>
+              <div className={styles.pricingCardPriceBlack}>$10,000+</div>
+              <Link href="/book" className={styles.pricingCardButtonBlack}>
+                DISCUSS PROJECT
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Hosting Note */}
+        <div className={styles.hostingNote}>
+          <p>Includes: 6 months FREE hosting with any website purchase</p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function DesignCardsSection() {
   const [openCard, setOpenCard] = useState<number | null>(null);
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   const [hoveringCard, setHoveringCard] = useState<number | null>(null);
@@ -296,26 +648,8 @@ function DesignSection() {
   };
 
   return (
-    <section className={styles.designSection}>
+    <div className={styles.designCardsWrapper}>
       <div className={styles.designContainer}>
-        {/* Header with Number - Two Column Layout */}
-        <div className={styles.designHeaderGrid}>
-          <div className={styles.designHeaderLeft}>
-            <div className={styles.designHeader}>
-              <div className={`${styles.designNumber} design-number`}>02</div>
-              <div className={styles.designTitleWrapper}>
-                <p className={`${styles.designMiniTitle} design-mini-title`}>PLATFORM STRATEGY</p>
-                <h2 className={`${styles.designTitle} design-title`}>CREATIVE<br />& DESIGN</h2>
-              </div>
-            </div>
-          </div>
-          <div className={styles.designHeaderRight}>
-            <p className={`${styles.designLargeText} design-intro`}>
-              We don't just make content. We engineer it for the platform.
-            </p>
-          </div>
-        </div>
-
         {/* Main Content */}
         <div className={styles.designContent}>
 
@@ -577,7 +911,285 @@ function DesignSection() {
           )}
         </>
       )}
-    </section>
+    </div>
+  );
+}
+
+function DesignCardsSectionBlack() {
+  const [openCard, setOpenCard] = useState<number | null>(null);
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  const [hoveringCard, setHoveringCard] = useState<number | null>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, cardId: number) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setCursorPos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
+
+  return (
+    <div className={styles.designCardsWrapperBlack}>
+      <div className={styles.designContainerBlack}>
+        {/* Main Content */}
+        <div className={styles.designContentBlack}>
+
+          {/* Strategy Cards */}
+          <div className={styles.designGridBlack}>
+            <div
+              className={`${styles.designCardBlack} design-card`}
+              onClick={() => setOpenCard(openCard === 1 ? null : 1)}
+              onMouseMove={(e) => handleMouseMove(e, 1)}
+              onMouseEnter={() => setHoveringCard(1)}
+              onMouseLeave={() => setHoveringCard(null)}
+            >
+              <div className={styles.designCardIconBlack}>
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/>
+                  <path d="M9 3v18M3 9h18M3 15h18M15 3v18"/>
+                </svg>
+              </div>
+              <h3 className={styles.designCardTitleBlack}>ALGORITHM-FIRST DESIGN</h3>
+              <p className={styles.designCardDescriptionBlack}>
+                Every platform has a language. We speak it fluently. Content optimized for maximum reach without paid promotion.
+              </p>
+              {hoveringCard === 1 && !openCard && (
+                <div className={styles.clickMeCursor} style={{ left: `${cursorPos.x}px`, top: `${cursorPos.y}px` }}>
+                  click me
+                </div>
+              )}
+            </div>
+
+            <div
+              className={`${styles.designCardBlack} design-card`}
+              onClick={() => setOpenCard(openCard === 2 ? null : 2)}
+              onMouseMove={(e) => handleMouseMove(e, 2)}
+              onMouseEnter={() => setHoveringCard(2)}
+              onMouseLeave={() => setHoveringCard(null)}
+            >
+              <div className={styles.designCardIconBlack}>
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                  <polyline points="7.5 4.21 12 6.81 16.5 4.21"/>
+                  <polyline points="7.5 19.79 7.5 14.6 3 12"/>
+                  <polyline points="21 12 16.5 14.6 16.5 19.79"/>
+                  <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                  <line x1="12" y1="22.08" x2="12" y2="12"/>
+                </svg>
+              </div>
+              <h3 className={styles.designCardTitleBlack}>CROSS-PLATFORM ADAPTATION</h3>
+              <p className={styles.designCardDescriptionBlack}>
+                One concept, infinite formats. We adapt your message for TikTok, Instagram, YouTube, and beyond—each version native to its home.
+              </p>
+              {hoveringCard === 2 && !openCard && (
+                <div className={styles.clickMeCursor} style={{ left: `${cursorPos.x}px`, top: `${cursorPos.y}px` }}>
+                  click me
+                </div>
+              )}
+            </div>
+
+            <div
+              className={`${styles.designCardBlack} design-card`}
+              onClick={() => setOpenCard(openCard === 3 ? null : 3)}
+              onMouseMove={(e) => handleMouseMove(e, 3)}
+              onMouseEnter={() => setHoveringCard(3)}
+              onMouseLeave={() => setHoveringCard(null)}
+            >
+              <div className={styles.designCardIconBlack}>
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                </svg>
+              </div>
+              <h3 className={styles.designCardTitleBlack}>ORGANIC GROWTH TACTICS</h3>
+              <p className={styles.designCardDescriptionBlack}>
+                Hooks that stop the scroll. Pacing that holds attention. CTAs that convert. We build content that platforms want to promote.
+              </p>
+              {hoveringCard === 3 && !openCard && (
+                <div className={styles.clickMeCursor} style={{ left: `${cursorPos.x}px`, top: `${cursorPos.y}px` }}>
+                  click me
+                </div>
+              )}
+            </div>
+
+            <div
+              className={`${styles.designCardBlack} design-card`}
+              onClick={() => setOpenCard(openCard === 4 ? null : 4)}
+              onMouseMove={(e) => handleMouseMove(e, 4)}
+              onMouseEnter={() => setHoveringCard(4)}
+              onMouseLeave={() => setHoveringCard(null)}
+            >
+              <div className={styles.designCardIconBlack}>
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M12 6v6l4 2"/>
+                </svg>
+              </div>
+              <h3 className={styles.designCardTitleBlack}>TREND-AWARE EXECUTION</h3>
+              <p className={styles.designCardDescriptionBlack}>
+                We stay ahead of the curve. Leveraging current trends while maintaining your brand identity for maximum impact.
+              </p>
+              {hoveringCard === 4 && !openCard && (
+                <div className={styles.clickMeCursor} style={{ left: `${cursorPos.x}px`, top: `${cursorPos.y}px` }}>
+                  click me
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Bottom Statement */}
+          <div className={`${styles.designStatementBlack} design-statement`}>
+            <p>Platform-native content that grows your brand organically.</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Blur Overlay and Modals */}
+      {openCard !== null && (
+        <>
+          <div
+            className={styles.designBlurOverlay}
+            onClick={() => setOpenCard(null)}
+          />
+
+          {/* Algorithm-First Design Modal */}
+          {openCard === 1 && (
+            <div className={styles.designCardExpanded}>
+              <button
+                className={styles.designCardClose}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenCard(null);
+                }}
+              >
+                ✕
+              </button>
+              <h3>Algorithm-First Design</h3>
+              <h4>We Make Content That Gets Seen</h4>
+              <p>
+                Social media platforms want to keep people scrolling. So they push content that keeps people watching. We study what works on each platform—TikTok, Instagram, YouTube—and we make your content in a way that these platforms actually want to show to more people.
+              </p>
+              <ul>
+                <li>Opening seconds that grab attention immediately (because most people scroll past in 2 seconds)</li>
+                <li>Videos paced to keep people watching all the way through (longer watch time = more reach)</li>
+                <li>Content designed to make people comment, share, and engage (platforms love engagement)</li>
+                <li>Proper sizing and framing for each platform (vertical for TikTok, square for Instagram, etc.)</li>
+                <li>Editing styles that feel native to each platform (so it doesn't look out of place)</li>
+              </ul>
+              <p className={styles.designCardEmphasis}>
+                The platforms decide who sees your content. We make content they want to show.
+              </p>
+              <Link href="/contact" className={styles.designCardButton}>
+                OPTIMIZE YOUR CONTENT
+              </Link>
+            </div>
+          )}
+
+          {/* Cross-Platform Adaptation Modal */}
+          {openCard === 2 && (
+            <div className={styles.designCardExpanded}>
+              <button
+                className={styles.designCardClose}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenCard(null);
+                }}
+              >
+                ✕
+              </button>
+              <h3>Cross-Platform Adaptation</h3>
+              <h4>8 Platforms = 8x The Views. Free Eyes On Your Brand.</h4>
+              <p>
+                Here's the math that makes sense: Post on 1 platform, you get 1,000 views. Post on 8 platforms? That's 8,000 views. Same content. Same effort. 8x the reach. For free.
+              </p>
+              <p>
+                We take one core concept and optimize it for every major platform. Each version is native to its home—the right format, the right pacing, the right messaging. Your brand stays consistent. Your reach multiplies.
+              </p>
+              <ul>
+                <li>TikTok & Instagram Reels (9:16 vertical, fast-paced)</li>
+                <li>Instagram Feed (1:1 square, aesthetic-focused)</li>
+                <li>YouTube & LinkedIn (16:9 landscape, long-form)</li>
+                <li>Facebook Feed (4:5 portrait, community-driven)</li>
+                <li>Twitter/X (optimized clips with text overlays)</li>
+                <li>Pinterest (vertical pins that drive traffic)</li>
+                <li>Platform-specific captions, hashtags, & CTAs for each</li>
+              </ul>
+              <p className={styles.designCardEmphasis}>
+                Stop leaving views on the table. One shoot. Eight platforms. Exponential reach.
+              </p>
+              <Link href="/contact" className={styles.designCardButton}>
+                MULTIPLY YOUR REACH
+              </Link>
+            </div>
+          )}
+
+          {/* Organic Growth Tactics Modal */}
+          {openCard === 3 && (
+            <div className={styles.designCardExpanded}>
+              <button
+                className={styles.designCardClose}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenCard(null);
+                }}
+              >
+                ✕
+              </button>
+              <h3>Organic Growth Tactics</h3>
+              <h4>Content That Spreads For Free</h4>
+              <p>
+                Viral content isn't luck. It follows patterns. We study what makes people stop scrolling, what makes them watch the whole thing, and what makes them share it with their friends. Then we apply those same patterns to your content. The result? More views, more followers, and you didn't spend a dollar on ads.
+              </p>
+              <ul>
+                <li>Opening lines that make people stop mid-scroll (you have 2 seconds to grab them)</li>
+                <li>Unexpected moments that break the pattern and demand attention</li>
+                <li>Content that makes people feel something (happy, surprised, inspired—emotion drives shares)</li>
+                <li>Questions and topics that make people want to comment and debate</li>
+                <li>Clear next steps that turn viewers into followers ("Follow for more", "Check out the full video", etc.)</li>
+              </ul>
+              <p className={styles.designCardEmphasis}>
+                Ads cost money every time someone sees them. Good content spreads for free. Forever.
+              </p>
+              <Link href="/contact" className={styles.designCardButton}>
+                GROW ORGANICALLY
+              </Link>
+            </div>
+          )}
+
+          {/* Trend-Aware Execution Modal */}
+          {openCard === 4 && (
+            <div className={styles.designCardExpanded}>
+              <button
+                className={styles.designCardClose}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenCard(null);
+                }}
+              >
+                ✕
+              </button>
+              <h3>Trend-Aware Execution</h3>
+              <h4>Catch Trends While They're Hot</h4>
+              <p>
+                Trends on social media move fast. Really fast. By the time most businesses notice a trend and try to use it, everyone's already moved on. We watch trends all day, every day. We catch them early, figure out which ones fit your brand, and create content before the trend dies. That's how you get massive reach.
+              </p>
+              <ul>
+                <li>We monitor what's trending across all platforms in real-time (so you don't have to)</li>
+                <li>We filter out trends that don't make sense for your brand (not every trend is worth jumping on)</li>
+                <li>We adapt trends to fit your brand's voice and style (so it feels authentic, not forced)</li>
+                <li>We move fast—create and post while the trend is still growing (timing is everything)</li>
+                <li>We put your own spin on trends (so you stand out instead of blending in)</li>
+              </ul>
+              <p className={styles.designCardEmphasis}>
+                Trends are free exposure. But only if you're early. We make sure you are.
+              </p>
+              <Link href="/contact" className={styles.designCardButton}>
+                STAY AHEAD OF TRENDS
+              </Link>
+            </div>
+          )}
+        </>
+      )}
+    </div>
   );
 }
 
@@ -775,7 +1387,7 @@ export default function SolutionsPage() {
         ease: 'power3.out',
         scrollTrigger: {
           trigger: card,
-          start: 'top 80%',
+          start: 'top 95%',
           toggleActions: 'play none none reverse',
         }
       });
@@ -791,7 +1403,7 @@ export default function SolutionsPage() {
         ease: 'power3.out',
         scrollTrigger: {
           trigger: designStatement,
-          start: 'top 85%',
+          start: 'top 95%',
           toggleActions: 'play none none reverse',
         }
       });
@@ -826,7 +1438,7 @@ export default function SolutionsPage() {
         ease: 'back.out(1.7)',
         scrollTrigger: {
           trigger: video,
-          start: 'top 75%',
+          start: 'top bottom+=100',
           toggleActions: 'play none none reverse',
         }
       });
@@ -847,7 +1459,7 @@ export default function SolutionsPage() {
         ease: 'power3.out',
         scrollTrigger: {
           trigger: socialSection,
-          start: 'top 70%',
+          start: 'top 95%',
           toggleActions: 'play none none reverse',
         }
       });
@@ -863,7 +1475,7 @@ export default function SolutionsPage() {
         ease: 'power3.out',
         scrollTrigger: {
           trigger: socialSection,
-          start: 'top 70%',
+          start: 'top 95%',
           toggleActions: 'play none none reverse',
         }
       });
@@ -879,7 +1491,7 @@ export default function SolutionsPage() {
         ease: 'power3.out',
         scrollTrigger: {
           trigger: socialSection,
-          start: 'top 70%',
+          start: 'top 95%',
           toggleActions: 'play none none reverse',
         }
       });
@@ -961,164 +1573,121 @@ export default function SolutionsPage() {
 
   return (
     <div className={styles.page} ref={containerRef}>
-      {/* 1. PRODUCTION - Combined Hero & Showcase */}
+      {/* 01. PRODUCTION HERO - Combined Hero & Showcase */}
       <section className={styles.productionHero}>
         <div className={styles.productionHeroInner}>
           <div className={styles.productionHeroContainer}>
-            {/* Left Side - Number & Title */}
-            <div className={`${styles.productionHeroLeft} production-hero-left`}>
+            {/* Left Side - Title & Info */}
+            <div className={styles.productionHeroLeft}>
               <div className={styles.productionTitleGroup}>
-                <div className={`${styles.productionNumber} production-number`}>01</div>
                 <div className={styles.productionTitleWrapper}>
-                  <p className={`${styles.productionMiniTitle} production-mini-title`}>WHAT WE DO</p>
-                  <h2 className={`${styles.productionHeroTitle} production-title`}>PRODUCTION</h2>
+                  <p className={`${styles.productionMiniTitle} production-mini-title`}>SOLUTIONS</p>
+                  <h1 className={`${styles.productionHeroTitle} production-title`}>PRODUCTION<br/>PACKAGES FOR<br/>EVERY PROJECT.</h1>
                 </div>
               </div>
               <p className={`${styles.productionHeroDescription} production-description`}>
-                Cinema-grade video production. From concept to final cut.
+                TRANSPARENT PRICING. NO SURPRISES.
               </p>
-              <Link href="/media" className={styles.productionButton}>
-                VIEW OUR WORK
+              <Link href="/book" className={styles.productionButton}>
+                BOOK A CALL TO DISCUSS
               </Link>
             </div>
 
-          {/* Right Side - Featured Project Video with White Border Frame */}
-          <Link href="/work/nissan-warsaw-dealership" className={styles.productionShowcaseLink}>
-            <div className={`${styles.productionShowcaseWrapper} production-showcase`}>
-              {/* White border frame */}
-              <div className={styles.productionShowcaseFrame}></div>
+            {/* Right Side - Video Showcase */}
+            <Link href="/work/mc-sim-racing" className={styles.productionShowcaseLink}>
+              <div className={`${styles.productionShowcaseWrapper} production-showcase`}>
+                {/* White border frame */}
+                <div className={styles.productionShowcaseFrame}></div>
 
-              {/* Video container */}
-              <div className={styles.productionShowcase}>
-                {/* Video Background - Nissan Warsaw Commercial */}
-                <iframe
-                  src="https://customer-w6h9o08eg118alny.cloudflarestream.com/700297c313e97262173f0c2107f3b8db/iframe?muted=true&autoplay=true&loop=true&controls=false&preload=true&poster=https%3A%2F%2Fcustomer-w6h9o08eg118alny.cloudflarestream.com%2F700297c313e97262173f0c2107f3b8db%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D2s%26height%3D600"
-                  className={styles.productionShowcaseVideo}
-                  allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
-                  allowFullScreen={true}
-                  style={{ border: 'none' }}
-                />
+                {/* Video container */}
+                <div className={styles.productionShowcase}>
+                  {/* Video Background */}
+                  <iframe
+                    src="https://customer-w6h9o08eg118alny.cloudflarestream.com/a279eed7ef4ceef1b3b257b0fb4dfc67/iframe?muted=true&autoplay=true&loop=true&controls=false"
+                    className={styles.productionShowcaseVideo}
+                    allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+                    allowFullScreen={true}
+                    style={{ border: 'none' }}
+                  />
 
-                {/* Dark overlay */}
-                <div className={styles.productionShowcaseOverlay}></div>
+                  {/* Dark overlay */}
+                  <div className={styles.productionShowcaseOverlay}></div>
 
-                {/* Content Overlay */}
-                <div className={styles.productionShowcaseContent}>
-                  {/* Top Row */}
-                  <div className={styles.showcaseTopRow}>
-                    <div className={styles.showcaseClient}>NISSAN WARSAW</div>
-                    <div className={styles.showcaseViewButton}>
-                      <span>VIEW PROJECT</span>
+                  {/* Content Overlay */}
+                  <div className={styles.productionShowcaseContent}>
+                    {/* Top Row - Client & Button */}
+                    <div className={styles.showcaseTopRow}>
+                      <div className={styles.showcaseClient}>MC SIM RACING</div>
+                      <div className={styles.showcaseViewButton}>
+                        <span>VIEW PROJECT</span>
+                      </div>
+                    </div>
+
+                    {/* Center Title */}
+                    <div className={styles.showcaseCenterTitle}>
+                      <div className={styles.showcaseTitleText}>MC SIM</div>
+                      <div className={styles.showcaseTitleText}>RACING</div>
+                    </div>
+
+                    {/* Bottom Subtitle */}
+                    <div className={styles.showcaseBottomRow}>
+                      <div className={styles.showcaseSubtitle}>BRAND VIDEO</div>
                     </div>
                   </div>
-
-                  {/* Center Title */}
-                  <div className={styles.showcaseCenterTitle}>
-                    <div className={styles.showcaseTitleText}>NISSAN</div>
-                    <div className={styles.showcaseTitleText}>WARSAW</div>
-                  </div>
-
-                  {/* Bottom Subtitle */}
-                  <div className={styles.showcaseBottomRow}>
-                    <div className={styles.showcaseSubtitle}>COMMERCIAL</div>
-                  </div>
                 </div>
               </div>
-            </div>
-          </Link>
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* 02. CREATIVE & DESIGN - Platform Strategy */}
-      <DesignSection />
+      {/* VIDEO PRODUCTION - Pricing Section (White) */}
+      <VideoProductionSection />
 
-      {/* POST-PRODUCTION - Triple Video Showcase */}
-      <section className={styles.postSection}>
-        <div className={styles.postContainer}>
-          <div className={`${styles.postHeader} post-header`}>
-            <div className={styles.postNumber}>03</div>
-            <div className={styles.postTitleWrapper}>
-              <p className={styles.postMiniTitle}>EDITING & POST</p>
-              <h2 className={styles.postTitle}>POST-PRODUCTION</h2>
-            </div>
-          </div>
-          <p className={styles.postSubtitle}>
-            Expert editing. Color grading. Motion graphics.<br />
-            We take good footage and make it great.
-          </p>
-        </div>
-        <div className={styles.postGrid}>
-          <div className={`${styles.postVideoItem} post-video-item`}>
-            <iframe
-              src="https://customer-w6h9o08eg118alny.cloudflarestream.com/559702b328b08583c75a53b76a010a59/iframe?muted=true&autoplay=true&loop=true&controls=false"
-              className={styles.postVideoIframe}
-              allow="autoplay; encrypted-media;"
-            ></iframe>
-            <div className={styles.postLabel}>Editing</div>
-          </div>
-          <div className={`${styles.postVideoItem} post-video-item`}>
-            <iframe
-              src="https://customer-w6h9o08eg118alny.cloudflarestream.com/beeb2ee6a9a30c655e79bdc1f4fb6d20/iframe?muted=true&autoplay=true&loop=true&controls=false"
-              className={styles.postVideoIframe}
-              allow="autoplay; encrypted-media;"
-            ></iframe>
-            <div className={styles.postLabel}>Color Grading</div>
-          </div>
-          <div className={`${styles.postVideoItem} post-video-item`}>
-            <iframe
-              src="https://customer-w6h9o08eg118alny.cloudflarestream.com/851821b5ba9d7b4ca9abc3f80660016d/iframe?muted=true&autoplay=true&loop=true&controls=false"
-              className={styles.postVideoIframe}
-              allow="autoplay; encrypted-media;"
-            ></iframe>
-            <div className={styles.postLabel}>Motion Graphics</div>
-          </div>
-        </div>
-        <div className={styles.postCta}>
-          <Link href="/contact" className={styles.solutionButton}>
-            ELEVATE YOUR CONTENT
-          </Link>
-        </div>
-      </section>
+      {/* BLACK PRICING SECTION - Content Packages, Event Coverage, Website */}
+      <BlackPricingSection />
 
-      {/* 03. SOCIAL STRATEGY - Two Column Layout */}
-      <section className={`${styles.socialSection} social-section`}>
-        <div className={styles.socialContent}>
-          <div className={styles.socialGrid}>
-            {/* Left Column - Header at top, Tagline & CTA below */}
-            <div className={`${styles.socialLeftColumn} social-left-column`}>
-              <div className={styles.socialRightColumn}>
-                <div className={styles.socialHeader}>
-                  <div className={`${styles.socialNumber} social-number`}>04</div>
-                  <div className={styles.socialTitleWrapper}>
-                    <p className={`${styles.socialMiniTitle} social-mini-title`}>DIGITAL MARKETING</p>
-                    <h2 className={`${styles.socialMainTitle} social-main-title`}>SOCIAL STRATEGY</h2>
+      {/* SOCIAL MANAGEMENT + PLATFORM CARDS - Combined Gray Section */}
+      <section className={`${styles.combinedSocialSection} social-section`}>
+        <div className={styles.combinedSocialContainer}>
+          {/* Social Management Content */}
+          <div className={styles.socialContent}>
+            <div className={styles.socialGrid}>
+              {/* Left Column - Header at top, Tagline & CTA below */}
+              <div className={`${styles.socialLeftColumn} social-left-column`}>
+                <div className={styles.socialRightColumn}>
+                  <div className={styles.socialHeader}>
+                    <div className={styles.socialTitleWrapper}>
+                      <p className={`${styles.socialMiniTitle} social-mini-title`}>DIGITAL MARKETING</p>
+                      <h2 className={`${styles.socialMainTitle} social-main-title`}>SOCIAL MANAGEMENT</h2>
+                    </div>
+                  </div>
+                </div>
+
+                <div className={styles.socialBottomLeft}>
+                  <p className={`${styles.socialTagline} social-tagline`}>
+                    We handle your social so you don't have to.
+                  </p>
+                  <div className={styles.socialCta}>
+                    <Link href="/contact" className={styles.solutionButton}>
+                      GROW YOUR AUDIENCE
+                    </Link>
                   </div>
                 </div>
               </div>
 
-              <div className={styles.socialBottomLeft}>
-                <p className={`${styles.socialTagline} social-tagline`}>
-                  We handle your social so you don't have to.
-                </p>
-                <div className={styles.socialCta}>
-                  <Link href="/contact" className={styles.solutionButton}>
-                    GROW YOUR AUDIENCE
-                  </Link>
+              {/* Right Column - Stair-stepped Lines */}
+              <div className={`${styles.socialMiddleColumn} social-middle-column`}>
+                <div className={styles.socialLines}>
+                  <h2 className={`${styles.socialLine} social-line`}><span className={styles.socialColoredWord}>CONTENT</span> CALENDARS.</h2>
+                  <h2 className={`${styles.socialLine} social-line`}><span className={styles.socialColoredWord}>PLATFORM</span> MANAGEMENT.</h2>
+                  <h2 className={`${styles.socialLine} social-line`}><span className={styles.socialColoredWord}>COMMUNITY</span> ENGAGEMENT.</h2>
+                  <h2 className={`${styles.socialLine} social-line`}>REAL GROWTH.</h2>
                 </div>
               </div>
             </div>
-
-            {/* Right Column - Stair-stepped Lines */}
-            <div className={`${styles.socialMiddleColumn} social-middle-column`}>
-              <div className={styles.socialLines}>
-                <h2 className={`${styles.socialLine} social-line`}><span className={styles.socialColoredWord}>CONTENT</span> CALENDARS.</h2>
-                <h2 className={`${styles.socialLine} social-line`}><span className={styles.socialColoredWord}>PLATFORM</span> MANAGEMENT.</h2>
-                <h2 className={`${styles.socialLine} social-line`}><span className={styles.socialColoredWord}>COMMUNITY</span> ENGAGEMENT.</h2>
-                <h2 className={`${styles.socialLine} social-line`}>REAL GROWTH.</h2>
-              </div>
-            </div>
           </div>
+
         </div>
       </section>
 
@@ -1126,7 +1695,7 @@ export default function SolutionsPage() {
       <LaunchSection />
 
       {/* AUDIO SOLUTIONS - Header & Services (White) */}
-      <section className={styles.studioSectionWhite}>
+      <section className={styles.studioSectionWhite} data-cursor-hide>
         <div className={styles.studioContainer}>
           {/* Header with Number */}
           <div className={styles.studioHeader}>
@@ -1183,53 +1752,131 @@ export default function SolutionsPage() {
         </div>
       </section>
 
-      {/* SWEET DREAMS STUDIO - Video Showcase (Black) */}
+      {/* SWEET DREAMS STUDIO - Dual Project Showcase (Black) */}
       <section className={styles.studioSectionBlack}>
         <div className={styles.studioContainer}>
-          {/* Video Showcase with White Border Frame */}
-          <Link href="/work/sweet-dreams-recording-studio" className={styles.studioShowcaseLink}>
-            <div className={styles.studioShowcaseWrapper}>
-              {/* White border frame */}
-              <div className={styles.studioShowcaseFrame}></div>
+          {/* Two Projects Side by Side */}
+          <div className={styles.dualProjectGrid}>
+            {/* Project 1 - Sweet Dreams Recording Studio */}
+            <Link href="/work/sweet-dreams-recording-studio" className={styles.studioShowcaseLink}>
+              <div className={styles.studioShowcaseWrapper}>
+                {/* White border frame */}
+                <div className={styles.studioShowcaseFrame}></div>
 
-              {/* Video container */}
-              <div className={styles.studioShowcase}>
-                {/* Video Background */}
-                <iframe
-                  src="https://customer-w6h9o08eg118alny.cloudflarestream.com/d912b8bd58831e95431db3c24791e44b/iframe?muted=true&autoplay=true&loop=true&controls=false"
-                  className={styles.studioShowcaseVideo}
-                  allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
-                  allowFullScreen={true}
-                  style={{ border: 'none' }}
-                />
+                {/* Video container */}
+                <div className={styles.studioShowcase}>
+                  {/* Video Background */}
+                  <iframe
+                    src="https://customer-w6h9o08eg118alny.cloudflarestream.com/d912b8bd58831e95431db3c24791e44b/iframe?muted=true&autoplay=true&loop=true&controls=false"
+                    className={styles.studioShowcaseVideo}
+                    allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+                    allowFullScreen={true}
+                    style={{ border: 'none' }}
+                  />
 
-                {/* Dark overlay */}
-                <div className={styles.studioShowcaseOverlay}></div>
+                  {/* Dark overlay */}
+                  <div className={styles.studioShowcaseOverlay}></div>
 
-                {/* Content Overlay */}
-                <div className={styles.studioShowcaseContent}>
-                  {/* Top Row - Client & Button */}
-                  <div className={styles.studioShowcaseTopRow}>
-                    <div className={styles.studioShowcaseClient}>SWEET DREAMS MEDIA</div>
-                    <div className={styles.studioShowcaseViewButton}>
-                      <span>VIEW PROJECT</span>
+                  {/* Content Overlay */}
+                  <div className={styles.studioShowcaseContent}>
+                    {/* Top Row - Client & Button */}
+                    <div className={styles.studioShowcaseTopRow}>
+                      <div className={styles.studioShowcaseClient}>SWEET DREAMS MEDIA</div>
+                      <div className={styles.studioShowcaseViewButton}>
+                        <span>VIEW PROJECT</span>
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Center Title */}
-                  <div className={styles.studioShowcaseCenterTitle}>
-                    <div className={styles.studioShowcaseTitleText}>SWEET</div>
-                    <div className={styles.studioShowcaseTitleText}>DREAMS</div>
-                  </div>
+                    {/* Center Title */}
+                    <div className={styles.studioShowcaseCenterTitle}>
+                      <div className={styles.studioShowcaseTitleText}>SWEET</div>
+                      <div className={styles.studioShowcaseTitleText}>DREAMS</div>
+                    </div>
 
-                  {/* Bottom Subtitle */}
-                  <div className={styles.studioShowcaseBottomRow}>
-                    <div className={styles.studioShowcaseSubtitle}>RECORDING STUDIO SHOWCASE</div>
+                    {/* Bottom Subtitle */}
+                    <div className={styles.studioShowcaseBottomRow}>
+                      <div className={styles.studioShowcaseSubtitle}>RECORDING STUDIO SHOWCASE</div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </Link>
+            </Link>
+
+            {/* Project 2 - Coleman Prime Story */}
+            <Link href="/work/the-coleman-prime-story" className={styles.studioShowcaseLink}>
+              <div className={styles.studioShowcaseWrapper}>
+                {/* White border frame */}
+                <div className={styles.studioShowcaseFrame}></div>
+
+                {/* Video container */}
+                <div className={styles.studioShowcase}>
+                  {/* Video Background */}
+                  <iframe
+                    src="https://customer-w6h9o08eg118alny.cloudflarestream.com/d08682649901944d9bbec1dcfb8bde88/iframe?muted=true&autoplay=true&loop=true&controls=false"
+                    className={styles.studioShowcaseVideo}
+                    allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+                    allowFullScreen={true}
+                    style={{ border: 'none' }}
+                  />
+
+                  {/* Dark overlay */}
+                  <div className={styles.studioShowcaseOverlay}></div>
+
+                  {/* Content Overlay */}
+                  <div className={styles.studioShowcaseContent}>
+                    {/* Top Row - Client & Button */}
+                    <div className={styles.studioShowcaseTopRow}>
+                      <div className={styles.studioShowcaseClient}>COLEMAN PRIME</div>
+                      <div className={styles.studioShowcaseViewButton}>
+                        <span>VIEW PROJECT</span>
+                      </div>
+                    </div>
+
+                    {/* Center Title */}
+                    <div className={styles.studioShowcaseCenterTitle}>
+                      <div className={styles.studioShowcaseTitleText}>COLEMAN</div>
+                      <div className={styles.studioShowcaseTitleText}>PRIME</div>
+                    </div>
+
+                    {/* Bottom Subtitle */}
+                    <div className={styles.studioShowcaseBottomRow}>
+                      <div className={styles.studioShowcaseSubtitle}>THE COLEMAN PRIME STORY</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* POST-PRODUCTION - Video Showcase (No Header) */}
+      <section className={styles.postSectionSimple}>
+        <div className={styles.postGrid}>
+          <div className={`${styles.postVideoItem} post-video-item`}>
+            <iframe
+              src="https://customer-w6h9o08eg118alny.cloudflarestream.com/559702b328b08583c75a53b76a010a59/iframe?muted=true&autoplay=true&loop=true&controls=false"
+              className={styles.postVideoIframe}
+              allow="autoplay; encrypted-media;"
+            ></iframe>
+            <div className={styles.postLabel}>Editing</div>
+          </div>
+          <div className={`${styles.postVideoItem} post-video-item`}>
+            <iframe
+              src="https://customer-w6h9o08eg118alny.cloudflarestream.com/beeb2ee6a9a30c655e79bdc1f4fb6d20/iframe?muted=true&autoplay=true&loop=true&controls=false"
+              className={styles.postVideoIframe}
+              allow="autoplay; encrypted-media;"
+            ></iframe>
+            <div className={styles.postLabel}>Color Grading</div>
+          </div>
+          <div className={`${styles.postVideoItem} post-video-item`}>
+            <iframe
+              src="https://customer-w6h9o08eg118alny.cloudflarestream.com/851821b5ba9d7b4ca9abc3f80660016d/iframe?muted=true&autoplay=true&loop=true&controls=false"
+              className={styles.postVideoIframe}
+              allow="autoplay; encrypted-media;"
+            ></iframe>
+            <div className={styles.postLabel}>Motion Graphics</div>
+          </div>
         </div>
       </section>
 

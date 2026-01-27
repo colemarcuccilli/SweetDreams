@@ -6,6 +6,7 @@ import "./globals.css";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import CookieConsent from "@/components/CookieConsent";
+import GradientCursor from "@/components/GradientCursor";
 import { consolidatedSchema } from "@/lib/schema";
 import { SITE_URL, SEO, GEO, BRAND } from "@/lib/constants";
 
@@ -156,6 +157,7 @@ export default function RootLayout({
         />
       </head>
       <body className={ibmPlexMono.className}>
+        <GradientCursor />
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe

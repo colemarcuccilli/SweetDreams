@@ -3,6 +3,67 @@
   padding-bottom: 80px;
   background: white;
   position: relative;
+  overflow: hidden;
+}
+
+/* Paint Splats */
+.paintSplats {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.splat {
+  position: absolute;
+  opacity: 0.2;
+  object-fit: contain;
+  filter: blur(3px);
+}
+
+.splatRed1 {
+  width: 300px;
+  top: 5%;
+  left: -3%;
+  transform: rotate(-20deg);
+}
+
+.splatRed2 {
+  width: 200px;
+  bottom: 10%;
+  right: 5%;
+  transform: rotate(110deg);
+}
+
+.splatBlue1 {
+  width: 280px;
+  top: 10%;
+  right: -2%;
+  transform: rotate(30deg);
+}
+
+.splatBlue2 {
+  width: 180px;
+  bottom: 5%;
+  left: 15%;
+  transform: rotate(-50deg);
+}
+
+.splatYellow1 {
+  width: 250px;
+  top: 50%;
+  left: 2%;
+  transform: rotate(60deg);
+}
+
+.splatYellow2 {
+  width: 160px;
+  top: 20%;
+  right: 20%;
+  transform: rotate(-30deg);
 }
 
 /* Custom Cursor with Logo */

@@ -3,18 +3,15 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { gsap } from 'gsap';
 import { useAuth, signOut } from '@/lib/useAuth';
 import styles from './MobileNav.module.css';
 
 export default function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isHovering, setIsHovering] = useState(false);
   const [isOverDark, setIsOverDark] = useState(false);
   const { user, loading } = useAuth();
   const pathname = usePathname();
   const router = useRouter();
-  const ovalRef = useRef<SVGEllipseElement>(null);
   const linkRefs = useRef<{ [key: string]: HTMLAnchorElement | null }>({});
 
   const handleLogout = async () => {
@@ -46,57 +43,6 @@ export default function MobileNav() {
     };
   }, [isOpen]);
 
-  // Function to position oval around active link
-  const positionOval = () => {
-    if (!ovalRef.current || !isOpen) return;
-
-    const activeLink = linkRefs.current[pathname];
-    if (activeLink) {
-      const rect = activeLink.getBoundingClientRect();
-      const menuRect = activeLink.closest(`.${styles.mobileMenu}`)?.getBoundingClientRect();
-
-      if (menuRect) {
-        const cx = rect.left + rect.width / 2 - menuRect.left;
-        const cy = rect.top + rect.height / 2 - menuRect.top;
-        const rx = rect.width / 2 + 8;
-        const ry = rect.height / 2 + 4;
-
-        gsap.to(ovalRef.current, {
-          attr: { cx, cy, rx, ry },
-          opacity: 1,
-          duration: 0.6,
-          ease: 'power3.out'
-        });
-      }
-    }
-  };
-
-  // Animate oval to active link when menu opens or pathname changes
-  useEffect(() => {
-    if (isOpen) {
-      const timeout = setTimeout(positionOval, 100);
-      return () => clearTimeout(timeout);
-    }
-  }, [isOpen, pathname]);
-
-  // Oval hover effect
-  useEffect(() => {
-    if (!ovalRef.current) return;
-
-    if (isHovering) {
-      gsap.to(ovalRef.current, {
-        attr: { strokeWidth: 6 },
-        duration: 0.3,
-        ease: 'power2.out'
-      });
-    } else {
-      gsap.to(ovalRef.current, {
-        attr: { strokeWidth: 4 },
-        duration: 0.3,
-        ease: 'power2.out'
-      });
-    }
-  }, [isHovering]);
 
   // Detect if hamburger is over dark background
   useEffect(() => {
@@ -171,6 +117,7 @@ export default function MobileNav() {
     { href: '/', label: 'HOME' },
     { href: '/work', label: 'WORK' },
     { href: '/solutions', label: 'SOLUTIONS' },
+    { href: '/book', label: 'BOOK A CALL' },
     { href: '/music', label: 'MUSIC' },
     { href: '/partnerships', label: 'PARTNERSHIPS' },
     { href: '/about', label: 'ABOUT' },
@@ -207,27 +154,6 @@ export default function MobileNav() {
 
       {/* Mobile Menu */}
       <div className={`${styles.mobileMenu} ${isOpen ? styles.menuOpen : ''}`}>
-        {/* Animated SVG Oval */}
-        <svg
-          className={styles.ovalSvg}
-          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 1 }}
-        >
-          <ellipse
-            ref={ovalRef}
-            cx="0"
-            cy="0"
-            rx="0"
-            ry="0"
-            fill="none"
-            stroke="white"
-            strokeWidth="4"
-            opacity="0"
-            style={{ pointerEvents: 'auto', cursor: 'pointer', transition: 'stroke-width 0.3s ease' }}
-            onMouseEnter={() => setIsHovering(true)}
-            onMouseLeave={() => setIsHovering(false)}
-          />
-        </svg>
-
         <nav className={styles.mobileNav}>
           {navLinks.map((link) => (
             <Link
@@ -240,8 +166,6 @@ export default function MobileNav() {
                 pathname === link.href ? styles.active : ''
               }`}
               onClick={() => setIsOpen(false)}
-              onMouseEnter={() => pathname === link.href && setIsHovering(true)}
-              onMouseLeave={() => pathname === link.href && setIsHovering(false)}
             >
               {link.label}
             </Link>

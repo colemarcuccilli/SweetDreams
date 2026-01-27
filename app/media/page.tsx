@@ -212,7 +212,7 @@ export default function MediaPage() {
       <WhyAnimated />
 
       {/* Value Proposition - White */}
-      <section className={styles.value} id="value-section">
+      <section className={styles.value} id="value-section" data-cursor-hide>
         <h2 className={styles.valueTitle} id="scrolling-title">
           WE BUILD VALUE, BEYOND VIDEO.
         </h2>

@@ -1,121 +1,456 @@
 .page {
   min-height: 100vh;
-  background: white;
-  padding: 120px 48px 80px;
+  background: black;
+  overflow-x: hidden;
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
+/* ==================== HERO SECTION ==================== */
+.hero {
+  position: relative;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: #ffffff;
 }
 
-.header {
+.videoBackground {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  aspect-ratio: 16 / 9;
+  z-index: 0;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 6px solid black;
+}
+
+.videoElement {
+  width: 100%;
+  height: 100%;
+  border: none;
+  pointer-events: none;
+}
+
+.videoOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 24px;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+  max-width: 1400px;
+  width: 100%;
+  padding: 0 48px;
   text-align: center;
-  margin-bottom: 80px;
 }
 
-.title {
+.heroTitle {
   font-family: 'Anton', sans-serif;
-  font-size: 100px;
+  font-size: 200px;
   font-weight: 400;
   text-transform: uppercase;
-  line-height: 1;
-  margin: 0 0 32px 0;
-  color: black;
+  line-height: 0.85;
+  margin: 0 0 48px 0;
+  color: white;
 }
 
-.subtitle {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 20px;
-  line-height: 1.6;
-  color: #666;
-  max-width: 700px;
+.heroLine {
+  display: block;
+}
+
+.heroTagline {
+  font-family: 'Anton', sans-serif;
+  font-size: 28px;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.taglineBold {
+  color: white;
+  font-size: 36px;
+}
+
+/* Scroll Indicator */
+.scrollIndicator {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.scrollLine {
+  width: 1px;
+  height: 60px;
+  background: linear-gradient(to bottom, white, transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scaleY(0.7);
+  }
+}
+
+/* ==================== STATEMENT SECTION ==================== */
+.statementSection {
+  position: relative;
+  padding: 100px 48px 200px;
+  background: black;
+  overflow: hidden;
+}
+
+.statementContainer {
+  position: relative;
+  z-index: 1;
+  max-width: 1400px;
   margin: 0 auto;
+  text-align: center;
 }
 
-.section {
-  margin-bottom: 80px;
-}
-
-.sectionTitle {
+.statement {
   font-family: 'Anton', sans-serif;
-  font-size: 48px;
+  font-size: 90px;
   font-weight: 400;
   text-transform: uppercase;
-  margin: 0 0 32px 0;
+  line-height: 1.1;
   color: black;
-}
-
-.text {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 18px;
-  line-height: 1.8;
-  color: #333;
+  -webkit-text-stroke: 2px white;
+  text-stroke: 2px white;
   margin: 0 0 24px 0;
 }
 
-.twoColumn {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  align-items: center;
+.statementHighlight {
+  font-family: 'Anton', sans-serif;
+  font-size: 72px;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 1.1;
+  color: white;
+  -webkit-text-stroke: 0;
+  text-stroke: 0;
+  margin: 0;
 }
 
-.imageBlock {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #f9f9f9;
-  padding: 64px;
+.statementWord {
+  display: inline-block;
+  transition: color 0.3s ease, -webkit-text-stroke 0.3s ease;
+  cursor: default;
 }
 
-.logo {
-  max-width: 300px;
-  width: 100%;
+.statement .statementWord:hover {
+  color: white;
+  -webkit-text-stroke: 0;
+  text-stroke: 0;
 }
 
-.valuesSection {
+.highlighted {
+  color: #4A90E2;
+}
+
+/* ==================== STORY SECTION ==================== */
+.storySection {
+  padding: 80px 48px 160px;
   background: black;
-  color: white;
-  padding: 80px;
-  margin: 0 -48px 80px;
 }
 
-.valuesSection .sectionTitle {
-  color: white;
-  text-align: center;
-  margin-bottom: 48px;
-}
-
-.valuesGrid {
+.storyGrid {
+  max-width: 1400px;
+  margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 48px;
 }
 
-.valueCard {
-  text-align: center;
+.storyCard {
+  background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+  border: none;
+  padding: 48px;
+  position: relative;
+  transition: transform 0.4s ease;
 }
 
-.valueCard h3 {
+/* Corner frames container */
+.cornerFrames {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Individual corner frame pieces */
+.cornerTL, .cornerBR {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+}
+
+.cornerTL {
+  top: 0;
+  left: 0;
+  border-top: 2px solid rgba(255, 255, 255, 0.3);
+  border-left: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.cornerBR {
+  bottom: 0;
+  right: 0;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+  border-right: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Full border that animates in on hover */
+.borderGlow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 2px solid transparent;
+  background: linear-gradient(black, black) padding-box,
+              linear-gradient(135deg, #4A90E2, #e63636, #f5a623, #4A90E2) border-box;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.storyCard:hover {
+  transform: translateY(-4px);
+}
+
+.storyCard:hover .borderGlow {
+  opacity: 1;
+}
+
+.cardContent {
+  position: relative;
+  z-index: 2;
+}
+
+.cardNumber {
+  font-family: 'Anton', sans-serif;
+  font-size: 72px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.05);
+  line-height: 1;
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 2;
+  transition: transform 0.4s ease, color 0.4s ease;
+}
+
+.cardTitle {
   font-family: 'Anton', sans-serif;
   font-size: 24px;
   font-weight: 400;
   text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: white;
   margin: 0 0 16px 0;
+  position: relative;
+  z-index: 2;
+  transition: transform 0.4s ease;
 }
 
-.valueCard p {
+.cardText {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 15px;
+  line-height: 1.8;
+  color: #777;
+  margin: 0;
+  position: relative;
+  z-index: 2;
+  transition: transform 0.4s ease, color 0.4s ease;
+}
+
+/* Card hover effects - grow text */
+.storyCard:hover .cardNumber {
+  transform: scale(1.1);
+  color: rgba(255, 255, 255, 0.1);
+}
+
+.storyCard:hover .cardTitle {
+  transform: scale(1.05);
+}
+
+.storyCard:hover .cardText {
+  color: #999;
+}
+
+/* ==================== MISSION SECTION ==================== */
+.missionSection {
+  position: relative;
+  padding: 200px 48px;
+  background: white;
+  overflow: hidden;
+}
+
+/* Paint Splats - only on white background */
+.paintSplats {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.splat {
+  position: absolute;
+  opacity: 0.15;
+  object-fit: contain;
+  filter: blur(2px);
+}
+
+.splatRed {
+  width: 350px;
+  top: -10%;
+  left: -5%;
+  transform: rotate(-25deg);
+}
+
+.splatBlue {
+  width: 300px;
+  bottom: -10%;
+  right: -3%;
+  transform: rotate(45deg);
+}
+
+.splatYellow {
+  width: 250px;
+  top: 30%;
+  right: 10%;
+  transform: rotate(-60deg);
+}
+
+.missionContainer {
+  position: relative;
+  z-index: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px;
+}
+
+.missionTextContent {
+  flex: 1;
+  text-align: left;
+}
+
+.missionLabel {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 14px;
-  line-height: 1.6;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
   color: #999;
+  margin: 0 0 32px 0;
+}
+
+.missionText {
+  font-family: 'Anton', sans-serif;
+  font-size: 100px;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 1;
+  color: black;
   margin: 0;
 }
 
+.missionHighlight {
+  color: #e63636;
+  display: inline-block;
+  animation: missionFloat 3s ease-in-out infinite;
+}
+
+@keyframes missionFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(-1deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(-1deg);
+  }
+}
+
+/* Team Photo Stack */
+.teamPhotoStack {
+  position: relative;
+  width: 550px;
+  height: 420px;
+  flex-shrink: 0;
+}
+
+.teamPhoto {
+  position: absolute;
+  width: 240px;
+  height: 330px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  border: 4px solid white;
+}
+
+.teamPhoto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.teamPhoto1 {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(-8deg);
+  z-index: 1;
+}
+
+.teamPhoto2 {
+  left: 15%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(5deg);
+  z-index: 2;
+}
+
+.teamPhoto3 {
+  left: 85%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(-3deg);
+  z-index: 3;
+}
+
+.teamPhoto:hover {
+  z-index: 10;
+  transform: translate(-50%, -50%) rotate(0deg) scale(1.08);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+}
+
+/* ==================== CTA SECTION ==================== */
 .cta {
   text-align: center;
-  padding: 80px 0;
+  padding: 120px 48px;
+  background: black;
 }
 
 .ctaTitle {
@@ -125,62 +460,439 @@
   text-transform: uppercase;
   line-height: 1.1;
   margin: 0 0 48px 0;
-  color: black;
+  color: white;
 }
 
 .ctaButton {
   display: inline-block;
-  background: black;
+  background: transparent;
   color: white;
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.15em;
-  padding: 20px 48px;
+  padding: 18px 54px;
   text-decoration: none;
-  transition: all 0.3s ease;
+  border: 2px solid white;
+  border-radius: 999px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.ctaButton::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  background: white;
+  border-radius: 50%;
+  transition: width 0.6s ease, height 0.6s ease;
+  z-index: -1;
 }
 
 .ctaButton:hover {
-  background: #333;
+  color: black;
+  transform: scale(1.05);
 }
 
-@media (max-width: 1024px) {
-  .valuesGrid {
-    grid-template-columns: 1fr;
+.ctaButton:hover::before {
+  width: 400px;
+  height: 400px;
+}
+
+/* ==================== RESPONSIVE ==================== */
+
+/* Large desktop */
+@media (max-width: 1439px) {
+  .heroTitle {
+    font-size: 160px;
+  }
+
+  .statement {
+    font-size: 72px;
+  }
+
+  .statementHighlight {
+    font-size: 60px;
+  }
+
+  .missionText {
+    font-size: 80px;
+  }
+}
+
+/* Desktop */
+@media (max-width: 1200px) {
+  .heroTitle {
+    font-size: 140px;
+  }
+
+  .heroTagline {
+    font-size: 24px;
+  }
+
+  .taglineBold {
+    font-size: 30px;
+  }
+
+  .statementSection {
+    padding: 160px 48px;
+  }
+
+  .statement {
+    font-size: 60px;
+  }
+
+  .statementHighlight {
+    font-size: 52px;
+  }
+
+  .storyGrid {
     gap: 32px;
   }
-}
 
-@media (max-width: 768px) {
-  .page {
-    padding: 100px 24px 60px;
+  .storyCard {
+    padding: 36px;
   }
 
-  .title {
+  .cardNumber {
     font-size: 56px;
   }
 
-  .subtitle {
+  .missionText {
+    font-size: 70px;
+  }
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .videoBackground {
+    width: 85%;
+    border-radius: 20px;
+  }
+
+  .videoOverlay {
+    border-radius: 20px;
+  }
+
+  .heroContent {
+    padding: 0 32px;
+  }
+
+  .heroTitle {
+    font-size: 120px;
+    margin-bottom: 32px;
+  }
+
+  .heroTagline {
+    font-size: 20px;
+  }
+
+  .taglineBold {
+    font-size: 26px;
+  }
+
+  .statementSection {
+    padding: 120px 32px;
+  }
+
+  .statement {
+    font-size: 50px;
+  }
+
+  .statementHighlight {
+    font-size: 44px;
+  }
+
+  .storySection {
+    padding: 60px 32px 120px;
+  }
+
+  .storyGrid {
+    grid-template-columns: 1fr;
+    max-width: 600px;
+  }
+
+  .storyCard {
+    padding: 40px;
+  }
+
+  .missionSection {
+    padding: 100px 32px;
+  }
+
+  .missionContainer {
+    gap: 40px;
+  }
+
+  .missionText {
+    font-size: 56px;
+  }
+
+  .teamPhotoStack {
+    width: 350px;
+    height: 280px;
+  }
+
+  .teamPhoto {
+    width: 130px;
+    height: 180px;
+  }
+
+  .cta {
+    padding: 80px 32px;
+  }
+
+  .ctaTitle {
+    font-size: 48px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .videoBackground {
+    width: 92%;
+    height: 70%;
+    border-radius: 16px;
+  }
+
+  .videoOverlay {
+    border-radius: 16px;
+  }
+
+  .heroContent {
+    padding: 0 24px;
+  }
+
+  .heroTitle {
+    font-size: 80px;
+    margin-bottom: 24px;
+  }
+
+  .heroTagline {
     font-size: 16px;
   }
 
-  .twoColumn {
-    grid-template-columns: 1fr;
-    gap: 48px;
+  .taglineBold {
+    font-size: 20px;
   }
 
-  .imageBlock {
-    padding: 48px;
+  .scrollIndicator {
+    bottom: 24px;
   }
 
-  .valuesSection {
-    padding: 48px 24px;
-    margin: 0 -24px 80px;
+  .scrollLine {
+    height: 40px;
+  }
+
+  .statementSection {
+    padding: 80px 24px;
+  }
+
+  .statement {
+    font-size: 36px;
+  }
+
+  .statementHighlight {
+    font-size: 32px;
+  }
+
+  .storySection {
+    padding: 40px 24px 80px;
+  }
+
+  .storyCard {
+    padding: 32px;
+  }
+
+  .cardNumber {
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+
+  .cardTitle {
+    font-size: 20px;
+  }
+
+  .cardText {
+    font-size: 14px;
+  }
+
+  .missionSection {
+    padding: 80px 24px;
+  }
+
+  .missionContainer {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .missionTextContent {
+    text-align: center;
+  }
+
+  .missionText {
+    font-size: 40px;
+  }
+
+  .teamPhotoStack {
+    width: 100%;
+    max-width: 350px;
+    height: 280px;
+    margin-top: 48px;
+  }
+
+  .teamPhoto {
+    width: 120px;
+    height: 165px;
+    border-width: 3px;
+  }
+
+  .teamPhoto1 {
+    transform: translate(-50%, -50%) rotate(-6deg);
+  }
+
+  .teamPhoto2 {
+    left: 15%;
+    transform: translate(-50%, -50%) rotate(4deg);
+  }
+
+  .teamPhoto3 {
+    left: 85%;
+    transform: translate(-50%, -50%) rotate(-2deg);
+  }
+
+  .cta {
+    padding: 60px 24px;
   }
 
   .ctaTitle {
     font-size: 36px;
+  }
+
+  .ctaButton {
+    padding: 16px 40px;
+    font-size: 13px;
+  }
+}
+
+/* Small phones */
+@media (max-width: 430px) {
+  .heroContent {
+    padding: 0 16px;
+  }
+
+  .heroTitle {
+    font-size: 56px;
+    margin-bottom: 20px;
+  }
+
+  .heroTagline {
+    font-size: 13px;
+  }
+
+  .taglineBold {
+    font-size: 16px;
+  }
+
+  .statementSection {
+    padding: 64px 16px;
+  }
+
+  .statement {
+    font-size: 28px;
+  }
+
+  .statementHighlight {
+    font-size: 24px;
+  }
+
+  .storySection {
+    padding: 32px 16px 64px;
+  }
+
+  .storyCard {
+    padding: 24px;
+  }
+
+  .cardNumber {
+    font-size: 40px;
+  }
+
+  .cardTitle {
+    font-size: 18px;
+  }
+
+  .missionSection {
+    padding: 80px 16px;
+  }
+
+  .missionLabel {
+    font-size: 12px;
+  }
+
+  .missionText {
+    font-size: 32px;
+  }
+
+  .teamPhotoStack {
+    height: 280px;
+    max-width: 300px;
+    margin-top: 40px;
+  }
+
+  .teamPhoto {
+    width: 100px;
+    height: 140px;
+    border-radius: 8px;
+  }
+
+  .cta {
+    padding: 48px 16px;
+  }
+
+  .ctaTitle {
+    font-size: 28px;
+  }
+
+  .ctaButton {
+    padding: 14px 32px;
+    font-size: 12px;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 374px) {
+  .heroTitle {
+    font-size: 48px;
+  }
+
+  .heroTagline {
+    font-size: 12px;
+  }
+
+  .taglineBold {
+    font-size: 14px;
+  }
+
+  .statement {
+    font-size: 24px;
+  }
+
+  .statementHighlight {
+    font-size: 20px;
+  }
+
+  .missionText {
+    font-size: 26px;
+  }
+
+  .ctaTitle {
+    font-size: 24px;
   }
 }

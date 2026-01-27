@@ -29,8 +29,11 @@ export default function Nav() {
       <div className={styles.navContainer}>
         <div className={styles.navContent}>
 
-          {/* Left Navigation Links */}
+          {/* Left: CTA Button + WORK */}
           <div className={styles.navLeft}>
+            <Link href="/book" className={styles.ctaButton}>
+              BOOK A CALL
+            </Link>
             <Link
               href="/work"
               className={`${styles.navLink} ${pathname === '/work' || pathname.startsWith('/work/') ? styles.navLinkActive : ''}`}
@@ -50,7 +53,7 @@ export default function Nav() {
             </Link>
           </div>
 
-          {/* Right Navigation Links */}
+          {/* Right: SOLUTIONS + Auth + Hamburger */}
           <div className={styles.navRight}>
             <Link
               href="/solutions"
@@ -59,15 +62,39 @@ export default function Nav() {
               SOLUTIONS
             </Link>
 
-            {/* CTA Button */}
-            <Link href="/book" className={styles.ctaButton}>
-              BOOK A CALL
-            </Link>
-          </div>
+            {/* Auth Section */}
+            <div className={styles.authContainer}>
+              {loading ? null : user ? (
+                <>
+                  <Link href="/profile" className={styles.profileIcon}>
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <circle cx="12" cy="8" r="4"/>
+                      <path d="M20 21a8 8 0 1 0-16 0"/>
+                    </svg>
+                  </Link>
+                  <div className={styles.authStack}>
+                    <button onClick={handleLogout} className={styles.authButton}>
+                      LOG OUT
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <div className={styles.authStack}>
+                  <Link href="/login" className={styles.authButton}>
+                    LOGIN
+                  </Link>
+                  <div className={styles.authDivider} />
+                  <Link href="/signup" className={styles.authButton}>
+                    SIGN UP
+                  </Link>
+                </div>
+              )}
+            </div>
 
-          {/* Hamburger Menu - Always Visible */}
-          <div className={styles.hamburgerWrapper}>
-            <MobileNav />
+            {/* Hamburger - inline with auth */}
+            <div className={styles.hamburgerInline}>
+              <MobileNav />
+            </div>
           </div>
 
         </div>

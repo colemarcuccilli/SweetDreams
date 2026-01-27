@@ -102,11 +102,11 @@ export default function MediaHeroAnimated() {
   }, []);
 
   return (
-    <div ref={containerRef} className={styles.hero}>
+    <div ref={containerRef} className={styles.hero} data-cursor-hide>
       {/* Video Box with rounded corners */}
       <div className={styles.videoBox}>
         <iframe
-          src="https://customer-w6h9o08eg118alny.cloudflarestream.com/a507a5b8a369b70b7332c0567cbbcc4c/iframe?muted=true&autoplay=true&loop=true&controls=false"
+          src="https://customer-w6h9o08eg118alny.cloudflarestream.com/a279eed7ef4ceef1b3b257b0fb4dfc67/iframe?muted=true&autoplay=true&loop=true&controls=false"
           className={styles.videoElement}
           allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
           allowFullScreen={true}
@@ -120,19 +120,18 @@ export default function MediaHeroAnimated() {
         <div className={styles.contentOverlay}>
           {/* Main Title - Centered */}
           <div className={styles.titleContainer}>
-            <div className={`${styles.titleLine} ${styles.titleLineSmaller} title-line`}>HIGH IMPACT MEDIA,</div>
-            <div className={`${styles.titleLine} title-line`}>MADE AFFORDABLE.</div>
+            <div className={`${styles.titleLine} ${styles.titleLineSmaller} title-line`}>STORIES THAT MOVE.</div>
+            <div className={`${styles.titleLine} title-line`}>CONTENT THAT CONVERTS.</div>
           </div>
 
           {/* CTA Button - Centered */}
-          <a href="/work/fort-wayne-hyperlapse-showcase" className={styles.ctaButton}>
+          <a href="/work/mc-sim-racing" className={styles.ctaButton}>
             VIEW PROJECT
           </a>
 
           {/* Description - Bottom Left */}
           <p className={styles.description}>
-            World-class video production at prices that make sense<br />
-            for businesses of all sizes
+            Limited availability. Book your project today.
           </p>
 
           {/* Mini Title - Bottom Right */}

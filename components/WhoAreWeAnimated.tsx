@@ -60,12 +60,13 @@ export default function WhoAreWeAnimated() {
         </h2>
 
         <div className={styles.mainText} ref={mainTextRef}>
-          <div className={styles.textLine}>WE SPECIALIZE IN BRAND DEVELOPMENT,</div>
           <div className={styles.textLine}>
-            <span className="creativeStorytellingWord">CREATIVE STORYTELLING</span>, AND MULTIMEDIA
+            <span className="creativeStorytellingWord">BRAND DEVELOPMENT. CREATIVE STORYTELLING.</span>
           </div>
-          <div className={styles.textLine}>SOLUTIONS THAT HELP BUSINESSES STAND OUT</div>
-          <div className={styles.textLine}>AND CONNECT WITH THEIR AUDIENCE.</div>
+          <div className={styles.textLine}>MULTIMEDIA SOLUTIONS THAT ACTUALLY WORK.</div>
+          <div className={styles.textLine}>&nbsp;</div>
+          <div className={styles.textLine}>Most agencies get paid whether you grow or not.</div>
+          <div className={styles.textLine}>We do it differently.</div>
         </div>
       </div>
     </section>

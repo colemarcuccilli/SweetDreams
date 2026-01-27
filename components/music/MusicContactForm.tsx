@@ -26,7 +26,7 @@ declare global {
 }
 
 interface MusicContactFormProps {
-  source?: 'music' | 'media' | 'solutions';
+  source?: 'music' | 'media' | 'solutions' | 'work';
 }
 
 export default function MusicContactForm({ source = 'music' }: MusicContactFormProps) {
@@ -147,7 +147,7 @@ export default function MusicContactForm({ source = 'music' }: MusicContactFormP
   };
 
   return (
-    <div className={styles.formSection} id="contact">
+    <div className={styles.formSection} id="contact" data-cursor-hide>
       {/* Load Turnstile script */}
       <Script
         src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
@@ -163,7 +163,7 @@ export default function MusicContactForm({ source = 'music' }: MusicContactFormP
             YOUR NEXT PROJECT?
           </h2>
           <p className={styles.subtitle}>
-            Let's discuss your music production needs and bring your vision to life
+            Let's discuss your project and bring your vision to life
           </p>
         </div>
 

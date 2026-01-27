@@ -158,7 +158,7 @@ export default function FriendsAnimated() {
   }, []);
 
   return (
-    <section className={styles.section}>
+    <section className={styles.section} data-cursor-hide>
       <div className={styles.container} ref={containerRef}>
         <div className={styles.textSection}>
           <h2 className={styles.title}>TRUSTED BY</h2>

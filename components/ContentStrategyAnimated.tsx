@@ -19,8 +19,23 @@ export default function ContentStrategyAnimated() {
     if (typeof window === 'undefined' || !titleRef.current || !rotatingWordRef.current) return;
 
     const words = ['WATCHING', 'LISTENING', 'BUYING', 'TRUSTING'];
+    const wordClasses: { [key: string]: string } = {
+      'WATCHING': styles.wordWatching,
+      'LISTENING': styles.wordListening,
+      'BUYING': styles.wordBuying,
+      'TRUSTING': styles.wordTrusting,
+    };
     let currentIndex = 0;
     let animationTimeout: NodeJS.Timeout | null = null;
+
+    const applyWordClass = (element: HTMLElement, word: string) => {
+      // Remove all word classes
+      Object.values(wordClasses).forEach(cls => element.classList.remove(cls));
+      // Add the current word class
+      if (wordClasses[word]) {
+        element.classList.add(wordClasses[word]);
+      }
+    };
 
     const animateWord = () => {
       const wordElement = rotatingWordRef.current;
@@ -28,6 +43,7 @@ export default function ContentStrategyAnimated() {
 
       const currentWord = words[currentIndex];
       wordElement.textContent = currentWord;
+      applyWordClass(wordElement, currentWord);
 
       // Start floating animation for current word
       const floatAnimation = gsap.to(wordElement, {
@@ -61,6 +77,7 @@ export default function ContentStrategyAnimated() {
         // Change text and position for slide in from far right
         tl.call(() => {
           wordElement.textContent = nextWord;
+          applyWordClass(wordElement, nextWord);
           currentIndex = nextIndex;
           gsap.set(wordElement, { x: window.innerWidth, opacity: 1, y: 0, rotation: 0, filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5)) blur(4px)' });
         });
@@ -127,9 +144,10 @@ export default function ContentStrategyAnimated() {
           CONTENT THAT KEEPS THEM <span ref={rotatingWordRef} className={styles.rotatingWord}>WATCHING</span>
         </h2>
 
-        <p className={styles.intro}>
-          WE DON'T JUST CREATE ONE VIDEO AND CALL IT A DAY. WE BUILD TRUST THROUGH ENTERTAINMENT. IN 2025, YOUR AUDIENCE CONSUMES CONTENT CONSTANTLY—THEY'RE NOT READING NEWSPAPER ADS ANYMORE.
-        </p>
+        <div className={styles.introBlock}>
+          <p className={styles.introLine}>WE BUILD TRUST THROUGH ENTERTAINMENT.</p>
+          <p className={styles.introSubline}>IN 2026, YOUR AUDIENCE CONSUMES CONTENT CONSTANTLY—THEY'RE NOT READING NEWSPAPER ADS ANYMORE.</p>
+        </div>
 
         <div className={styles.giveContent}>
           <div className={styles.giveGrid} ref={ratioCardsRef}>
@@ -148,9 +166,12 @@ export default function ContentStrategyAnimated() {
           </div>
 
           <div className={styles.ratioExplanation}>
-            <h4 className={styles.ratioTitle}>THE GIVE-TO-ASK RATIO</h4>
+            <h4 className={styles.ratioTitle}>THE 10:1 RATIO</h4>
             <p className={styles.ratioText}>
-              FOR EVERY PIECE OF CONTENT ASKING FOR SOMETHING (BUY, SUBSCRIBE, BOOK), YOU SHOULD DELIVER AT LEAST 6 PIECES OF PURE VALUE. WE RECOMMEND A 10:1 RATIO. THE HIGHER YOUR RATIO, THE STRONGER YOUR BRAND TRAJECTORY.
+              FOR EVERY ASK, DELIVER 10 PIECES OF PURE VALUE.
+            </p>
+            <p className={styles.ratioTagline}>
+              THE HIGHER YOUR RATIO, THE STRONGER YOUR TRAJECTORY.
             </p>
           </div>
         </div>

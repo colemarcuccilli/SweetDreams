@@ -3,7 +3,7 @@ import styles from "./CTASection.module.css";
 
 export default function CTASection() {
   return (
-    <section className={styles.section}>
+    <section className={styles.section} data-cursor-hide>
       <div className={styles.container}>
         <div className={styles.verticalImageSection}>
           <img

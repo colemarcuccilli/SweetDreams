@@ -60,7 +60,7 @@ export default function MusicPage() {
       <ServicesAnimated />
 
       {/* Packages - White */}
-      <section className={styles.pricing}>
+      <section className={styles.pricing} data-cursor-hide>
         <div className={styles.container}>
           {/* Video Showcase */}
           <Link href="/work/sweet-dreams-recording-studio" className={styles.showcaseLink}>
@@ -122,7 +122,7 @@ export default function MusicPage() {
       </section>
 
       {/* Booking Section - White */}
-      <section className={styles.bookingSection} id="booking">
+      <section className={styles.bookingSection} id="booking" data-cursor-hide>
         <div className={styles.container}>
           <p className={styles.miniTitle}>GET STARTED</p>
           <h2 className={styles.sectionTitle}>BOOK YOUR SESSION</h2>

@@ -108,7 +108,7 @@ export default function RecentWork() {
   }
 
   return (
-    <section className={styles.section}>
+    <section className={styles.section} data-cursor-hide>
       {/* Custom Cursor with Logo */}
       {cursorLogo && (
         <div

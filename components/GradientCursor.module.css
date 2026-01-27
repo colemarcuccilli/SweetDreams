@@ -1,0 +1,36 @@
+.gradientCursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at center,
+    rgba(230, 54, 54, 0.35) 0%,
+    rgba(244, 196, 48, 0.25) 30%,
+    rgba(74, 144, 226, 0.15) 60%,
+    transparent 85%
+  );
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  filter: blur(40px);
+  will-change: transform;
+  mix-blend-mode: normal;
+}
+
+/* Hide on mobile/touch devices */
+@media (hover: none) and (pointer: coarse) {
+  .gradientCursor {
+    display: none;
+  }
+}
+
+/* Reduce size on smaller screens */
+@media (max-width: 768px) {
+  .gradientCursor {
+    width: 150px;
+    height: 150px;
+  }
+}

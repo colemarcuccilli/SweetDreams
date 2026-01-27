@@ -35,20 +35,58 @@
 .rotatingWord {
   font-size: 200px;
   display: inline-block;
-  color: #F4C430;
+  color: black;
+  -webkit-text-stroke: 4px white;
   position: relative;
   z-index: 10;
   filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
 }
 
-.intro {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 20px;
-  line-height: 1.8;
-  color: #aaa;
+/* Word-specific colors for rotating word */
+.wordWatching {
+  color: black !important;
+  -webkit-text-stroke: 4px white !important;
+}
+
+.wordListening {
+  color: #F4C430 !important;
+  -webkit-text-stroke: 0 !important;
+}
+
+.wordBuying {
+  color: #e63636 !important;
+  -webkit-text-stroke: 0 !important;
+}
+
+.wordTrusting {
+  color: #4A90E2 !important;
+  -webkit-text-stroke: 0 !important;
+}
+
+.introBlock {
   margin: 0 auto 64px auto;
   max-width: 1200px;
   text-align: center;
+}
+
+.introLine {
+  font-family: 'Anton', sans-serif;
+  font-size: 48px;
+  font-weight: 400;
+  color: white;
+  text-transform: uppercase;
+  margin: 0 0 16px 0;
+  line-height: 1.1;
+}
+
+.introSubline {
+  font-family: 'Anton', sans-serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: #aaa;
+  text-transform: uppercase;
+  margin: 0;
+  line-height: 1.3;
 }
 
 .giveContent {
@@ -129,7 +167,17 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: #aaa;
+  margin: 0 0 16px 0;
+}
+
+.ratioTagline {
+  font-family: 'Anton', sans-serif;
+  font-size: 32px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: white;
   margin: 0;
+  line-height: 1.2;
 }
 
 .description {
