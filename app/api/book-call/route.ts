@@ -7,15 +7,67 @@ const BOOKING_EMAILS = ['jayvalleo@sweetdreamsmusic.com', 'cole@sweetdreamsmusic
 // Google Sheets Web App URL
 const GOOGLE_SHEETS_URL = 'https://script.google.com/a/macros/sweetdreamsmusic.com/s/AKfycbyMxEPnirW3FVVTafQ8l3P_1udp-qYD1Zs5c8-KPat63AIJI0yv-N9iAXbtzlgMOV-reQ/exec';
 
+// Turnstile secret key from environment variables
+const TURNSTILE_SECRET_KEY = process.env.TURNSTILE_SECRET_KEY;
+
+async function verifyTurnstileToken(token: string, remoteip?: string): Promise<boolean> {
+  if (!TURNSTILE_SECRET_KEY) {
+    console.error('TURNSTILE_SECRET_KEY is not configured');
+    return false;
+  }
+
+  try {
+    const formData = new FormData();
+    formData.append('secret', TURNSTILE_SECRET_KEY);
+    formData.append('response', token);
+    if (remoteip) {
+      formData.append('remoteip', remoteip);
+    }
+
+    const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      body: formData,
+    });
+
+    const result = await response.json();
+    return result.success === true;
+  } catch (error) {
+    console.error('Turnstile verification error:', error);
+    return false;
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, email, phone, company, message, preferredDate, preferredTime } = body;
+    const { name, email, phone, company, message, preferredDate, preferredTime, turnstileToken } = body;
 
     // Validate required fields
     if (!name || !email) {
       return NextResponse.json(
         { error: 'Name and email are required' },
+        { status: 400 }
+      );
+    }
+
+    // Validate Turnstile token
+    if (!turnstileToken) {
+      return NextResponse.json(
+        { error: 'Verification required' },
+        { status: 400 }
+      );
+    }
+
+    // Get client IP for additional validation
+    const clientIp = request.headers.get('cf-connecting-ip') ||
+                     request.headers.get('x-forwarded-for')?.split(',')[0] ||
+                     undefined;
+
+    const isValidToken = await verifyTurnstileToken(turnstileToken, clientIp);
+    if (!isValidToken) {
+      console.warn('Invalid Turnstile token received (book-call)', { name, email });
+      return NextResponse.json(
+        { error: 'Invalid verification' },
         { status: 400 }
       );
     }

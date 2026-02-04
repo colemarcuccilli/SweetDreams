@@ -1,8 +1,12 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useCallback, useEffect } from 'react';
+import Script from 'next/script';
 import { createClient } from '@/utils/supabase/client';
 import styles from './AuthModal.module.css';
+
+// Turnstile site key
+const TURNSTILE_SITE_KEY = "0x4AAAAAACJodExIWnZ-7sQq";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -30,8 +34,53 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess }: AuthModalP
   const [lastName, setLastName] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const turnstileRef = useRef<HTMLDivElement>(null);
+  const widgetIdRef = useRef<string | null>(null);
 
   const supabase = createClient();
+
+  const renderTurnstile = useCallback(() => {
+    if (window.turnstile && turnstileRef.current && !widgetIdRef.current) {
+      try {
+        widgetIdRef.current = window.turnstile.render(turnstileRef.current, {
+          sitekey: TURNSTILE_SITE_KEY,
+          callback: (token: string) => {
+            setTurnstileToken(token);
+          },
+          'error-callback': () => {
+            setTurnstileToken(null);
+          },
+          'expired-callback': () => {
+            setTurnstileToken(null);
+          },
+          theme: 'light',
+          size: 'flexible',
+        });
+      } catch (error) {
+        console.error("Turnstile render error:", error);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    // Render Turnstile when entering signup mode
+    if (mode === 'signup' && window.turnstile) {
+      // Small delay to ensure DOM is ready
+      setTimeout(renderTurnstile, 100);
+    }
+
+    return () => {
+      if (widgetIdRef.current && window.turnstile) {
+        try {
+          window.turnstile.remove(widgetIdRef.current);
+        } catch (e) {
+          // Ignore cleanup errors
+        }
+        widgetIdRef.current = null;
+      }
+    };
+  }, [mode, renderTurnstile]);
 
   // Password validation requirements
   const passwordRequirements = useMemo((): PasswordRequirement[] => {
@@ -114,8 +163,15 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess }: AuthModalP
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     setError('');
+
+    // Verify Turnstile token
+    if (!turnstileToken) {
+      setError('Please complete the verification.');
+      return;
+    }
+
+    setLoading(true);
 
     if (password !== confirmPassword) {
       setError('Passwords do not match');
@@ -155,6 +211,16 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess }: AuthModalP
 
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
+      {/* Load Turnstile script */}
+      <Script
+        src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+        strategy="lazyOnload"
+        onLoad={() => {
+          if (mode === 'signup') {
+            setTimeout(renderTurnstile, 100);
+          }
+        }}
+      />
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         <button className={styles.closeButton} onClick={onClose}>×</button>
 
@@ -324,12 +390,17 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess }: AuthModalP
                 />
               </div>
 
+              {/* Turnstile Widget */}
+              <div style={{ marginTop: '1rem', marginBottom: '0.5rem' }}>
+                <div ref={turnstileRef}></div>
+              </div>
+
               {error && <p className={styles.error}>{error}</p>}
 
               <button
                 type="submit"
                 className={styles.submitButton}
-                disabled={loading}
+                disabled={loading || !turnstileToken}
               >
                 {loading ? 'Creating Account...' : 'Create Account'}
               </button>

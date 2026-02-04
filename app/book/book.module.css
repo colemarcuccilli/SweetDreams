@@ -236,3 +236,107 @@
     padding: 24px 16px;
   }
 }
+
+/* Studio Booking Section */
+.studioSection {
+  background: #000;
+  color: #fff;
+  padding: 80px 48px;
+  margin-top: 80px;
+  margin-left: -48px;
+  margin-right: -48px;
+  margin-bottom: -80px;
+}
+
+.studioSection .header {
+  margin-bottom: 48px;
+}
+
+.studioSection .title {
+  color: #fff;
+}
+
+.studioSection .subtitle {
+  color: #999;
+}
+
+.miniTitle {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #ffc800;
+  margin-bottom: 16px;
+}
+
+.studioInfo {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+.infoCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}
+
+.infoIcon {
+  font-size: 32px;
+  flex-shrink: 0;
+}
+
+.infoCard h3 {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 4px 0;
+}
+
+.infoCard p {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  color: #999;
+  margin: 0;
+}
+
+.studioNote {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+  margin-top: 32px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+  .studioSection {
+    padding: 60px 24px;
+    margin-left: -24px;
+    margin-right: -24px;
+    margin-bottom: -60px;
+  }
+
+  .studioInfo {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 430px) {
+  .studioSection {
+    padding: 40px 16px;
+    margin-left: -16px;
+    margin-right: -16px;
+    margin-bottom: -40px;
+  }
+}

@@ -1,10 +1,32 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Script from 'next/script';
 import { signUp } from '@/lib/useAuth';
 import styles from '../login/auth.module.css';
+
+// Turnstile site key
+const TURNSTILE_SITE_KEY = "0x4AAAAAACJodExIWnZ-7sQq";
+
+// Extend Window interface for Turnstile
+declare global {
+  interface Window {
+    turnstile?: {
+      render: (container: HTMLElement | string, options: {
+        sitekey: string;
+        callback: (token: string) => void;
+        'error-callback'?: () => void;
+        'expired-callback'?: () => void;
+        theme?: 'light' | 'dark' | 'auto';
+        size?: 'normal' | 'flexible' | 'compact';
+      }) => string;
+      reset: (widgetId: string) => void;
+      remove: (widgetId: string) => void;
+    };
+  }
+}
 
 interface PasswordRequirement {
   label: string;
@@ -28,6 +50,53 @@ export default function SignupPage() {
   const [success, setSuccess] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [turnstileError, setTurnstileError] = useState<string | null>(null);
+  const turnstileRef = useRef<HTMLDivElement>(null);
+  const widgetIdRef = useRef<string | null>(null);
+
+  const renderTurnstile = useCallback(() => {
+    if (window.turnstile && turnstileRef.current && !widgetIdRef.current) {
+      try {
+        widgetIdRef.current = window.turnstile.render(turnstileRef.current, {
+          sitekey: TURNSTILE_SITE_KEY,
+          callback: (token: string) => {
+            setTurnstileToken(token);
+            setTurnstileError(null);
+          },
+          'error-callback': () => {
+            setTurnstileError("Verification failed. Please try again.");
+            setTurnstileToken(null);
+          },
+          'expired-callback': () => {
+            setTurnstileToken(null);
+            setTurnstileError("Verification expired. Please verify again.");
+          },
+          theme: 'light',
+          size: 'flexible',
+        });
+      } catch (error) {
+        console.error("Turnstile render error:", error);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (window.turnstile) {
+      renderTurnstile();
+    }
+
+    return () => {
+      if (widgetIdRef.current && window.turnstile) {
+        try {
+          window.turnstile.remove(widgetIdRef.current);
+        } catch (e) {
+          // Ignore cleanup errors
+        }
+        widgetIdRef.current = null;
+      }
+    };
+  }, [renderTurnstile]);
 
   // Password validation requirements
   const passwordRequirements = useMemo((): PasswordRequirement[] => {
@@ -91,6 +160,14 @@ export default function SignupPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setTurnstileError(null);
+
+    // Verify Turnstile token
+    if (!turnstileToken) {
+      setTurnstileError("Please complete the verification.");
+      return;
+    }
+
     setLoading(true);
 
     console.log('🚀 SIGNUP: Starting signup process...');
@@ -173,6 +250,13 @@ export default function SignupPage() {
 
   return (
     <div className={styles.container}>
+      {/* Load Turnstile script */}
+      <Script
+        src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+        strategy="lazyOnload"
+        onLoad={renderTurnstile}
+      />
+
       <div className={styles.formWrapper}>
         <div className={styles.header}>
           <h1 className={styles.title}>SIGN UP</h1>
@@ -332,10 +416,18 @@ export default function SignupPage() {
             </div>
           </div>
 
+          {/* Turnstile Widget */}
+          <div style={{ marginTop: '1rem', marginBottom: '1rem' }}>
+            <div ref={turnstileRef}></div>
+            {turnstileError && (
+              <p className={styles.error} style={{ marginTop: '0.5rem' }}>{turnstileError}</p>
+            )}
+          </div>
+
           <button
             type="submit"
             className={styles.submitButton}
-            disabled={loading}
+            disabled={loading || !turnstileToken}
           >
             {loading ? 'CREATING ACCOUNT...' : 'SIGN UP'}
           </button>

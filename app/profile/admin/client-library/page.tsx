@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/useAuth';
 import { isAdmin } from '@/lib/admin-auth';
@@ -47,6 +47,7 @@ export default function AdminClientLibraryPage() {
   const [notes, setNotes] = useState<Note[]>([]);
   const [loadingClients, setLoadingClients] = useState(true);
   const [loadingData, setLoadingData] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   // File upload state
   const [uploadFile, setUploadFile] = useState<File | null>(null);
@@ -66,6 +67,18 @@ export default function AdminClientLibraryPage() {
   // Form visibility state
   const [showUploadForm, setShowUploadForm] = useState(false);
   const [showNoteForm, setShowNoteForm] = useState(false);
+
+  // Filter clients based on search query
+  const filteredClients = useMemo(() => {
+    if (!searchQuery.trim()) return clients;
+
+    const query = searchQuery.toLowerCase();
+    return clients.filter(client => {
+      const fullName = `${client.firstName} ${client.lastName}`.toLowerCase();
+      const email = client.email.toLowerCase();
+      return fullName.includes(query) || email.includes(query);
+    });
+  }, [clients, searchQuery]);
 
   useEffect(() => {
     if (!loading && user && !isAdmin(user.email)) {
@@ -314,11 +327,33 @@ export default function AdminClientLibraryPage() {
         {/* Clients List */}
         <aside className={styles.clientsList}>
           <h2 className={styles.sidebarTitle}>Clients</h2>
-          {clients.length === 0 ? (
-            <p className={styles.emptyText}>No clients with bookings yet</p>
+
+          {/* Search Bar */}
+          <div className={styles.searchContainer}>
+            <div className={styles.searchWrapper}>
+              <span className={styles.searchIcon}>🔍</span>
+              <input
+                type="text"
+                placeholder="Search by name or email..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className={styles.searchInput}
+              />
+            </div>
+          </div>
+
+          {/* Client Count */}
+          <div className={styles.clientCount}>
+            {filteredClients.length} of {clients.length} clients
+          </div>
+
+          {filteredClients.length === 0 ? (
+            <p className={styles.emptyText}>
+              {clients.length === 0 ? 'No clients yet' : 'No clients match your search'}
+            </p>
           ) : (
             <div className={styles.clientItems}>
-              {clients.map((client) => (
+              {filteredClients.map((client) => (
                 <button
                   key={client.id}
                   className={`${styles.clientItem} ${selectedClient?.id === client.id ? styles.clientItemActive : ''}`}
@@ -360,6 +395,37 @@ export default function AdminClientLibraryPage() {
             <div className={styles.loading}>Loading client data...</div>
           ) : (
             <>
+              {/* Selected Client Info */}
+              <div className={styles.selectedClientInfo}>
+                {selectedClient.profilePhotoUrl ? (
+                  <img
+                    src={selectedClient.profilePhotoUrl}
+                    alt={`${selectedClient.firstName} ${selectedClient.lastName}`}
+                    className={styles.selectedClientPhoto}
+                  />
+                ) : (
+                  <div className={styles.selectedClientInitial}>
+                    {selectedClient.firstName?.[0]}{selectedClient.lastName?.[0]}
+                  </div>
+                )}
+                <div className={styles.selectedClientDetails}>
+                  <h2 className={styles.selectedClientName}>
+                    {selectedClient.firstName} {selectedClient.lastName}
+                  </h2>
+                  <p className={styles.selectedClientEmail}>{selectedClient.email}</p>
+                  <div className={styles.selectedClientStats}>
+                    <div className={styles.statItem}>
+                      <span className={styles.statValue}>{deliverables.length}</span>
+                      <span className={styles.statLabel}>Files</span>
+                    </div>
+                    <div className={styles.statItem}>
+                      <span className={styles.statValue}>{notes.length}</span>
+                      <span className={styles.statLabel}>Notes</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               {/* Action Buttons */}
               <div className={styles.actionButtons}>
                 <button

@@ -55,6 +55,138 @@
   border-bottom: 2px solid #ddd;
 }
 
+/* SEARCH BAR */
+.searchContainer {
+  margin-bottom: 1rem;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  padding-left: 2.5rem;
+  background: #fff;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #000;
+  transition: border-color 0.2s ease;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #000;
+}
+
+.searchInput::placeholder {
+  color: #999;
+}
+
+.searchWrapper {
+  position: relative;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  font-size: 1rem;
+}
+
+.clientCount {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 0.75rem;
+  padding: 0.5rem;
+  background: #fff;
+  border-radius: 6px;
+  text-align: center;
+}
+
+/* SELECTED CLIENT INFO */
+.selectedClientInfo {
+  background: #fff;
+  border: 2px solid #000;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.selectedClientPhoto {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #ffc800;
+  flex-shrink: 0;
+}
+
+.selectedClientInitial {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ffc800, #ff9800);
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.selectedClientDetails {
+  flex: 1;
+  min-width: 0;
+}
+
+.selectedClientName {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #000;
+  margin-bottom: 0.25rem;
+}
+
+.selectedClientEmail {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+  word-break: break-all;
+}
+
+.selectedClientStats {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background: #f5f5f5;
+  border-radius: 8px;
+}
+
+.statValue {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ff9800;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.statLabel {
+  font-size: 0.75rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
 .clientItems {
   display: flex;
   flex-direction: column;

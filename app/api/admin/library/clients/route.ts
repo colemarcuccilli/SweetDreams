@@ -3,24 +3,63 @@ import { createClient } from '@/utils/supabase/server';
 import { createServiceRoleClient } from '@/utils/supabase/service-role';
 import { verifyAdminAccess } from '@/lib/admin-auth';
 
-// Helper to detect spam/gibberish names
+// Helper to detect obvious spam/gibberish names
+// Catches random mixed-case strings that bots generate
 function isLikelySpam(name: string): boolean {
-  if (!name || name.length < 2) return true;
+  if (!name || name.length < 1) return false; // Empty names are OK
 
-  // Random string pattern: mostly consonants, no vowels, or random case mixing
-  const vowelRatio = (name.match(/[aeiouAEIOU]/g) || []).length / name.length;
-  const hasNormalVowelRatio = vowelRatio > 0.15 && vowelRatio < 0.6;
+  // Only check single-word names (real names usually have spaces)
+  const trimmedName = name.trim();
 
-  // Check for random character patterns (long strings without spaces, unusual patterns)
-  const hasRandomPattern = /^[a-zA-Z]{15,}$/.test(name) || // Long random string
-                           /[A-Z]{3,}/.test(name) || // Multiple caps in a row
-                           /\d{3,}/.test(name); // Numbers in name
+  // If it has a space, it's more likely a real name - be lenient
+  if (trimmedName.includes(' ')) {
+    return false;
+  }
 
-  // Names should have reasonable length and pattern
-  const isReasonableLength = name.length >= 2 && name.length <= 50;
-  const hasSpaces = name.includes(' '); // Real names often have spaces
+  // Check for random mixed-case gibberish pattern
+  // Bot names look like: "lnHqQKpCemPoEBZdIZ", "HCscWelewwLwjcdkef"
+  // Real names look like: "hooperreal4", "blamzshop", "aziel.jordan08"
 
-  return !isReasonableLength || (!hasNormalVowelRatio && name.length > 8) || hasRandomPattern;
+  // Count case switches (e.g., "aB" or "Ba")
+  let caseSwitches = 0;
+  for (let i = 1; i < trimmedName.length; i++) {
+    const prevChar = trimmedName[i - 1];
+    const currChar = trimmedName[i];
+    const prevIsUpper = /[A-Z]/.test(prevChar);
+    const currIsUpper = /[A-Z]/.test(currChar);
+    const prevIsLetter = /[a-zA-Z]/.test(prevChar);
+    const currIsLetter = /[a-zA-Z]/.test(currChar);
+
+    if (prevIsLetter && currIsLetter && prevIsUpper !== currIsUpper) {
+      caseSwitches++;
+    }
+  }
+
+  // If there are many case switches in a name with no spaces, it's likely spam
+  // Real usernames: "hooperreal4" (0 switches), "JohnSmith" (1 switch)
+  // Bot names: "lnHqQKpCemPoEBZdIZ" (8+ switches)
+  if (caseSwitches >= 4 && trimmedName.length >= 10) {
+    return true;
+  }
+
+  // Check for random character patterns
+  const obviousSpamPatterns = [
+    /^[a-z]{20,}$/i, // Very long single word (20+ chars) with no spaces
+    /^[bcdfghjklmnpqrstvwxyz]{8,}$/i, // 8+ consonants only (no vowels)
+    /^asdf/i, // keyboard mash
+    /^qwerty/i, // keyboard mash
+    /spam/i,
+    /^bot\d+$/i, // bot123
+    /^user\d{6,}$/i, // user followed by 6+ numbers
+  ];
+
+  for (const pattern of obviousSpamPatterns) {
+    if (pattern.test(trimmedName)) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 /**
@@ -41,23 +80,48 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    console.log('👥 Fetching verified registered users for library management');
+    console.log('👥 Fetching ALL registered users for library management');
 
     // Use service role client to list users (requires admin privileges)
     const serviceRoleClient = createServiceRoleClient();
-    const { data: { users }, error: usersError } = await serviceRoleClient.auth.admin.listUsers();
 
-    if (usersError) {
-      console.error('❌ Error fetching users:', usersError);
-      return NextResponse.json(
-        { error: 'Failed to fetch users', details: usersError.message },
-        { status: 500 }
-      );
+    // Fetch ALL users with pagination (Supabase default is 50 per page)
+    let allUsers: any[] = [];
+    let page = 1;
+    const perPage = 1000; // Max allowed per request
+
+    while (true) {
+      const { data: { users: pageUsers }, error: usersError } = await serviceRoleClient.auth.admin.listUsers({
+        page,
+        perPage
+      });
+
+      if (usersError) {
+        console.error('❌ Error fetching users:', usersError);
+        return NextResponse.json(
+          { error: 'Failed to fetch users', details: usersError.message },
+          { status: 500 }
+        );
+      }
+
+      if (!pageUsers || pageUsers.length === 0) {
+        break;
+      }
+
+      allUsers = [...allUsers, ...pageUsers];
+      console.log(`📄 Page ${page}: fetched ${pageUsers.length} users (total so far: ${allUsers.length})`);
+
+      // If we got less than perPage, we've reached the end
+      if (pageUsers.length < perPage) {
+        break;
+      }
+
+      page++;
     }
 
-    console.log(`👤 Found ${users?.length || 0} total registered users`);
+    console.log(`👤 Found ${allUsers.length} total registered users`);
 
-    if (!users || users.length === 0) {
+    if (allUsers.length === 0) {
       console.log('⚠️ No registered users found');
       return NextResponse.json({
         success: true,
@@ -65,42 +129,34 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    // Filter out spam accounts BEFORE processing
-    const verifiedUsers = users.filter(user => {
-      // Must have confirmed email
-      if (!user.email_confirmed_at) {
-        console.log(`⚠️ Skipping unconfirmed: ${user.email}`);
-        return false;
-      }
-
-      // Check if they have a real name set
+    // Filter out ONLY obvious spam - be very permissive
+    // Don't require email_confirmed_at since many users signed up through booking
+    const validUsers = allUsers.filter(user => {
+      // Get any name we can find
       const fullName = user.user_metadata?.full_name || '';
       const firstName = user.user_metadata?.first_name || '';
-
-      // If they have a proper full_name, check if it's spam
-      if (fullName && !isLikelySpam(fullName)) {
-        return true;
-      }
-
-      // If they have first_name set, check if it's spam
-      if (firstName && !isLikelySpam(firstName)) {
-        return true;
-      }
-
-      // Check email prefix as last resort - but filter obvious spam
       const emailPrefix = user.email?.split('@')[0] || '';
-      if (emailPrefix.length > 15 && isLikelySpam(emailPrefix)) {
-        console.log(`⚠️ Skipping spam account: ${user.email}`);
+
+      // Only filter if name is OBVIOUSLY spam
+      if (fullName && isLikelySpam(fullName)) {
+        console.log(`⚠️ Skipping obvious spam name: ${user.email} (${fullName})`);
         return false;
       }
 
+      // Only filter if email prefix is OBVIOUSLY spam (and no real name set)
+      if (!fullName && !firstName && isLikelySpam(emailPrefix)) {
+        console.log(`⚠️ Skipping obvious spam email: ${user.email}`);
+        return false;
+      }
+
+      // Include all other users
       return true;
     });
 
-    console.log(`✅ ${verifiedUsers.length} verified users after filtering`);
+    console.log(`✅ ${validUsers.length} valid users after filtering`);
 
     // Get all users' data in parallel
-    const clientsPromises = verifiedUsers.map(async (user) => {
+    const clientsPromises = validUsers.map(async (user) => {
       // Try to get name from bookings first (use service role to see all bookings)
       const { data: bookings } = await serviceRoleClient
         .from('bookings')

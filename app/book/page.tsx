@@ -1,7 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
+import Script from "next/script";
+import dynamic from "next/dynamic";
 import styles from "./book.module.css";
+
+// Dynamically import BookingCalendar to avoid SSR issues
+const BookingCalendarWrapper = dynamic(
+  () => import("@/components/music/BookingCalendarWrapper"),
+  { ssr: false, loading: () => <div style={{ textAlign: 'center', padding: '2rem' }}>Loading booking calendar...</div> }
+);
+
+// Turnstile site key
+const TURNSTILE_SITE_KEY = "0x4AAAAAACJodExIWnZ-7sQq";
 
 export default function BookPage() {
   const [formData, setFormData] = useState({
@@ -14,16 +25,73 @@ export default function BookPage() {
     preferredTime: "",
   });
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [turnstileError, setTurnstileError] = useState<string | null>(null);
+  const turnstileRef = useRef<HTMLDivElement>(null);
+  const widgetIdRef = useRef<string | null>(null);
+
+  const renderTurnstile = useCallback(() => {
+    if (window.turnstile && turnstileRef.current && !widgetIdRef.current) {
+      try {
+        widgetIdRef.current = window.turnstile.render(turnstileRef.current, {
+          sitekey: TURNSTILE_SITE_KEY,
+          callback: (token: string) => {
+            setTurnstileToken(token);
+            setTurnstileError(null);
+          },
+          'error-callback': () => {
+            setTurnstileError("Verification failed. Please try again.");
+            setTurnstileToken(null);
+          },
+          'expired-callback': () => {
+            setTurnstileToken(null);
+            setTurnstileError("Verification expired. Please verify again.");
+          },
+          theme: 'light',
+          size: 'flexible',
+        });
+      } catch (error) {
+        console.error("Turnstile render error:", error);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (window.turnstile) {
+      renderTurnstile();
+    }
+
+    return () => {
+      if (widgetIdRef.current && window.turnstile) {
+        try {
+          window.turnstile.remove(widgetIdRef.current);
+        } catch (e) {
+          // Ignore cleanup errors
+        }
+        widgetIdRef.current = null;
+      }
+    };
+  }, [renderTurnstile]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setTurnstileError(null);
+
+    if (!turnstileToken) {
+      setTurnstileError("Please complete the verification.");
+      return;
+    }
+
     setStatus("loading");
 
     try {
       const response = await fetch("/api/book-call", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          turnstileToken,
+        }),
       });
 
       if (response.ok) {
@@ -37,7 +105,18 @@ export default function BookPage() {
           preferredDate: "",
           preferredTime: "",
         });
+        setTurnstileToken(null);
+        if (widgetIdRef.current && window.turnstile) {
+          window.turnstile.reset(widgetIdRef.current);
+        }
       } else {
+        const data = await response.json();
+        if (data.error === "Invalid verification") {
+          setTurnstileError("Verification failed. Please try again.");
+          if (widgetIdRef.current && window.turnstile) {
+            window.turnstile.reset(widgetIdRef.current);
+          }
+        }
         setStatus("error");
       }
     } catch {
@@ -51,6 +130,14 @@ export default function BookPage() {
 
   return (
     <div className={styles.page} data-cursor-hide>
+      {/* Load Turnstile script */}
+      <Script
+        src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+        strategy="lazyOnload"
+        onLoad={renderTurnstile}
+      />
+
+      {/* Book a Call Section */}
       <div className={styles.container}>
         <div className={styles.header}>
           <h1 className={styles.title}>BOOK A CALL</h1>
@@ -170,10 +257,18 @@ export default function BookPage() {
               />
             </div>
 
+            {/* Turnstile Widget */}
+            <div style={{ marginTop: '1rem', marginBottom: '1rem' }}>
+              <div ref={turnstileRef}></div>
+              {turnstileError && (
+                <p className={styles.errorMessage} style={{ marginTop: '0.5rem' }}>{turnstileError}</p>
+              )}
+            </div>
+
             <button
               type="submit"
               className={styles.submitButton}
-              disabled={status === "loading"}
+              disabled={status === "loading" || !turnstileToken}
             >
               {status === "loading" ? "SUBMITTING..." : "REQUEST CALL"}
             </button>
@@ -185,6 +280,49 @@ export default function BookPage() {
             )}
           </form>
         )}
+      </div>
+
+      {/* Music Studio Booking Section */}
+      <div className={styles.studioSection}>
+        <div className={styles.container}>
+          <div className={styles.header}>
+            <p className={styles.miniTitle}>RECORDING STUDIO</p>
+            <h2 className={styles.title}>BOOK A STUDIO SESSION</h2>
+            <p className={styles.subtitle}>
+              Book your recording session at our Fort Wayne studio. Starting at $50/hour with professional mixing assistance included.
+            </p>
+          </div>
+
+          <div className={styles.studioInfo}>
+            <div className={styles.infoCard}>
+              <span className={styles.infoIcon}>💰</span>
+              <div>
+                <h3>Starting at $50/hr</h3>
+                <p>Competitive rates with package discounts</p>
+              </div>
+            </div>
+            <div className={styles.infoCard}>
+              <span className={styles.infoIcon}>🎚️</span>
+              <div>
+                <h3>Professional Equipment</h3>
+                <p>Industry-standard recording setup</p>
+              </div>
+            </div>
+            <div className={styles.infoCard}>
+              <span className={styles.infoIcon}>🎧</span>
+              <div>
+                <h3>Mixing Included</h3>
+                <p>Professional mixing assistance with every session</p>
+              </div>
+            </div>
+          </div>
+
+          <BookingCalendarWrapper />
+
+          <p className={styles.studioNote}>
+            Pay a deposit to reserve your time. Remainder due at your session. After 9 PM sessions include a $10/hr additional fee.
+          </p>
+        </div>
       </div>
     </div>
   );

@@ -1,6 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import Script from "next/script";
+
+// Turnstile site key (same as other forms)
+const TURNSTILE_SITE_KEY = "0x4AAAAAACJodExIWnZ-7sQq";
+
+// Extend Window interface for Turnstile
+declare global {
+  interface Window {
+    turnstile?: {
+      render: (container: HTMLElement | string, options: {
+        sitekey: string;
+        callback: (token: string) => void;
+        'error-callback'?: () => void;
+        'expired-callback'?: () => void;
+        theme?: 'light' | 'dark' | 'auto';
+        size?: 'normal' | 'flexible' | 'compact';
+      }) => string;
+      reset: (widgetId: string) => void;
+      remove: (widgetId: string) => void;
+    };
+  }
+}
 
 export default function LeadForm() {
   const [formData, setFormData] = useState({
@@ -11,24 +33,101 @@ export default function LeadForm() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [turnstileError, setTurnstileError] = useState<string | null>(null);
+  const turnstileRef = useRef<HTMLDivElement>(null);
+  const widgetIdRef = useRef<string | null>(null);
+
+  const renderTurnstile = useCallback(() => {
+    if (window.turnstile && turnstileRef.current && !widgetIdRef.current) {
+      try {
+        widgetIdRef.current = window.turnstile.render(turnstileRef.current, {
+          sitekey: TURNSTILE_SITE_KEY,
+          callback: (token: string) => {
+            setTurnstileToken(token);
+            setTurnstileError(null);
+          },
+          'error-callback': () => {
+            setTurnstileError("Verification failed. Please try again.");
+            setTurnstileToken(null);
+          },
+          'expired-callback': () => {
+            setTurnstileToken(null);
+            setTurnstileError("Verification expired. Please verify again.");
+          },
+          theme: 'light',
+          size: 'flexible',
+        });
+      } catch (error) {
+        console.error("Turnstile render error:", error);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    // Try to render if Turnstile is already loaded
+    if (window.turnstile) {
+      renderTurnstile();
+    }
+
+    return () => {
+      // Cleanup widget on unmount
+      if (widgetIdRef.current && window.turnstile) {
+        try {
+          window.turnstile.remove(widgetIdRef.current);
+        } catch (e) {
+          // Ignore cleanup errors
+        }
+        widgetIdRef.current = null;
+      }
+    };
+  }, [renderTurnstile]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
+
+    // Check for Turnstile token
+    if (!turnstileToken) {
+      setTurnstileError("Please complete the verification.");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
       const response = await fetch("/api/media/submit-lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          turnstileToken,
+        }),
       });
 
       if (response.ok) {
         setSubmitted(true);
         setFormData({ name: "", email: "", phone: "", message: "" });
+        setTurnstileToken(null);
+        // Reset Turnstile widget after successful submission
+        if (widgetIdRef.current && window.turnstile) {
+          window.turnstile.reset(widgetIdRef.current);
+        }
+      } else {
+        const data = await response.json();
+        if (data.error === "Invalid verification") {
+          setTurnstileError("Verification failed. Please try again.");
+          if (widgetIdRef.current && window.turnstile) {
+            window.turnstile.reset(widgetIdRef.current);
+          }
+        } else {
+          setError(data.error || "Failed to send message. Please try again.");
+        }
       }
     } catch (error) {
       console.error("Error submitting form:", error);
+      setError("Failed to send message. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -43,6 +142,13 @@ export default function LeadForm() {
 
   return (
     <section id="contact" className="py-32 border-t">
+      {/* Load Turnstile script */}
+      <Script
+        src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+        strategy="lazyOnload"
+        onLoad={renderTurnstile}
+      />
+
       <div className="container mx-auto px-8 md:px-12 lg:px-16">
         <div className="grid lg:grid-cols-2 gap-20">
           <div>
@@ -136,11 +242,23 @@ export default function LeadForm() {
                   />
                 </div>
 
+                {/* Turnstile Widget */}
+                <div className="py-2">
+                  <div ref={turnstileRef}></div>
+                  {turnstileError && (
+                    <p className="text-red-500 text-sm mt-2">{turnstileError}</p>
+                  )}
+                </div>
+
+                {error && (
+                  <p className="text-red-500 text-sm">{error}</p>
+                )}
+
                 <button
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || !turnstileToken}
                   className={`w-full py-4 font-bold text-lg transition-all duration-200 ${
-                    isSubmitting
+                    isSubmitting || !turnstileToken
                       ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                       : "bg-black text-white hover:bg-gray-900"
                   }`}
