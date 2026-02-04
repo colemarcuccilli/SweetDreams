@@ -21,9 +21,32 @@ export async function POST(request: NextRequest) {
 
     const serviceSupabase = createServiceRoleClient();
 
-    // Get user from auth
-    const { data: { users }, error: userError } = await serviceSupabase.auth.admin.listUsers();
-    const user = users?.find(u => u.email === email);
+    // Get user from auth - need pagination since default only returns 50
+    let user = null;
+    let page = 1;
+    const perPage = 1000;
+
+    while (!user) {
+      const { data: { users: pageUsers }, error: usersError } = await serviceSupabase.auth.admin.listUsers({
+        page,
+        perPage
+      });
+
+      if (usersError) {
+        console.error('Error fetching users:', usersError);
+        break;
+      }
+
+      // Search for user in this page
+      user = pageUsers?.find(u => u.email === email);
+
+      // If no more users to fetch, stop
+      if (!pageUsers || pageUsers.length < perPage) {
+        break;
+      }
+
+      page++;
+    }
 
     if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });

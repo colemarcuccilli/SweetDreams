@@ -59,6 +59,7 @@ export default function AdminBookingsPage() {
   const [refreshingAll, setRefreshingAll] = useState(false);
   const [investigatingBookingId, setInvestigatingBookingId] = useState<string | null>(null);
   const [viewingProfileEmail, setViewingProfileEmail] = useState<string | null>(null);
+  const [completingBookingId, setCompletingBookingId] = useState<string | null>(null);
 
   // Create Session Modal States
   const [showCreateSession, setShowCreateSession] = useState(false);
@@ -622,6 +623,46 @@ export default function AdminBookingsPage() {
       alert('Failed to fetch user profile');
     } finally {
       setViewingProfileEmail(null);
+    }
+  };
+
+  const handleCompleteBooking = async (booking: Booking) => {
+    // Check if the booking is in the past
+    const bookingDate = new Date(booking.date);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    bookingDate.setHours(0, 0, 0, 0);
+
+    const isPastSession = bookingDate < today;
+
+    const message = isPastSession
+      ? `Mark this session as COMPLETED?\n\n${booking.firstName} ${booking.lastName} (${booking.artistName})\n📅 ${formatDate(booking.date, booking.startTime)}\n\nThis session is in the past and has been completed.`
+      : `Mark this session as COMPLETED?\n\n${booking.firstName} ${booking.lastName} (${booking.artistName})\n📅 ${formatDate(booking.date, booking.startTime)}\n\n⚠️ NOTE: This session date hasn't passed yet. Are you sure it's complete?`;
+
+    if (!confirm(message)) return;
+
+    setCompletingBookingId(booking.id);
+
+    try {
+      const response = await fetch('/api/admin/complete-booking', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ bookingId: booking.id })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert('Session marked as completed!');
+        await fetchBookings();
+      } else {
+        alert('Error completing booking: ' + (data.error || 'Unknown error'));
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Failed to complete booking');
+    } finally {
+      setCompletingBookingId(null);
     }
   };
 
@@ -1531,6 +1572,15 @@ export default function AdminBookingsPage() {
                         )}
 
                         <div className={styles.actionButtons}>
+                          <button
+                            className={styles.completeButton}
+                            onClick={() => handleCompleteBooking(booking)}
+                            disabled={completingBookingId === booking.id}
+                            title="Mark session as completed"
+                          >
+                            {completingBookingId === booking.id ? 'Completing...' : '✓ Complete'}
+                          </button>
+
                           <button
                             className={styles.editButton}
                             onClick={() => handleEditClick(booking)}

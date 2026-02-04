@@ -285,7 +285,8 @@
 .softDeleteButton,
 .editButton,
 .notifyButton,
-.cancelButton {
+.cancelButton,
+.completeButton {
   padding: 0.6rem 1.25rem;
   border: none;
   font-family: 'IBM Plex Mono', monospace;
@@ -387,6 +388,17 @@
   box-shadow: 0 10px 30px rgba(244, 67, 54, 0.4);
 }
 
+.completeButton {
+  background: rgba(0, 200, 83, 0.9);
+  color: #fff;
+}
+
+.completeButton:hover:not(:disabled) {
+  background: rgba(0, 200, 83, 1);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 200, 83, 0.4);
+}
+
 .chargeButton:disabled,
 .confirmButton:disabled,
 .approveButton:disabled,
@@ -394,7 +406,8 @@
 .softDeleteButton:disabled,
 .editButton:disabled,
 .notifyButton:disabled,
-.cancelButton:disabled {
+.cancelButton:disabled,
+.completeButton:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
