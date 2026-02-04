@@ -249,6 +249,590 @@
   font-style: italic;
 }
 
+/* Centered Hero Layout (Combined with Growth Engine) */
+.heroContainerCentered {
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+}
+
+.heroCenter {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.heroCenter .heroTitle {
+  align-items: center;
+}
+
+.heroCenter .heroSubtext {
+  text-align: center;
+  max-width: 600px;
+}
+
+/* Hero Engine Grid */
+.heroEngineGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+  width: 100%;
+}
+
+.heroEngineCard {
+  background: #0a0a0a;
+  border: 1px solid #222;
+  border-radius: 16px;
+  padding: 28px 24px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.heroEngineCard:hover {
+  background: #111;
+  border-color: #333;
+  transform: translateY(-6px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+}
+
+.heroEngineIcon {
+  color: #059669;
+  margin-bottom: 16px;
+}
+
+.heroEngineCardTitle {
+  font-family: 'Anton', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: white;
+  margin: 0 0 10px 0;
+}
+
+.heroEngineCardText {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #888;
+  margin: 0;
+}
+
+.heroContainerCentered .heroCta {
+  margin-top: 24px;
+}
+
+/* Card hint text */
+.heroEngineCardHint {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #444;
+  margin-top: 12px;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.heroEngineCard:hover .heroEngineCardHint {
+  opacity: 1;
+}
+
+/* Engine Section */
+.engineSection {
+  width: 100%;
+}
+
+/* Default Grid - 6 cards in a row */
+.engineGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+  width: 100%;
+}
+
+.engineCard {
+  background: #0a0a0a;
+  border: 1px solid #222;
+  border-radius: 16px;
+  padding: 24px 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.engineCard:hover {
+  background: #111;
+  border-color: var(--accent);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+.engineCardIcon {
+  margin-bottom: 16px;
+}
+
+.engineCardTitle {
+  font-family: 'Anton', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: white;
+  margin: 0 0 10px 0;
+}
+
+.engineCardDesc {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #666;
+  margin: 0;
+}
+
+/* Expanded Layout - 3 Left | Big Card | 3 Right */
+.engineExpanded {
+  display: grid;
+  grid-template-columns: 180px 1fr 180px;
+  gap: 24px;
+  width: 100%;
+  align-items: center;
+}
+
+/* Side Stacks */
+.engineStack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Mini Card (title only) */
+.engineMini {
+  background: #0a0a0a;
+  border: 1px solid #222;
+  border-radius: 10px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.engineMini:hover {
+  background: #1a1a1a;
+  border-color: #444;
+}
+
+.engineMiniActive {
+  background: white;
+  border-color: white;
+}
+
+.engineMiniTitle {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #888;
+  transition: color 0.3s ease;
+}
+
+.engineMiniActive .engineMiniTitle {
+  color: black;
+}
+
+/* Big Center Card */
+.engineBigCard {
+  background: #0a0a0a;
+  border: 1px solid #333;
+  border-radius: 24px;
+  padding: 40px;
+  position: relative;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
+  min-height: 300px;
+}
+
+.engineBigClose {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: #444;
+  cursor: pointer;
+  padding: 8px;
+  transition: all 0.2s ease;
+  border-radius: 8px;
+}
+
+.engineBigClose:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.engineBigTitle {
+  font-family: 'Anton', sans-serif;
+  font-size: 36px;
+  font-weight: 400;
+  text-transform: uppercase;
+  margin: 0 0 32px 0;
+}
+
+.engineBigProof {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.engineBigProofLine {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 16px;
+  line-height: 1.6;
+  color: white;
+  margin: 0;
+  padding-left: 20px;
+  border-left: 3px solid #333;
+  transition: border-color 0.3s ease;
+}
+
+.engineBigProofLine:nth-child(1) { border-left-color: #059669; }
+.engineBigProofLine:nth-child(2) { border-left-color: #4A90E2; }
+.engineBigProofLine:nth-child(3) { border-left-color: #F4C430; }
+
+/* Engine Responsive - Tablets */
+@media (max-width: 1200px) {
+  .engineGrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .engineExpanded {
+    grid-template-columns: 150px 1fr 150px;
+    gap: 16px;
+  }
+
+  .engineBigCard {
+    padding: 32px;
+  }
+
+  .engineBigTitle {
+    font-size: 28px;
+    margin-bottom: 24px;
+  }
+
+  .engineBigProofLine {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .engineGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .engineCard {
+    padding: 20px 16px;
+  }
+
+  .engineCardTitle {
+    font-size: 14px;
+  }
+
+  .engineCardDesc {
+    font-size: 11px;
+  }
+
+  .engineExpanded {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .engineStack {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .engineMini {
+    flex: 0 0 auto;
+  }
+
+  .engineBigCard {
+    order: -1;
+    padding: 24px;
+    min-height: auto;
+  }
+
+  .engineBigTitle {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .engineBigProofLine {
+    font-size: 13px;
+    padding-left: 16px;
+  }
+}
+
+@media (max-width: 430px) {
+  .engineGrid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .engineCard {
+    padding: 16px 14px;
+  }
+
+  .engineCardIcon svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .engineCardTitle {
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+
+  .engineCardDesc {
+    font-size: 10px;
+  }
+
+  .engineMini {
+    padding: 10px 12px;
+  }
+
+  .engineMiniTitle {
+    font-size: 9px;
+  }
+
+  .engineBigCard {
+    padding: 20px;
+  }
+
+  .engineBigTitle {
+    font-size: 20px;
+  }
+
+  .engineBigProof {
+    gap: 16px;
+  }
+
+  .engineBigProofLine {
+    font-size: 12px;
+    padding-left: 12px;
+  }
+}
+
+@keyframes layoutExpand {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Side stacks */
+.engineSideStack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.engineMiniCard {
+  background: #0a0a0a;
+  border: 1px solid #222;
+  border-radius: 10px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.engineMiniCard:hover {
+  background: #1a1a1a;
+  border-color: #444;
+}
+
+/* Active/Selected card - INVERTED white with black text */
+.engineMiniCardActive {
+  background: white;
+  border-color: white;
+  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.3);
+}
+
+.engineMiniCardActive:hover {
+  background: white;
+  border-color: white;
+}
+
+.engineMiniIcon {
+  flex-shrink: 0;
+  transition: color 0.3s ease;
+}
+
+.engineMiniCardActive .engineMiniIcon {
+  color: black !important;
+}
+
+.engineMiniTitle {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #666;
+  transition: color 0.3s ease;
+}
+
+.engineMiniCardActive .engineMiniTitle {
+  color: black;
+  font-weight: 700;
+}
+
+/* Center expanded card */
+.engineCenterCard {
+  background: #0a0a0a;
+  border: 1px solid #333;
+  border-radius: 20px;
+  padding: 32px;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: centerPop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  min-height: 280px;
+}
+
+@keyframes centerPop {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.engineCenterClose {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  padding: 8px;
+  transition: all 0.2s ease;
+  border-radius: 8px;
+}
+
+.engineCenterClose:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.engineCenterHeader {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.engineCenterIcon {
+  flex-shrink: 0;
+}
+
+.engineCenterTitle {
+  font-family: 'Anton', sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: white;
+  margin: 0;
+}
+
+.engineCenterBody {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.engineCenterItem {
+  /* Container */
+}
+
+/* Stats */
+.engineCenterStat {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 14px 18px;
+  background: #111;
+  border-radius: 10px;
+}
+
+.engineCenterStatValue {
+  font-family: 'Anton', sans-serif;
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.engineCenterStatLabel {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Proof */
+.engineCenterProof {
+  padding: 14px 18px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.02), transparent);
+  border-radius: 10px;
+  border-left: 3px solid;
+}
+
+.engineCenterProof p {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  color: white;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* List */
+.engineCenterList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.engineCenterListItem {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: white;
+  padding: 8px 14px;
+  background: #111;
+  border-radius: 6px;
+  border: 1px solid;
+}
+
 /* ================================
    MANIFESTO SECTION
    ================================ */
@@ -1402,6 +1986,23 @@
     align-items: center;
   }
 
+  .heroEngineGrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .heroEngineCard {
+    padding: 24px 20px;
+  }
+
+  .heroEngineCardTitle {
+    font-size: 15px;
+  }
+
+  .heroEngineCardText {
+    font-size: 11px;
+  }
+
   .heroChartBox {
     max-width: 500px;
     margin: 0 auto;
@@ -1552,6 +2153,103 @@
 
   .heroSection {
     padding: 0 16px 16px 16px;
+  }
+
+  .heroContainerCentered {
+    gap: 32px;
+  }
+
+  .heroEngineGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .heroEngineCard {
+    padding: 20px 16px;
+  }
+
+  .heroEngineCardTitle {
+    font-size: 14px;
+  }
+
+  .heroEngineCardText {
+    font-size: 11px;
+  }
+
+  .heroEngineCardHint {
+    font-size: 9px;
+    margin-top: 8px;
+  }
+
+  /* Expanded layout - tablet */
+  .engineExpandedLayout {
+    grid-template-columns: 150px 1fr 150px;
+    gap: 16px;
+  }
+
+  .engineMiniCard {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .engineMiniTitle {
+    font-size: 9px;
+  }
+
+  .engineMiniIcon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .engineCenterCard {
+    padding: 24px;
+    min-height: 240px;
+  }
+
+  .engineCenterTitle {
+    font-size: 20px;
+  }
+
+  .engineCenterStatValue {
+    font-size: 32px;
+  }
+
+  .cardModalContent {
+    max-width: 100%;
+    border-radius: 20px;
+  }
+
+  .cardModalHeader {
+    padding: 24px 24px 20px 24px;
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+
+  .cardModalTitle {
+    font-size: 24px;
+  }
+
+  .cardModalBody {
+    padding: 20px 24px 28px 24px;
+    gap: 16px;
+  }
+
+  .cardModalStatValue {
+    font-size: 36px;
+  }
+
+  .cardModalStatLabel {
+    font-size: 12px;
+  }
+
+  .cardModalProof p {
+    font-size: 14px;
+  }
+
+  .cardModalListItem {
+    font-size: 11px;
+    padding: 8px 12px;
   }
 
   .lineChartsContainer {
@@ -1767,6 +2465,90 @@
 
   .heroSection {
     padding: 0 12px 12px 12px;
+  }
+
+  .heroContainerCentered {
+    gap: 24px;
+  }
+
+  .heroCenter {
+    gap: 16px;
+  }
+
+  .heroEngineGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .heroEngineCard {
+    padding: 16px 14px;
+  }
+
+  .heroEngineCardTitle {
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+
+  .heroEngineCardText {
+    font-size: 10px;
+    line-height: 1.4;
+  }
+
+  .heroEngineIcon {
+    margin-bottom: 10px;
+  }
+
+  .heroEngineIcon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Expanded layout - mobile: stack vertically */
+  .engineExpandedLayout {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .engineSideStack {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .engineMiniCard {
+    flex: 0 0 auto;
+    padding: 10px 14px;
+  }
+
+  .engineMiniTitle {
+    display: none;
+  }
+
+  .engineCenterCard {
+    padding: 20px;
+    min-height: auto;
+    order: -1;
+  }
+
+  .engineCenterTitle {
+    font-size: 18px;
+  }
+
+  .engineCenterStatValue {
+    font-size: 28px;
+  }
+
+  .engineCenterStatLabel {
+    font-size: 10px;
+  }
+
+  .engineCenterProof p {
+    font-size: 13px;
+  }
+
+  .engineCenterListItem {
+    font-size: 10px;
+    padding: 6px 10px;
   }
 
   .heroVideoBox {

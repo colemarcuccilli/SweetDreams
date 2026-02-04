@@ -73,11 +73,96 @@ const FAQ_ITEMS = [
   }
 ];
 
+// Engine card data
+interface EngineCard {
+  id: string;
+  title: string;
+  shortDesc: string;
+  icon: string;
+  accentColor: string;
+  proof: string[];
+}
+
+const ENGINE_CARDS: EngineCard[] = [
+  {
+    id: 'content',
+    title: 'CONTENT ENGINE',
+    shortDesc: 'Unlimited video production. Daily posts across every platform.',
+    icon: 'video',
+    accentColor: '#059669',
+    proof: [
+      'Your competitors post once a week. You post every day.',
+      'We capture everything—job sites, behind-the-scenes, testimonials.',
+      'Never scramble for content again.'
+    ]
+  },
+  {
+    id: 'brand',
+    title: 'BRAND ASSETS',
+    shortDesc: 'Business trailer. Founder story. Premium media that positions you.',
+    icon: 'image',
+    accentColor: '#4A90E2',
+    proof: [
+      'Your work finally looks as good as it actually is.',
+      'Case studies that close deals before the call.',
+      'Recruiting content that attracts A-players.'
+    ]
+  },
+  {
+    id: 'social',
+    title: 'SOCIAL MANAGEMENT',
+    shortDesc: 'We take over completely. Every platform, every day.',
+    icon: 'users',
+    accentColor: '#e63636',
+    proof: [
+      '100% of comments answered. 24hr DM response.',
+      'Your competitors will feel invisible.',
+      'Community built while you focus on the work.'
+    ]
+  },
+  {
+    id: 'web',
+    title: 'WEB DEVELOPMENT',
+    shortDesc: 'Full website. Landing pages. Funnels. Email sequences. Included.',
+    icon: 'monitor',
+    accentColor: '#F4C430',
+    proof: [
+      'Every touchpoint. Every channel. Airtight.',
+      'Lead capture that actually converts.',
+      'Built to grow with you—not against you.'
+    ]
+  },
+  {
+    id: 'offer',
+    title: 'OFFER REFINEMENT',
+    shortDesc: 'Competitive analysis. Pricing psychology. Grand Slam positioning.',
+    icon: 'chart',
+    accentColor: '#8B5CF6',
+    proof: [
+      'We don\'t just market what you have—we make it better.',
+      'Pricing that commands premium without pushback.',
+      'Choosing anyone else should feel risky.'
+    ]
+  },
+  {
+    id: 'communication',
+    title: 'FLUID COMMUNICATION',
+    shortDesc: 'Slack. Text. Call. We\'re embedded in your operations.',
+    icon: 'message',
+    accentColor: '#059669',
+    proof: [
+      'Partners, not vendors hiding behind email chains.',
+      'Weekly calls. Real-time collaboration.',
+      'Available when you need us—not when it\'s convenient for us.'
+    ]
+  }
+];
+
 export default function PartnershipsPage() {
   const heroRef = useRef<HTMLDivElement>(null);
   const problemRef = useRef<HTMLElement>(null);
   const howRef = useRef<HTMLElement>(null);
-  const includedRef = useRef<HTMLElement>(null);
+  const includedRef = useRef<HTMLDivElement>(null);
   const whoRef = useRef<HTMLElement>(null);
   const investRef = useRef<HTMLElement>(null);
   const caseRef = useRef<HTMLElement>(null);
@@ -85,6 +170,7 @@ export default function PartnershipsPage() {
   const formRef = useRef<HTMLElement>(null);
 
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+  const [activeCard, setActiveCard] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     businessName: '',
     industry: '',
@@ -112,56 +198,32 @@ export default function PartnershipsPage() {
 
     const ctx = gsap.context(() => {
       // ========================================
-      // HERO ANIMATION - Split Layout with Chart
+      // HERO ANIMATION - Centered Layout with Engine Cards
       // ========================================
       if (heroRef.current) {
         const heroContainer = heroRef.current;
-        const heroLeft = heroContainer.querySelector(`.${styles.heroLeft}`);
-        const heroRight = heroContainer.querySelector(`.${styles.heroRight}`);
-        const chartBox = heroContainer.querySelector(`.${styles.heroChartBox}`);
+        const heroCenter = heroContainer.querySelector(`.${styles.heroCenter}`);
         const titleLines = heroContainer.querySelectorAll('.title-line');
         const label = heroContainer.querySelector(`.${styles.heroLabel}`);
         const subtext = heroContainer.querySelector(`.${styles.heroSubtext}`);
         const cta = heroContainer.querySelector(`.${styles.heroCta}`);
-        const lineChartPaths = heroContainer.querySelectorAll(`.${styles.lineChartPath}`);
-        const chartLegend = heroContainer.querySelector(`.${styles.chartLegend}`);
-        const chartCaption = heroContainer.querySelector(`.${styles.chartCaption}`);
 
         // Initial states
-        gsap.set(heroLeft, { x: -100, opacity: 0 });
-        gsap.set(heroRight, { x: 100, opacity: 0 });
+        gsap.set(heroCenter, { y: 30, opacity: 0 });
         gsap.set(titleLines, { y: 80, opacity: 0, rotationX: -30 });
         gsap.set(label, { y: -20, opacity: 0 });
         gsap.set(subtext, { y: 30, opacity: 0 });
         gsap.set(cta, { y: 30, opacity: 0, scale: 0.9 });
-        // Set up line chart path animation (draw from left to right)
-        lineChartPaths.forEach((path) => {
-          const pathElement = path as SVGPathElement;
-          const length = pathElement.getTotalLength();
-          gsap.set(pathElement, {
-            strokeDasharray: length,
-            strokeDashoffset: length
-          });
-        });
-        gsap.set(chartLegend, { opacity: 0, y: 10 });
-        gsap.set(chartCaption, { opacity: 0, y: 20 });
 
         const heroTl = gsap.timeline({ delay: 0.2 });
 
-        // Left and right sides slide in
-        heroTl.to(heroLeft, {
-          x: 0,
+        // Center container fades in
+        heroTl.to(heroCenter, {
+          y: 0,
           opacity: 1,
-          duration: 1,
+          duration: 0.8,
           ease: 'power3.out'
         }, 0);
-
-        heroTl.to(heroRight, {
-          x: 0,
-          opacity: 1,
-          duration: 1,
-          ease: 'power3.out'
-        }, 0.1);
 
         // Label fades in
         heroTl.to(label, {
@@ -169,7 +231,7 @@ export default function PartnershipsPage() {
           opacity: 1,
           duration: 0.6,
           ease: 'power2.out'
-        }, 0.4);
+        }, 0.2);
 
         // Title lines cascade in
         titleLines.forEach((line, i) => {
@@ -179,7 +241,7 @@ export default function PartnershipsPage() {
             rotationX: 0,
             duration: 0.8,
             ease: 'power3.out'
-          }, 0.5 + (i * 0.12));
+          }, 0.3 + (i * 0.12));
         });
 
         // Subtext fades in
@@ -188,7 +250,7 @@ export default function PartnershipsPage() {
           opacity: 1,
           duration: 0.6,
           ease: 'power2.out'
-        }, 1);
+        }, 0.7);
 
         // CTA pops in
         heroTl.to(cta, {
@@ -197,31 +259,7 @@ export default function PartnershipsPage() {
           scale: 1,
           duration: 0.6,
           ease: 'back.out(1.7)'
-        }, 1.1);
-
-        // Line charts draw in from left to right
-        heroTl.to(lineChartPaths, {
-          strokeDashoffset: 0,
-          duration: 3,
-          stagger: 0.2,
-          ease: 'power2.out'
-        }, 0.8);
-
-        // Legend fades in
-        heroTl.to(chartLegend, {
-          opacity: 1,
-          y: 0,
-          duration: 0.5,
-          ease: 'power2.out'
-        }, 2.2);
-
-        // Chart caption fades in
-        heroTl.to(chartCaption, {
-          opacity: 1,
-          y: 0,
-          duration: 0.5,
-          ease: 'power2.out'
-        }, 2.5);
+        }, 1.6);
       }
 
       // ========================================
@@ -357,94 +395,6 @@ export default function PartnershipsPage() {
             },
             delay: i * 0.15
           });
-        });
-      }
-
-      // ========================================
-      // INCLUDED SECTION - Staggered card grid
-      // ========================================
-      if (includedRef.current) {
-        const label = includedRef.current.querySelector(`.${styles.sectionLabel}`);
-        const title = includedRef.current.querySelector(`.${styles.sectionTitle}`);
-        const cards = includedRef.current.querySelectorAll(`.${styles.includedCard}`);
-        const icons = includedRef.current.querySelectorAll(`.${styles.includedIcon}`);
-
-        gsap.from([label, title], {
-          y: 60,
-          opacity: 0,
-          duration: 0.8,
-          stagger: 0.1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: includedRef.current,
-            start: 'top 80%',
-            toggleActions: 'play none none reverse'
-          }
-        });
-
-        // Cards stagger in from different directions
-        cards.forEach((card, i) => {
-          const directions = [
-            { x: -100, y: 50 },
-            { x: 0, y: 100 },
-            { x: 100, y: 50 },
-            { x: -100, y: 50 },
-            { x: 0, y: 100 },
-            { x: 100, y: 50 }
-          ];
-          const dir = directions[i % 6];
-
-          gsap.from(card, {
-            x: dir.x,
-            y: dir.y,
-            opacity: 0,
-            scale: 0.9,
-            duration: 0.8,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: card,
-              start: 'top 90%',
-              toggleActions: 'play none none reverse'
-            }
-          });
-        });
-
-        // Icons spin in
-        icons.forEach((icon, i) => {
-          gsap.from(icon, {
-            rotation: -180,
-            scale: 0,
-            opacity: 0,
-            duration: 0.6,
-            ease: 'back.out(1.7)',
-            scrollTrigger: {
-              trigger: icon,
-              start: 'top 85%',
-              toggleActions: 'play none none reverse'
-            },
-            delay: i * 0.1
-          });
-        });
-
-        // Icon bounce on card hover
-        cards.forEach((card) => {
-          const icon = card.querySelector(`.${styles.includedIcon}`);
-          if (icon) {
-            card.addEventListener('mouseenter', () => {
-              gsap.to(icon, {
-                y: -15,
-                duration: 0.25,
-                ease: 'power2.out',
-                onComplete: () => {
-                  gsap.to(icon, {
-                    y: 0,
-                    duration: 0.4,
-                    ease: 'bounce.out'
-                  });
-                }
-              });
-            });
-          }
         });
       }
 
@@ -787,6 +737,95 @@ export default function PartnershipsPage() {
     };
   }, []);
 
+  // Engine Cards Animation (initial load)
+  useEffect(() => {
+    if (typeof window === 'undefined' || !includedRef.current) return;
+
+    const cards = includedRef.current.querySelectorAll(`.${styles.engineCard}`);
+
+    if (cards.length === 0) return;
+
+    // Set initial state
+    gsap.set(cards, { y: 40, opacity: 0 });
+
+    // Animate to final state
+    const tl = gsap.to(cards, {
+      y: 0,
+      opacity: 1,
+      duration: 0.6,
+      stagger: 0.08,
+      ease: 'power3.out',
+      delay: 0.6
+    });
+
+    return () => {
+      tl.kill();
+    };
+  }, [activeCard]);
+
+  // GSAP animation for expanded view
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    if (activeCard) {
+      // Animate expanded layout
+      const leftStack = document.querySelector(`.${styles.engineStack}:first-child`);
+      const rightStack = document.querySelector(`.${styles.engineStack}:last-child`);
+      const bigCard = document.querySelector(`.${styles.engineBigCard}`);
+      const miniCards = document.querySelectorAll(`.${styles.engineMini}`);
+      const proofLines = document.querySelectorAll(`.${styles.engineBigProofLine}`);
+      const bigTitle = document.querySelector(`.${styles.engineBigTitle}`);
+
+      // Left stack slides in from left
+      if (leftStack) {
+        gsap.fromTo(leftStack,
+          { x: -40, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.5, ease: 'power3.out' }
+        );
+      }
+
+      // Right stack slides in from right
+      if (rightStack) {
+        gsap.fromTo(rightStack,
+          { x: 40, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.5, ease: 'power3.out' }
+        );
+      }
+
+      // Big card scales up
+      if (bigCard) {
+        gsap.fromTo(bigCard,
+          { scale: 0.9, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 0.6, ease: 'back.out(1.2)', delay: 0.1 }
+        );
+      }
+
+      // Mini cards stagger in
+      if (miniCards.length) {
+        gsap.fromTo(miniCards,
+          { y: 20, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.4, stagger: 0.05, ease: 'power2.out', delay: 0.2 }
+        );
+      }
+
+      // Title fades in
+      if (bigTitle) {
+        gsap.fromTo(bigTitle,
+          { y: -20, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.5, ease: 'power3.out', delay: 0.3 }
+        );
+      }
+
+      // Proof lines stagger in
+      if (proofLines.length) {
+        gsap.fromTo(proofLines,
+          { x: -30, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.5, stagger: 0.1, ease: 'power3.out', delay: 0.4 }
+        );
+      }
+    }
+  }, [activeCard]);
+
   // Turnstile setup
   const renderTurnstile = useCallback(() => {
     if (window.turnstile && turnstileRef.current && !widgetIdRef.current) {
@@ -916,93 +955,141 @@ export default function PartnershipsPage() {
         onLoad={renderTurnstile}
       />
 
-      {/* HERO SECTION - Project Showcase Style */}
+      {/* HERO SECTION - Combined with Growth Engine */}
       <section className={styles.heroSection} ref={heroRef} data-cursor-hide>
-        <div className={styles.heroContainer}>
-          {/* Left Side - Title & Info */}
-          <div className={styles.heroLeft}>
+        <div className={styles.heroContainerCentered}>
+          {/* Centered Title & Selling Point */}
+          <div className={styles.heroCenter}>
             <span className={styles.heroLabel}>GROWTH PARTNERSHIPS</span>
             <h1 className={styles.heroTitle}>
-              <span className={`${styles.heroTitleLine} title-line`}>WE DON'T</span>
-              <span className={`${styles.heroTitleLine} title-line`}>DO RETAINERS.</span>
-              <span className={`${styles.heroTitleLine} ${styles.heroTitleAccent} title-line`}>WE DO RESULTS.</span>
+              <span className={`${styles.heroTitleLine} title-line`}>NOT JUST VIDEOS.</span>
+              <span className={`${styles.heroTitleLine} ${styles.heroTitleAccent} title-line`}>A GROWTH ENGINE.</span>
             </h1>
             <p className={styles.heroSubtext}>
               A different kind of agency. One where we only win when you win.
             </p>
-            <button className={styles.heroCta} onClick={scrollToForm}>
-              APPLY FOR PARTNERSHIP
-            </button>
           </div>
 
-          {/* Right Side - Growth Chart Visualization */}
-          <div className={styles.heroRight}>
-            <div className={styles.heroChartBox}>
-              {/* Stacked Line Charts - Both starting from same origin */}
-              <div className={styles.lineChartsContainer}>
-                <div className={styles.lineChartWrapper}>
-                  <svg className={styles.lineChartSvg} viewBox="0 -100 300 200" preserveAspectRatio="none">
-                    {/* Marketing Investment Line - strong exponential growth */}
-                    <path
-                      className={`${styles.lineChartPath} ${styles.marketingLine}`}
-                      d="M0,98 L43,94 L86,86 L129,72 L172,52 L215,30 L258,10 L300,-10"
-                      fill="none"
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                      strokeLinejoin="miter"
-                    />
-                    {/* Revenue Growth Line - 3x higher, keeps accelerating */}
-                    <path
-                      className={`${styles.lineChartPath} ${styles.revenueLine}`}
-                      d="M0,98 L43,88 L86,68 L129,40 L172,5 L215,-35 L258,-65 L300,-90"
-                      fill="none"
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                      strokeLinejoin="miter"
-                    />
+          {/* Growth Engine Cards */}
+          <div className={styles.engineSection} ref={includedRef}>
+            {/* Default: 6 cards in a row */}
+            {!activeCard && (
+              <div className={styles.engineGrid}>
+                {ENGINE_CARDS.map((card) => (
+                  <div
+                    key={card.id}
+                    className={styles.engineCard}
+                    onClick={() => setActiveCard(card.id)}
+                    style={{ '--accent': card.accentColor } as React.CSSProperties}
+                  >
+                    <div className={styles.engineCardIcon} style={{ color: card.accentColor }}>
+                      {card.icon === 'video' && (
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                          <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                        </svg>
+                      )}
+                      {card.icon === 'image' && (
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                          <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                          <polyline points="21 15 16 10 5 21"></polyline>
+                        </svg>
+                      )}
+                      {card.icon === 'users' && (
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                          <circle cx="9" cy="7" r="4"></circle>
+                          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                      )}
+                      {card.icon === 'monitor' && (
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                          <line x1="8" y1="21" x2="16" y2="21"></line>
+                          <line x1="12" y1="17" x2="12" y2="21"></line>
+                        </svg>
+                      )}
+                      {card.icon === 'chart' && (
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <line x1="18" y1="20" x2="18" y2="10"></line>
+                          <line x1="12" y1="20" x2="12" y2="4"></line>
+                          <line x1="6" y1="20" x2="6" y2="14"></line>
+                        </svg>
+                      )}
+                      {card.icon === 'message' && (
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                      )}
+                    </div>
+                    <h3 className={styles.engineCardTitle}>{card.title}</h3>
+                    <p className={styles.engineCardDesc}>{card.shortDesc}</p>
+                  </div>
+                ))}
+              </div>
+            )}
 
-                    {/* Hover points for Marketing Line */}
-                    <g className={styles.chartPoints}>
-                      <circle cx="0" cy="98" r="5" className={styles.marketingPoint} />
-                      <circle cx="43" cy="94" r="5" className={styles.marketingPoint} />
-                      <circle cx="86" cy="86" r="5" className={styles.marketingPoint} />
-                      <circle cx="129" cy="72" r="5" className={styles.marketingPoint} />
-                      <circle cx="172" cy="52" r="5" className={styles.marketingPoint} />
-                      <circle cx="215" cy="30" r="5" className={styles.marketingPoint} />
-                      <circle cx="258" cy="10" r="5" className={styles.marketingPoint} />
-                      <circle cx="300" cy="-10" r="5" className={styles.marketingPoint} />
-                    </g>
-
-                    {/* Hover points for Revenue Line */}
-                    <g className={styles.chartPoints}>
-                      <circle cx="0" cy="98" r="5" className={styles.revenuePoint} />
-                      <circle cx="43" cy="88" r="5" className={styles.revenuePoint} />
-                      <circle cx="86" cy="68" r="5" className={styles.revenuePoint} />
-                      <circle cx="129" cy="40" r="5" className={styles.revenuePoint} />
-                      <circle cx="172" cy="5" r="5" className={styles.revenuePoint} />
-                      <circle cx="215" cy="-35" r="5" className={styles.revenuePoint} />
-                      <circle cx="258" cy="-65" r="5" className={styles.revenuePoint} />
-                      <circle cx="300" cy="-90" r="5" className={styles.revenuePoint} />
-                    </g>
-                  </svg>
+            {/* Expanded: 3 Left | Big Center Card | 3 Right */}
+            {activeCard && (
+              <div className={styles.engineExpanded}>
+                {/* Left Stack */}
+                <div className={styles.engineStack}>
+                  {ENGINE_CARDS.slice(0, 3).map((card) => (
+                    <div
+                      key={card.id}
+                      className={`${styles.engineMini} ${activeCard === card.id ? styles.engineMiniActive : ''}`}
+                      onClick={() => setActiveCard(card.id)}
+                    >
+                      <span className={styles.engineMiniTitle}>{card.title}</span>
+                    </div>
+                  ))}
                 </div>
-                {/* Legend */}
-                <div className={styles.chartLegend}>
-                  <div className={styles.chartLegendItem}>
-                    <span className={styles.chartLegendLine} style={{ background: '#4A90E2' }}></span>
-                    <span className={styles.chartLegendLabel}>Marketing Investment</span>
-                  </div>
-                  <div className={styles.chartLegendItem}>
-                    <span className={styles.chartLegendLine} style={{ background: '#059669' }}></span>
-                    <span className={styles.chartLegendLabel}>Revenue Growth</span>
-                  </div>
+
+                {/* Center Big Card */}
+                <div className={styles.engineBigCard}>
+                  {(() => {
+                    const card = ENGINE_CARDS.find(c => c.id === activeCard);
+                    if (!card) return null;
+                    return (
+                      <>
+                        <button className={styles.engineBigClose} onClick={() => setActiveCard(null)}>
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                          </svg>
+                        </button>
+                        <h3 className={styles.engineBigTitle} style={{ color: card.accentColor }}>{card.title}</h3>
+                        <div className={styles.engineBigProof}>
+                          {card.proof.map((line, idx) => (
+                            <p key={idx} className={styles.engineBigProofLine}>{line}</p>
+                          ))}
+                        </div>
+                      </>
+                    );
+                  })()}
+                </div>
+
+                {/* Right Stack */}
+                <div className={styles.engineStack}>
+                  {ENGINE_CARDS.slice(3, 6).map((card) => (
+                    <div
+                      key={card.id}
+                      className={`${styles.engineMini} ${activeCard === card.id ? styles.engineMiniActive : ''}`}
+                      onClick={() => setActiveCard(card.id)}
+                    >
+                      <span className={styles.engineMiniTitle}>{card.title}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
-
-              {/* Chart caption */}
-              <p className={styles.chartCaption}>As we build more, you grow more. That's the partnership.</p>
-            </div>
+            )}
           </div>
+
+          <button className={styles.heroCta} onClick={scrollToForm}>
+            APPLY FOR PARTNERSHIP
+          </button>
         </div>
       </section>
 
@@ -1117,80 +1204,6 @@ export default function PartnershipsPage() {
         </div>
       </section>
 
-      {/* WHAT'S INCLUDED SECTION */}
-      <section className={styles.includedSection} ref={includedRef}>
-        <div className={styles.container}>
-          <span className={styles.sectionLabel}>NOT JUST VIDEOS</span>
-          <h2 className={styles.sectionTitle}>A GROWTH ENGINE</h2>
-
-          <div className={styles.includedGrid}>
-            <div className={styles.includedCard}>
-              <div className={styles.includedIcon}>
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <polygon points="23 7 16 12 23 17 23 7"></polygon>
-                  <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
-                </svg>
-              </div>
-              <h3 className={styles.includedCardTitle}>CONTENT ENGINE</h3>
-              <p className={styles.includedCardText}>Unlimited video production. Daily posts across every platform. Before/afters, project walkthroughs, social cutdowns, photo documentation, behind-the-scenes, testimonials, reels, stories. We're on your job sites, in your shop, capturing everything. You'll never run out of content again.</p>
-            </div>
-            <div className={styles.includedCard}>
-              <div className={styles.includedIcon}>
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                  <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                  <polyline points="21 15 16 10 5 21"></polyline>
-                </svg>
-              </div>
-              <h3 className={styles.includedCardTitle}>BRAND ASSETS</h3>
-              <p className={styles.includedCardText}>Business trailer. Founder story documentary. Case study videos. Recruiting content. Sales decks. Pitch materials. Premium media that positions you as the undeniable choice in your market. Your work finally looks as good as it actually is.</p>
-            </div>
-            <div className={styles.includedCard}>
-              <div className={styles.includedIcon}>
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="9" cy="7" r="4"></circle>
-                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                </svg>
-              </div>
-              <h3 className={styles.includedCardTitle}>SOCIAL MANAGEMENT</h3>
-              <p className={styles.includedCardText}>We take over your brand presence completely. Daily posting, comment replies, DM responses, community engagement, reputation management. Every platform, every touchpoint, every day. Fill every gap. Your competitors will feel invisible.</p>
-            </div>
-            <div className={styles.includedCard}>
-              <div className={styles.includedIcon}>
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                  <line x1="8" y1="21" x2="16" y2="21"></line>
-                  <line x1="12" y1="17" x2="12" y2="21"></line>
-                </svg>
-              </div>
-              <h3 className={styles.includedCardTitle}>DEVELOPMENT SUPPORT</h3>
-              <p className={styles.includedCardText}>Full website design and development—included. Landing pages. Sales funnels. Lead capture systems. Email sequences. Anything digital that helps you grow, we build from scratch. Your brand becomes airtight. Every touchpoint. Every channel. Every leverage point filled.</p>
-            </div>
-            <div className={styles.includedCard}>
-              <div className={styles.includedIcon}>
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <line x1="18" y1="20" x2="18" y2="10"></line>
-                  <line x1="12" y1="20" x2="12" y2="4"></line>
-                  <line x1="6" y1="20" x2="6" y2="14"></line>
-                </svg>
-              </div>
-              <h3 className={styles.includedCardTitle}>MARKET ANALYSIS & OFFER REFINEMENT</h3>
-              <p className={styles.includedCardText}>We don't just market what you have—we help you build something better. Competitive analysis. Pricing psychology. Packaging and positioning. We turn your business into its own Grand Slam offer—so compelling that choosing anyone else feels risky.</p>
-            </div>
-            <div className={styles.includedCard}>
-              <div className={styles.includedIcon}>
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                </svg>
-              </div>
-              <h3 className={styles.includedCardTitle}>FLUID COMMUNICATION</h3>
-              <p className={styles.includedCardText}>We're not vendors hiding behind email chains and scheduled calls. Slack. Text. Call. Whatever works for you. We're embedded in your operations—available when you need us. Weekly check-ins. Real-time collaboration. Partners, not providers.</p>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* WHO THIS IS FOR SECTION */}
       <section className={styles.whoSection} ref={whoRef} data-cursor-hide>
