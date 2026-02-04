@@ -4,9 +4,7 @@ import { createClient } from '@/utils/supabase/server';
 import { createServiceRoleClient } from '@/utils/supabase/service-role';
 import { verifyAdminAccess } from '@/lib/admin-auth';
 import { resend, FROM_EMAIL, ADMIN_EMAIL } from '@/lib/emails/resend';
-import { CustomerBookingConfirmation } from '@/lib/emails/customer-booking-confirmation';
 import { format } from 'date-fns';
-import * as React from 'react';
 
 export async function POST(request: NextRequest) {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -234,6 +232,7 @@ export async function POST(request: NextRequest) {
       const formattedDate = format(startTime, 'EEEE, MMMM d, yyyy');
       const formattedStartTime = format(startTime, 'h:mm a');
       const formattedEndTime = format(endTime, 'h:mm a');
+      const remainderAmount = booking.total_amount - booking.deposit_amount;
 
       console.log('📧 ATTEMPTING TO SEND CUSTOMER CONFIRMATION EMAIL');
       console.log('📧 From:', FROM_EMAIL);
@@ -243,19 +242,60 @@ export async function POST(request: NextRequest) {
       const emailResult = await resend.emails.send({
         from: FROM_EMAIL,
         to: booking.customer_email,
-        subject: `Booking Confirmed - Sweet Dreams Music Studio - ${formattedDate}`,
-        react: CustomerBookingConfirmation({
-          firstName: booking.first_name,
-          artistName: booking.artist_name,
-          date: formattedDate,
-          startTime: formattedStartTime,
-          endTime: formattedEndTime,
-          duration: booking.duration,
-          depositAmount: booking.deposit_amount,
-          totalAmount: booking.total_amount,
-          sameDayFee: booking.same_day_fee,
-          afterHoursFee: booking.after_hours_fee,
-        }) as React.ReactElement,
+        subject: `🎵 Booking Confirmed! - Sweet Dreams Music Studio - ${formattedDate}`,
+        html: `
+          <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+            <h1 style="color: #00cc00; text-align: center;">🎵 Booking Confirmed!</h1>
+
+            <p>Hi ${booking.first_name},</p>
+
+            <p>Great news! Your studio session has been approved and confirmed. We can't wait to see you!</p>
+
+            <div style="background: #f4f4f4; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <h3 style="margin-top: 0;">Session Details</h3>
+              <p><strong>Artist Name:</strong> ${booking.artist_name}</p>
+              <p><strong>Date:</strong> ${formattedDate}</p>
+              <p><strong>Time:</strong> ${formattedStartTime} - ${formattedEndTime}</p>
+              <p><strong>Duration:</strong> ${booking.duration} ${booking.duration === 1 ? 'hour' : 'hours'}</p>
+            </div>
+
+            <div style="background: #e8f5e9; padding: 20px; border-radius: 8px; border: 2px solid #4caf50; margin: 20px 0;">
+              <h3 style="margin-top: 0;">Payment Summary</h3>
+              <p><strong>Deposit Charged Today:</strong> $${(amountCaptured / 100).toFixed(2)}</p>
+              <p><strong>Total Session Cost:</strong> $${(booking.total_amount / 100).toFixed(2)}</p>
+              ${remainderAmount > 0 ? `
+                <p style="background: #f0f0f0; padding: 10px; border-radius: 4px; font-size: 14px;">
+                  💳 Remaining balance of $${(remainderAmount / 100).toFixed(2)} will be charged after your session.
+                </p>
+              ` : ''}
+              ${booking.same_day_fee || booking.after_hours_fee ? `
+                <p><strong>Additional Fees Applied:</strong></p>
+                ${booking.same_day_fee ? '<p style="margin: 4px 0;">• Same-day booking fee: +$10.00</p>' : ''}
+                ${booking.after_hours_fee ? '<p style="margin: 4px 0;">• After-hours fee: +$10.00/hr</p>' : ''}
+              ` : ''}
+            </div>
+
+            <div style="background: #000; color: #fff; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <h3 style="margin-top: 0; color: #fff;">Studio Location</h3>
+              <p>3943 Parnell Ave<br>Fort Wayne, IN 46805</p>
+              <p style="color: rgba(255,255,255,0.7); font-size: 14px;">Free on-site parking available</p>
+            </div>
+
+            <div style="border-top: 1px solid #ddd; padding-top: 20px; margin-top: 20px;">
+              <h3>Important Information</h3>
+              <ul style="color: #666;">
+                <li>Please arrive 5-10 minutes early for your session</li>
+                <li>All guests must be pre-approved</li>
+                <li>Bring any reference tracks or project files you need</li>
+              </ul>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd;">
+              <p>Questions? Contact us anytime at<br><strong>jayvalleo@sweetdreamsmusic.com</strong></p>
+              <p style="font-size: 12px; color: #999;">Sweet Dreams Music Studio<br>© 2025 Sweet Dreams Music LLC</p>
+            </div>
+          </div>
+        `,
       });
 
       console.log('✅ Customer confirmation email SENT SUCCESSFULLY');

@@ -3,7 +3,6 @@ import Stripe from 'stripe';
 import { createServiceRoleClient } from '@/utils/supabase/service-role';
 import { resend, ADMIN_EMAIL, FROM_EMAIL } from '@/lib/emails/resend';
 import { format } from 'date-fns';
-import * as React from 'react';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-08-27.basil',
@@ -249,25 +248,47 @@ export async function POST(request: NextRequest) {
       console.log('📧 From:', FROM_EMAIL);
       console.log('📧 To:', ADMIN_EMAIL);
 
-      const { PendingBookingAlert } = await import('@/lib/emails/pending-booking-alert');
-
       const emailResult = await resend.emails.send({
         from: FROM_EMAIL,
         to: ADMIN_EMAIL,
         subject: `⚠️ NEW BOOKING NEEDS APPROVAL - ${booking.artist_name} on ${formattedDate}`,
-        react: PendingBookingAlert({
-          firstName: booking.first_name,
-          lastName: booking.last_name,
-          artistName: booking.artist_name,
-          email: booking.customer_email,
-          phone: booking.customer_phone || '',
-          date: formattedDate,
-          startTime: formattedStartTime,
-          endTime: formattedEndTime,
-          duration: booking.duration,
-          depositAmount: booking.deposit_amount,
-          totalAmount: booking.total_amount,
-        }) as React.ReactElement,
+        html: `
+          <h2>⚠️ New Booking Needs Approval</h2>
+          <p><strong>A new booking request has been submitted and payment is authorized.</strong></p>
+          <p>Please log in to approve or reject this booking.</p>
+
+          <h3>Customer Details:</h3>
+          <ul>
+            <li><strong>Name:</strong> ${booking.first_name} ${booking.last_name}</li>
+            <li><strong>Artist Name:</strong> ${booking.artist_name}</li>
+            <li><strong>Email:</strong> <a href="mailto:${booking.customer_email}">${booking.customer_email}</a></li>
+            <li><strong>Phone:</strong> ${booking.customer_phone || 'N/A'}</li>
+          </ul>
+
+          <h3>Booking Details:</h3>
+          <ul>
+            <li><strong>Date:</strong> ${formattedDate}</li>
+            <li><strong>Time:</strong> ${formattedStartTime} - ${formattedEndTime}</li>
+            <li><strong>Duration:</strong> ${booking.duration} hours</li>
+          </ul>
+
+          <h3>Payment Details:</h3>
+          <ul>
+            <li><strong>Deposit (Authorized):</strong> $${(booking.deposit_amount / 100).toFixed(2)}</li>
+            <li><strong>Total Session Cost:</strong> $${(booking.total_amount / 100).toFixed(2)}</li>
+            <li><strong>Remainder Due After:</strong> $${(booking.remainder_amount / 100).toFixed(2)}</li>
+          </ul>
+
+          <p style="margin-top: 20px;">
+            <a href="https://sweetdreams.us/profile/manage-bookings" style="background: #ff9800; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: bold;">
+              Go to Manage Bookings
+            </a>
+          </p>
+
+          <p style="color: #666; font-size: 14px; margin-top: 30px;">
+            Payment will be captured when you approve. If rejected, the authorization will be released.
+          </p>
+        `,
       });
 
       console.log('✅ Admin approval email SENT SUCCESSFULLY');

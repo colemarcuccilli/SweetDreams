@@ -3,10 +3,8 @@ import Stripe from 'stripe';
 import { getSessionProducts } from '@/lib/booking-config';
 import { createClient } from '@/utils/supabase/server';
 import { verifyAdminAccess } from '@/lib/admin-auth';
-import { resend, FROM_EMAIL } from '@/lib/emails/resend';
-import { RemainderCharged } from '@/lib/emails/remainder-charged';
+import { resend, FROM_EMAIL, ADMIN_EMAIL } from '@/lib/emails/resend';
 import { format } from 'date-fns';
-import * as React from 'react';
 
 export async function POST(request: NextRequest) {
   // Initialize Stripe inside the function to avoid build-time errors
@@ -180,40 +178,106 @@ export async function POST(request: NextRequest) {
       }
 
       // Send email notification to customer
-      try {
-        const startTime = new Date(booking.start_time);
-        const endTime = new Date(booking.end_time);
-        const formattedDate = format(startTime, 'EEEE, MMMM d, yyyy');
-        const formattedStartTime = format(startTime, 'h:mm a');
-        const formattedEndTime = format(endTime, 'h:mm a');
+      const startTime = new Date(booking.start_time);
+      const endTime = new Date(booking.end_time);
+      const formattedDate = format(startTime, 'EEEE, MMMM d, yyyy');
+      const formattedStartTime = format(startTime, 'h:mm a');
+      const formattedEndTime = format(endTime, 'h:mm a');
 
-        console.log('📧 Sending remainder charge notification to:', booking.customer_email);
+      try {
+        console.log('📧 Sending remainder charge notification to customer:', booking.customer_email);
 
         await resend.emails.send({
           from: FROM_EMAIL,
           to: booking.customer_email,
-          subject: 'Payment Processed - Sweet Dreams Music Studio',
-          react: RemainderCharged({
-            firstName: booking.first_name,
-            artistName: booking.artist_name,
-            date: formattedDate,
-            startTime: formattedStartTime,
-            endTime: formattedEndTime,
-            duration: booking.duration,
-            remainderAmount: amount,
-          }) as React.ReactElement,
+          subject: 'Final Payment Processed - Thank You! - Sweet Dreams Music Studio',
+          html: `
+            <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+              <h1 style="text-align: center;">Payment Processed</h1>
+
+              <p>Hi ${booking.first_name},</p>
+
+              <p>The remainder payment for your studio session has been successfully processed. Thank you!</p>
+
+              <div style="background: #f4f4f4; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                <h3 style="margin-top: 0;">Session Details</h3>
+                <p><strong>Artist Name:</strong> ${booking.artist_name}</p>
+                <p><strong>Date:</strong> ${formattedDate}</p>
+                <p><strong>Time:</strong> ${formattedStartTime} - ${formattedEndTime}</p>
+                <p><strong>Duration:</strong> ${booking.duration} ${booking.duration === 1 ? 'hour' : 'hours'}</p>
+              </div>
+
+              <div style="background: #e3f2fd; padding: 20px; border-radius: 8px; border: 2px solid #2196f3; margin: 20px 0;">
+                <h3 style="margin-top: 0;">Payment Information</h3>
+                <p><strong>Amount Charged:</strong> $${(amount / 100).toFixed(2)}</p>
+                <p>This charge has been applied to your saved payment method.</p>
+              </div>
+
+              <p>Thank you for choosing Sweet Dreams Music Studio! We hope you had a great session and look forward to working with you again.</p>
+
+              <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd;">
+                <p style="color: #666; font-size: 14px;">Sweet Dreams Music Studio<br>Professional Recording Studio</p>
+                <p style="color: #999; font-size: 12px;">📧 jayvalleo@sweetdreamsmusic.com</p>
+              </div>
+            </div>
+          `,
         });
 
-        console.log('✅ Remainder charge notification sent');
+        console.log('✅ Customer remainder charge notification sent');
       } catch (emailError) {
-        console.error('❌ Failed to send remainder charge email:', emailError);
+        console.error('❌ Failed to send customer remainder charge email:', emailError);
+        // Don't fail the charge if email fails
+      }
+
+      // Send admin notification about remainder payment
+      try {
+        console.log('📧 Sending remainder charge notification to admin:', ADMIN_EMAIL);
+
+        await resend.emails.send({
+          from: FROM_EMAIL,
+          to: ADMIN_EMAIL,
+          subject: `💰 Remainder Charged - ${booking.artist_name} - $${(amount / 100).toFixed(2)}`,
+          html: `
+            <h2>Final Payment Successfully Processed</h2>
+            <p><strong>The remainder balance has been charged and the booking is now complete.</strong></p>
+
+            <h3>Customer Details:</h3>
+            <ul>
+              <li><strong>Name:</strong> ${booking.first_name} ${booking.last_name}</li>
+              <li><strong>Artist Name:</strong> ${booking.artist_name}</li>
+              <li><strong>Email:</strong> ${booking.customer_email}</li>
+              <li><strong>Phone:</strong> ${booking.customer_phone || 'N/A'}</li>
+            </ul>
+
+            <h3>Session Details:</h3>
+            <ul>
+              <li><strong>Date:</strong> ${formattedDate}</li>
+              <li><strong>Time:</strong> ${formattedStartTime} - ${formattedEndTime}</li>
+              <li><strong>Duration:</strong> ${booking.duration} hours</li>
+            </ul>
+
+            <h3>Payment Summary:</h3>
+            <ul>
+              <li><strong>Deposit (Already Charged):</strong> $${(booking.deposit_amount / 100).toFixed(2)}</li>
+              <li><strong>Remainder (Just Charged):</strong> $${(amount / 100).toFixed(2)}</li>
+              <li><strong>Total Collected:</strong> $${((booking.deposit_amount + amount) / 100).toFixed(2)}</li>
+            </ul>
+
+            <p style="color: green;"><strong>✅ Booking Status: COMPLETED</strong></p>
+            <p>Customer has been notified via email.</p>
+          `
+        });
+
+        console.log('✅ Admin remainder charge notification sent');
+      } catch (emailError) {
+        console.error('❌ Failed to send admin remainder charge email:', emailError);
         // Don't fail the charge if email fails
       }
 
       return NextResponse.json({
         success: true,
         paymentIntentId: paymentIntent.id,
-        message: 'Remainder charged successfully and notification sent'
+        message: 'Remainder charged successfully and notifications sent'
       });
     } else {
       return NextResponse.json(
