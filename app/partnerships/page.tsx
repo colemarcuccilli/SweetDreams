@@ -91,9 +91,9 @@ const ENGINE_CARDS: EngineCard[] = [
     icon: 'video',
     accentColor: '#059669',
     proof: [
-      'Your competitors post once a week. You post every day.',
-      'We capture everything—job sites, behind-the-scenes, testimonials.',
-      'Never scramble for content again.'
+      'Most businesses post when they remember to. Maybe a few times a week, maybe once a month, maybe a burst of energy followed by three weeks of silence. That inconsistency kills momentum before it ever builds. Algorithms reward volume and consistency — not occasional effort. A business that posts daily across every platform occupies more mental real estate than a competitor posting twice a week, regardless of who does better work.',
+      'We produce unlimited video content and distribute it daily across every platform your audience touches. Not recycled templates or stock footage with your logo slapped on — original content built around your brand, your work, and your story. Short-form, long-form, reels, stories, testimonials, process videos, behind-the-scenes. The full spectrum, produced at a pace your competitors can\'t match because they\'re still trying to figure out what to post next Tuesday.',
+      'This isn\'t a content calendar you have to approve and manage. It\'s a machine that runs. You do the work you\'re great at, and the content shows up. Every day, everywhere, without you thinking about it.'
     ]
   },
   {
@@ -103,9 +103,9 @@ const ENGINE_CARDS: EngineCard[] = [
     icon: 'image',
     accentColor: '#4A90E2',
     proof: [
-      'Your work finally looks as good as it actually is.',
-      'Case studies that close deals before the call.',
-      'Recruiting content that attracts A-players.'
+      'People don\'t buy from businesses they don\'t recognize, and they don\'t trust businesses that look like everyone else. Most companies in your space have the same website template, the same stock photography energy, the same generic "about us" that could belong to any competitor. None of it communicates why someone should choose you over the other 15 options in their Google search results. The brand is the shortcut — it\'s how someone decides in three seconds whether you\'re serious or forgettable.',
+      'We build the foundational media that makes that three-second decision land in your favor. A business trailer that introduces your company with the production quality of something people would actually choose to watch. A founder story that puts a real human behind the logo. Premium photography and video that matches the caliber of your actual work — because right now, your media is probably underselling what you deliver.',
+      'These aren\'t vanity pieces. They\'re conversion tools. They live on your homepage, your social profiles, your proposals, your Google listing. Every touchpoint where a potential customer is deciding whether to call you or scroll past. The businesses that invest in this layer look like they\'re operating at a level above everyone else — and perception drives decisions long before quality gets a chance to speak for itself.'
     ]
   },
   {
@@ -115,9 +115,9 @@ const ENGINE_CARDS: EngineCard[] = [
     icon: 'users',
     accentColor: '#e63636',
     proof: [
-      '100% of comments answered. 24hr DM response.',
-      'Your competitors will feel invisible.',
-      'Community built while you focus on the work.'
+      'Hiring someone in-house to manage your social media means finding someone who understands strategy, can produce content, knows each platform\'s algorithm, stays current on trends, and executes daily — without you babysitting the process. That person costs $50K–$80K a year before you\'ve given them a camera, software, or training. And if they leave, you\'re starting over. Most small businesses skip this entirely and hand the keys to an owner\'s nephew or an intern who posts when they feel like it.',
+      'We take over completely. Every platform, every day. Not just scheduling posts — actively managing your presence, responding to engagement patterns, adjusting strategy based on what\'s actually performing, and making sure your brand shows up with intention rather than guesswork. You don\'t log into a dashboard. You don\'t approve a calendar. You don\'t wonder if something went out today. It did.',
+      'The difference between a managed social presence and a neglected one compounds fast. After 90 days of daily, strategic content across every platform, your digital footprint looks fundamentally different than it did when you were posting sporadically. Your competitors are still debating what filter to use. You\'ve already built an audience that recognizes your name before they ever pick up the phone.'
     ]
   },
   {
@@ -127,9 +127,9 @@ const ENGINE_CARDS: EngineCard[] = [
     icon: 'monitor',
     accentColor: '#F4C430',
     proof: [
-      'Every touchpoint. Every channel. Airtight.',
-      'Lead capture that actually converts.',
-      'Built to grow with you—not against you.'
+      'Your website is either closing deals for you while you sleep, or it\'s a digital brochure that people glance at and leave. Most small business websites fall into the second category — they exist, they have some photos, they list services, and they convert almost nobody. No clear call to action, no funnel guiding visitors toward a decision, no email capture, no landing pages built for specific offers. It\'s a placeholder pretending to be a sales tool.',
+      'We build the full digital infrastructure. A website designed to convert visitors into leads, not just look professional. Landing pages tailored to specific services or promotions. Funnels that nurture cold traffic into warm prospects. Email sequences that follow up automatically so leads don\'t die in your inbox. All of it included — not quoted as a separate $10K–$20K project on top of your marketing spend.',
+      'This is the backbone that makes everything else work. The content engine drives traffic. The brand assets build trust. The social management keeps you visible. But without a web presence that actually captures and converts that attention, you\'re pouring water into a bucket with no bottom. We close the loop so every dollar of effort upstream turns into trackable, measurable opportunity downstream.'
     ]
   },
   {
@@ -139,9 +139,9 @@ const ENGINE_CARDS: EngineCard[] = [
     icon: 'chart',
     accentColor: '#8B5CF6',
     proof: [
-      'We don\'t just market what you have—we make it better.',
-      'Pricing that commands premium without pushback.',
-      'Choosing anyone else should feel risky.'
+      'Most business owners set their prices based on what competitors charge, add or subtract a little, and never revisit it. They\'ve never mapped out why a customer chooses them over the alternative, what their actual closing rate looks like at different price points, or whether their offer structure leaves money on the table. They\'re selling the work — not selling the outcome the work creates. That gap between what you do and how you present what you do is usually where the biggest revenue gains are hiding.',
+      'We dig into competitive analysis, pricing psychology, and how your offer is positioned relative to your market. What are your competitors actually saying? Where are they weak? What can you promise that they can\'t? How do you structure a package or proposal that makes the decision feel obvious? This is Hormozi\'s Grand Slam framework applied directly to your business — building an offer so compelling that the prospect\'s alternative isn\'t your competitor, it\'s nothing, because nobody else is presenting it this way.',
+      'This is the piece that separates a marketing partner from a marketing vendor. A vendor makes your content look good. A partner asks why your average ticket is $8K when your market could support $14K, and then helps you build the offer, the messaging, and the proof that gets you there. The growth fee means we\'re financially motivated to push this conversation — because when your average deal size goes up, we both win.'
     ]
   },
   {
@@ -151,9 +151,9 @@ const ENGINE_CARDS: EngineCard[] = [
     icon: 'message',
     accentColor: '#059669',
     proof: [
-      'Partners, not vendors hiding behind email chains.',
-      'Weekly calls. Real-time collaboration.',
-      'Available when you need us—not when it\'s convenient for us.'
+      'Traditional agency communication is a nightmare. You send an email, wait two days for a response, get a Calendly link, book a meeting for next week, sit through a 45-minute call that could have been a text, and then wait another week for the deliverable. By the time anything actually moves, the moment has passed. Opportunities in small business move fast — a hot lead, a competitor stumbling, a seasonal window — and if your marketing team operates on a two-week feedback loop, you\'re always reacting instead of capitalizing.',
+      'We embed directly into your operations through Slack, text, phone — whatever channel you actually use to run your business. Need a quick video for a pitch tomorrow? Send a message, it\'s done. Want to pivot a campaign because you just landed a new vertical? We adjust in real-time, not next quarter. Weekly calls keep us aligned on strategy, but day-to-day, we move at the speed your business actually operates.',
+      'This is what it means to have a partner instead of a vendor. Vendors wait to be told what to do. Partners anticipate what\'s needed and execute before you have to ask. The communication layer is what makes everything else work — because the best strategy in the world is worthless if it takes two weeks to implement and three rounds of approvals to ship.'
     ]
   }
 ];

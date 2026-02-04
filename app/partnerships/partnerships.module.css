@@ -450,10 +450,30 @@
   background: #0a0a0a;
   border: 1px solid #333;
   border-radius: 24px;
-  padding: 40px;
+  padding: 48px;
   position: relative;
   box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
-  min-height: 300px;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+/* Custom scrollbar for big card */
+.engineBigCard::-webkit-scrollbar {
+  width: 6px;
+}
+
+.engineBigCard::-webkit-scrollbar-track {
+  background: #1a1a1a;
+  border-radius: 3px;
+}
+
+.engineBigCard::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 3px;
+}
+
+.engineBigCard::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 .engineBigClose {
@@ -467,6 +487,7 @@
   padding: 8px;
   transition: all 0.2s ease;
   border-radius: 8px;
+  z-index: 10;
 }
 
 .engineBigClose:hover {
@@ -476,25 +497,26 @@
 
 .engineBigTitle {
   font-family: 'Anton', sans-serif;
-  font-size: 36px;
+  font-size: 32px;
   font-weight: 400;
   text-transform: uppercase;
-  margin: 0 0 32px 0;
+  margin: 0 0 36px 0;
+  padding-right: 40px;
 }
 
 .engineBigProof {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 28px;
 }
 
 .engineBigProofLine {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 16px;
-  line-height: 1.6;
-  color: white;
+  font-size: 14px;
+  line-height: 1.75;
+  color: #ccc;
   margin: 0;
-  padding-left: 20px;
+  padding-left: 24px;
   border-left: 3px solid #333;
   transition: border-color 0.3s ease;
 }
@@ -511,21 +533,28 @@
   }
 
   .engineExpanded {
-    grid-template-columns: 150px 1fr 150px;
+    grid-template-columns: 140px 1fr 140px;
     gap: 16px;
   }
 
   .engineBigCard {
-    padding: 32px;
+    padding: 36px;
+    max-height: 550px;
   }
 
   .engineBigTitle {
-    font-size: 28px;
-    margin-bottom: 24px;
+    font-size: 26px;
+    margin-bottom: 28px;
+  }
+
+  .engineBigProof {
+    gap: 24px;
   }
 
   .engineBigProofLine {
-    font-size: 14px;
+    font-size: 13px;
+    line-height: 1.7;
+    padding-left: 20px;
   }
 }
 
@@ -564,17 +593,23 @@
 
   .engineBigCard {
     order: -1;
-    padding: 24px;
-    min-height: auto;
+    padding: 28px;
+    max-height: 500px;
   }
 
   .engineBigTitle {
-    font-size: 24px;
-    margin-bottom: 20px;
+    font-size: 22px;
+    margin-bottom: 24px;
+    padding-right: 32px;
+  }
+
+  .engineBigProof {
+    gap: 20px;
   }
 
   .engineBigProofLine {
-    font-size: 13px;
+    font-size: 12px;
+    line-height: 1.7;
     padding-left: 16px;
   }
 }
@@ -613,10 +648,13 @@
 
   .engineBigCard {
     padding: 20px;
+    max-height: 450px;
   }
 
   .engineBigTitle {
-    font-size: 20px;
+    font-size: 18px;
+    margin-bottom: 20px;
+    padding-right: 28px;
   }
 
   .engineBigProof {
@@ -624,7 +662,8 @@
   }
 
   .engineBigProofLine {
-    font-size: 12px;
+    font-size: 11px;
+    line-height: 1.65;
     padding-left: 12px;
   }
 }
