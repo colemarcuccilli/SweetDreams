@@ -57,7 +57,6 @@ export async function POST(request: NextRequest) {
       .from('bookings')
       .update({
         status: 'completed',
-        completed_at: new Date().toISOString(),
       })
       .eq('id', bookingId);
 
@@ -76,7 +75,7 @@ export async function POST(request: NextRequest) {
       p_performed_by: (await supabase.auth.getUser()).data.user?.email || 'admin',
       p_details: {
         previous_status: booking.status,
-        completed_at: new Date().toISOString(),
+        marked_completed_at: new Date().toISOString(),
         note: 'Manually marked as completed by admin'
       }
     });
