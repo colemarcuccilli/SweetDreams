@@ -237,106 +237,86 @@
   }
 }
 
-/* Studio Booking Section */
+/* Studio Booking Section - matches music page */
 .studioSection {
-  background: #000;
-  color: #fff;
-  padding: 80px 48px;
+  padding: 80px 48px 120px 48px;
+  background: white;
   margin-top: 80px;
   margin-left: -48px;
   margin-right: -48px;
   margin-bottom: -80px;
+  border-top: 2px solid #e0e0e0;
 }
 
-.studioSection .header {
-  margin-bottom: 48px;
-}
-
-.studioSection .title {
-  color: #fff;
-}
-
-.studioSection .subtitle {
-  color: #999;
+.studioContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .miniTitle {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  color: #ffc800;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.sectionTitle {
+  font-family: 'Anton', sans-serif;
+  font-size: 64px;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 1;
+  color: black;
   margin-bottom: 16px;
 }
 
-.studioInfo {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  margin-bottom: 48px;
-}
-
-.infoCard {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  padding: 24px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-}
-
-.infoIcon {
-  font-size: 32px;
-  flex-shrink: 0;
-}
-
-.infoCard h3 {
+.sectionSubtitle {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 16px;
-  font-weight: 600;
-  color: #fff;
-  margin: 0 0 4px 0;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto 48px auto;
 }
 
-.infoCard p {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 13px;
-  color: #999;
-  margin: 0;
-}
-
-.studioNote {
+.note {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 14px;
   color: #666;
   text-align: center;
-  margin-top: 32px;
-  padding: 16px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 4px;
+  margin-top: 48px;
 }
 
 @media (max-width: 768px) {
   .studioSection {
-    padding: 60px 24px;
+    padding: 60px 24px 80px 24px;
     margin-left: -24px;
     margin-right: -24px;
     margin-bottom: -60px;
   }
 
-  .studioInfo {
-    grid-template-columns: 1fr;
-    gap: 16px;
+  .sectionTitle {
+    font-size: 48px;
+  }
+
+  .sectionSubtitle {
+    font-size: 16px;
   }
 }
 
 @media (max-width: 430px) {
   .studioSection {
-    padding: 40px 16px;
+    padding: 40px 16px 60px 16px;
     margin-left: -16px;
     margin-right: -16px;
     margin-bottom: -40px;
+  }
+
+  .sectionTitle {
+    font-size: 36px;
   }
 }

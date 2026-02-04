@@ -283,47 +283,21 @@ export default function BookPage() {
       </div>
 
       {/* Music Studio Booking Section */}
-      <div className={styles.studioSection}>
-        <div className={styles.container}>
-          <div className={styles.header}>
-            <p className={styles.miniTitle}>RECORDING STUDIO</p>
-            <h2 className={styles.title}>BOOK A STUDIO SESSION</h2>
-            <p className={styles.subtitle}>
-              Book your recording session at our Fort Wayne studio. Starting at $50/hour with professional mixing assistance included.
-            </p>
-          </div>
-
-          <div className={styles.studioInfo}>
-            <div className={styles.infoCard}>
-              <span className={styles.infoIcon}>💰</span>
-              <div>
-                <h3>Starting at $50/hr</h3>
-                <p>Competitive rates with package discounts</p>
-              </div>
-            </div>
-            <div className={styles.infoCard}>
-              <span className={styles.infoIcon}>🎚️</span>
-              <div>
-                <h3>Professional Equipment</h3>
-                <p>Industry-standard recording setup</p>
-              </div>
-            </div>
-            <div className={styles.infoCard}>
-              <span className={styles.infoIcon}>🎧</span>
-              <div>
-                <h3>Mixing Included</h3>
-                <p>Professional mixing assistance with every session</p>
-              </div>
-            </div>
-          </div>
+      <section className={styles.studioSection}>
+        <div className={styles.studioContainer}>
+          <p className={styles.miniTitle}>RECORDING STUDIO</p>
+          <h2 className={styles.sectionTitle}>BOOK A STUDIO SESSION</h2>
+          <p className={styles.sectionSubtitle}>
+            Book your recording session at our Fort Wayne studio. Starting at $50/hour.
+          </p>
 
           <BookingCalendarWrapper />
 
-          <p className={styles.studioNote}>
-            Pay a deposit to reserve your time. Remainder due at your session. After 9 PM sessions include a $10/hr additional fee.
+          <p className={styles.note}>
+            Pay a deposit to reserve your time. Remainder due at your session.
           </p>
         </div>
-      </div>
+      </section>
     </div>
   );
 }
